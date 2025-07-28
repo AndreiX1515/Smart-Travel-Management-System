@@ -68,8 +68,6 @@ try {
     $conn->beginTransaction();
 
 
-
-
     // ✍ Insert into `itineraries` table
     if ($isConnectToVoucher === true && $voucherId > 0) {
         error_log("🟢 Inserting itinerary with voucherId $voucherId (isConnectToVoucher = true)");
@@ -132,20 +130,77 @@ try {
     // }
 
 
-    // Insert into itineraryTourAreasHotels
-    $stmtCityHotel = $conn->prepare("INSERT INTO itinerarytourareashotels (itineraryId, orderNo, city, hotel) VALUES (?, ?, ?, ?)");
+
+   $stmtCityHotel = $conn->prepare("INSERT INTO itinerarytourareashotels (itineraryId, orderNo, cityId, city, hotelId, hotel) VALUES (?, ?, ?, ?, ?, ?)");
+
+    function resolveCityAndHotelNames($conn, $cityId, $hotelId) {
+        $cityName = '';
+        $hotelName = '';
+
+        if (!empty($cityId)) {
+            $stmtCity = $conn->prepare("SELECT areaName FROM itinerarydataarea WHERE areaId = ?");
+            $stmtCity->execute([$cityId]);
+            if ($row = $stmtCity->fetch(PDO::FETCH_ASSOC)) {
+                $cityName = $row['areaName'];
+            }
+        }
+
+        if (!empty($hotelId)) {
+            $stmtHotel = $conn->prepare("SELECT hotelName FROM hotels WHERE hotelId = ?");
+            $stmtHotel->execute([$hotelId]);
+            if ($row = $stmtHotel->fetch(PDO::FETCH_ASSOC)) {
+                $hotelName = $row['hotelName'];
+            }
+        }
+
+        return [
+            'cityName' => $cityName,
+            'hotelName' => $hotelName
+        ];
+    }
+
     for ($i = 1; $i <= 3; $i++) {
-        $city = $cityHotels["city$i"] ?? "";
-        $hotel = $cityHotels["hotel$i"] ?? "";
-        if ($city || $hotel) {
-            $stmtCityHotel->execute([$itineraryId, $i, $city, $hotel]);
-            error_log("🏨 City/Hotel $i → $city / $hotel");
+        $cityKey = "city$i";
+        $hotelKey = "hotel$i";
+
+        if (isset($cityHotels["$i"][$cityKey]) || isset($cityHotels["$i"][$hotelKey])) {
+            $cityId = isset($cityHotels["$i"][$cityKey]) ? (int)$cityHotels["$i"][$cityKey] : 0;
+            $hotelId = isset($cityHotels["$i"][$hotelKey]) ? (int)$cityHotels["$i"][$hotelKey] : 0;
+
+            $names = resolveCityAndHotelNames($conn, $cityId, $hotelId);
+            $cityName = $names['cityName'];
+            $hotelName = $names['hotelName'];
+
+            error_log("🔍 Attempting Insert for #$i → itineraryId: $itineraryId, cityId: $cityId ($cityName), hotelId: $hotelId ($hotelName)");
+
+            try {
+                $success = $stmtCityHotel->execute([
+                    $itineraryId,
+                    $i,
+                    $cityId,
+                    $cityName,
+                    $hotelId,
+                    $hotelName
+                ]);
+
+                if ($success) {
+                    error_log("✅ Inserted City/Hotel #$i successfully");
+                } else {
+                    error_log("❌ Insert failed for #$i");
+                }
+            } catch (PDOException $e) {
+                error_log("❌ PDO Exception during insert #$i: " . $e->getMessage());
+                echo "Insert failed on row $i: " . $e->getMessage() . "<br>";
+            }
+        } else {
+            error_log("⚠️ Skipped Insert #$i due to missing cityId and hotelId");
         }
     }
 
+
     // Prepare insert statements
     $stmtDay = $conn->prepare("INSERT INTO itinerarydays (itineraryId, dayNumber) VALUES (?, ?)");
-    $stmtArea = $conn->prepare("INSERT INTO itineraryareas (itineraryId, dayId, areaName) VALUES (?, ?, ?)");
+    $stmtArea = $conn->prepare("INSERT INTO itineraryareas (itineraryId, dayId, areaName, areaId) VALUES (?, ?, ?, ?)");
     $stmtHotel = $conn->prepare("INSERT INTO itineraryhotels (itineraryId, dayId, hotelId, createdAt) VALUES (?, ?, ?, NOW())");
     $stmtMeal = $conn->prepare("INSERT INTO itinerarymealplans (itineraryId, dayId, mealId) VALUES (?, ?, ?)");
     $stmtActivity = $conn->prepare("INSERT INTO itineraryactivities (itineraryId, dayId, activityName) VALUES (?, ?, ?)");
@@ -189,6 +244,44 @@ try {
 
 
 
+    // Function: Convert Area Ids to Names
+    function getAreaNamesFromIds(PDO $conn, array $areaIds): array
+    {
+        if (empty($areaIds)) return [];
+
+        $placeholders = implode(',', array_fill(0, count($areaIds), '?'));
+        $query = "SELECT areaId, areaName FROM itinerarydataarea WHERE areaId IN ($placeholders)";
+        $stmt = $conn->prepare($query);
+
+        if (!$stmt) {
+            error_log("❌ Failed to prepare area name query: " . $conn->errorInfo()[2]);
+            return [];
+        }
+
+        $stmt->execute($areaIds);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $areaMap = [];
+        foreach ($result as $row) {
+            $areaMap[(int)$row['areaId']] = $row['areaName'];
+        }
+
+        $converted = [];
+        foreach ($areaIds as $id) {
+            if (isset($areaMap[$id])) {
+                $converted[] = [
+                    'areaId' => $id,
+                    'areaName' => $areaMap[$id]
+                ];
+            } else {
+                error_log("⚠️ Area ID not found in DB: $id");
+            }
+        }
+
+        error_log("🔁 Final area ID-name pairs: " . json_encode($converted));
+        return $converted;
+    }
+
 
     foreach ($itineraryData as $dayData) {
         $dayNumber = $dayData["day"] ?? 0;
@@ -202,14 +295,26 @@ try {
         $dayId = $conn->lastInsertId();
         error_log("📅 Inserted day #$dayNumber → dayId: $dayId");
 
-        // Insert areas
-        foreach ($areas as $area) {
-            $stmtArea->execute([$itineraryId, $dayId, $area]);
+
+
+         // Insert areas
+        $areaData = getAreaNamesFromIds($conn, $areas); // $areas should be array of areaIds
+
+        foreach ($areaData as $area) {
+            $stmtArea->execute([
+                $itineraryId,
+                $dayId,
+                $area['areaName'],
+                $area['areaId']
+            ]);
         }
+
+
+
 
         // Insert hotels (directly as IDs)
         foreach ($hotelIds as $hotelId) {
-            error_log("🏨 Inserting hotelId $hotelId for dayId $dayId, itineraryId $itineraryId");
+            // error_log("🏨 Inserting hotelId $hotelId for dayId $dayId, itineraryId $itineraryId");
             $ok = $stmtHotel->execute([$itineraryId, $dayId, $hotelId]);
             if (!$ok) {
                 error_log("❌ Hotel insert failed: " . json_encode($stmtHotel->errorInfo()));

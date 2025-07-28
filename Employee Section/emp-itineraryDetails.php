@@ -111,19 +111,25 @@
     ];
 
 
-    // ✅ Fetch cities & hotels from itinerarytourareashotels
-    $sqlCityHotel = "SELECT city, hotel FROM itinerarytourareashotels WHERE itineraryId = ? ORDER BY orderNo ASC";
+    // ✅ Fetch cities & hotels (both IDs and names) from itinerarytourareashotels
+    $sqlCityHotel = "SELECT cityId, city, hotelId, hotel FROM itinerarytourareashotels WHERE itineraryId = ? ORDER BY orderNo ASC";
     $stmt = $conn->prepare($sqlCityHotel);
     $stmt->bind_param("i", $itineraryId);
     $stmt->execute();
     $result = $stmt->get_result();
 
+    $index = 1;
     while ($rowCity = $result->fetch_assoc()) {
-      $itinerary['cities'][] = [
-        'city' => $rowCity['city'],
-        'hotel' => $rowCity['hotel']
+      $itinerary['cities']["$index"] = [
+        "cityId" => (int) $rowCity['cityId'],
+        "city" => $rowCity['city'],
+        "hotelId" => (int) $rowCity['hotelId'],
+        "hotel" => $rowCity['hotel']
       ];
+      $index++;
     }
+
+
 
     // Fetch days, areas, hotels, activities, and meal plans
     $sqlDays = "
@@ -243,7 +249,7 @@
         <form id="itineraryGenerate" class="d-flex flex-column gap-3">
 
           <input type="hidden" id="itineraryId" value="<?= htmlspecialchars($itineraryId); ?>" readonly>
-          
+
           <!-- Itinerary Details Card -->
           <div class="card">
 
@@ -442,113 +448,118 @@
 
               </div>
 
-              <!-- Tour Areas, Hotels -->
-              <div class="row">
-                <div class="columns col-md-12">
-                  <div class="column-header">
-                    <label for="tourAreas">Tour Areas, Hotels</label>
+
+              <!-- Tour Areas, Hotels Section -->
+              <div id="tour-hotels-group">
+
+                <!-- Tour Areas, Hotels -->
+                <div class="row">
+                  <div class="columns col-md-12">
+                    <div class="column-header">
+                      <label for="tourAreas">Tour Areas, Hotels</label>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Tour Areas, Hotels Dropdowns - 1 -->
-              <div class="row">
-                <div class="columns col-md-10">
-                  <div class="cityhotel-wrapper d-flex align-items-center gap-2">
-                    <div class="cityhotel-item">
-                      <select class="form-select city-select" id="city1" name="city(1)" required>
-                        <option selected disabled value="">Select City</option>
-                      </select>
+                <!-- Tour Areas, Hotels Dropdowns - 1 -->
+                <div class="row">
+                  <div class="columns col-md-10">
+                    <div class="cityhotel-wrapper d-flex align-items-center gap-2">
+                      <div class="cityhotel-item">
+                        <select class="form-select city-select" id="city1" name="city(1)" required>
+                          <option selected disabled value="">Select City</option>
+                        </select>
+                      </div>
+                      <div class="dash-separator">-></div>
+                      <div class="cityhotel-item">
+                        <select class="form-select hotel-select" id="hotel1" name="hotel(1)" required>
+                          <option selected disabled value="">Select Hotel</option>
+                        </select>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-danger text-light d-none" id="trash1"
+                        onclick="resetCityHotel(1)" title="Reset City & Hotel">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
                     </div>
-                    <div class="dash-separator">-></div>
-                    <div class="cityhotel-item">
-                      <select class="form-select hotel-select" id="hotel1" name="hotel(1)" required>
-                        <option selected disabled value="">Select Hotel</option>
-                      </select>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-danger text-light" id="trash1"
-                      onclick="resetCityHotel(1)" title="Reset City & Hotel">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
                   </div>
                 </div>
-              </div>
 
-              <!-- Tour Areas, Hotels Dropdowns - 2 -->
-              <div class="row">
-                <div class="columns col-md-10">
-                  <div class="cityhotel-wrapper d-flex align-items-center gap-2">
-                    <div class="cityhotel-item">
-                      <select class="form-select city-select" id="city2" name="city(2)">
-                        <option selected disabled value="">Select City</option>
-                      </select>
+                <!-- Tour Areas, Hotels Dropdowns - 2 -->
+                <div class="row">
+                  <div class="columns col-md-10">
+                    <div class="cityhotel-wrapper d-flex align-items-center gap-2">
+                      <div class="cityhotel-item">
+                        <select class="form-select city-select" id="city2" name="city(2)">
+                          <option selected disabled value="">Select City</option>
+                        </select>
+                      </div>
+                      <div class="dash-separator">-></div>
+                      <div class="cityhotel-item">
+                        <select class="form-select hotel-select" id="hotel2" name="hotel(2)">
+                          <option selected disabled value="">Select Hotel</option>
+                        </select>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-danger text-light d-none" id="trash2"
+                        onclick="resetCityHotel(2)" title="Reset City & Hotel">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
                     </div>
-                    <div class="dash-separator">-></div>
-                    <div class="cityhotel-item">
-                      <select class="form-select hotel-select" id="hotel2" name="hotel(2)">
-                        <option selected disabled value="">Select Hotel</option>
-                      </select>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-danger text-light" id="trash2"
-                      onclick="resetCityHotel(2)" title="Reset City & Hotel">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
                   </div>
                 </div>
-              </div>
 
-              <!-- Tour Areas, Hotels Dropdowns - 3 -->
-              <div class="row">
-                <div class="columns col-md-10">
-                  <div class="cityhotel-wrapper d-flex align-items-center gap-2">
-                    <div class="cityhotel-item">
-                      <select class="form-select city-select" id="city3" name="city(3)">
-                        <option selected disabled value="">Select City</option>
-                      </select>
+                <!-- Tour Areas, Hotels Dropdowns - 3 -->
+                <div class="row">
+                  <div class="columns col-md-10">
+                    <div class="cityhotel-wrapper d-flex align-items-center gap-2">
+                      <div class="cityhotel-item">
+                        <select class="form-select city-select" id="city3" name="city(3)">
+                          <option selected disabled value="">Select City</option>
+                        </select>
+                      </div>
+                      <div class="dash-separator">-></div>
+                      <div class="cityhotel-item">
+                        <select class="form-select hotel-select" id="hotel3" name="hotel(3)">
+                          <option selected disabled value="">Select Hotel</option>
+                        </select>
+                      </div>
+                      <button type="button" class="btn btn-sm btn-danger text-light d-none" id="trash3"
+                        onclick="resetCityHotel(3)" title="Reset City & Hotel">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
                     </div>
-                    <div class="dash-separator">-></div>
-                    <div class="cityhotel-item">
-                      <select class="form-select hotel-select" id="hotel3" name="hotel(3)">
-                        <option selected disabled value="">Select Hotel</option>
-                      </select>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-danger text-light" id="trash3"
-                      onclick="resetCityHotel(3)" title="Reset City & Hotel">
-                      <i class="fas fa-trash-alt"></i>
-                    </button>
                   </div>
                 </div>
               </div>
 
               <script>
-                document.addEventListener('change', function (e) {
-                  // Show/Hide Trash Icon for City/Hotel Combo Row
+                document.querySelector('#tour-hotels-group').addEventListener('change', function (e) {
                   if (e.target.classList.contains('city-select') || e.target.classList.contains('hotel-select')) {
-                    const row = e.target.closest('.cityhotel-row');
-                    const city = row.querySelector('.city-select')?.value;
-                    const hotel = row.querySelector('.hotel-select')?.value;
-                    const trashBtn = row.querySelector('.remove-cityhotel');
+                    const wrapper = e.target.closest('.cityhotel-wrapper');
+                    const city = wrapper.querySelector('.city-select')?.value;
+                    const hotel = wrapper.querySelector('.hotel-select')?.value;
+                    const trashBtn = wrapper.querySelector('.btn-danger');
 
                     if (trashBtn) {
-                      trashBtn.classList.toggle('d-none', !(city || hotel));
+                      const showTrash = city || hotel;
+                      trashBtn.classList.toggle('d-none', !showTrash);
                     }
                   }
                 });
 
-                document.addEventListener('click', function (e) {
-                  const btn = e.target.closest('.remove-cityhotel');
-                  if (btn) {
-                    const row = btn.closest('.cityhotel-row');
-                    const citySelect = row.querySelector('.city-select');
-                    const hotelSelect = row.querySelector('.hotel-select');
+                document.querySelector('#tour-hotels-group').addEventListener('click', function (e) {
+                  const btn = e.target.closest('.btn-danger');
+                  if (btn && btn.id.startsWith('trash')) {
+                    const wrapper = btn.closest('.cityhotel-wrapper');
+                    const citySelect = wrapper.querySelector('.city-select');
+                    const hotelSelect = wrapper.querySelector('.hotel-select');
 
                     if (citySelect) {
-                      citySelect.selectedIndex = 0; // Reset to placeholder
+                      citySelect.selectedIndex = 0;
                       citySelect.dispatchEvent(new Event("change"));
                     }
 
                     if (hotelSelect) {
-                      hotelSelect.selectedIndex = 0; // Reset to placeholder
+                      hotelSelect.selectedIndex = 0;
                       hotelSelect.dispatchEvent(new Event("change"));
                     }
 
@@ -556,6 +567,7 @@
                   }
                 });
               </script>
+
 
             </div>
           </div>
@@ -588,32 +600,30 @@
       </div>
 
       <!-- Form footer with both buttons -->
-			<div class="form-footer">
+      <div class="form-footer">
 
-				<div class="itinerary-footer-first">
-					<p class="mb-0 text-muted">
-						Connected to Voucher: 
-						<span class="fw-bold"><?= $itinerary['voucherCode'] ?? "--"; ?></span>
-					</p>
-				</div>
+        <div class="itinerary-footer-first">
+          <p class="mb-0 text-muted">
+            Connected to Voucher:
+            <span class="fw-bold"><?= $itinerary['voucherCode'] ?? "--"; ?></span>
+          </p>
+        </div>
 
 
-				<div class="itinerary-footer-second">
-					<!-- Right side content -->
-					<button type="button" class="btn btn-primary btn-sm" id="submitEdit">Submit Edit</button>
+        <div class="itinerary-footer-second">
+          <!-- Right side content -->
+          <button type="button" class="btn btn-primary btn-sm" id="submitTour">Submit Edit</button>
 
-					<select id="actionSelector" class="form-select" style="width: 120px;">
+          <select id="actionSelector" class="form-select" style="width: 120px;">
 					<option value="xlsx" selected>Excel (.xlsx)</option>
 					<option value="pdf" disabled>PDF</option>
 					<option value="both" disabled>Excel & PDF</option>
 					</select>
 
-					<button type="button" class="btn btn-primary btn-sm disabled" id="submitTourAndVoucher">Generate Itinerary & Voucher</button>
+					<button type="button" class="btn btn-primary btn-sm" id="submitTourAndVoucher">Generate Itinerary & Voucher</button>
+        </div>
 
-					<button type="button" class="btn btn-primary btn-sm" id="submitTour"></button>
-				</div>
-
-			</div>
+      </div>
 
     </div>
   </div>
@@ -664,6 +674,7 @@
       });
     });
   </script> -->
+
 
   <!-- Timepicker & Datepicker General Script -->
   <script>
@@ -729,7 +740,7 @@
   </script>
 
   <!-- For DB value to Itinerary Cards Values JSON (For Editing) -->
-  <script>
+  <!-- <script>
     let liveItineraryData;
     const originalJsonData = <?= json_encode($jsonData) ?>;
     const originalJsonString = JSON.stringify(sortKeys(originalJsonData));
@@ -747,15 +758,17 @@
       return obj;
     }
 
+    // Function to log the current liveItineraryData
+    function logLiveItineraryData() {
+      console.log("Initial loaded liveItineraryData:");
+      console.log(JSON.stringify(liveItineraryData, null, 2));
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
       const submitEditBtn = document.getElementById('submitEdit');
       const generateBtn = document.getElementById('submitTour');
       const selectDays = document.getElementById('select-days');
       const itineraryContainer = document.getElementById("itinerary-container");
-
-      // submitEditBtn.disabled = true;
-      // selectDays.disabled = true;
-      // if (generateBtn) generateBtn.disabled = true;
 
       let itineraryData = <?= json_encode($itinerary); ?>;
       liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // Clone
@@ -813,24 +826,23 @@
           });
         });
 
-        // Update global reference
         liveItineraryData = {
           itineraryDetails,
           daysDetails
         };
 
-        // Debug log on update
-        console.log("Initial loaded liveItineraryData:");
-        console.log(JSON.stringify(liveItineraryData, null, 2));
+        // Call reusable logger
+        logLiveItineraryData();
       };
 
-      // Trigger console log on initial load
+      // Trigger update and log on load
       updateLiveItineraryData();
     });
-  </script>
+  </script> -->
+
 
   <!-- For Tour Areas, Hotels Dropdowns -->
-  <script>
+  <!-- <script>
     document.addEventListener("DOMContentLoaded", () => {
       const cities = ["Seoul", "Gyeonggi-do", "Incheon", "Jeju"];
       const hotelsByCity = {
@@ -969,7 +981,198 @@
         }
       }
     });
+  </script> -->
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const itinerary = <?php echo json_encode($itinerary['cities']); ?>;
+      const cityHotelMap = {}; // areaId -> hotels[]
+      const cityIdNameMap = {}; // areaId -> areaName
+
+      fetch('../Employee Section/functions/fetchScripts/getAreaAndHotels.php')
+        .then(res => res.json())
+        .then(json => {
+          if (json.status !== 'success') throw new Error(json.message);
+
+          json.data.forEach(area => {
+            const areaId = area.areaId;
+            const areaName = area.areaName;
+            const hotels = area.hotels;
+
+            cityHotelMap[areaId] = hotels;
+            cityIdNameMap[areaId] = areaName;
+          });
+
+          initializeDropdowns();
+          populateInitialSelections(); // Inject after dropdowns are ready
+        })
+        .catch(err => console.error("❌ Failed to load city/hotel data:", err));
+
+      function initializeDropdowns() {
+        [1, 2, 3].forEach(index => {
+          const citySelect = document.getElementById(`city${index}`);
+          const hotelSelect = document.getElementById(`hotel${index}`);
+          const trashBtn = document.getElementById(`trash${index}`);
+
+          populateCityDropdown(citySelect, "Select Area");
+
+          citySelect.addEventListener("change", () => {
+            updateAllCityDropdowns();
+            updateAllHotelDropdowns();
+            checkSelectStatus(index);
+          });
+
+          hotelSelect.addEventListener("change", () => {
+            updateAllHotelDropdowns();
+            checkSelectStatus(index);
+          });
+
+          if (trashBtn) {
+            trashBtn.addEventListener("click", () => resetCityHotel(index));
+          }
+
+          checkSelectStatus(index);
+        });
+      }
+
+      function populateInitialSelections() {
+        setTimeout(() => {
+          for (let i = 1; i <= 3; i++) {
+            const data = itinerary[i];
+
+            if (data) {
+              const citySelect = document.getElementById(`city${i}`);
+              const hotelSelect = document.getElementById(`hotel${i}`);
+              const trashButton = document.getElementById(`trash${i}`);
+
+              if (citySelect) {
+                citySelect.value = data.cityId;
+              }
+
+              if (hotelSelect && cityHotelMap[data.cityId]) {
+                hotelSelect.innerHTML = `<option value="" disabled>Select Hotel</option>`;
+
+                cityHotelMap[data.cityId].forEach(hotel => {
+                  const option = document.createElement("option");
+                  option.value = hotel.hotelId;
+                  option.textContent = hotel.hotelName;
+                  if (String(hotel.hotelId) === String(data.hotelId)) {
+                    option.selected = true;
+                  }
+                  hotelSelect.appendChild(option);
+                });
+              }
+
+              if (trashButton) {
+                trashButton.classList.remove("d-none");
+              }
+            }
+          }
+
+          updateAllCityDropdowns();
+          updateAllHotelDropdowns();
+        }, 50); // Delay (adjust as needed)
+      }
+
+      function populateCityDropdown(select, placeholder) {
+        select.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
+        for (const areaId in cityHotelMap) {
+          const option = document.createElement("option");
+          option.value = areaId;
+          option.textContent = cityIdNameMap[areaId];
+          select.appendChild(option);
+        }
+      }
+
+      function updateAllCityDropdowns() {
+        const selectedCities = getSelectedCities();
+
+        [1, 2, 3].forEach(index => {
+          const select = document.getElementById(`city${index}`);
+          const currentValue = select.value;
+
+          populateCityDropdown(select, "Select Area");
+
+          Array.from(select.options).forEach(option => {
+            if (selectedCities.includes(option.value) && option.value !== currentValue) {
+              option.disabled = true;
+            }
+          });
+
+          if (currentValue) select.value = currentValue;
+        });
+      }
+
+      function updateAllHotelDropdowns() {
+        const selectedHotels = getSelectedHotels();
+
+        [1, 2, 3].forEach(index => {
+          const citySelect = document.getElementById(`city${index}`);
+          const hotelSelect = document.getElementById(`hotel${index}`);
+          const currentHotel = hotelSelect.value;
+
+          hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
+
+          const areaId = citySelect.value;
+          if (!areaId || !cityHotelMap[areaId]) return;
+
+          cityHotelMap[areaId].forEach(hotel => {
+            const option = document.createElement("option");
+            option.value = hotel.hotelId;
+            option.textContent = hotel.hotelName;
+
+            if (selectedHotels.includes(hotel.hotelId) && currentHotel !== String(hotel.hotelId)) {
+              option.disabled = true;
+            }
+
+            hotelSelect.appendChild(option);
+          });
+
+          if (currentHotel) hotelSelect.value = currentHotel;
+        });
+      }
+
+      function getSelectedCities(excludeIndex = null) {
+        return [1, 2, 3]
+          .filter(i => i !== excludeIndex)
+          .map(i => document.getElementById(`city${i}`).value)
+          .filter(Boolean);
+      }
+
+      function getSelectedHotels(excludeIndex = null) {
+        return [1, 2, 3]
+          .filter(i => i !== excludeIndex)
+          .map(i => document.getElementById(`hotel${i}`).value)
+          .filter(Boolean);
+      }
+
+      window.resetCityHotel = function (index) {
+        const citySelect = document.getElementById(`city${index}`);
+        const hotelSelect = document.getElementById(`hotel${index}`);
+
+        if (citySelect) citySelect.selectedIndex = 0;
+        if (hotelSelect) hotelSelect.selectedIndex = 0;
+
+        checkSelectStatus(index);
+        updateAllCityDropdowns();
+        updateAllHotelDropdowns();
+      };
+
+      function checkSelectStatus(index) {
+        const city = document.getElementById(`city${index}`);
+        const hotel = document.getElementById(`hotel${index}`);
+        const trash = document.getElementById(`trash${index}`);
+
+        if (!city.value && !hotel.value) {
+          trash.style.display = "none";
+        } else {
+          trash.style.display = "inline-block";
+        }
+      }
+    });
   </script>
+
 
   <!-- Itinerary Day Cards Generation Script -->
   <script>
@@ -1059,7 +1262,7 @@
             }
 
             hotelsByArea = data.data;
-            console.log("✅ Hotels Loaded (by areaId):", JSON.stringify(hotelsByArea, null, 2));
+            // console.log("✅ Hotels Loaded (by areaId):", JSON.stringify(hotelsByArea, null, 2));
 
             renderHotelSelectsOnLoad();
           })
@@ -1102,68 +1305,89 @@
 
 
 
-     // ========= Delegated Listener for Itinerary and Area Selects =========
-    document.addEventListener("change", function (e) {
-      // Itinerary
-      if (e.target.classList.contains("itinerary-select")) {
-        updateItineraryDropdowns();
-        checkItineraryTrashVisibility();
-      }
+      // ========= Delegated Listener for Itinerary and Area Selects =========
+      document.addEventListener("change", function (e) {
+        // Itinerary
+        if (e.target.classList.contains("itinerary-select")) {
+          updateItineraryDropdowns();
+          checkItineraryTrashVisibility();
+        }
 
-      // Area => Hotels (on same day only)
-      if (e.target.classList.contains("area-select")) {
-        const day = e.target.dataset.day;
-        updateHotelsForDay(day);
-        // checkAreaTrashVisibility(); // Optional
-      }
-    });
-
-
-    // ========= Update Hotels Based on Selected Areas =========
-    function updateHotelsForDay(day) {
-      const areaSelects = document.querySelectorAll(`.area-select[data-day="${day}"]`);
-      const selectedAreas = Array.from(areaSelects)
-        .map(sel => sel.value?.trim())
-        .filter(val => val && val !== "");
-
-      // Guard clause: if no areas are selected, clear hotel dropdowns
-      if (selectedAreas.length === 0) {
-        const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
-        hotelSelects.forEach(hotelSelect => {
-          hotelSelect.innerHTML = `<option disabled selected value="">Select Hotel</option>`;
-        });
-        return;
-      }
-
-      let combinedHotels = [];
-      const addedHotelIds = new Set();
-
-      selectedAreas.forEach(area => {
-        const normalizedKey = Object.keys(hotelsByArea).find(
-          k => k.toLowerCase() === area.toLowerCase()
-        );
-        if (normalizedKey && hotelsByArea[normalizedKey]) {
-          hotelsByArea[normalizedKey].forEach(hotel => {
-            if (!addedHotelIds.has(hotel.hotelId)) {
-              combinedHotels.push(hotel);
-              addedHotelIds.add(hotel.hotelId);
-            }
-          });
+        // Area => Hotels (on same day only)
+        if (e.target.classList.contains("area-select")) {
+          const day = e.target.dataset.day;
+          updateHotelsForDay(day);
+          // checkAreaTrashVisibility(); // Optional
         }
       });
 
-      // Update hotel selects
-      const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
-      hotelSelects.forEach(hotelSelect => {
-        const currentValue = hotelSelect.value;
-        hotelSelect.innerHTML =
-          `<option disabled selected value="">Select Hotel</option>` +
-          combinedHotels.map(hotel => `
-            <option value="${hotel.hotelId}" ${hotel.hotelId == currentValue ? "selected" : ""}>
+
+      // ========= Update Hotels Based on Selected Areas =========
+      function updateHotelsForDay(day) {
+        const areaSelects = document.querySelectorAll(`.area-select[data-day="${day}"]`);
+        const selectedAreas = Array.from(areaSelects)
+          .map(sel => sel.value?.trim())
+          .filter(val => val && val !== "");
+
+        // Guard clause: if no areas are selected, clear hotel dropdowns
+        if (selectedAreas.length === 0) {
+          const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
+          hotelSelects.forEach(hotelSelect => {
+            hotelSelect.innerHTML = `<option disabled selected value="">Select Hotel</option>`;
+          });
+          return;
+        }
+
+        let combinedHotels = [];
+        const addedHotelIds = new Set();
+
+        selectedAreas.forEach(area => {
+          const normalizedKey = Object.keys(hotelsByArea).find(
+            k => k.toLowerCase() === area.toLowerCase()
+          );
+          if (normalizedKey && hotelsByArea[normalizedKey]) {
+            hotelsByArea[normalizedKey].forEach(hotel => {
+              if (!addedHotelIds.has(hotel.hotelId)) {
+                combinedHotels.push(hotel);
+                addedHotelIds.add(hotel.hotelId);
+              }
+            });
+          }
+        });
+
+        // Update hotel selects
+        const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${day}"]`);
+
+        hotelSelects.forEach(hotelSelect => {
+          const currentValue = String(hotelSelect.value); // Ensure it's a string
+          // console.log(`\n🔄 Updating hotel select: ID = ${hotelSelect.id}`);
+          // console.log(`➡️ Current selected value: "${currentValue}"`);
+
+          // Build hotel options
+          const optionsHTML = combinedHotels.map(hotel => {
+            const hotelId = String(hotel.hotelId); // Normalize to string
+            const isSelected = hotelId === currentValue;
+
+            // console.log(`  - Hotel ID: ${hotelId}, Name: ${hotel.hotelName}, Selected: ${isSelected}`);
+
+            return `
+            <option value="${hotelId}" ${isSelected ? "selected" : ""}>
               ${hotel.hotelName}
-            </option>`).join("");
-      });
-    }
+            </option>`;
+          }).join("");
+
+          // Set innerHTML of the select
+          hotelSelect.innerHTML = `
+          <option disabled ${!currentValue ? "selected" : ""} value="">Select Hotel</option>
+          ${optionsHTML}
+        `;
+
+          // console.log(`✅ Updated InnerHTML for ${hotelSelect.id}:`);
+          // console.log(hotelSelect.innerHTML);
+        });
+
+
+      }
 
 
 
@@ -1273,7 +1497,7 @@
 
 
 
-      
+
       selectDays.value = totalDays;
 
       // Build cards based on selected days
@@ -1296,7 +1520,7 @@
                 <div class="col-4">
                 <label class="form-label fw-semibold">Area:</label>    
                 <select class="form-select area-select" data-day="${day}" disabled>
-                  <option value="Incheon" selected>Incheon</option>
+                  <option value="1" selected>Incheon</option>
                 </select>
                 </div>` :
             ["Area 1", "Area 2", "Area 3"].map((label, i) => `
@@ -1332,7 +1556,7 @@
                   <label class="form-label fw-semibold">Hotels:</label>
                   <div class="row">
                   ${["Hotel 1", "Hotel 2"].map((label, i) => {
-                    return `<div class="col-md-6 col-sm-12 mb-2 d-flex align-items-center gap-2">
+            return `<div class="col-md-6 col-sm-12 mb-2 d-flex align-items-center gap-2">
                               <select class="form-select hotel-select" 
                                   id="hotel${day}_${i}" 
                                   data-day="${day}" 
@@ -1340,12 +1564,12 @@
                                   name="hotel_${day}_${i}" 
                                   ${i === 0 ? 'required' : ''}>
                                 <option disabled selected value="">Select ${label}</option>
-                                ${day === 1 
-                                  ? [
-                                      { id: 1, name: "Smart Stay Hotel" },
-                                      { id: 4, name: "Air Sky Hotel" }
-                                    ].map(hotel => `<option value="${hotel.id}">${hotel.name}</option>`).join("") 
-                                  : "" }
+                                ${day === 1
+                ? [
+                  { id: 1, name: "Smart Stay Hotel" },
+                  { id: 4, name: "Air Sky Hotel" }
+                ].map(hotel => `<option value="${hotel.id}">${hotel.name}</option>`).join("")
+                : ""}
                               </select>
                               <button type="button" 
                                   class="btn btn-sm btn-danger text-light hotel-trash"
@@ -1356,7 +1580,7 @@
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                             </div>`;
-                  }).join("")}
+          }).join("")}
                   </div>
                 </div>
               </div>
@@ -1411,8 +1635,8 @@
               <div class="row mb-3">
                 <div class="col-12"><label class="form-label fw-semibold">Itinerary:</label></div>
                 ${(day === 1 ? [1, 2, 3, 4] : [1, 2, 3, 4, 5, 6, 7]).map(num => {
-                    const options = (day === 1 ? allItineraries.slice(0, 3) : allItineraries.slice(3))
-                      .map(i => `<option value="${i}">${i}</option>`).join("");
+            const options = (day === 1 ? allItineraries.slice(0, 3) : allItineraries.slice(3))
+              .map(i => `<option value="${i}">${i}</option>`).join("");
 
             return `
                       <div class="col-12 mb-2 d-flex align-items-center gap-2">
@@ -1431,7 +1655,7 @@
                         </button>
 
                       </div>`;
-            }).join("")
+          }).join("")
           }
               </div>
 
@@ -1478,21 +1702,37 @@
             }
           });
 
-
           // --- HOTELS ---
-          day.hotels.forEach(hotelId => {
-            const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${dayNumber}"]`);
+          const hotelSelects = document.querySelectorAll(`.hotel-select[data-day="${dayNumber}"]`);
 
-            for (let select of hotelSelects) {
-              if (!select.value || select.value === "") {
-                const optionExists = [...select.options].some(opt => opt.value === hotelId);
-                if (optionExists) {
-                  select.value = hotelId;
-                  select.dispatchEvent(new Event("change"));
-                  break;
-                }
+          hotelSelects.forEach(select => {
+            const indexAttr = select.getAttribute("data-index"); // e.g., "2_0"
+            const indexParts = indexAttr.split("_");
+            const hotelIndex = parseInt(indexParts[1]); // extract 0 from "2_0"
+
+            const currentHotelId = String(day.hotels?.[hotelIndex] || "");
+
+            // Delay the execution to make sure options are ready
+            setTimeout(() => {
+              const availableOptions = [...select.options].map(opt => opt.value);
+
+              // // ✅ Grouping log AFTER delay
+              // console.groupCollapsed(`🔽 HOTEL SELECT: ${select.id} (data-index="${indexAttr}")`);
+
+              // console.log(`📦 day.hotels:`, day.hotels);
+              // console.log(`➡️ Available options:`, availableOptions);
+              // console.log(`🏨 Target hotelId (from day.hotels[${hotelIndex}]): "${currentHotelId}"`);
+
+              if (currentHotelId && availableOptions.includes(currentHotelId)) {
+                select.value = currentHotelId;
+                // console.log(`✅ Successfully set value: ${currentHotelId}`);
+                select.dispatchEvent(new Event("change"));
+              } else {
+                // console.warn(`⚠️ Hotel ID ${currentHotelId} not found in <select> options`);
               }
-            }
+
+              // console.groupEnd();
+            }, 100); // Delay to wait for options
           });
 
 
@@ -1532,6 +1772,7 @@
 
         });
       }
+
 
 
       // Show footer
@@ -1702,9 +1943,9 @@
           const json = collectFormData();
           console.log("✅ Form is now valid. 'Generate' button enabled.");
 
-          console.group("📦 Validated Form Data");
-          console.table(json);
-          console.groupEnd();
+          // console.group("📦 Validated Form Data");
+          // console.table(json);
+          // console.groupEnd();
 
           console.group("📝 Stringified JSON Output");
           console.log(JSON.stringify(json, null, 2));
@@ -1713,19 +1954,47 @@
       }
 
       submitBtn.addEventListener("click", function (e) {
+
+        // // Log the live itinerary data
+        // logLiveItineraryData();
+
+
+        // Prevent default form submission
         e.preventDefault();
         if (!form.checkValidity()) {
           form.reportValidity();
           return;
         }
+
+        const itineraryNameInput = document.getElementById("itineraryName"); // assuming your main form field has this ID
+        const templateNameInput = document.getElementById("templateName");
+
         if (modalEl) {
           const modal = new bootstrap.Modal(modalEl);
+
+          // 🟢 Set the value to "itineraryName + -edited"
+          if (itineraryNameInput && templateNameInput) {
+            const currentValue = itineraryNameInput.value.trim();
+            if (currentValue !== "") {
+              templateNameInput.value = currentValue + "-edited";
+            } else {
+              templateNameInput.value = "Untitled-itinerary-edited";
+            }
+          }
+
           modal.show();
         } else {
           console.error("❌ Modal element not found!");
         }
       });
+
+
+
+
     });
+
+
+
 
     function collectFormData() {
       const getTrim = (id) => document.getElementById(id)?.value.trim() ?? "";
@@ -1734,12 +2003,16 @@
       const noOfDays = getTrim("select-days");
       const startDate = getTrim("PeriodStartDate");
       const endDate = getTrim("PeriodEndDate");
-      const guideName = getTrim("guideName");
-      const countryCode = getTrim("countryCode");
-      const contactNumber = getTrim("contactNumber");
 
       const guideSelect = document.getElementById("guideName");
-      const guideaccountId = guideSelect?.selectedOptions[0]?.getAttribute("data-accountid")?.trim() ?? null;
+      const guideaccountIdRaw = guideSelect?.selectedOptions[0]?.getAttribute("data-accountid")?.trim();
+      const guideaccountId = guideaccountIdRaw ? parseInt(guideaccountIdRaw, 10) : null;
+
+      const guideNameRaw = getTrim("guideName");
+      const guideName = guideNameRaw && !isNaN(guideNameRaw) ? parseInt(guideNameRaw, 10) : null;
+
+      const countryCode = getTrim("countryCode");
+      const contactNumber = getTrim("contactNumber");
 
       const cityHotelsData = {};
       for (let i = 1; i <= 3; i++) {
@@ -1786,20 +2059,13 @@
         voucherId = rawValue && !isNaN(rawValue) ? parseInt(rawValue, 10) : null;
       }
 
-
-      // Debugging Output
-      console.group("🧪 Voucher Info");
-      console.log("🔘 isConnectToVoucher:", isConnectToVoucher);
-      console.log("🎫 voucherId:", voucherId);
-      console.groupEnd();
-
-      return {
+      const collectedData = {
         templateName: getTrim("templateName"),
         selectedPackage,
         noOfDays,
         startDate,
         endDate,
-        guideName,
+        guideName, // Now an integer
         guideaccountId,
         countryCode,
         contactNumber,
@@ -1808,7 +2074,20 @@
         isConnectToVoucher,
         voucherId
       };
+
+      // 🧪 Output full data in JSON format
+      console.group("🧪 Collected Form Data");
+      console.log(JSON.stringify(collectedData, null, 2));
+      console.groupEnd();
+
+      return collectedData;
     }
+
+
+
+
+
+
 
     function proceedWithSubmission() {
       const form = document.getElementById("itineraryGenerate");
@@ -1846,6 +2125,24 @@
       const data = collectFormData();
       const submitButton = document.getElementById("submitTour");
       submitButton.disabled = true;
+
+      // ✅ Add this console.log to inspect JSON-formatted data
+      console.log("Submitting itinerary data:", JSON.stringify({
+        templateName: data.templateName,
+        package: data.selectedPackage,
+        noOfDays: data.noOfDays,
+        period_start: data.startDate,
+        period_end: data.endDate,
+        countryCode: data.countryCode,
+        contactNumber: data.contactNumber,
+        guide: data.guideName,
+        guideAccountId: data.guideaccountId,
+        userId: <?php echo $accountId ?? 0 ?>,
+        cityHotels: data.cityHotelsData,
+        itinerary: data.itineraryData,
+        isConnectToVoucher: data.isConnectToVoucher,
+        voucherId: data.voucherId
+      }, null, 2)); // <- Beautify JSON with 2-space indentation
 
       $.ajax({
         url: "../Employee Section/functions/emp-saveItinerary.php",
@@ -1892,6 +2189,7 @@
         modalInstance.hide();
       }
     }
+
   </script>
 
 </body>
