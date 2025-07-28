@@ -38,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               JOIN flight f ON f.flightId = b.flightId
               LEFT JOIN agent a ON a.accountId = b.accountId
               LEFT JOIN client c ON c.accountId = b.accountId
-              LEFT JOIN request r ON r.transactNo = b.transactNo
+              LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
               LEFT JOIN concerndetails cd ON cd.concernDetailsId = r.concernDetailsId
               WHERE b.flightId IN ($placeholders) AND b.agentCode = ?
-                AND (b.status = 'Confirmed' OR b.status = 'Reserved') AND r.requestStatus = 'Confirmed'";
+                AND (b.status = 'Confirmed' OR b.status = 'Reserved')";
 
       $stmt = $conn->prepare($sql);
       $params = array_merge($flightIds, [$branchCode]);

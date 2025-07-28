@@ -184,6 +184,18 @@
               </tr>
             </thead>
             <tbody></tbody>
+            <tfoot>
+              <tr style="font-weight: bold; border-top: 2px solid #000;">
+                <td>Total Flight Sales</td>
+                <td></td>
+                <td id="totalFlightAmountCell"></td>
+              </tr>
+              <tr style="font-weight: bold;">
+                <td>Total Requests</td>
+                <td></td>
+                <td id="totalRequestAmountCell"></td>
+              </tr>
+            </tfoot>
           </table>
 
           <!-- Button to Generate the Report -->
@@ -395,12 +407,18 @@
         });
       });
 
+      // 🔹 Render table rows
       function renderReportTable(data) {
         const tbody = $('#dataTable tbody');
-        tbody.empty(); // Clear previous rows
+        tbody.empty();
+
+        let totalFlightAmount = 0;
+        let totalRequestAmount = 0;
 
         data.forEach(record => {
-          // Main booking row
+          const amount = parseFloat(record.amount.replace(/[₱, ]/g, '')) || 0;
+          totalFlightAmount += amount;
+
           const bookingRow = `
             <tr style="font-weight: bold;">
               <td>${record.flightDate}</td>
@@ -410,9 +428,12 @@
           `;
           tbody.append(bookingRow);
 
-          // Render requests, if any
+          // Sub-rows for requests
           if (record.requests && record.requests.length > 0) {
             record.requests.forEach(request => {
+              const reqAmount = parseFloat(request.amount.replace(/[₱, ]/g, '')) || 0;
+              totalRequestAmount += reqAmount;
+
               const requestRow = `
                 <tr class="request-row" style="color: #666;">
                   <td style="padding-left: 30px;">↳ ${request.type}</td>
@@ -424,6 +445,10 @@
             });
           }
         });
+
+        // Update the footer totals
+        $('#totalFlightAmountCell').text('₱ ' + totalFlightAmount.toLocaleString(undefined, { minimumFractionDigits: 2 }));
+        $('#totalRequestAmountCell').text('₱ ' + totalRequestAmount.toLocaleString(undefined, { minimumFractionDigits: 2 }));
       }
     });
   </script>
