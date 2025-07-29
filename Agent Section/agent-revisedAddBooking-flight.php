@@ -203,36 +203,36 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
                 </div>
 
-                <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>"
+                <input type="" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>"
                   placeholder="Agent Code Input">
 
-                <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightId; ?>"
+                <input type="" id="flightId" name="flightId" value="<?php echo $flightId; ?>"
                   placeholder="Flight Id Input">
 
                 <!-- Adjusted Fields -->
-                <input type="hidden" id="packagePrice" name="packagePrice"
+                <input type="" id="packagePrice" name="packagePrice"
                   value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
 
-                <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price" value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) :
+                <input type="" name="flightPrice" id="flightPricee" placeholder="Flight Price" value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) :
                   htmlspecialchars($wholesalePrice)) : ''; ?>">
 
-                <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>"
+                <input type="" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>"
                   placeholder="Agent Id">
 
-                <input type="hidden" name="agentType" placeholder="Agent Type Input"
+                <input type="" name="agentType" placeholder="Agent Type Input"
                   value="<?php echo $_SESSION['agentType']; ?>">
 
-                <input type="hidden" name="accId" id="accId" placeholder="Account Id Input"
+                <input type="" name="accId" id="accId" placeholder="Account Id Input"
                   value="<?php echo $_SESSION['agent_accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
-                <input type="hidden" name="packageId" id="packageId"
+                <input type="" name="packageId" id="packageId"
                   value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
 
-                <input type="hidden" name="packageName" id="packageName"
+                <input type="" name="packageName" id="packageName"
                   value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
 
-                <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>"
+                <input type="" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>"
                   placeholder="Origin Input">
 
               </div>
@@ -661,6 +661,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       $('#flightDate').on('change', function () {
         var flightId = $(this).val();
         $('#flightId').val(flightId); // Set the value of the input field
+        $('agentType').val('<?php echo $_SESSION['agentType']; ?>'); // Set the agent type
         var selectedFlight = $("#flightDate option:selected").text();
         var selectedDate = selectedFlight.split(' || ')[0].trim();
         $('#selectedDate').text(selectedDate);
@@ -670,11 +671,14 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
           url: '../Agent Section/functions/fetchFlightDetails.php', // Separate PHP file for return flight
           type: 'POST',
           data: {
-            flightId: flightId
+            flightId: flightId,
+            agentType: '<?php echo $_SESSION['agentType']; ?>' // Pass the agent type
           },
           success: function (response) {
             var data = JSON.parse(response); // Parse the JSON response
             console.log(data);
+
+
 
             $('#packagePrice').val(data.packagePrice); // Set the value of the input field
             $('#packageName').val(data.packageName); // Set the value of the input field

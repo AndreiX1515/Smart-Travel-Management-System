@@ -9,7 +9,7 @@ if (isset($_POST['flightId']))
 
   if ($agentType === 'Retailer')
   {
-    $sql1 = "SELECT f.flightPrice as flightPrice, f.origin as origin, f.packageId as packageId, p.packagePrice as packagePrice,
+    $sql1 = "SELECT f.flightPrice as flightPrice, f.origin as origin, f.packageId as packageId, f.landPrice as packagePrice,
                 p.packageName as packageName
               FROM flight f
               JOIN package p ON f.packageId = p.packageId
@@ -42,7 +42,7 @@ if (isset($_POST['flightId']))
   }
   else if ($agentType === 'Wholeseller')
   {
-    $sql1 = "SELECT f.wholesalePrice as wholesalePrice, f.origin as origin, f.packageId as packageId, p.packagePrice as packagePrice,
+    $sql1 = "SELECT f.wholesalePrice as wholesalePrice, f.origin as origin, f.packageId as packageId, f.landPrice as packagePrice,
                 p.packageName as packageName
               FROM flight f
               JOIN package p ON f.packageId = p.packageId
