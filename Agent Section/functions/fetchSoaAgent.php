@@ -32,7 +32,11 @@ if (isset($_POST['month']) && isset($_POST['year']))
 
   if (!empty($flightIdsString)) {
     $sql3 = "SELECT b.flightId as flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax as pax, b.transactNo,
-              CASE WHEN a.agentRole = 'Wholeseller' THEN f.wholesalePrice ELSE f.flightPrice END AS flightPrice, b.totalPrice as totalPrice
+              CASE
+                WHEN b.bookingType = 'Land' THEN f.landPrice
+                WHEN a.agentRole = 'Wholeseller' THEN f.wholesalePrice
+                ELSE f.flightPrice
+              END AS flightPrice, b.totalPrice AS totalPrice
             FROM booking b
             JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
             JOIN company c ON a.companyId = c.companyId

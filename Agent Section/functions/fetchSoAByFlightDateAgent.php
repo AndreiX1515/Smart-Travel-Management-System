@@ -39,17 +39,17 @@ if (isset($_POST['flightId']))
   if (!empty($flightIdsString)) 
   {
     // 1st Table - Flight Data (Includes all flights with the same flightDepartureDate)
-    $sql3 = "SELECT b.flightId as flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax as pax, b.transactNo,
+    $sql3 = "SELECT b.flightId AS flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax AS pax, b.transactNo,
               CASE
-                WHEN a.agentRole = 'Wholeseller' 
-                THEN f.wholesalePrice 
-                ELSE f.flightPrice 
-              END AS flightPrice, b.totalPrice as totalPrice
+                WHEN b.bookingType = 'Land' THEN f.landPrice
+                WHEN a.agentRole = 'Wholeseller' THEN f.wholesalePrice
+                ELSE f.flightPrice
+              END AS flightPrice, b.totalPrice AS totalPrice
             FROM booking b
             JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
             JOIN company c ON a.companyId = c.companyId
             JOIN flight f ON b.flightId = f.flightId
-            WHERE f.flightId IN ($flightIdsString)  -- Fetch all flights with the same departure date
+            WHERE f.flightId IN ($flightIdsString)  
               AND b.status = 'Confirmed'
               AND b.accountId = $agentId
             ORDER BY f.flightId";
