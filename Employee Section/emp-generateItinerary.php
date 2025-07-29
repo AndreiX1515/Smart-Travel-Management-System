@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Generate Itinerary</title>
+	<title>Itinerary | Create Itinerary</title>
 	<?php include '../Employee Section/includes/emp-head.php' ?>
 	<link rel="stylesheet" href="../Employee Section/assets/css/emp-generateItinerary.css?v=<?php echo time(); ?>">
 	<link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
@@ -36,7 +36,7 @@
 
 				<div class="page-header-content">
 					<div class="page-header-text">
-						<h5 class="header-title">Itinerary Details</h5>
+						<h5 class="header-title">Create Itinerary</h5>
 					</div>
 				</div>
 
@@ -70,7 +70,8 @@
 										<option value="" disabled selected>Select Flight</option>
 
 										<?php
-										$query = "SELECT * FROM flight WHERE is_active = 1";
+										// Only fetch flights where the departure date is today or in the future
+										$query = "SELECT * FROM flight WHERE flightDepartureDate >= CURDATE() ORDER BY flightDepartureDate ASC";
 										$result = $conn->query($query);
 
 										if ($result && $result->num_rows > 0):
@@ -80,19 +81,20 @@
 												$flightName = htmlspecialchars($row['flightName']);
 												$departureDate = htmlspecialchars($row['flightDepartureDate']);
 
-												// Encode the whole row as JSON and escape it for the HTML attribute
+												// Encode the row as JSON for data attribute
 												$flightDataJson = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
 												?>
 												<option value="<?= $flightId ?>" data-flight='<?= $flightDataJson ?>'>
-													<?= $flightCode ?> – <?= $flightName ?> (<?= $departureDate ?>)
+													( <?= $departureDate ?> ) - <?= $flightCode ?> | <?= $flightName ?> 
 												</option>
 												<?php
 											endwhile;
 										else:
 											?>
-											<option disabled>No active flights available</option>
+											<option disabled>No upcoming flights available</option>
 										<?php endif; ?>
 									</select>
+
 								</div>
 							</div>
 						</div>
@@ -117,8 +119,8 @@
 
 						<div class="card-body">
 
+							<!-- Fetch Vouchers -->
 							<?php
-							// 1. Fetch available vouchers
 							$sql = "
 									SELECT voucherId, voucherCode, voucherName
 									FROM vouchers
@@ -133,7 +135,7 @@
 							<div class="row align-items-center">
 
 								<!-- Toggle Checkbox -->
-								<div class="col-md-12">
+								<div class="col-md-4">
 									<div class="form-check mb-3">
 										<!-- Always send false if unchecked -->
 										<input type="hidden" name="isConnectToVoucher" value="false">
@@ -154,13 +156,10 @@
 									</div>
 								</div>
 
-							</div>
-
-							<div class="row align-items-center">
-
 								<!-- Voucher Dropdown -->
-								<div class="col-md-6" id="voucherSelectWrapper" style="display: none;">
-									<label for="voucherId" class="form-label">Select Voucher</label>
+								<div class="col-md-6 mb-3" id="voucherSelectWrapper" style="display: none;">
+									<!-- <label for="voucherId" class="form-label">Select Voucher</label> -->
+
 									<select class="form-select" id="voucherId" name="voucherId" <?= $hasVouchers ? '' : 'disabled' ?>>
 										<option value="" disabled selected>
 											<?= $hasVouchers ? 'Select Voucher' : 'No vouchers available' ?>
@@ -180,8 +179,10 @@
 										<?php endif; ?>
 									</select>
 								</div>
+
 							</div>
 
+							<!-- Toggle / Show Voucher Select Script -->
 							<script>
 								document.addEventListener('DOMContentLoaded', () => {
 									const toggle = document.getElementById('toggleVoucherSelect');
@@ -198,6 +199,8 @@
 
 						</div>
 					</div>
+
+
 
 					<!-- Itinerary Details Card -->
 					<div class="card">
@@ -265,7 +268,6 @@
 
 							</div>
 
-
 							<!-- Periods, Guide Row -->
 							<div class="row">
 
@@ -310,6 +312,45 @@
 
 
 								</div>
+
+								<!-- Flight Value Fetch -->
+								 
+								<script>
+									document.addEventListener("DOMContentLoaded", function () {
+										const flightSelect = document.getElementById("flightId");
+
+										flightSelect.addEventListener("change", function () {
+											const selectedOption = this.options[this.selectedIndex];
+											const flightDataJson = selectedOption.getAttribute("data-flight");
+
+											if (flightDataJson) {
+												try {
+													const flightData = JSON.parse(flightDataJson);
+
+													// Now you can get the individual values:
+													const departureDate = flightData.flightDepartureDate;
+													const returnDate = flightData.returnArrivalDate;
+
+													// console.log("Departure Date:", departureDate);
+													// console.log("Return Arrival Date:", returnDate);
+
+													// Example: Put them into your input fields
+													document.getElementById("PeriodStartDate").value = departureDate || "";
+													document.getElementById("PeriodEndDate").value = returnDate || "";
+
+												} catch (e) {
+													console.error("Error parsing flight data JSON:", e);
+												}
+											}
+										});
+									});
+								</script>
+
+
+
+
+
+
 
 								<!-- Guide Dropdown -->
 								<div class="columns col-md-6">
@@ -378,7 +419,6 @@
 								</div>
 
 							</div>
-
 
 							<!-- Tour Areas, Hotels -->
 							<div class="row">
@@ -491,12 +531,23 @@
 
 			</div>
 
+		
+			<!-- Form footer with both buttons -->
 			<div class="form-footer">
 
-				<!-- Disabled by Default -->
-				<button type="button" class="btn btn-primary" id="submitTour">Generate Itinerary</button>
+				<div class="itinerary-footer-first">
+					
+				</div>
 
-				</form>
+
+				<div class="itinerary-footer-second">
+
+					<!-- Disabled by Default -->
+					<button type="button" class="btn btn-primary" id="submitTour">Create Itinerary</button>
+
+					</form>
+
+				</div>
 
 			</div>
 
