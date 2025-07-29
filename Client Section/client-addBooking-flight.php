@@ -75,7 +75,7 @@ require "../conn.php";
       // Proceed only if flightId is available
       if ($flightId) {
         // SQL query to join flight and package tables
-        $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+        $sql1 = "SELECT flight.*, package.packageName, package.packagePrice, flight.landPrice
                       FROM flight
                       JOIN package ON flight.packageId = package.packageId
                       WHERE flight.flightId = ?";
@@ -95,7 +95,7 @@ require "../conn.php";
               while ($row = $result->fetch_assoc()) {
                 $packageId = $row['packageId'];
                 $packageName = $row['packageName'];
-                $packagePrice = $row['packagePrice'];
+                $packagePrice = $row['landPrice'];
                 $origin = $row['origin'];
                 $year = date('Y', strtotime($row['flightDepartureDate']));
                 $month = date('F', strtotime($row['flightDepartureDate']));
