@@ -743,6 +743,7 @@ require "../conn.php";
 
         if (pax > maxPaxCapacity) {
           alert(`Maximum pax for ${rooms} room(s) is ${maxPaxCapacity}.`);
+          $('#paxRequest').val(maxPaxCapacity); // reset the field
           return;
         }
 
