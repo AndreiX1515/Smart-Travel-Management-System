@@ -284,7 +284,7 @@ try {
 
 
     foreach ($itineraryData as $dayData) {
-        $dayNumber = $dayData["day"] ?? 0;
+        $dayNumber = (int)($dayData["day"] ?? 0);
         $areas = $dayData["areas"] ?? [];
         $meals = $dayData["meal_plans"] ?? [];
         $hotelIds = array_filter($dayData["hotels"] ?? [], fn($v) => is_numeric($v) && $v > 0);
@@ -340,9 +340,19 @@ try {
         // Insert activities
         foreach ($activities as $activity) {
             if (!empty(trim($activity))) {
-                $stmtActivity->execute([$itineraryId, $dayId, $activity]);
+                $ok = $stmtActivity->execute([$itineraryId, $dayId, $activity]);
+                if ($ok) {
+                    error_log("✅ Successfully inserted activity: \"$activity\" for dayId: $dayId, itineraryId: $itineraryId");
+                } else {
+                    error_log("❌ Failed to insert activity: \"$activity\" for dayId: $dayId, itineraryId: $itineraryId");
+                    error_log("⛔ Error Info: " . json_encode($stmtActivity->errorInfo()));
+                }
+            } else {
+                error_log("⚠️ Skipped empty or whitespace-only activity for dayId: $dayId");
             }
         }
+
+
     }
 
     $conn->commit();

@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
     $itineraryDetails = json_decode($_POST['itineraryDetails'], true);
 
+
     $daysDetails = json_decode($_POST['daysDetails'], true);
 
     // Create separate variables for each day's data
@@ -63,6 +64,8 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
 
         // Header
+
+
         // =========== Package Name =========== //
         function formatPackageName($name) {
             $words = preg_split('/\s+/', trim($name));
@@ -102,64 +105,56 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         // ✅ Output formatted name to A9
         $sheet->setCellValue('A9', $formattedItineraryTitle);
 
-       // =========== Hotels =========== //
+        // =========== Hotels =========== //
         $startRow = 11; // Starting row
-        $colCity = 'C'; // Column for areas
+        $colCity = 'C'; // Column for cities
         $colHotel = 'F'; // Column for hotels
 
-        if (isset($itineraryDetails['cities']) && is_array($itineraryDetails['cities'])) {
-            $currentRow = $startRow;
-
-            foreach ($itineraryDetails['cities'] as $info) {
-                // Skip if both areaName and hotelName are empty
-                if (empty($info['areaName']) && empty($info['hotelName'])) {
-                    continue;
-                }
+        if (isset($itineraryDetails['cities'])) {
+            foreach ($itineraryDetails['cities'] as $index => $cityInfo) {
+                $row = $startRow + $index;
 
                 // Construct cell references
-                $areaCell = $colCity . $currentRow;
-                $hotelCell = $colHotel . $currentRow;
+                $cityCell = $colCity . $row;
+                $hotelCell = $colHotel . $row;
 
                 // Convert to uppercase and insert values
-                $areaUpper = strtoupper($info['areaName'] ?? '');
-                $hotelUpper = strtoupper($info['hotelName'] ?? '');
+                $cityUpper = strtoupper($cityInfo['city']);
+                $hotelUpper = strtoupper($cityInfo['hotel']);
 
-                $sheet->setCellValue($areaCell, $areaUpper);
+                $sheet->setCellValue($cityCell, $cityUpper);
                 $sheet->setCellValue($hotelCell, $hotelUpper);
 
-                $currentRow++; // Move to next row
             }
         }
-
-
-
 
         // =========== Period =========== //
         $startDate = new DateTime($itineraryDetails['periodStart']);
         $endDate = new DateTime($itineraryDetails['periodEnd']);
 
-        // Format: "October 10, 2024 - November 15, 2024"
-        $formattedPeriod = $startDate->format('F j, Y') . ' - ' . $endDate->format('F j, Y');
+        // Format the dates in the required format (e.g., "10, OCT. 2024 - 15, NOV. 2024")
+        $formattedPeriod = $startDate->format('d, M. Y') . ' - ' . $endDate->format('d, M. Y');
 
-        // Set in cell
+        // Combine the package name with the formatted date range
         $sheet->setCellValue('C6', $formattedPeriod);
-        $sheet->setCellValue('H6', $itineraryDetails['guideName']);
 
+        // $sheet->setCellValue('A3', $itineraryDetails['periodEnd']);
+        $sheet->setCellValue('H6', $itineraryDetails['guideName']);
 
 
 
         // =========== Contact Number =========== //
         $formattedNumber = sprintf(
-            "(%s) %s %s %s",
+            "(%s) %s-%s-%s-%s",
             $itineraryDetails['countryCode'],
-            substr($itineraryDetails['contactNumber'], 0, 2),
-            substr($itineraryDetails['contactNumber'], 2, 4),
-            substr($itineraryDetails['contactNumber'], 6)
+            substr($itineraryDetails['contactNumber'], 0, 3),
+            substr($itineraryDetails['contactNumber'], 3, 3),
+            substr($itineraryDetails['contactNumber'], 6, 3),
+            substr($itineraryDetails['contactNumber'], 9)
         );
-
-        // Set the formatted number in Excel cell H7
+        
+        // Set the formatted number in Excel cell I7
         $sheet->setCellValue('H7', $formattedNumber);
-
         
 
 
@@ -730,6 +725,14 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         }
 
         setDay6($sheet, $dayData);
+
+
+
+
+
+
+
+
 
 
         // Clear the output buffer to avoid sending additional data

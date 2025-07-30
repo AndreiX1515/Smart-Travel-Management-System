@@ -38,3 +38,15 @@
 [29-Jul-2025 10:41:00 Europe/Berlin] 📥 POST request received
 [29-Jul-2025 10:41:00 Europe/Berlin] ✅ Received itineraryId: 71
 [29-Jul-2025 10:41:00 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 71
+[30-Jul-2025 10:14:02 Europe/Berlin] 🔍 Incoming DELETE request
+[30-Jul-2025 10:14:02 Europe/Berlin] 📥 POST request received
+[30-Jul-2025 10:14:02 Europe/Berlin] ✅ Received itineraryId: 74
+[30-Jul-2025 10:14:02 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 74
+[30-Jul-2025 10:14:04 Europe/Berlin] 🔍 Incoming DELETE request
+[30-Jul-2025 10:14:04 Europe/Berlin] 📥 POST request received
+[30-Jul-2025 10:14:04 Europe/Berlin] ✅ Received itineraryId: 70
+[30-Jul-2025 10:14:04 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 70
+[30-Jul-2025 10:14:11 Europe/Berlin] 🔍 Incoming DELETE request
+[30-Jul-2025 10:14:11 Europe/Berlin] 📥 POST request received
+[30-Jul-2025 10:14:11 Europe/Berlin] ✅ Received itineraryId: 69
+[30-Jul-2025 10:14:11 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 69
