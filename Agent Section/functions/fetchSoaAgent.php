@@ -52,7 +52,15 @@ if (isset($_POST['month']) && isset($_POST['year']))
         $formattedFlightPrice = number_format($row['flightPrice'], 2);
         $formattedTotalPrice = number_format($row['totalPrice'], 2);
         $formattedTotalPriceSum = number_format($totalPriceSum, 2);
-        $table1 .= "<tr><td>$count</td><td>{$row['flightDates']}</td><td></td><td>₱ $formattedFlightPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedTotalPrice</td></tr>";
+        $table1 .= "<tr>
+                      <td>$count</td>
+                      <td>{$row['flightDates']}</td>
+                      <td></td>
+                      <td>₱ $formattedFlightPrice</td>
+                      <td>{$row['pax']}</td>
+                      <td></td>
+                      <td>₱ $formattedTotalPrice</td>
+                    </tr>";
         $count++;
       }
     } else {
@@ -87,13 +95,29 @@ if (isset($_POST['month']) && isset($_POST['year']))
       $formattedRequestPrice = number_format($row['price'], 2);
       $formattedRequestCost = number_format($row['requestCost'], 2);
       $formattedRequestCostSum = number_format($totalCostSum, 2);
-      $table2 .= "<tr><td>$count</td><td>{$row['details']}</td><td></td><td>₱ $formattedRequestPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedRequestCost</td></tr>";
+      $table2 .= "<tr>
+                    <td>$count</td>
+                    <td>{$row['details']}</td>
+                    <td></td>
+                    <td>₱ $formattedRequestPrice</td>
+                    <td>{$row['pax']}</td>
+                    <td></td>
+                    <td>₱ $formattedRequestCost</td>
+                  </tr>";
       $count++;
     }
     if ($handlingFeeCount > 0) {
       $handlingFeeTotal = $handlingFeeCount * 100;
       $formattedHandlingFeeTotal = number_format($handlingFeeTotal, 2);
-      $table2 .= "<tr><td>$count</td><td>Handling Fee</td><td></td><td>₱ 100.00</td><td>$handlingFeeCount</td><td></td><td>₱ $formattedHandlingFeeTotal</td></tr>";
+      $table2 .= "<tr>
+                    <td>$count</td>
+                    <td>Handling Fee</td>
+                    <td></td>
+                    <td>₱ 100.00</td>
+                    <td>$handlingFeeCount</td>
+                    <td></td>
+                    <td>₱ $formattedHandlingFeeTotal</td>
+                  </tr>";
       $totalRequestCostSum = $totalCostSum + $handlingFeeTotal;
     } else {
       $totalRequestCostSum = $totalCostSum;
@@ -119,7 +143,15 @@ if (isset($_POST['month']) && isset($_POST['year']))
       $formattedTotalAmount = number_format($totalAmount, 2);
       $formattedAmount = number_format($row['amount'], 2);
       $formattedDate = DateTime::createFromFormat('Y-m-d', $row['paymentDate'])->format('F d, Y');
-      $table3 .= "<tr><td>$count</td><td>{$row['paymentType']} - $formattedDate</td><td></td><td></td><td></td><td></td><td>₱ $formattedAmount</td></tr>";
+      $table3 .= "<tr>
+                    <td>$count</td>
+                    <td>{$row['paymentType']} - $formattedDate</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>₱ $formattedAmount</td>
+                  </tr>";
       $count++;
     }
   } else {

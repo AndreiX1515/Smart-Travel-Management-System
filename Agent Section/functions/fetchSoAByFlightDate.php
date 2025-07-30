@@ -61,7 +61,10 @@ if (empty($flightIds)) {
 $flightIdsString = implode(',', $flightIds);
 
 $sql3 = "SELECT b.flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax, b.transactNo,
-        CASE WHEN cl.clientRole = 'Wholeseller' THEN f.wholesalePrice ELSE f.flightPrice END AS flightPrice, b.totalPrice
+          CASE
+            WHEN b.bookingType = 'Land' THEN f.landPrice
+            ELSE f.flightPrice
+          END AS flightPrice, b.totalPrice
         FROM booking b
         JOIN client cl ON b.accountId = cl.accountId
         JOIN flight f ON b.flightId = f.flightId
@@ -76,7 +79,15 @@ while ($row = $res3->fetch_assoc()) {
   $totalPriceSum += $row['totalPrice'];
   $formattedFlightPrice = number_format($row['flightPrice'], 2);
   $formattedTotalPrice = number_format($row['totalPrice'], 2);
-  $table1 .= "<tr><td>$count</td><td>{$row['flightDates']}</td><td></td><td>₱ $formattedFlightPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedTotalPrice</td></tr>";
+  $table1 .= "<tr>
+                <td>$count</td>
+                <td>{$row['flightDates']}</td>
+                <td></td>
+                <td>₱ $formattedFlightPrice</td>
+                <td>{$row['pax']}</td>
+                <td></td>
+                <td>₱ $formattedTotalPrice</td>
+              </tr>";
   $tableData1[] = [
     'no' => $count,
     'contents' => $row['flightDates'],
@@ -107,7 +118,15 @@ while ($row = $res4->fetch_assoc()) {
   $handlingFeeCount += $row['handlingFeeCount'];
   $formattedRequestPrice = number_format($row['price'], 2);
   $formattedRequestCost = number_format($row['requestCost'], 2);
-  $table2 .= "<tr><td>$count</td><td>{$row['details']}</td><td></td><td>₱ $formattedRequestPrice</td><td>{$row['pax']}</td><td></td><td>₱ $formattedRequestCost</td></tr>";
+  $table2 .= "<tr>
+                <td>$count</td>
+                <td>{$row['details']}</td>
+                <td></td>
+                <td>₱ $formattedRequestPrice</td>
+                <td>{$row['pax']}</td>
+                <td></td>
+                <td>₱ $formattedRequestCost</td>
+              </tr>";
   $tableData2[] = [
     'no' => $count,
     'contents' => $row['details'],
@@ -121,7 +140,15 @@ while ($row = $res4->fetch_assoc()) {
 
 if ($handlingFeeCount > 0) {
   $handlingFeeTotal = $handlingFeeCount * 100;
-  $table2 .= "<tr><td>$count</td><td>Handling Fee</td><td></td><td>₱ 100.00</td><td>$handlingFeeCount</td><td></td><td>₱ " . number_format($handlingFeeTotal, 2) . "</td></tr>";
+  $table2 .= "<tr>
+                <td>$count</td>
+                <td>Handling Fee</td>
+                <td></td>
+                <td>₱ 100.00</td>
+                <td>$handlingFeeCount</td>
+                <td></td>
+                <td>₱ " . number_format($handlingFeeTotal, 2) . "</td>
+              </tr>";
   $tableData2[] = [
     'no' => $count,
     'contents' => 'Handling Fee',
@@ -145,7 +172,15 @@ while ($row = $res5->fetch_assoc()) {
   $totalAmount += $row['amount'];
   $formattedAmount = number_format($row['amount'], 2);
   $formattedDate = date("F d, Y", strtotime($row['paymentDate']));
-  $table3 .= "<tr><td>$count</td><td>{$row['paymentType']} - {$formattedDate}</td><td></td><td></td><td></td><td></td><td>₱ $formattedAmount</td></tr>";
+  $table3 .= "<tr>
+                <td>$count</td>
+                <td>{$row['paymentType']} - {$formattedDate}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>₱ $formattedAmount</td>
+              </tr>";
   $tableData3[] = [
     'no' => $count,
     'contents' => $row['paymentType'] . ' - ' . $formattedDate,
