@@ -57,7 +57,15 @@ while ($row = $res->fetch_assoc()) {
   $formattedPrice = number_format($row['flightPrice'], 2);
   $formattedTotal = number_format($row['totalPrice'], 2);
   $dates = $row['flightDepartureDate'] . " - " . $row['returnArrivalDate'];
-  $table1 .= "<tr><td>{$rowCounter}</td><td>{$dates}</td><td></td><td>₱ {$formattedPrice}</td><td>{$row['pax']}</td><td></td><td>₱ {$formattedTotal}</td></tr>";
+  $table1 .= "<tr>
+                <td>{$rowCounter}</td>
+                <td>{$dates}</td>
+                <td></td>
+                <td>₱ {$formattedPrice}</td>
+                <td>{$row['pax']}</td>
+                <td></td>
+                <td>₱ {$formattedTotal}</td>
+              </tr>";
   $tableData1[] = [
     'no' => $rowCounter,
     'contents' => $dates,
@@ -98,7 +106,15 @@ while ($row = $resReq->fetch_assoc()) {
   $requestSubtotal += $row['requestCost'];
   $formattedRequestPrice = number_format($row['price'], 2);
   $formattedRequestCost = number_format($row['requestCost'], 2);
-  $table2 .= "<tr><td>{$rowCounter}</td><td>{$row['details']}</td><td></td><td>₱ {$formattedRequestPrice}</td><td>{$row['pax']}</td><td></td><td>₱ {$formattedRequestCost}</td></tr>";
+  $table2 .= "<tr>
+                <td>{$rowCounter}</td>
+                <td>{$row['details']}</td>
+                <td></td>
+                <td>₱ {$formattedRequestPrice}</td>
+                <td>{$row['pax']}</td>
+                <td></td>
+                <td>₱ {$formattedRequestCost}</td>
+              </tr>";
   $tableData2[] = [
     'no' => $rowCounter,
     'contents' => $row['details'],
@@ -112,7 +128,15 @@ while ($row = $resReq->fetch_assoc()) {
     $fee = $row['handlingFeeCount'] * 100;
     $handlingFeeTotal += $fee;
     $formattedFee = number_format($fee, 2);
-    $table2 .= "<tr><td>{$rowCounter}</td><td>Handling Fee</td><td></td><td>₱ 100.00</td><td>{$row['handlingFeeCount']}</td><td></td><td>₱ {$formattedFee}</td></tr>";
+    $table2 .= "<tr>
+                  <td>{$rowCounter}</td>
+                  <td>Handling Fee</td>
+                  <td></td>
+                  <td>₱ 100.00</td>
+                  <td>{$row['handlingFeeCount']}</td>
+                  <td></td>
+                  <td>₱ {$formattedFee}</td>
+                </tr>";
     $tableData2[] = [
       'no' => $rowCounter,
       'contents' => 'Handling Fee',
@@ -138,7 +162,15 @@ while ($row = $resPay->fetch_assoc()) {
   $paymentTotal += $row['amount'];
   $formattedAmount = number_format($row['amount'], 2);
   $formattedDate = date("F d, Y", strtotime($row['paymentDate']));
-  $table3 .= "<tr><td>{$rowCounter}</td><td>{$row['paymentType']} - {$formattedDate}</td><td></td><td></td><td></td><td></td><td>₱ {$formattedAmount}</td></tr>";
+  $table3 .= "<tr>
+                <td>{$rowCounter}</td>
+                <td>{$row['paymentType']} - {$formattedDate}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>₱ {$formattedAmount}</td>
+              </tr>";
   $tableData3[] = [
     'no' => $rowCounter,
     'contents' => $row['paymentType'] . ' - ' . $formattedDate,
