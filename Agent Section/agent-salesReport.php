@@ -33,96 +33,47 @@
     </div>
 
     <div class="main-content">
-      <div class="content-wrapper">
-        <div class="content-body">
-          <!-- Report Type Filters -->
-          <div class="row mb-4">
-            <!-- Report Type Column -->
-            <div class="col-md-6">
-              <label class="form-label">Report Type:</label>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="reportType" id="flightReport" value="flight" checked>
-                <label class="form-check-label" for="flightReport">Flight</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="reportType" id="monthlyReport" value="monthly">
-                <label class="form-check-label" for="monthlyReport">Monthly</label>
-              </div>
-            </div>
+      
+      
+      <!-- Report Type Filters -->
+      <div class="row">
 
-            <!-- Report For Column -->
-            <div class="col-md-6">
-              <label class="form-label">For:</label>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="reportFor" id="agentReport" value="agent" checked>
-                <label class="form-check-label" for="agentReport">Agent</label>
-              </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="reportFor" id="clientReport" value="client">
-                <label class="form-check-label" for="clientReport">Client</label>
-              </div>
-            </div>
+        <!-- Report For Column -->
+        <div class="col-md-6 mb-3">
+          <label>For:</label><br>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="reportFor" id="agentReport" value="agent" checked>
+            <label class="form-check-label" for="agentReport">Agent</label>
           </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="reportFor" id="clientReport" value="client">
+            <label class="form-check-label" for="clientReport">Client</label>
+          </div>
+        </div>
 
-          <!-- Dynamic Selectors based on Report Type -->
+        <!-- Report Type Column -->
+        <div class="col-md-6 mb-3">
+          <label>Report Type:</label><br>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="reportType" id="flightReport" value="flight" checked>
+            <label class="form-check-label" for="flightReport">Flight</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="reportType" id="monthlyReport" value="monthly">
+            <label class="form-check-label" for="monthlyReport">Monthly</label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dynamic Selectors based on Report Type -->
+      <div class="row">
+
+        <div class="col-md-6">
           <div class="row">
-            <!-- Flight Date Selector -->
-            <div id="flightSelector" class="col-md-6 mb-3" style="display: none;">
-              <label for="flightDate" class="form-label">Select Flight Date:</label>
-              <select class="form-select" name="flightDate" id="flightDate">
-                <option selected disabled>Select a flight date</option>
-                <?php
-                $query = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
-                $result = $conn->query($query);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    $date = $row['flightDepartureDate'];
-                    $formattedDate = date("M d, Y", strtotime($date));
-                    echo "<option value=\"$date\">$formattedDate</option>";
-                  }
-                } else {
-                  echo "<option disabled>No flight dates available</option>";
-                }
-                ?>
-              </select>
-            </div>
-
-            <!-- Monthly Selector -->
-            <div id="monthlySelector" class="col-md-3 mb-3" style="display: none;">
-              <label for="month" class="form-label">Select Month:</label>
-              <select class="form-select" name="month" id="month">
-                <option selected disabled>Select Month</option>
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select>
-            </div>
-
-            <!-- Year Selector -->
-            <div id="yearSelector" class="col-md-3 mb-3" style="display: none;">
-              <label for="year" class="form-label">Select Year:</label>
-              <select class="form-select" name="year" id="year">
-                <option selected disabled>Select Year</option>
-                <?php
-                  $currentYear = date("Y");
-                  for ($i = $currentYear; $i >= $currentYear - 10; $i--) {
-                    echo "<option value=\"$i\">$i</option>";
-                  }
-                ?>
-              </select>
-            </div>
 
             <!-- Agent Selector -->
-            <div id="agentSelector" class="col-md-6 mb-3" style="display: none;">
+            <div id="agentSelector" class="col-md-12 mb-3" style="display: none;">
               <label for="agentSelect" class="form-label">Select Agent:</label>
               <select class="form-select" name="selectedAgent" id="agentSelect">
                 <option value="all">All Agents</option>
@@ -143,7 +94,7 @@
             </div>
 
             <!-- Client Selector -->
-            <div id="clientSelector" class="col-md-6 mb-3" style="display: none;">
+            <div id="clientSelector" class="col-md-12 mb-3" style="display: none;">
               <label for="clientSelect" class="form-label">Select Client:</label>
               <select class="form-select" name="selectedClient" id="clientSelect">
                 <option value="all">All Clients</option>
@@ -159,49 +110,110 @@
               </select>
             </div>
           </div>
+        </div>
 
-          <input name="agentCode" value="<?php echo $agentCode; ?>" hidden>
-          <input name="accountId" value="<?php echo $accountId; ?>" hidden>
-
+        <div class="col-md-6">
           <div class="row">
-            <div class="col-12 d-flex justify-content-end">
-              <div class="me-2">
-                <button id="generate-report-btn" class="btn btn-primary">Preview Report</button>
-              </div>
-              <div class="me-2">
-                <button id="reset-filter-btn" class="btn btn-secondary">Reset Filters</button>
-              </div>
+            <!-- Flight Date Selector -->
+            <div id="flightSelector" class="col-md-12 mb-3" style="display: none;">
+              <label for="flightDate" class="form-label">Select Flight Date:</label>
+              <select class="form-select" name="flightDate" id="flightDate">
+                <option selected disabled>Select a flight date</option>
+                <?php
+                $query = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
+                $result = $conn->query($query);
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                    $date = $row['flightDepartureDate'];
+                    $formattedDate = date("M d, Y", strtotime($date));
+                    echo "<option value=\"$date\">$formattedDate</option>";
+                  }
+                } else {
+                  echo "<option disabled>No flight dates available</option>";
+                }
+                ?>
+              </select>
+            </div>
+
+            <!-- Monthly Selector -->
+            <div id="monthlySelector" class="col-md-6 mb-3" style="display: none;">
+              <label for="month" class="form-label">Select Month:</label>
+              <select class="form-select" name="month" id="month">
+                <option selected disabled>Select Month</option>
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+
+            <!-- Year Selector -->
+            <div id="yearSelector" class="col-md-6 mb-3" style="display: none;">
+              <label for="year" class="form-label">Select Year:</label>
+              <select class="form-select" name="year" id="year">
+                <option selected disabled>Select Year</option>
+                <?php
+                  $currentYear = date("Y");
+                  for ($i = $currentYear; $i >= $currentYear - 10; $i--) {
+                    echo "<option value=\"$i\">$i</option>";
+                  }
+                ?>
+              </select>
             </div>
           </div>
+        </div>
+        
+      </div>
 
-          <!-- Table for Displaying Data -->
-          <table class="table" id="dataTable" style="display:none;">
-            <thead>
-              <tr>
-                <th>ITEM</th>
-                <th>PAX</th>
-                <th>AMOUNT</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-            <tfoot>
-              <tr style="font-weight: bold; border-top: 2px solid #000;">
-                <td>Total Flight Sales</td>
-                <td></td>
-                <td id="totalFlightAmountCell"></td>
-              </tr>
-              <tr style="font-weight: bold;">
-                <td>Total Requests</td>
-                <td></td>
-                <td id="totalRequestAmountCell"></td>
-              </tr>
-            </tfoot>
-          </table>
+      <input name="agentCode" value="<?php echo $agentCode; ?>" hidden>
+      <input name="accountId" value="<?php echo $accountId; ?>" hidden>
 
-          <!-- Button to Generate the Report -->
-          <button id="downloadReport" class="btn btn-success" style="display: none;">Download Report</button>
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end">
+          <div class="me-2">
+            <button id="generate-report-btn" class="btn btn-primary">Preview Report</button>
+          </div>
+          <div class="me-2">
+            <button id="reset-filter-btn" class="btn btn-secondary">Reset Filters</button>
+          </div>
         </div>
       </div>
+
+      <!-- Table for Displaying Data -->
+      <table class="table" id="dataTable" style="display:none;">
+        <thead>
+          <tr>
+            <th>ITEM</th>
+            <th>PAX</th>
+            <th>AMOUNT</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr style="font-weight: bold; border-top: 2px solid #000;">
+            <td>Total Flight Sales</td>
+            <td></td>
+            <td id="totalFlightAmountCell"></td>
+          </tr>
+          <tr style="font-weight: bold;">
+            <td>Total Requests</td>
+            <td></td>
+            <td id="totalRequestAmountCell"></td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <!-- Button to Generate the Report -->
+      <button id="downloadReport" class="btn btn-success" style="display: none;">Download Report</button>
+
     </div>
 
   </div>
