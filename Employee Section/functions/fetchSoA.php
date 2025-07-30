@@ -44,6 +44,7 @@ error_reporting(E_ALL);
 
   $sql2 = "SELECT b.flightId as flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax as pax,
             CASE 
+              WHEN b.bookingType = 'Land' THEN f.landPrice
               WHEN a.agentRole = 'Wholeseller' OR cl.clientRole = 'Wholeseller' 
               THEN f.wholesalePrice 
               ELSE f.flightPrice 
