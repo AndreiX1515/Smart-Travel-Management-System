@@ -156,7 +156,7 @@
           SELECT 
               dayId, 
               GROUP_CONCAT(DISTINCT ida.areaId ORDER BY ida.areaId ASC SEPARATOR ',') AS areaIds
-          FROM itineraryAreas ia
+          FROM itineraryareas ia
           INNER JOIN itinerarydataarea ida ON ia.areaName = ida.areaName
           GROUP BY dayId
       ) a ON d.dayId = a.dayId
@@ -167,7 +167,7 @@
           SELECT 
               ih.dayId, 
               GROUP_CONCAT(DISTINCT h.hotelId ORDER BY h.hotelId ASC SEPARATOR ',') AS hotelIds
-          FROM itineraryHotels ih
+          FROM itineraryhotels ih
           INNER JOIN hotels h ON ih.hotelId = h.hotelId
           GROUP BY ih.dayId
       ) h ON d.dayId = h.dayId
@@ -178,7 +178,7 @@
 				SELECT 
 					dayId, 
 					GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ',') AS activities
-				FROM itineraryActivities
+				FROM itineraryactivities
 				GROUP BY dayId
 			) act ON d.dayId = act.dayId
 
@@ -236,7 +236,6 @@
 
            console.log(JSON.stringify(itinerary, null, 2));
 
-
           // populateItineraryValuesFromDB(itinerary);
         </script>";
 
@@ -260,7 +259,7 @@
             <div class="card-body">
 
               <!-- Itinerary Name -->
-              <div class="row mb-2">
+              <div class="row">
 
                 <div class="columns col-md-6">
                   <div class="column-header">
@@ -273,6 +272,51 @@
                     <input type="text" class="form-control" id="itineraryName" name="itineraryName"
                       value="<?= $itinerary['itineraryName']; ?>" required>
                   </div>
+                </div>
+
+
+                <div class="columns col-md-6">
+                  <div class="column-header">
+                    <label for="voucherId">Connected to Voucher:</label>
+                  </div>
+
+                  <?php
+                  // Ensure $currentVoucherId is defined (e.g., from itinerary record)
+                  $currentVoucherId = isset($currentVoucherId) ? intval($currentVoucherId) : 0;
+
+                  // Fetch all vouchers that are unlinked or already linked to this itinerary
+                  $sql = "
+                      SELECT voucherId, voucherCode, voucherName
+                      FROM vouchers
+                      WHERE itineraryId IS NULL OR itineraryId = 0
+                      ORDER BY createdAt DESC
+                    ";
+                  $result = $conn->query($sql);
+                  $hasVouchers = ($result && $result->num_rows > 0);
+                  ?>
+
+                  <div class="row align-items-center">
+                    <div class="col-md-6" id="voucherSelectWrapper">
+
+                      <select class="form-select" id="voucherId" name="voucherId" <?= $hasVouchers ? '' : 'disabled' ?>>
+                        <option value="" <?= !$currentVoucherId ? 'selected' : '' ?> disabled>
+                          <?= $hasVouchers ? 'Select Voucher' : 'No vouchers available' ?>
+                        </option>
+
+                        <?php if ($hasVouchers): ?>
+                          <?php while ($row = $result->fetch_assoc()): ?>
+                            <option value="<?= htmlspecialchars($row['voucherId']) ?>"
+                              <?= ($row['voucherId'] == $currentVoucherId) ? 'selected' : '' ?>>
+                              <?= htmlspecialchars($row['voucherCode']) ?> – File Name:
+                              <?= htmlspecialchars($row['voucherName']) ?>
+                            </option>
+                          <?php endwhile; ?>
+                        <?php endif; ?>
+                      </select>
+
+                    </div>
+                  </div>
+
                 </div>
 
               </div>
@@ -392,7 +436,7 @@
                   <div class="form-group">
                     <select class="form-select" id="guideName" name="guideName" required onchange="updateContact(this)">
                       <?php
-                      $selectedGuideId = $itinerary['guideId']; // Change this to use the actual ID
+                      $selectedGuideId = $itinerary['guideName']; // Change this to use the actual ID
                       
                       $query = "SELECT accountId, fName, lName, mName, contactNo, countryCode FROM employee WHERE isTourGuide = 1";
                       $result = mysqli_query($conn, $query);
@@ -529,8 +573,10 @@
                     </div>
                   </div>
                 </div>
+
               </div>
 
+              <!-- Script to handle dynamic city and hotel selection -->
               <script>
                 document.querySelector('#tour-hotels-group').addEventListener('change', function (e) {
                   if (e.target.classList.contains('city-select') || e.target.classList.contains('hotel-select')) {
@@ -615,12 +661,15 @@
           <button type="button" class="btn btn-primary btn-sm" id="submitTour">Submit Edit</button>
 
           <select id="actionSelector" class="form-select" style="width: 120px;">
-					<option value="xlsx" selected>Excel (.xlsx)</option>
-					<option value="pdf" disabled>PDF</option>
-					<option value="both" disabled>Excel & PDF</option>
-					</select>
+            <option value="xlsx" selected>Excel (.xlsx)</option>
+            <option value="pdf" disabled>PDF</option>
+            <option value="both" disabled>Excel & PDF</option>
+          </select>
 
-					<button type="button" class="btn btn-primary btn-sm" id="submitTourAndVoucher">Generate Itinerary & Voucher</button>
+          <!-- <button type="button" class="btn btn-primary btn-sm" id="submitTourAndVoucher">Generate Itinerary & Voucher</button> -->
+
+          <button type="button" class="btn btn-primary btn-sm" id="generateBtn">Generate Itinerary</button>
+
         </div>
 
       </div>
@@ -1941,15 +1990,9 @@
 
         if (isValid) {
           const json = collectFormData();
-          console.log("✅ Form is now valid. 'Generate' button enabled.");
 
-          // console.group("📦 Validated Form Data");
-          // console.table(json);
-          // console.groupEnd();
-
-          console.group("📝 Stringified JSON Output");
+          console.log("Data from Fields:");
           console.log(JSON.stringify(json, null, 2));
-          console.groupEnd();
         }
       }
 
@@ -1989,13 +2032,114 @@
       });
 
 
-
-
     });
 
 
+    // ✅ Adapted structure for generateItinerary()
+    function collectFormDataForGeneration() {
+      const getTrim = (id) => document.getElementById(id)?.value.trim() ?? "";
+
+      const selectedPackage = getTrim("packageSelect");
+      const noOfDays = getTrim("select-days");
+      const startDate = getTrim("PeriodStartDate");
+      const endDate = getTrim("PeriodEndDate");
+
+      const itineraryId = getTrim("itineraryId");
+      const guideSelect = document.getElementById("guideName");
+      const guideaccountIdRaw = guideSelect?.selectedOptions[0]?.getAttribute("data-accountid")?.trim();
+      const guideaccountId = guideaccountIdRaw ? parseInt(guideaccountIdRaw, 10) : null;
+
+      const guideNameRaw = getTrim("guideName");
+      const guideName = guideNameRaw && !isNaN(guideNameRaw) ? parseInt(guideNameRaw, 10) : null;
+
+      const countryCode = getTrim("countryCode");
+      const contactNumber = getTrim("contactNumber");
+
+      const cityHotelsData = {
+        cities: {}
+      };
+
+      for (let i = 1; i <= 3; i++) {
+        const city = getTrim(`city${i}`);
+        const hotel = getTrim(`hotel${i}`);
+
+        const cityElement = document.getElementById(`city${i}`);
+        const hotelElement = document.getElementById(`hotel${i}`);
+
+        const cityId = parseInt(cityElement?.dataset.cityId || "");
+        const hotelId = parseInt(hotelElement?.dataset.hotelId || "");
+
+        if (city || hotel) {
+          cityHotelsData.cities[i] = {
+            city: city,
+            hotel: hotel
+          };
+        }
+      }
+
+      const itineraryData = [];
+      document.querySelectorAll(".itinerary-card").forEach(dayCard => {
+        const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
+
+        const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")]
+          .map(area => area.value.trim()).filter(Boolean);
+
+        const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")]
+          .map(meal => parseInt(meal.value.trim(), 10)).filter(Number.isInteger);
+
+        const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")]
+          .map(select => parseInt(select.value.trim(), 10)).filter(Boolean);
+
+        const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")]
+          .map(select => select.value.trim()).filter(Boolean);
+
+        itineraryData.push({
+          day,
+          areas: selectedAreas.length ? selectedAreas : [""],
+          meal_plans: selectedMealPlans.length ? selectedMealPlans : [""],
+          hotels: selectedHotels.length ? selectedHotels : [""],
+          itineraries: selectedItineraries.length ? selectedItineraries : [""]
+        });
+      });
+
+      const connectToggle = document.getElementById("toggleVoucherSelect");
+      const isConnectToVoucher = connectToggle?.checked ?? false;
+
+      let voucherId = null;
+      if (isConnectToVoucher) {
+        const voucherSelect = document.getElementById("voucherId");
+        const rawValue = voucherSelect?.value.trim();
+        voucherId = rawValue && !isNaN(rawValue) ? parseInt(rawValue, 10) : null;
+      }
+
+      // ✅ Build structure expected by generateItinerary()
+      return {
+        itineraryDetails: {
+          itineraryId: itineraryId || "", // if needed, change this logic
+          itineraryName: getTrim("templateName") || "Untitled_Itinerary",
+          package: selectedPackage,
+          noOfDays,
+          period_start: startDate,
+          period_end: endDate,
+          guide: guideName,
+          guideAccountId: guideaccountId,
+          userId: <?php echo $accountId ?? 0 ?>,
+          countryCode,
+          contactNumber,
+          isConnectToVoucher,
+          voucherId,
+          cityHotels: cityHotelsData
+        },
+        daysDetails: itineraryData
+      };
+    }
 
 
+
+
+
+
+    // Collect form data on fields - for submit edit
     function collectFormData() {
       const getTrim = (id) => document.getElementById(id)?.value.trim() ?? "";
 
@@ -2014,15 +2158,29 @@
       const countryCode = getTrim("countryCode");
       const contactNumber = getTrim("contactNumber");
 
-      const cityHotelsData = {};
+      const cityHotelsData = {
+        cities: {}
+      };
+
+
       for (let i = 1; i <= 3; i++) {
         const city = getTrim(`city${i}`);
         const hotel = getTrim(`hotel${i}`);
+
+        const cityElement = document.getElementById(`city${i}`);
+        const hotelElement = document.getElementById(`hotel${i}`);
+
+        const cityId = parseInt(cityElement?.dataset.cityId || "");
+        const hotelId = parseInt(hotelElement?.dataset.hotelId || "");
+
         if (city || hotel) {
-          cityHotelsData[`city${i}`] = city;
-          cityHotelsData[`hotel${i}`] = hotel;
+          cityHotelsData.cities[i] = {
+            city: city,
+            hotel: hotel
+          };
         }
       }
+
 
       const itineraryData = [];
       document.querySelectorAll(".itinerary-card").forEach(dayCard => {
@@ -2084,11 +2242,7 @@
     }
 
 
-
-
-
-
-
+    // Proceed with form submission
     function proceedWithSubmission() {
       const form = document.getElementById("itineraryGenerate");
 
@@ -2142,10 +2296,10 @@
         itinerary: data.itineraryData,
         isConnectToVoucher: data.isConnectToVoucher,
         voucherId: data.voucherId
-      }, null, 2)); // <- Beautify JSON with 2-space indentation
+      }, null, 2));
 
       $.ajax({
-        url: "../Employee Section/functions/emp-saveItinerary.php",
+        url: "../Employee Section/functions/emp-editItinerary.php",
         type: "POST",
         data: {
           templateName: data.templateName,
@@ -2156,7 +2310,7 @@
           countryCode: data.countryCode,
           contactNumber: data.contactNumber,
           guide: data.guideName,
-          guideAccountId: data.guideaccountId,
+          // guideAccountId: data.guideaccountId,
           userId: <?php echo $accountId ?? 0 ?>,
           cityHotels: JSON.stringify(data.cityHotelsData),
           itinerary: JSON.stringify(data.itineraryData),
@@ -2191,6 +2345,107 @@
     }
 
   </script>
+
+
+  <!-- Generate Itinerary File -->
+  <script>
+    $('#generateBtn').click(function () {
+      const $submitTourBtn = $(this);
+
+      // Generate the itinerary data JSON before proceeding
+      const liveItineraryData = collectFormDataForGeneration() ; // <-- Ensure this function exists and returns correct structure
+
+      // Check if itinerary data is loaded
+      if (typeof liveItineraryData === 'undefined' || !liveItineraryData.itineraryDetails) {
+        alert('Itinerary data is not loaded.');
+        return;
+      }
+
+
+      const itineraryDetails = liveItineraryData.itineraryDetails;
+      const daysDetails = liveItineraryData.daysDetails;
+      const itineraryId = itineraryDetails.itineraryId || '';
+      const itineraryName = itineraryDetails.itineraryName || 'Untitled_Itinerary';
+      const format = $('#actionSelector').val(); // Get selected format: xlsx, pdf, both
+
+      // Log JSON to console
+      console.log("Itinerary Details JSON:", JSON.stringify(itineraryDetails, null, 2));
+      console.log("Days Details JSON:", JSON.stringify(daysDetails, null, 2));
+
+      // Validate itineraryId
+      if (!itineraryId) {
+        alert('Itinerary ID is missing from the data.');
+        return;
+      }
+
+      // Disable button and show loading state
+      $submitTourBtn.prop('disabled', true).text('Generating...');
+
+      // Handle generation based on selected format
+      if (format === 'xlsx' || format === 'pdf') {
+        generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, function () {
+          $submitTourBtn.prop('disabled', false).text('Generate Itinerary');
+        });
+
+      } else if (format === 'both') {
+        // Generate both formats sequentially (xlsx, then pdf)
+        generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, 'xlsx', function () {
+          generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, 'pdf', function () {
+            $submitTourBtn.prop('disabled', false).text('Generate Itinerary');
+          });
+        });
+      }
+
+
+      // Function to generate the itinerary file (XLSX or PDF)
+      function generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, callback) {
+        $.ajax({
+          url: '../Employee Section/functions/itinerary-template-excel.php',
+          type: 'POST',
+          data: {
+            itineraryDetails: JSON.stringify(itineraryDetails),
+            daysDetails: JSON.stringify(daysDetails),
+            itineraryId: itineraryId,
+            format: format
+          },
+          xhrFields: { responseType: 'blob' },
+          success: function (blobResponse) {
+            // Determine file extension and MIME type based on format
+            const fileExtension = format === 'pdf' ? 'pdf' : 'xlsx';
+            const mimeType = fileExtension === 'pdf'
+              ? 'application/pdf'
+              : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+
+            // Create a Blob object from the response
+            const blob = new Blob([blobResponse], { type: mimeType });
+
+            // Create a link to trigger file download
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = `Itinerary_${itineraryName}.${fileExtension}`;
+
+            // Append the link to the document and trigger click to start download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Log success and call callback function if provided
+            console.log(`${fileExtension.toUpperCase()} file generated successfully.`);
+            if (typeof callback === 'function') callback();
+          },
+          error: function () {
+            // Handle error during file generation
+            alert('Failed to generate the itinerary file. Please try again.');
+            if (typeof callback === 'function') callback();
+          }
+        });
+      }
+
+
+    });
+
+  </script>
+
 
 </body>
 
