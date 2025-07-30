@@ -33,7 +33,11 @@ $tableData2 = [];
 $tableData3 = [];
 $transactNumbers = [];
 
-$sql = "SELECT b.flightId, b.transactNo, b.pax, f.wholesalePrice, f.flightPrice, f.flightDepartureDate, f.returnArrivalDate, b.totalPrice
+$sql = "SELECT b.flightId, b.transactNo, b.pax, f.flightDepartureDate, f.returnArrivalDate, b.totalPrice,
+          CASE
+            WHEN b.bookingType = 'Land' THEN f.landPrice
+            ELSE f.flightPrice
+          END AS flightPrice
         FROM booking b
         JOIN client cl ON b.accountId = cl.accountId
         JOIN company c ON cl.companyId = c.companyId

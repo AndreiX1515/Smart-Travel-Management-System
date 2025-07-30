@@ -61,7 +61,10 @@ if (empty($flightIds)) {
 $flightIdsString = implode(',', $flightIds);
 
 $sql3 = "SELECT b.flightId, CONCAT(f.flightDepartureDate, ' - ', f.returnArrivalDate) AS flightDates, b.pax, b.transactNo,
-        CASE WHEN cl.clientRole = 'Wholeseller' THEN f.wholesalePrice ELSE f.flightPrice END AS flightPrice, b.totalPrice
+          CASE
+            WHEN b.bookingType = 'Land' THEN f.landPrice
+            ELSE f.flightPrice
+          END AS flightPrice, b.totalPrice
         FROM booking b
         JOIN client cl ON b.accountId = cl.accountId
         JOIN flight f ON b.flightId = f.flightId
