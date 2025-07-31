@@ -3,119 +3,97 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+require "../../conn.php";
 
-require "../../conn.php"; // Move up to the parent directory
-
-if (isset($_POST['pay'])) 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay'])) 
 {
-    $transactNo = $_POST['transactNo'];
-    $accountId = $_POST['agentAccountId'];
-    $amount = $_POST['downpayment'];
+  $transactNo = $_POST['transactNo'];
+  $accountId = $_POST['agentAccountId'];
+  $amount = $_POST['downpayment'];
 
-    // Set the timezone (replace 'Asia/Taipei' with your preferred timezone if needed)
-    date_default_timezone_set('Asia/Taipei');
-    $paymentDate = (new DateTime())->format('Y-m-d H:i:s'); // Current date and time
+  date_default_timezone_set('Asia/Taipei');
+  $paymentDate = (new DateTime())->format('Y-m-d H:i:s');
 
-    // Set the session variable for the current user in MySQL
-    $conn->query("SET @current_user_id = $accountId");
+  $conn->query("SET @current_user_id = $accountId");
 
-    if (isset($_FILES['proofs']) && count($_FILES['proofs']['name']) > 0) 
-    {
-      $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/FIT Payment Uploads" . DIRECTORY_SEPARATOR . $transactNo . DIRECTORY_SEPARATOR;
-      $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
-      $maxFileSize = 4 * 1024 * 1024; // 4MB per file
-      $uploadedFiles = []; // Array to store file paths
+  if (!isset($_FILES['proofs']) || count($_FILES['proofs']['name']) === 0) {
+    echo json_encode(['status' => 'error', 'message' => 'Proof of payment files are required.']);
+    exit;
+  }
 
-      if (!is_dir($uploadDir)) 
-      {
-        mkdir($uploadDir, 0777, true); // Create the directory if it doesn't exist
+  $uploadDir = $_SERVER['DOCUMENT_ROOT'] . "/SMART-TRAVEL-MANAGEMENT-SYSTEM/Files Uploads/FIT Payment Uploads/" . $transactNo . "/";
+  $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+  $maxFileSize = 4 * 1024 * 1024;
+  $uploadedFiles = [];
+
+  if (!is_dir($uploadDir)) {
+    mkdir($uploadDir, 0777, true);
+  }
+
+  foreach ($_FILES['proofs']['name'] as $key => $fileName) 
+  {
+    $fileTmpPath = $_FILES['proofs']['tmp_name'][$key];
+    $fileSize = $_FILES['proofs']['size'][$key];
+    $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+    if (in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize && $_FILES['proofs']['error'][$key] === UPLOAD_ERR_OK) {
+      $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '-' . uniqid() . '.' . $fileExtension;
+      $destPath = $uploadDir . $newFileName;
+
+      if (move_uploaded_file($fileTmpPath, $destPath)) {
+        $uploadedFiles[] = $destPath;
+      } else {
+        echo json_encode(['status' => 'error', 'message' => "Failed to upload file: $fileName"]);
+        exit;
       }
-
-      foreach ($_FILES['proofs']['name'] as $key => $fileName) 
-      {
-        $fileTmpPath = $_FILES['proofs']['tmp_name'][$key];
-        $fileSize = $_FILES['proofs']['size'][$key];
-        $fileType = $_FILES['proofs']['type'][$key];
-        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-        if (in_array($fileExtension, $allowedExtensions) && $fileSize <= $maxFileSize && $_FILES['proofs']['error'][$key] === UPLOAD_ERR_OK) 
-        {
-          // Generate a unique name for the file to avoid collisions
-          $newFileName = $transactNo . '-' . date('m-d-Y_H-i') . '-' . uniqid() . '.' . $fileExtension;
-
-          $destPath = $uploadDir . $newFileName;
-
-          if (move_uploaded_file($fileTmpPath, $destPath)) 
-          {
-            // Store only the relative file path (directory + filename) in the array
-            $uploadedFiles[] = $uploadDir . $newFileName;
-          } 
-          else 
-          {
-            $_SESSION['status'] = "Failed to upload file: $fileName";
-            header("Location: ../agent-bookingFITPayment.php?id=" . $transactNo);
-            exit(0);
-          }
-        } 
-        else 
-        {
-          $_SESSION['status'] = "File $fileName is invalid or exceeds size limit of 4MB.";
-          header("Location: ../agent-bookingFITPayment.php?id=" . $transactNo);
-          exit(0);
-        }
-      }
-
-      if (!empty($uploadedFiles)) 
-      {
-        $conn->begin_transaction();
-
-        // Insert payment information into the payment table, including file paths
-        $sql = "INSERT INTO fitpayment (transactNo, accountId, paymentType, amount, filePath, paymentDate, paymentStatus) 
-                VALUES (?, ?, 'Downpayment', ?, ?, ?, 'Submitted')";
-        $stmt = $conn->prepare($sql);
-
-        if (!$stmt) 
-        {
-          $_SESSION['status'] = "Booking SQL preparation failed: " . $conn->error;
-          $conn->rollback();
-          header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
-          exit(0);
-        }
-
-        // Loop through uploaded files and insert each file path into the database
-        foreach ($uploadedFiles as $filePath) 
-        {
-          // Bind parameters for each file upload
-          $stmt->bind_param('sidss', $transactNo, $accountId, $amount, $filePath, $paymentDate);
-
-          if (!$stmt->execute()) 
-          {
-            $_SESSION['status'] = "Database error on payment insert: " . $stmt->error;
-            $conn->rollback();
-            header("Location: ../agent-bookingFITPayment.php?id=" . $transactNo);
-            exit(0);
-          }
-        }
-
-        $conn->commit();
-        $_SESSION['status'] = "Payment and proof files uploaded successfully!";
-        header("Location: ../agent-FIT.php");
-        exit(0);
-      } 
-      else 
-      {
-        $_SESSION['status'] = "No valid files uploaded.";
-        header("Location: ../agent-bookingFITPayment.php?id=" . $transactNo);
-        exit(0);
-      }
-    } 
-    else 
-    {
-      $_SESSION['status'] = "Proof of payment files are required.";
-      header("Location: ../agent-bookingFITPayment.php?id=" . $transactNo);
-      exit(0);
+    } else {
+      echo json_encode(['status' => 'error', 'message' => "File $fileName is invalid or exceeds 4MB."]);
+      exit;
     }
   }
 
-  echo "MIME Type: " . $mimeType . "<br>";
+  if (empty($uploadedFiles)) {
+    echo json_encode(['status' => 'error', 'message' => 'No valid files uploaded.']);
+    exit;
+  }
+
+  // Save to database
+  $conn->begin_transaction();
+  $stmt = $conn->prepare("INSERT INTO fitpayment (transactNo, accountId, paymentType, amount, filePath, paymentDate, paymentStatus) 
+                          VALUES (?, ?, 'Downpayment', ?, ?, ?, 'Submitted')");
+  if (!$stmt) {
+    $conn->rollback();
+    echo json_encode(['status' => 'error', 'message' => 'SQL Error: ' . $conn->error]);
+    exit;
+  }
+
+  foreach ($uploadedFiles as $filePath) {
+    $stmt->bind_param('sidss', $transactNo, $accountId, $amount, $filePath, $paymentDate);
+    if (!$stmt->execute()) {
+      $conn->rollback();
+      echo json_encode(['status' => 'error', 'message' => 'Insert error: ' . $stmt->error]);
+      exit;
+    }
+  }
+
+  // ✅ Get bookingStatus for client-side logic
+  $statusQuery = $conn->prepare("SELECT status FROM fit WHERE transactionNo = ?");
+  $statusQuery->bind_param('s', $transactNo);
+  $statusQuery->execute();
+  $result = $statusQuery->get_result();
+  $bookingStatus = ($result && $row = $result->fetch_assoc()) ? $row['status'] : 'Unknown';
+
+  $conn->commit();
+  echo json_encode([
+    'status' => 'success',
+    'message' => 'Payment and proof files uploaded successfully.',
+    'transactionNumber' => $transactNo,
+    'bookingStatus' => $bookingStatus
+  ]);
+  
+  exit;
+}
+
+http_response_code(400);
+echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
 ?>
