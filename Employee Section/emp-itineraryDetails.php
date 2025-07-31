@@ -60,25 +60,25 @@
     
     // Fetch itinerary main details with guide info and voucher info
     $sql = "
-			SELECT 
-				i.itineraryId,
-				i.itineraryName,
-				i.noOfDays,
-				i.packageId,
-				i.periodStart,
-				i.periodEnd,
-				i.voucherId,
-				v.voucherCode,
-				e.fName AS guideFirstName,
-				e.lName AS guideLastName,
-				e.countryCode,
-				e.contactNo
-			FROM itineraries i
-			LEFT JOIN employee e ON i.guideId = e.accountId
-			LEFT JOIN vouchers v ON i.voucherId = v.voucherId
-			WHERE i.itineraryId = ?
-		";
-
+      SELECT 
+        i.itineraryId,
+        i.itineraryName,
+        i.noOfDays,
+        i.packageId,
+        i.periodStart,
+        i.periodEnd,
+        i.voucherId,
+        v.voucherCode,
+        e.accountId AS guideId,
+        e.fName AS guideFirstName,
+        e.lName AS guideLastName,
+        e.countryCode,
+        e.contactNo
+      FROM itineraries i
+      LEFT JOIN employee e ON i.guideId = e.accountId
+      LEFT JOIN vouchers v ON i.voucherId = v.voucherId
+      WHERE i.itineraryId = ?
+    ";
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $itineraryId);
@@ -102,6 +102,7 @@
       'periodStart' => $row['periodStart'],
       'periodEnd' => $row['periodEnd'],
       'guideName' => $guideName,
+      'guideId' => $row['guideId'] ?? null, // ✅ Use accountId as guideId
       'countryCode' => $row['countryCode'] ?? '',
       'contactNumber' => $row['contactNo'] ?? '',
       'voucherId' => $row['voucherId'] ?? null,
@@ -109,6 +110,7 @@
       'cities' => [],
       'days' => []
     ];
+
 
 
     // ✅ Fetch cities & hotels (both IDs and names) from itinerarytourareashotels
@@ -578,41 +580,78 @@
 
               <!-- Script to handle dynamic city and hotel selection -->
               <script>
-                document.querySelector('#tour-hotels-group').addEventListener('change', function (e) {
-                  if (e.target.classList.contains('city-select') || e.target.classList.contains('hotel-select')) {
-                    const wrapper = e.target.closest('.cityhotel-wrapper');
-                    const city = wrapper.querySelector('.city-select')?.value;
-                    const hotel = wrapper.querySelector('.hotel-select')?.value;
-                    const trashBtn = wrapper.querySelector('.btn-danger');
 
-                    if (trashBtn) {
-                      const showTrash = city || hotel;
-                      trashBtn.classList.toggle('d-none', !showTrash);
-                    }
+                // ========= For Hotels Data Fetching and Rendering ========= 
+                let hotelsByArea = {}; // Format: { areaId: [ { hotelId, hotelName }, ... ] }
+
+
+                function updateTrashVisibility(wrapper) {
+                  const city = wrapper.querySelector('.city-select')?.value?.trim();
+                  const hotel = wrapper.querySelector('.hotel-select')?.value?.trim();
+                  const trashBtn = wrapper.querySelector('.btn-danger');
+
+                  if (trashBtn) {
+                    const showTrash = (city && city !== "null" && city !== "") || (hotel && hotel !== "null" && hotel !== "");
+                    trashBtn.classList.toggle('d-none', !showTrash);
                   }
-                });
+                }
 
-                document.querySelector('#tour-hotels-group').addEventListener('click', function (e) {
-                  const btn = e.target.closest('.btn-danger');
-                  if (btn && btn.id.startsWith('trash')) {
-                    const wrapper = btn.closest('.cityhotel-wrapper');
-                    const citySelect = wrapper.querySelector('.city-select');
-                    const hotelSelect = wrapper.querySelector('.hotel-select');
+                // Initial check after rendering
+                function checkInitialTrashButtons() {
+                  document.querySelectorAll('.cityhotel-wrapper').forEach(wrapper => {
+                    updateTrashVisibility(wrapper);
+                  });
+                }
 
-                    if (citySelect) {
-                      citySelect.selectedIndex = 0;
-                      citySelect.dispatchEvent(new Event("change"));
-                    }
+                // Populate hotel select and auto-select first valid option
+                function populateHotelSelect(citySelect) {
+                  const wrapper = citySelect.closest('.cityhotel-wrapper');
+                  const hotelSelect = wrapper.querySelector('.hotel-select');
+                  const selectedCityId = citySelect.value;
 
-                    if (hotelSelect) {
-                      hotelSelect.selectedIndex = 0;
+                  if (hotelSelect && selectedCityId && hotelsByArea[selectedCityId]) {
+                    hotelSelect.innerHTML = `<option disabled value="">Select Hotel</option>`;
+
+                    hotelsByArea[selectedCityId].forEach((hotel, index) => {
+                      const option = document.createElement('option');
+                      option.value = hotel.hotelId;
+                      option.textContent = hotel.hotelName;
+                      hotelSelect.appendChild(option);
+                    });
+
+                    // Automatically select the first hotel (after the disabled one)
+                    if (hotelSelect.options.length > 1) {
+                      hotelSelect.selectedIndex = 1;
                       hotelSelect.dispatchEvent(new Event("change"));
                     }
+                  }
 
-                    btn.classList.add('d-none');
+                }
+
+                // Listener for area and hotel changes
+                document.querySelector('#tour-hotels-group').addEventListener('change', function (e) {
+                  if (e.target.classList.contains('city-select')) {
+                    populateHotelSelect(e.target);
+                  }
+
+                  if (e.target.classList.contains('city-select') || e.target.classList.contains('hotel-select')) {
+                    const wrapper = e.target.closest('.cityhotel-wrapper');
+                    updateTrashVisibility(wrapper);
                   }
                 });
+
+                // When meal/area/hotel data is fetched and rendered
+                function renderMealSelects() {
+                  // your logic to render selects
+                  // ...
+                  checkInitialTrashButtons(); // <== Ensure this is called after rendering
+                }
+
+                // Start fetching
+                loadMealPlansFromDB();
               </script>
+
+
 
 
             </div>
@@ -724,7 +763,6 @@
     });
   </script> -->
 
-
   <!-- Timepicker & Datepicker General Script -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -788,251 +826,6 @@
     });
   </script>
 
-  <!-- For DB value to Itinerary Cards Values JSON (For Editing) -->
-  <!-- <script>
-    let liveItineraryData;
-    const originalJsonData = <?= json_encode($jsonData) ?>;
-    const originalJsonString = JSON.stringify(sortKeys(originalJsonData));
-
-    // Utility to deeply sort object keys for comparison
-    function sortKeys(obj) {
-      if (Array.isArray(obj)) {
-        return obj.map(sortKeys);
-      } else if (obj !== null && typeof obj === 'object') {
-        return Object.keys(obj).sort().reduce((acc, key) => {
-          acc[key] = sortKeys(obj[key]);
-          return acc;
-        }, {});
-      }
-      return obj;
-    }
-
-    // Function to log the current liveItineraryData
-    function logLiveItineraryData() {
-      console.log("Initial loaded liveItineraryData:");
-      console.log(JSON.stringify(liveItineraryData, null, 2));
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const submitEditBtn = document.getElementById('submitEdit');
-      const generateBtn = document.getElementById('submitTour');
-      const selectDays = document.getElementById('select-days');
-      const itineraryContainer = document.getElementById("itinerary-container");
-
-      let itineraryData = <?= json_encode($itinerary); ?>;
-      liveItineraryData = JSON.parse(JSON.stringify(itineraryData)); // Clone
-
-      window.updateLiveItineraryData = function () {
-        const itineraryId = parseInt(document.getElementById("itineraryId").value);
-        const itineraryName = document.getElementById("itineraryName").value;
-        const packageId = parseInt(document.getElementById("packageSelect").value);
-        const periodStart = document.getElementById("PeriodStartDate").value;
-        const periodEnd = document.getElementById("PeriodEndDate").value;
-        const guideId = parseInt(document.getElementById("guideName").value);
-        const countryCode = document.getElementById("countryCode").value;
-        const contactNumber = document.getElementById("contactNumber").value;
-
-        const cities = [];
-        for (let i = 1; i <= 3; i++) {
-          const city = document.getElementById(`city${i}`)?.value || "";
-          const hotel = document.getElementById(`hotel${i}`)?.value || "";
-          if (city && hotel) {
-            cities.push({ city, hotel });
-          }
-        }
-
-        const itineraryDetails = {
-          itineraryId,
-          itineraryName,
-          packageId,
-          periodStart,
-          periodEnd,
-          guideId,
-          countryCode,
-          contactNumber,
-          cities,
-          noOfDays: parseInt(selectDays.value)
-        };
-
-        const daysDetails = [];
-        const cards = itineraryContainer.querySelectorAll(".itinerary-card");
-
-        cards.forEach((card, index) => {
-          const areas = Array.from(card.querySelectorAll(".area-select")).map(sel => sel.value);
-          const meals = Array.from(card.querySelectorAll(".meal-plan-select")).map(sel => sel.value);
-          let hotels = Array.from(card.querySelectorAll(".hotel-select")).map(sel => sel.value);
-          const activities = Array.from(card.querySelectorAll(".itinerary-select")).map(sel => sel.value);
-
-          while (hotels.length < 2) hotels.push("");
-          while (areas.length < 3) areas.push("");
-
-          daysDetails.push({
-            day: index + 1,
-            areas,
-            meals,
-            hotels,
-            activities
-          });
-        });
-
-        liveItineraryData = {
-          itineraryDetails,
-          daysDetails
-        };
-
-        // Call reusable logger
-        logLiveItineraryData();
-      };
-
-      // Trigger update and log on load
-      updateLiveItineraryData();
-    });
-  </script> -->
-
-
-  <!-- For Tour Areas, Hotels Dropdowns -->
-  <!-- <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const cities = ["Seoul", "Gyeonggi-do", "Incheon", "Jeju"];
-      const hotelsByCity = {
-        "Seoul": ["Smart Stay Hotel"],
-        "Gyeonggi-do": ["Ramada Hotel", "Marina Bay Hotel"],
-        "Incheon": ["Air Sky Hotel", "Royal Emporium", "Smart Stay Hotel"],
-        "Jeju": ["Tamara Hotel"]
-      };
-
-      // Initialize dropdowns and events
-      [1, 2, 3].forEach(index => {
-        const citySelect = document.getElementById(`city${index}`);
-        const hotelSelect = document.getElementById(`hotel${index}`);
-        const trashBtn = document.getElementById(`trash${index}`);
-
-        populateCityDropdown(citySelect, cities, "Select City");
-
-        citySelect.addEventListener("change", () => {
-          updateAllCityDropdowns();
-          updateAllHotelDropdowns();
-          checkSelectStatus(index);
-        });
-
-        hotelSelect.addEventListener("change", () => {
-          updateAllHotelDropdowns();
-          checkSelectStatus(index);
-        });
-
-        if (trashBtn) {
-          trashBtn.addEventListener("click", () => resetCityHotel(index));
-        }
-
-        checkSelectStatus(index);
-      });
-
-      // Populate city dropdown
-      function populateCityDropdown(select, options, placeholder) {
-        select.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
-        options.forEach(opt => {
-          const option = document.createElement("option");
-          option.value = opt;
-          option.textContent = opt;
-          select.appendChild(option);
-        });
-      }
-
-      // Get selected cities
-      function getSelectedCities(excludeIndex = null) {
-        return [1, 2, 3]
-          .filter(i => i !== excludeIndex)
-          .map(i => document.getElementById(`city${i}`).value)
-          .filter(Boolean);
-      }
-
-      // Get selected hotels
-      function getSelectedHotels(excludeIndex = null) {
-        return [1, 2, 3]
-          .filter(i => i !== excludeIndex)
-          .map(i => document.getElementById(`hotel${i}`).value)
-          .filter(Boolean);
-      }
-
-      // Update all city dropdowns (disable already selected cities)
-      function updateAllCityDropdowns() {
-        const selectedCities = getSelectedCities();
-
-        [1, 2, 3].forEach(index => {
-          const select = document.getElementById(`city${index}`);
-          const currentValue = select.value;
-
-          populateCityDropdown(select, cities, "Select City");
-
-          Array.from(select.options).forEach(option => {
-            if (selectedCities.includes(option.value) && option.value !== currentValue) {
-              option.disabled = true;
-            }
-          });
-
-          if (currentValue) select.value = currentValue;
-        });
-      }
-
-      // Update all hotel dropdowns based on selected cities
-      function updateAllHotelDropdowns() {
-        const selectedCities = getSelectedCities();
-        const allowedHotels = selectedCities.flatMap(city => hotelsByCity[city] || []);
-        const selectedHotels = getSelectedHotels();
-
-        [1, 2, 3].forEach(index => {
-          const hotelSelect = document.getElementById(`hotel${index}`);
-          const currentHotel = hotelSelect.value;
-
-          hotelSelect.innerHTML = `<option value="" disabled selected>Select Hotel</option>`;
-
-          allowedHotels.forEach(hotel => {
-            const option = document.createElement("option");
-            option.value = hotel;
-            option.textContent = hotel;
-
-            // Disable if already selected in another dropdown
-            if (selectedHotels.includes(hotel) && currentHotel !== hotel) {
-              option.disabled = true;
-            }
-            hotelSelect.appendChild(option);
-          });
-
-          if (currentHotel) {
-            hotelSelect.value = currentHotel;
-          }
-        });
-      }
-
-      // Reset both city and hotel
-      window.resetCityHotel = function (index) {
-        const citySelect = document.getElementById(`city${index}`);
-        const hotelSelect = document.getElementById(`hotel${index}`);
-
-        if (citySelect) citySelect.selectedIndex = 0;
-        if (hotelSelect) hotelSelect.selectedIndex = 0;
-
-        checkSelectStatus(index);
-        updateAllCityDropdowns();
-        updateAllHotelDropdowns();
-      };
-
-      // Show/hide trash icon
-      function checkSelectStatus(index) {
-        const city = document.getElementById(`city${index}`);
-        const hotel = document.getElementById(`hotel${index}`);
-        const trash = document.getElementById(`trash${index}`);
-
-        if (!city.value && !hotel.value) {
-          trash.style.display = "none";
-        } else {
-          trash.style.display = "inline-block";
-        }
-      }
-    });
-  </script> -->
-
-
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const itinerary = <?php echo json_encode($itinerary['cities']); ?>;
@@ -1085,44 +878,51 @@
         });
       }
 
+
       function populateInitialSelections() {
         setTimeout(() => {
           for (let i = 1; i <= 3; i++) {
             const data = itinerary[i];
+            const citySelect = document.getElementById(`city${i}`);
+            const hotelSelect = document.getElementById(`hotel${i}`);
+            const wrapper = document.getElementById(`wrapper${i}`);
 
-            if (data) {
-              const citySelect = document.getElementById(`city${i}`);
-              const hotelSelect = document.getElementById(`hotel${i}`);
-              const trashButton = document.getElementById(`trash${i}`);
+            if (data && citySelect) {
+              citySelect.value = data.cityId;
 
-              if (citySelect) {
-                citySelect.value = data.cityId;
-              }
-
-              if (hotelSelect && cityHotelMap[data.cityId]) {
-                hotelSelect.innerHTML = `<option value="" disabled>Select Hotel</option>`;
-
-                cityHotelMap[data.cityId].forEach(hotel => {
-                  const option = document.createElement("option");
-                  option.value = hotel.hotelId;
-                  option.textContent = hotel.hotelName;
-                  if (String(hotel.hotelId) === String(data.hotelId)) {
-                    option.selected = true;
-                  }
-                  hotelSelect.appendChild(option);
-                });
-              }
-
-              if (trashButton) {
-                trashButton.classList.remove("d-none");
-              }
+              // Simulate onchange
+              citySelect.dispatchEvent(new Event("change", { bubbles: true }));
             }
+
+            if (data && hotelSelect && cityHotelMap[data.cityId]) {
+              hotelSelect.innerHTML = `<option value="" disabled>Select Hotel</option>`;
+
+              cityHotelMap[data.cityId].forEach((hotel, index) => {
+                const option = document.createElement("option");
+                option.value = hotel.hotelId;
+                option.textContent = hotel.hotelName;
+
+                // ✅ Auto-select the first available hotel if hotelId not matched
+                if (String(hotel.hotelId) === String(data.hotelId)) {
+                  option.selected = true;
+                } else if (index === 0 && !data.hotelId) {
+                  option.selected = true;
+                }
+
+                hotelSelect.appendChild(option);
+              });
+
+              hotelSelect.dispatchEvent(new Event("change", { bubbles: true }));
+            }
+
+            if (wrapper) updateTrashVisibility(wrapper);
           }
 
           updateAllCityDropdowns();
           updateAllHotelDropdowns();
-        }, 50); // Delay (adjust as needed)
+        }, 50);
       }
+
 
       function populateCityDropdown(select, placeholder) {
         select.innerHTML = `<option value="" disabled selected>${placeholder}</option>`;
@@ -1288,11 +1088,6 @@
       }
 
 
-
-
-      // ========= For Hotels Data Fetching and Rendering ========= 
-      let hotelsByArea = {}; // Format: { areaId: [ { hotelId, hotelName }, ... ] }
-
       loadHotelsFromDB();
 
       function loadHotelsFromDB() {
@@ -1311,7 +1106,7 @@
             }
 
             hotelsByArea = data.data;
-            // console.log("✅ Hotels Loaded (by areaId):", JSON.stringify(hotelsByArea, null, 2));
+            console.log("✅ Hotels Loaded (by areaId):", JSON.stringify(hotelsByArea, null, 2));
 
             renderHotelSelectsOnLoad();
           })
@@ -1476,6 +1271,10 @@
 
 
 
+
+
+      
+
       // ========= For Meal Plan Data Fetching and Rendering ========= 
       let koreanMealPlans = {};
 
@@ -1487,7 +1286,7 @@
         fetch('../Employee Section/functions/fetchScripts/getMealPlansData.php')
           .then(res => res.json())
           .then(data => {
-            // console.log("Meal Plans Fetched:", JSON.stringify(data, null, 2));
+            console.log("Meal Plans Fetched:", JSON.stringify(data, null, 2));
 
             if (data.status === "success") {
               koreanMealPlans = data.data;
@@ -1531,11 +1330,6 @@
       }
 
 
-
-
-
-
-
       // Populate days dropdown
       for (let num = 1; num <= totalDays; num++) {
         const option = document.createElement("option");
@@ -1543,8 +1337,6 @@
         option.textContent = `Day ${num}`;
         selectDays.appendChild(option);
       }
-
-
 
 
       selectDays.value = totalDays;
@@ -1684,33 +1476,34 @@
               <div class="row mb-3">
                 <div class="col-12"><label class="form-label fw-semibold">Itinerary:</label></div>
                 ${(day === 1 ? [1, 2, 3, 4] : [1, 2, 3, 4, 5, 6, 7]).map(num => {
-            const options = (day === 1 ? allItineraries.slice(0, 3) : allItineraries.slice(3))
-              .map(i => `<option value="${i}">${i}</option>`).join("");
+                  
+              const options = (day === 1 ? allItineraries.slice(0, 3) : allItineraries.slice(3))
+                .map(i => `<option value="${i}">${i}</option>`).join("");
 
-            return `
-                      <div class="col-12 mb-2 d-flex align-items-center gap-2">
-                        <select class="form-select itinerary-select" id="itinerary${day}_${num}" data-index="${day}_${num}" data-day="${day}">
+              return `
+                        <div class="col-12 mb-2 d-flex align-items-center gap-2">
+                          <select class="form-select itinerary-select" id="itinerary${day}_${num}" data-index="${day}_${num}" data-day="${day}">
 
-                          <option value="" selected disabled hidden>Select Itinerary ${num}</option>
-                          ${options}
-                        </select>
+                            <option value="" selected disabled hidden>Select Itinerary ${num}</option>
+                            ${options}
+                          </select>
 
-                        <button type="button" class="btn btn-sm btn-danger text-light itinerary-trash"
-                          id="trash-itinerary${day}_${num}"
-                          onclick="resetItinerary('${day}_${num}')"
-                          title="Reset Itinerary"
-                          style="display: none;">
-                          <i class="fas fa-trash-alt"></i>
-                        </button>
+                          <button type="button" class="btn btn-sm btn-danger text-light itinerary-trash"
+                            id="trash-itinerary${day}_${num}"
+                            onclick="resetItinerary('${day}_${num}')"
+                            title="Reset Itinerary"
+                            style="display: none;">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
 
-                      </div>`;
-          }).join("")
-          }
+                        </div>`;
+                      }).join("")
+                    }
+                </div>
+
               </div>
-
             </div>
-          </div>
-        `;
+          `;
 
         itineraryContainer.appendChild(card);
       }
@@ -2036,7 +1829,7 @@
 
 
     // ✅ Adapted structure for generateItinerary()
-    function collectFormDataForGeneration() {
+    async function collectFormDataForGeneration() {
       const getTrim = (id) => document.getElementById(id)?.value.trim() ?? "";
 
       const selectedPackage = getTrim("packageSelect");
@@ -2045,60 +1838,179 @@
       const endDate = getTrim("PeriodEndDate");
 
       const itineraryId = getTrim("itineraryId");
+
+     
+      // 🔄 Step 1: Load area, hotel, meal_plan, and tour guide maps
+      const [areaMap, hotelMap, mealPlanMap, guideMap] = await Promise.all([
+        fetch('../Employee Section/functions/fetchScripts/getAreas.php')
+          .then(res => res.json())
+          .then(res => {
+            console.log("Fetched Areas Response:", res);
+            return res.status === 'success'
+              ? Object.fromEntries(res.data.map(item => [parseInt(item.areaId), item.areaName]))
+              : {};
+          }),
+
+        fetch('../Employee Section/functions/fetchScripts/getHotels2.php')
+          .then(res => res.json())
+          .then(res => {
+            console.log("Fetched Hotels Response:", res);
+            return res.status === 'success'
+              ? Object.fromEntries(res.data.map(item => [parseInt(item.hotelId), item.hotelName]))
+              : {};
+          }),
+
+        fetch('../Employee Section/functions/fetchScripts/getMealPlansData.php')
+          .then(res => res.json())
+          .then(res => {
+            console.log("Fetched Meal Plans Response:", res);
+            if (res.status !== 'success') return {};
+            const flatMap = {};
+            for (const [mealType, meals] of Object.entries(res.data)) {
+              meals.forEach(meal => {
+                flatMap[parseInt(meal.id)] = meal.name;
+              });
+            }
+            return flatMap;
+          }),
+
+        // Fetch and map the guides by guideId (option value)
+        fetch('../Employee Section/functions/fetchScripts/getTourGuides.php')
+          .then(res => res.json())
+          .then(res => {
+            console.log("Fetched Tour Guides Response:", res);
+            if (res.status !== 'success') return {};
+            const guideMap = Object.fromEntries(
+              res.data.map(emp => [
+                parseInt(emp.accountId, 10), // use accountId as key
+                {
+                  fName: emp.fName?.trim() ?? '',
+                  lName: emp.lName?.trim() ?? '',
+                  mName: emp.mName?.trim() || '',
+                  guideId: parseInt(emp.guideId, 10),
+                  contactNumber: emp.contactNo?.trim() ?? '',
+                  countryCode: emp.countryCode?.trim() ?? ''
+                }
+              ])
+            );
+            console.log("Processed Guide Map:", guideMap);
+            return guideMap;
+          })
+          
+          .catch(err => {
+            console.error('Failed to load guideMap:', err);
+            return {};
+          })
+      ]);
+
+     
+      const cityHotelsData = {};
+
+      const cityElements = document.querySelectorAll('[id^="city"]');
+
+      cityElements.forEach(cityEl => {
+        const index = cityEl.id.replace("city", "");
+        const hotelEl = document.getElementById(`hotel${index}`);
+
+        if (!cityEl || !hotelEl) return; // Skip if either element doesn't exist
+
+        const areaId = parseInt(cityEl.value ?? "");
+        const hotelId = parseInt(hotelEl.value ?? "");
+
+        // Skip if both are blank or NaN
+        if (isNaN(areaId) && isNaN(hotelId)) return;
+
+        cityHotelsData[index] = {
+          areaId: !isNaN(areaId) ? areaId : null,
+          areaName: !isNaN(areaId) ? areaMap[areaId] ?? "Unknown" : null,
+          hotelId: !isNaN(hotelId) ? hotelId : null,
+          hotelName: !isNaN(hotelId) ? hotelMap[hotelId] ?? "Unknown" : null
+        };
+      });
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Guide ID and Name Processing
       const guideSelect = document.getElementById("guideName");
-      const guideaccountIdRaw = guideSelect?.selectedOptions[0]?.getAttribute("data-accountid")?.trim();
-      const guideaccountId = guideaccountIdRaw ? parseInt(guideaccountIdRaw, 10) : null;
+      const selectedAccountIdRaw = guideSelect?.value?.trim();
+      console.log("Raw Selected Guide ID:", selectedAccountIdRaw);
 
-      const guideNameRaw = getTrim("guideName");
-      const guideName = guideNameRaw && !isNaN(guideNameRaw) ? parseInt(guideNameRaw, 10) : null;
+      const selectedAccountId = selectedAccountIdRaw ? parseInt(selectedAccountIdRaw, 10) : null;
+      console.log("Parsed Selected Account ID:", selectedAccountId);
 
-      const countryCode = getTrim("countryCode");
-      const contactNumber = getTrim("contactNumber");
+      let guideFullName = '';
+      let contactNumber = '';
+      let countryCode = '';
 
-      const cityHotelsData = {
-        cities: {}
-      };
+      if (selectedAccountId !== null && guideMap[selectedAccountId]) {
+        const { fName, lName, mName, countryCode: cc, contactNumber: cn} = guideMap[selectedAccountId];
+        guideFullName = `${lName}, ${fName}${mName ? ' ' + mName : ''}`;
+        contactNumber = cn;
+        countryCode = cc;
 
-      for (let i = 1; i <= 3; i++) {
-        const city = getTrim(`city${i}`);
-        const hotel = getTrim(`hotel${i}`);
-
-        const cityElement = document.getElementById(`city${i}`);
-        const hotelElement = document.getElementById(`hotel${i}`);
-
-        const cityId = parseInt(cityElement?.dataset.cityId || "");
-        const hotelId = parseInt(hotelElement?.dataset.hotelId || "");
-
-        if (city || hotel) {
-          cityHotelsData.cities[i] = {
-            city: city,
-            hotel: hotel
-          };
-        }
+        // Optional logs for debugging
+        console.log("Guide Full Name:", guideFullName);
+        console.log("Contact Number:", contactNumber);
+        console.log("Country Code:", countryCode);
       }
 
+
+
+
+      console.log("Guide Map:", guideMap);
+      console.log("Selected Guide Account ID:", selectedAccountId);
+      console.log("Guide Data Found:", guideMap[selectedAccountId]);
+      console.log("Guide Full Name:", guideFullName);
+
+
+
+
+
+
+
       const itineraryData = [];
+
+      // 🔄 Step 2: Process each .itinerary-card
       document.querySelectorAll(".itinerary-card").forEach(dayCard => {
         const day = dayCard.querySelector(".hotel-select")?.dataset.day || "Unknown";
 
         const selectedAreas = [...dayCard.querySelectorAll(".area-select[data-day]")]
-          .map(area => area.value.trim()).filter(Boolean);
+          .map(area => parseInt(area.value.trim(), 10))
+          .filter(Number.isInteger);
+        const areaNames = selectedAreas.map(id => areaMap[id] ?? "Unknown");
 
         const selectedMealPlans = [...dayCard.querySelectorAll(".meal-plan-select[data-day]")]
-          .map(meal => parseInt(meal.value.trim(), 10)).filter(Number.isInteger);
+          .map(meal => parseInt(meal.value.trim(), 10))
+          .filter(Number.isInteger);
+        const mealPlanNames = selectedMealPlans.map(id => mealPlanMap[id] ?? "Unknown");
 
         const selectedHotels = [...dayCard.querySelectorAll(".hotel-select")]
-          .map(select => parseInt(select.value.trim(), 10)).filter(Boolean);
+          .map(select => parseInt(select.value.trim(), 10))
+          .filter(Number.isInteger);
+        const hotelNames = selectedHotels.map(id => hotelMap[id] ?? "Unknown");
 
         const selectedItineraries = [...dayCard.querySelectorAll(".itinerary-select")]
           .map(select => select.value.trim()).filter(Boolean);
 
         itineraryData.push({
           day,
-          areas: selectedAreas.length ? selectedAreas : [""],
-          meal_plans: selectedMealPlans.length ? selectedMealPlans : [""],
-          hotels: selectedHotels.length ? selectedHotels : [""],
-          itineraries: selectedItineraries.length ? selectedItineraries : [""]
+          areas: areaNames.length ? areaNames : [""],
+          meals: mealPlanNames.length ? mealPlanNames : [""],
+          hotels: hotelNames.length ? hotelNames : [""],
+          activities: selectedItineraries.length ? selectedItineraries : [""]
         });
       });
 
@@ -2112,30 +2024,26 @@
         voucherId = rawValue && !isNaN(rawValue) ? parseInt(rawValue, 10) : null;
       }
 
-      // ✅ Build structure expected by generateItinerary()
       return {
         itineraryDetails: {
-          itineraryId: itineraryId || "", // if needed, change this logic
+          itineraryId: itineraryId || "",
           itineraryName: getTrim("templateName") || "Untitled_Itinerary",
-          package: selectedPackage,
+          packageName: selectedPackage,
           noOfDays,
-          period_start: startDate,
-          period_end: endDate,
-          guide: guideName,
-          guideAccountId: guideaccountId,
+          periodStart: startDate,
+          periodEnd: endDate,
+          guideName: guideFullName,
+          guideAccountId: selectedAccountId,
           userId: <?php echo $accountId ?? 0 ?>,
           countryCode,
           contactNumber,
           isConnectToVoucher,
           voucherId,
-          cityHotels: cityHotelsData
+          cities: cityHotelsData
         },
         daysDetails: itineraryData
       };
     }
-
-
-
 
 
 
@@ -2349,28 +2257,28 @@
 
   <!-- Generate Itinerary File -->
   <script>
-    $('#generateBtn').click(function () {
+    $('#generateBtn').click(async function () {
       const $submitTourBtn = $(this);
 
-      // Generate the itinerary data JSON before proceeding
-      const liveItineraryData = collectFormDataForGeneration() ; // <-- Ensure this function exists and returns correct structure
+      // ✅ Await the async function
+      const liveItineraryData = await collectFormDataForGeneration() ;
 
-      // Check if itinerary data is loaded
+      // ❗ Check if data is returned properly
       if (typeof liveItineraryData === 'undefined' || !liveItineraryData.itineraryDetails) {
         alert('Itinerary data is not loaded.');
         return;
       }
 
-
       const itineraryDetails = liveItineraryData.itineraryDetails;
       const daysDetails = liveItineraryData.daysDetails;
       const itineraryId = itineraryDetails.itineraryId || '';
       const itineraryName = itineraryDetails.itineraryName || 'Untitled_Itinerary';
-      const format = $('#actionSelector').val(); // Get selected format: xlsx, pdf, both
+      const format = $('#actionSelector').val(); // xlsx, pdf, both
 
-      // Log JSON to console
+      // ✅ Log result
       console.log("Itinerary Details JSON:", JSON.stringify(itineraryDetails, null, 2));
       console.log("Days Details JSON:", JSON.stringify(daysDetails, null, 2));
+
 
       // Validate itineraryId
       if (!itineraryId) {
@@ -2399,6 +2307,13 @@
 
       // Function to generate the itinerary file (XLSX or PDF)
       function generateItinerary(itineraryDetails, daysDetails, itineraryId, itineraryName, format, callback) {
+        console.log('Generating itinerary...');
+        console.log('Format:', format);
+        console.log('Itinerary ID:', itineraryId);
+        console.log('Itinerary Name:', itineraryName);
+        console.log('Itinerary Details:', itineraryDetails);
+        console.log('Days Details:', daysDetails);
+
         $.ajax({
           url: '../Employee Section/functions/itinerary-template-excel.php',
           type: 'POST',
@@ -2409,37 +2324,48 @@
             format: format
           },
           xhrFields: { responseType: 'blob' },
+
           success: function (blobResponse) {
-            // Determine file extension and MIME type based on format
-            const fileExtension = format === 'pdf' ? 'pdf' : 'xlsx';
-            const mimeType = fileExtension === 'pdf'
-              ? 'application/pdf'
-              : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+            try {
+              // Determine file extension and MIME type based on format
+              const fileExtension = format === 'pdf' ? 'pdf' : 'xlsx';
+              const mimeType = fileExtension === 'pdf'
+                ? 'application/pdf'
+                : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
-            // Create a Blob object from the response
-            const blob = new Blob([blobResponse], { type: mimeType });
+              console.log('MIME Type:', mimeType);
 
-            // Create a link to trigger file download
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = `Itinerary_${itineraryName}.${fileExtension}`;
+              // Create a Blob object from the response
+              const blob = new Blob([blobResponse], { type: mimeType });
 
-            // Append the link to the document and trigger click to start download
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+              // Create a link to trigger file download
+              const link = document.createElement('a');
+              link.href = window.URL.createObjectURL(blob);
+              link.download = `Itinerary_${itineraryName}.${fileExtension}`;
 
-            // Log success and call callback function if provided
-            console.log(`${fileExtension.toUpperCase()} file generated successfully.`);
-            if (typeof callback === 'function') callback();
+              // Append the link to the document and trigger click to start download
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+
+              console.log(`${fileExtension.toUpperCase()} file generated successfully.`);
+              if (typeof callback === 'function') callback();
+            } catch (e) {
+              console.error('Error during success handler execution:', e);
+              alert('An unexpected error occurred during file download.');
+              if (typeof callback === 'function') callback();
+            }
           },
-          error: function () {
-            // Handle error during file generation
+
+          error: function (xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            console.error('Response Text:', xhr.responseText);
             alert('Failed to generate the itinerary file. Please try again.');
             if (typeof callback === 'function') callback();
           }
         });
       }
+
 
 
     });
