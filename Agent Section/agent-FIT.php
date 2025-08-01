@@ -742,7 +742,8 @@ require "../conn.php";
         const maxPaxCapacity = rooms * 3; // Each room can have a maximum of 3 pax
 
         if (pax > maxPaxCapacity) {
-          alert(`Maximum pax for ${rooms} room(s) is ${maxPaxCapacity}.`);
+          // alert(`Maximum pax for ${rooms} room(s) is ${maxPaxCapacity}.`);
+          $('#paxRequest').val(maxPaxCapacity); // reset the field
           return;
         }
 

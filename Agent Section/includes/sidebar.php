@@ -225,6 +225,18 @@ $current_date = date('D, F d, Y');
       </a>
     </li>
 
+    <!-- SOA FIT-->
+    <li class="nav-item transaction">
+      <a class="nav-link page-button" href="../Agent Section/agent-fitSOA.php" data-page-name="SOA">
+        <div class="icon-wrapper">
+          <div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+        </div>
+        <div class="label-wrapper">
+          <span class="label" style="font-size: 14px;">SOA FIT</span>
+        </div>
+      </a>
+    </li>
+
     <!-- Reports -->
     <li class="nav-item transaction">
       <a class="nav-link page-button" href="../Agent Section/agent-salesReport.php" data-page-name="Reports">
