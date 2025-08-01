@@ -61,23 +61,24 @@
     // Fetch itinerary main details with guide info and voucher info
     $sql = "
       SELECT 
-        i.itineraryId,
-        i.itineraryName,
-        i.noOfDays,
-        i.packageId,
-        i.periodStart,
-        i.periodEnd,
-        i.voucherId,
-        v.voucherCode,
-        e.accountId AS guideId,
-        e.fName AS guideFirstName,
-        e.lName AS guideLastName,
-        e.countryCode,
-        e.contactNo
+          i.itineraryId,
+          i.itineraryName,
+          i.noOfDays,
+          i.packageId,
+          i.periodStart,
+          i.periodEnd,
+          i.voucherId,
+          v.voucherCode,
+          e.accountId AS guideId,
+          e.fName AS guideFirstName,
+          e.lName AS guideLastName,
+          e.countryCode,
+          e.contactNo
       FROM itineraries i
       LEFT JOIN employee e ON i.guideId = e.accountId
       LEFT JOIN vouchers v ON i.voucherId = v.voucherId
-      WHERE i.itineraryId = ?
+      WHERE i.itineraryId = ?;
+
     ";
 
     $stmt = $conn->prepare($sql);
@@ -136,66 +137,66 @@
     // Fetch days, areas, hotels, activities, and meal plans
     $sqlDays = "
 			SELECT 
-      d.dayId, 
-      d.dayNumber, 
+        d.dayId, 
+        d.dayNumber, 
 
-      -- Areas per day
-      COALESCE(a.areaIds, '') AS areas,
+        -- Areas per day
+        COALESCE(a.areaIds, '') AS areas,
 
-      -- Hotels per day
-      COALESCE(h.hotelIds, '') AS hotels,
+        -- Hotels per day
+        COALESCE(h.hotelIds, '') AS hotels,
 
-      -- Activities per day
-      COALESCE(act.activities, '') AS activities,
+        -- Activities per day
+        COALESCE(act.activities, '') AS activities,
 
-      -- Meals per day
-      COALESCE(mp.meals, '') AS meals
+        -- Meals per day
+        COALESCE(mp.meals, '') AS meals
 
-			FROM itineraryDays d
+    FROM itinerarydays d
 
-			-- Join: Areas (returning areaIds instead of areaNames)
-      LEFT JOIN (
-          SELECT 
-              dayId, 
-              GROUP_CONCAT(DISTINCT ida.areaId ORDER BY ida.areaId ASC SEPARATOR ',') AS areaIds
-          FROM itineraryareas ia
-          INNER JOIN itinerarydataarea ida ON ia.areaName = ida.areaName
-          GROUP BY dayId
-      ) a ON d.dayId = a.dayId
+    -- Join: Areas (returning areaIds instead of areaNames)
+    LEFT JOIN (
+        SELECT 
+            dayId, 
+            GROUP_CONCAT(DISTINCT ida.areaId ORDER BY ida.areaId ASC SEPARATOR ',') AS areaIds
+        FROM itineraryareas ia
+        INNER JOIN itinerarydataarea ida ON ia.areaName = ida.areaName
+        GROUP BY dayId
+    ) a ON d.dayId = a.dayId
+
+    -- Join: Hotels (returning hotelIds instead of hotelNames)
+    LEFT JOIN (
+        SELECT 
+            ih.dayId, 
+            GROUP_CONCAT(DISTINCT h.hotelId ORDER BY h.hotelId ASC SEPARATOR ',') AS hotelIds
+        FROM itineraryhotels ih
+        INNER JOIN hotels h ON ih.hotelId = h.hotelId
+        GROUP BY ih.dayId
+    ) h ON d.dayId = h.dayId
+
+    -- Join: Activities
+    LEFT JOIN (
+        SELECT 
+            dayId, 
+            GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ',') AS activities
+        FROM itineraryactivities
+        GROUP BY dayId
+    ) act ON d.dayId = act.dayId
+
+    -- Join: Meals (link mealId to mealName)
+    LEFT JOIN (
+        SELECT 
+            imp.dayId, 
+            GROUP_CONCAT(DISTINCT md.mealName ORDER BY md.mealId ASC SEPARATOR ',') AS meals
+        FROM itinerarymealplans imp
+        INNER JOIN itinerarydatamealplan md ON imp.mealId = md.mealId
+        GROUP BY imp.dayId
+    ) mp ON d.dayId = mp.dayId
+
+    WHERE d.itineraryId = ?
+    ORDER BY d.dayNumber ASC;
 
 
-      -- Join: Hotels (returning hotelIds instead of hotelNames)
-      LEFT JOIN (
-          SELECT 
-              ih.dayId, 
-              GROUP_CONCAT(DISTINCT h.hotelId ORDER BY h.hotelId ASC SEPARATOR ',') AS hotelIds
-          FROM itineraryhotels ih
-          INNER JOIN hotels h ON ih.hotelId = h.hotelId
-          GROUP BY ih.dayId
-      ) h ON d.dayId = h.dayId
-
-
-			-- Join: Activities
-			LEFT JOIN (
-				SELECT 
-					dayId, 
-					GROUP_CONCAT(activityName ORDER BY activityId ASC SEPARATOR ',') AS activities
-				FROM itineraryactivities
-				GROUP BY dayId
-			) act ON d.dayId = act.dayId
-
-			-- Join: Meals (link mealId to mealName)
-			LEFT JOIN (
-				SELECT 
-					imp.dayId, 
-					GROUP_CONCAT(DISTINCT md.mealName ORDER BY md.mealId ASC SEPARATOR ',') AS meals
-				FROM itineraryMealPlans imp
-				INNER JOIN itineraryDataMealPlan md ON imp.mealId = md.mealId
-				GROUP BY imp.dayId
-			) mp ON d.dayId = mp.dayId
-
-			WHERE d.itineraryId = ?
-			ORDER BY d.dayNumber ASC;
 		";
 
     $stmt = $conn->prepare($sqlDays);
@@ -277,49 +278,7 @@
                 </div>
 
 
-                <div class="columns col-md-6">
-                  <div class="column-header">
-                    <label for="voucherId">Connected to Voucher:</label>
-                  </div>
 
-                  <?php
-                  // Ensure $currentVoucherId is defined (e.g., from itinerary record)
-                  $currentVoucherId = isset($currentVoucherId) ? intval($currentVoucherId) : 0;
-
-                  // Fetch all vouchers that are unlinked or already linked to this itinerary
-                  $sql = "
-                      SELECT voucherId, voucherCode, voucherName
-                      FROM vouchers
-                      WHERE itineraryId IS NULL OR itineraryId = 0
-                      ORDER BY createdAt DESC
-                    ";
-                  $result = $conn->query($sql);
-                  $hasVouchers = ($result && $result->num_rows > 0);
-                  ?>
-
-                  <div class="row align-items-center">
-                    <div class="col-md-6" id="voucherSelectWrapper">
-
-                      <select class="form-select" id="voucherId" name="voucherId" <?= $hasVouchers ? '' : 'disabled' ?>>
-                        <option value="" <?= !$currentVoucherId ? 'selected' : '' ?> disabled>
-                          <?= $hasVouchers ? 'Select Voucher' : 'No vouchers available' ?>
-                        </option>
-
-                        <?php if ($hasVouchers): ?>
-                          <?php while ($row = $result->fetch_assoc()): ?>
-                            <option value="<?= htmlspecialchars($row['voucherId']) ?>"
-                              <?= ($row['voucherId'] == $currentVoucherId) ? 'selected' : '' ?>>
-                              <?= htmlspecialchars($row['voucherCode']) ?> – File Name:
-                              <?= htmlspecialchars($row['voucherName']) ?>
-                            </option>
-                          <?php endwhile; ?>
-                        <?php endif; ?>
-                      </select>
-
-                    </div>
-                  </div>
-
-                </div>
 
               </div>
 
@@ -647,8 +606,6 @@
                   checkInitialTrashButtons(); // <== Ensure this is called after rendering
                 }
 
-                // Start fetching
-                loadMealPlansFromDB();
               </script>
 
 
@@ -1260,12 +1217,25 @@
         "Arrival at Incheon Airport - Flight: 5J118 (MNL-ICN)",
         "Meeting and Greeting with an English-speaking guide",
         "Transfer to Seoul and check in at the hotel",
-        "King Canoe Quay", "Chuncheon Samaksan Mountain Lake Cable Car", "Chuncheon Sailo 248 (Suspension Bridge)",
-        "Jade Garden", "PotatoBatt (Bakery)", "Nami Island",
-        "Small France Culture Village", "Italian Village (Pinocchio Village)", "N Seoul Tower", "Everland Theme Park",
-        "Ginseng Museum", "Cosmetic Duty Free Shop", "Free time shopping at Shilla Duty Free Shop",
-        "Myeongdong Street", "Free shopping at Myeongdong Street", "Gyeongbokgung Palace", "Red Pine Store",
-        "Korea Produce Jewel Amethyst Shop", "Jamsil Seokchon Lake (Cherry Blossom)", "Gimpo Hyundai Outlet",
+        "King Canoe Quay",
+        "Chuncheon Samaksan Mountain Lake Cable Car",
+        "Chuncheon Sailo 248 (Suspension Bridge)",
+        "Jade Garden",
+        "PotatoBatt (Bakery)",
+        "Nami Island",
+        "Small France Culture Village",
+        "Italian Village (Pinocchio Village)",
+        "N Seoul Tower", "Everland Theme Park",
+        "Ginseng Museum",
+        "Cosmetic Duty Free Shop",
+        "Free time shopping at Shilla Duty Free Shop",
+        "Myeongdong Street",
+        "Free time shopping at Myeongdong Street",
+        "Gyeongbokgung Palace",
+        "Red Pine Store",
+        "Korea Produce Jewel Amethyst Shop",
+        "Jamsil Seokchon Lake (Cherry Blossom)",
+        "Gimpo Hyundai Outlet",
         "Experience making Kimbop"
       ];
 
@@ -1273,11 +1243,10 @@
 
 
 
-      
+
 
       // ========= For Meal Plan Data Fetching and Rendering ========= 
       let koreanMealPlans = {};
-
 
       // Meal Plans Data Fetch
       loadMealPlansFromDB();
@@ -1476,11 +1445,11 @@
               <div class="row mb-3">
                 <div class="col-12"><label class="form-label fw-semibold">Itinerary:</label></div>
                 ${(day === 1 ? [1, 2, 3, 4] : [1, 2, 3, 4, 5, 6, 7]).map(num => {
-                  
-              const options = (day === 1 ? allItineraries.slice(0, 3) : allItineraries.slice(3))
-                .map(i => `<option value="${i}">${i}</option>`).join("");
 
-              return `
+            const options = (day === 1 ? allItineraries.slice(0, 3) : allItineraries.slice(3))
+              .map(i => `<option value="${i}">${i}</option>`).join("");
+
+            return `
                         <div class="col-12 mb-2 d-flex align-items-center gap-2">
                           <select class="form-select itinerary-select" id="itinerary${day}_${num}" data-index="${day}_${num}" data-day="${day}">
 
@@ -1497,9 +1466,10 @@
                           </button>
 
                         </div>`;
-                      }).join("")
-                    }
+          }).join("")
+          }
                 </div>
+
 
               </div>
             </div>
@@ -1507,6 +1477,7 @@
 
         itineraryContainer.appendChild(card);
       }
+
 
       // ✅ Call AFTER the DOM is fully built
       window.addEventListener("load", function () {
@@ -1632,18 +1603,22 @@
 
 
       // Show or hide trash buttons
-      function checkItineraryTrashVisibility() {
-        document.querySelectorAll(".itinerary-select").forEach(select => {
-          const index = select.dataset.index;
-          const trash = document.getElementById(`trash-itinerary${index}`);
+      // function checkItineraryTrashVisibility() {
+      //   document.querySelectorAll(".itinerary-select").forEach(select => {
+      //     const index = select.dataset.index;
+      //     const trash = document.getElementById(`trash-itinerary${index}`);
 
-          // Hide if value is blank or still on placeholder
-          if (trash) {
-            trash.style.display = select.value && select.value !== "" ? "inline-block" : "none";
-          }
-        });
-      }
+      //     // Hide if value is blank or still on placeholder
+      //     if (trash) {
+      //       trash.style.display = select.value && select.value !== "" ? "inline-block" : "none";
+      //     }
+      //   });
+      // }
+
+
     });
+
+
 
 
     // Hotel Delete Logic
@@ -1676,7 +1651,6 @@
         }
       };
     });
-
 
     // Meal Plan Delete Logic
     document.addEventListener("DOMContentLoaded", () => {
@@ -1741,6 +1715,36 @@
       };
     });
 
+    // Itinerary Delete Logic
+    document.addEventListener("DOMContentLoaded", () => {
+      // Show/hide trash button for itineraries
+      function checkItineraryTrashVisibility() {
+        document.querySelectorAll(".itinerary-select").forEach(select => {
+          const index = select.dataset.index;
+          const trash = document.getElementById(`trash-itinerary${index}`);
+          if (trash) {
+            trash.style.display = select.value && select.value !== "" ? "inline-block" : "none";
+          }
+        });
+      }
+
+      // Event listeners for itinerary selects
+      document.querySelectorAll(".itinerary-select").forEach(select => {
+        select.addEventListener("change", checkItineraryTrashVisibility);
+      });
+
+      // Initial visibility check
+      checkItineraryTrashVisibility();
+
+      // Reset handler for itinerary selects
+      window.resetItinerary = function (index) {
+        const select = document.querySelector(`.itinerary-select[data-index="${index}"]`);
+        if (select) {
+          select.selectedIndex = 0;
+          checkItineraryTrashVisibility();
+        }
+      };
+    });
 
     // Form validation for required selects (For Required Fields Validation)
     document.getElementById("submitTour").addEventListener("click", function (event) {
@@ -1760,8 +1764,6 @@
         alert("Itinerary successfully created!");
       }
     });
-
-
 
   </script>
 
@@ -1805,6 +1807,7 @@
         const itineraryNameInput = document.getElementById("itineraryName"); // assuming your main form field has this ID
         const templateNameInput = document.getElementById("templateName");
 
+
         if (modalEl) {
           const modal = new bootstrap.Modal(modalEl);
 
@@ -1839,7 +1842,7 @@
 
       const itineraryId = getTrim("itineraryId");
 
-     
+
       // 🔄 Step 1: Load area, hotel, meal_plan, and tour guide maps
       const [areaMap, hotelMap, mealPlanMap, guideMap] = await Promise.all([
         fetch('../Employee Section/functions/fetchScripts/getAreas.php')
@@ -1896,14 +1899,14 @@
             console.log("Processed Guide Map:", guideMap);
             return guideMap;
           })
-          
+
           .catch(err => {
             console.error('Failed to load guideMap:', err);
             return {};
           })
       ]);
 
-     
+
       const cityHotelsData = {};
 
       const cityElements = document.querySelectorAll('[id^="city"]');
@@ -1928,7 +1931,7 @@
         };
       });
 
-      
+
 
 
 
@@ -1956,7 +1959,7 @@
       let countryCode = '';
 
       if (selectedAccountId !== null && guideMap[selectedAccountId]) {
-        const { fName, lName, mName, countryCode: cc, contactNumber: cn} = guideMap[selectedAccountId];
+        const { fName, lName, mName, countryCode: cc, contactNumber: cn } = guideMap[selectedAccountId];
         guideFullName = `${lName}, ${fName}${mName ? ' ' + mName : ''}`;
         contactNumber = cn;
         countryCode = cc;
@@ -2027,7 +2030,7 @@
       return {
         itineraryDetails: {
           itineraryId: itineraryId || "",
-          itineraryName: getTrim("templateName") || "Untitled_Itinerary",
+          itineraryName: getTrim("itineraryName") || "Untitled_Itinerary",
           packageName: selectedPackage,
           noOfDays,
           periodStart: startDate,
@@ -2261,7 +2264,7 @@
       const $submitTourBtn = $(this);
 
       // ✅ Await the async function
-      const liveItineraryData = await collectFormDataForGeneration() ;
+      const liveItineraryData = await collectFormDataForGeneration();
 
       // ❗ Check if data is returned properly
       if (typeof liveItineraryData === 'undefined' || !liveItineraryData.itineraryDetails) {
@@ -2341,7 +2344,7 @@
               // Create a link to trigger file download
               const link = document.createElement('a');
               link.href = window.URL.createObjectURL(blob);
-              link.download = `Itinerary_${itineraryName}.${fileExtension}`;
+              link.download = `${itineraryName}.${fileExtension}`;
 
               // Append the link to the document and trigger click to start download
               document.body.appendChild(link);
