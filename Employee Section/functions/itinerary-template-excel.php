@@ -1,4 +1,11 @@
 <?php
+
+
+// Debugging settings
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require '../../conn.php';  // Ensure the database connection is included
 require '../../vendor/autoload.php';  // Ensure Composer's autoloader is included
 
@@ -70,7 +77,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
         // Step 2: Protect the sheet (and allow printing)
         $protection = $sheet->getProtection();
-        $protection->setPassword('yourPassword'); // Set a password
+        $protection->setPassword('smtPassword123'); // Set a password
         $protection->setSheet(true); // Lock the sheet
         $protection->setSort(false);
         $protection->setInsertRows(false);
@@ -794,6 +801,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         $writer->save('php://output');
 
         exit;  // Ensure no other content is sent
+        
     } catch (Exception $e) {
         // Log the error for debugging purposes
         error_log('Excel generation failed: ' . $e->getMessage());

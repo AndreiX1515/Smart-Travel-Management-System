@@ -24,3 +24,15 @@
 [31-Jul-2025 10:50:49 Europe/Berlin] 📥 POST request received
 [31-Jul-2025 10:50:49 Europe/Berlin] ✅ Received voucherId: 14
 [31-Jul-2025 10:50:49 Europe/Berlin] 🗑️ Successfully deleted voucherId: 14
+[03-Aug-2025 16:00:38 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[03-Aug-2025 16:00:38 Europe/Berlin] 📥 POST request received
+[03-Aug-2025 16:00:38 Europe/Berlin] ✅ Received voucherId: 34
+[03-Aug-2025 16:00:38 Europe/Berlin] 🗑️ Successfully deleted voucherId: 34
+[03-Aug-2025 16:10:36 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[03-Aug-2025 16:10:36 Europe/Berlin] 📥 POST request received
+[03-Aug-2025 16:10:36 Europe/Berlin] ✅ Received voucherId: 33
+[03-Aug-2025 16:10:36 Europe/Berlin] 🗑️ Successfully deleted voucherId: 33
+[03-Aug-2025 16:11:44 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[03-Aug-2025 16:11:44 Europe/Berlin] 📥 POST request received
+[03-Aug-2025 16:11:44 Europe/Berlin] ✅ Received voucherId: 32
+[03-Aug-2025 16:11:44 Europe/Berlin] 🗑️ Successfully deleted voucherId: 32

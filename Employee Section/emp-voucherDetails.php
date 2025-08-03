@@ -280,6 +280,8 @@
     $jsonData = json_encode($voucher, JSON_UNESCAPED_UNICODE);
     echo "<script>console.log(JSON.stringify(" . $jsonData . ", null, 2));</script>";
 
+    $itineraryId = $_GET['id'] ?? '';
+
     ?>
 
     <div class="main-content">

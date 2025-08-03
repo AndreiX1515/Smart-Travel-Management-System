@@ -2,8 +2,7 @@
 require '../../conn.php';
 require '../../vendor/autoload.php';
 
-use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 
 if (!isset($_POST['voucher'])) {
     http_response_code(400);
