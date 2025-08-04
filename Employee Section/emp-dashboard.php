@@ -767,8 +767,6 @@ error_reporting(E_ALL);
         <!-- Payment and Requests Table -->
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-          <div class="tab-content ">
-
             <div class="header-wrapper">
 
               <!-- Request Table -->
@@ -1115,26 +1113,24 @@ error_reporting(E_ALL);
               renderConfirmedTransactionsTable($conn);
             ?>
 
-          </div>
+          
 
         </div>
 
         <!-- FIT Booking -->
          <div class="tab-pane fade" id="pills-fit" role="tabpanel" aria-labelledby="pills-fit-tab" tabindex="0">
 
-          <div class="tab-content ">
 
-            <div class="header-wrapper">
-              <!-- FIT Table -->
-              <div class="container-fluid">
-                <div class="card">
-                  <div class="card-header d-flex justify-content-between align-items-center bg-primary text-white">
-                    <h6 class="mb-0">F.I.T</h6>
-                  </div>
-                  
-                  <div class="card-body p-0">
-                    <div class="table-responsive">
-                      <table class="table table-bordered table-hover table-sm mb-0">
+            <div class="confirm-container">
+
+              <div class="table-header">
+                <div class="title-wrapper">
+                  <h6 class="">F.I.T</h6>
+                </div>
+              </div>
+
+              <div class="table-wrapper confirm-table-container">
+                  <table class="table confirm-table" id="confirm-table">
                         <thead class="table-light text-center">
                           <tr>
                             <th>TRANSACT NO.</th>
@@ -1171,13 +1167,15 @@ error_reporting(E_ALL);
                           ?>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
+
             </div>
-          </div>
-        </div>
+
+
+            
+        
+      </div>
       </div>
 
     </div>

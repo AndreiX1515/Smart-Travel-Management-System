@@ -190,3 +190,7 @@
 [31-Jul-2025 10:21:18 Europe/Berlin] 📥 POST request received
 [31-Jul-2025 10:21:18 Europe/Berlin] ✅ Received itineraryId: 76
 [31-Jul-2025 10:21:18 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 76
+[04-Aug-2025 03:46:08 Europe/Berlin] 🔍 Incoming DELETE request
+[04-Aug-2025 03:46:08 Europe/Berlin] 📥 POST request received
+[04-Aug-2025 03:46:08 Europe/Berlin] ✅ Received itineraryId: 79
+[04-Aug-2025 03:46:08 Europe/Berlin] 🗑️ Successfully deleted itineraryId: 79

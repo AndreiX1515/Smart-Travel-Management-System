@@ -349,7 +349,7 @@
           let itineraryCard = cardBody.closest(".itinerary-card");
           let itineraryId = itineraryCard ? itineraryCard.getAttribute("data-id") : null;
           if (itineraryId) {
-            window.location.href = `emp-VoucherDetails.php?id=${itineraryId}`;
+            window.location.href = `emp-voucherDetails.php?id=${itineraryId}`;
           }
         }
       });

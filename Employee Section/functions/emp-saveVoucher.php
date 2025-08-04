@@ -231,11 +231,13 @@ $stmtExclude = $conn->prepare("INSERT INTO voucherexcludes (voucherId, excludeIt
 
 
 } catch (PDOException $e) {
+
   if ($conn->inTransaction()) $conn->rollBack();
   error_log("DB Error: " . $e->getMessage());
   echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
 
 } catch (Exception $e) {
+  
   if ($conn->inTransaction()) $conn->rollBack();
   error_log("General Error: " . $e->getMessage());
   echo json_encode(["status" => "error", "message" => "Error: " . $e->getMessage()]);

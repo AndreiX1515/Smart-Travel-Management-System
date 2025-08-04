@@ -1,113 +1,154 @@
-<?php  session_start(); ?>
+<?php session_start(); ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employee - Transactions</title>
-  <?php include '../Employee Section/includes/emp-head.php'?>
+  <title>F.I.T | Table</title>
+  <?php include '../Employee Section/includes/emp-head.php' ?>
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionTableFIT.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+
 <body>
 
-<?php include '../Employee Section/includes/emp-sidebar.php' ?>
+  <?php include '../Employee Section/includes/emp-sidebar.php' ?>
 
-<!-- Main Container -->
-<div class="main-container">
-  <?php include '../Employee Section/includes/emp-navbar.php' ?>
+  <!-- Main Container -->
+  <div class="main-container">
 
-  <div class="main-content">
-    <div class="table-wrapper">
-      <div class="table-header">
-        <div class="search-wrapper">
-          <div class="search-input-wrapper">
-            <input type="text" id="search" placeholder="Search here..">
-            <!-- <span class="icon">🔍</span> -->
+    <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <!-- <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div> -->
+
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">F.I.T</h5>
           </div>
         </div>
 
-        <div class="second-header-wrapper">
-          <div class="date-range-wrapper sorting-wrapper">
-            <div class="select-wrapper">
-              <select id="packages">
-                <option value="All" disabled selected>Select Packages</option>
-                <option value="Autumn Tour Package">Autumn Tour</option>
-                <option value="Summer Tour Package">Summer Tour</option>
-                <option value="Spring Tour Package">Spring Tour</option>
-                <option value="Winter Tour Package">Winter Tour</option>
-                <option value="Regular Tour Package">Regular Tour</option>
-                <option value="Busan Tour Package">Busan Tour</option>
-              </select>
+      </div>
+    </div>
+
+    <!-- Navbar Back Button Script -->
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
+
+    <div class="main-content">
+      <div class="table-wrapper">
+
+        <div class="table-header">
+
+          <div class="search-wrapper">
+            <div class="search-input-wrapper">
+              <input type="text" id="search" placeholder="Search here..">
+              <!-- <span class="icon">🔍</span> -->
             </div>
           </div>
 
-          <div class="date-range-wrapper flightbooking-wrapper">
-            <div class="date-range-inputs-wrapper">
-              <div class="input-with-icon">
-                <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
-                <i class="fas fa-calendar-alt calendar-icon"></i>
+
+          <div class="second-header-wrapper">
+
+            <div class="date-range-wrapper sorting-wrapper">
+              <div class="select-wrapper">
+                <select id="packages">
+                  <option value="All" disabled selected>Select Packages</option>
+                  <option value="Autumn Tour Package">Autumn Tour</option>
+                  <option value="Summer Tour Package">Summer Tour</option>
+                  <option value="Spring Tour Package">Spring Tour</option>
+                  <option value="Winter Tour Package">Winter Tour</option>
+                  <option value="Regular Tour Package">Regular Tour</option>
+                  <option value="Busan Tour Package">Busan Tour</option>
+                </select>
               </div>
             </div>
+
+            <div class="date-range-wrapper flightbooking-wrapper">
+              <div class="date-range-inputs-wrapper">
+                <div class="input-with-icon">
+                  <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date">
+                  <i class="fas fa-calendar-alt calendar-icon"></i>
+                </div>
+              </div>
+            </div>
+
+            <div class="buttons-wrapper">
+              <button id="clearSorting" class="btn btn-secondary">
+                Clear Filters
+              </button>
+            </div>
+
           </div>
 
-          <div class="buttons-wrapper">
-            <button id="clearSorting" class="btn btn-secondary">
-              Clear Filters
-            </button>
-          </div>
         </div>
 
-      </div>
+        <div class="navpills-container">
 
-      <div class="navpills-container">
-        <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">
-              All <span class="badge">88</span>
-            </button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
-              Pending <span class="badge">61</span>
-            </button>
-          </li>
+          <ul class="nav nav-pills nav-underline" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                type="button" role="tab" aria-controls="pills-home" aria-selected="true">
+                All <span class="badge">88</span>
+              </button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+                type="button" role="tab" aria-controls="pills-profile" aria-selected="false">
+                Pending <span class="badge">61</span>
+              </button>
+            </li>
 
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-              Confirmed <span class="badge">27</span>
-            </button>
-          </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
+                type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                Confirmed <span class="badge">27</span>
+              </button>
+            </li>
 
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
-              Cancelled <span class="badge">27</span>
-            </button>
-          </li>
-        </ul>
-      </div>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
+                type="button" role="tab" aria-controls="pills-contact" aria-selected="false">
+                Cancelled <span class="badge">27</span>
+              </button>
+            </li>
+          </ul>
 
-      <!-- Tab Content -->
-      <div class="tab-content mt-4" id="pills-tabContent">
-        <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
-          <div class="table-responsive table-container">
-            <table id="fitBookingTable" class="table-bordered product-table align-middle text-center">
-              <thead>
-                <tr>
-                  <th>Transaction No</th>
-                  <th>Contact Details</th>
-                  <th>Package Name</th>
-                  <th>No. of Nights</th>
-                  <th>Hotel Details</th>
-                  <th>Check-in/out</th>
-                  <th>Guests</th>
-                  <th>Price (₱)</th>
-                  <th>Transaction Date</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content mt-4" id="pills-tabContent">
+
+          <div class="tab-pane fade show active" id="pills-home" role="tabpanel">
+
+            <div class="table-responsive table-container">
+              <table id="fitBookingTable" class="table-bordered product-table align-middle text-center">
+                <thead>
+                  <tr>
+                    <th>Transaction No.</th>
+                    <th>Contact Details</th>
+                    <th>Package Name</th>
+                    <th>No. of Nights</th>
+                    <th>Hotel Details</th>
+                    <th>Check-in/out</th>
+                    <th>Guests</th>
+                    <th>Price (₱)</th>
+                    <th>Transaction Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
                   $sql1 = "SELECT f.transactionNo AS `Transaction No`, 
                                   CONCAT(f.lName, ', ', f.fName, ' ', 
                                         IF(f.mName IS NOT NULL AND f.mName != '', CONCAT(LEFT(f.mName, 1), '.'), ''), 
@@ -127,11 +168,11 @@
                   if ($res1->num_rows > 0) {
                     while ($row = $res1->fetch_assoc()) {
                       $transactNo = $row['Transaction No'];
-                      $statusClass = match($row['Status']) {
+                      $statusClass = match ($row['Status']) {
                         'Confirmed' => 'bg-success text-white',
                         'Cancelled' => 'bg-danger text-white',
-                        'Pending'   => 'bg-warning text-dark',
-                        default     => 'bg-secondary text-white',
+                        'Pending' => 'bg-warning text-dark',
+                        default => 'bg-secondary text-white',
                       };
 
                       echo "<tr data-url='agent-showFITBooking.php?id=" . htmlspecialchars($transactNo) . "'>
@@ -165,58 +206,59 @@
                   } else {
                     echo "<tr><td colspan='10'>No bookings found</td></tr>";
                   }
-                ?>
-              </tbody>
-            </table>
+                  ?>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Pagination Controls -->
+            <div class="table-footer">
+              <button id="prevPage" class="btn btn-outline-primary">Previous</button>
+              <span id="pageInfo" class="page-info"></span>
+              <button id="nextPage" class="btn btn-outline-primary">Next</button>
+            </div>
+
           </div>
 
-          <!-- Pagination Controls -->
-          <div class="table-footer mt-3 d-flex justify-content-between align-items-center">
-            <button id="prevPage" class="btn btn-outline-primary">Previous</button>
-            <span id="pageInfo" class="page-info">Page 1 of 10</span>
-            <button id="nextPage" class="btn btn-outline-primary">Next</button>
-          </div>
-        </div>
+            <!-- Other Tab Content -->
+            <div class="tab-pane fade" id="pills-profile" role="tabpanel">Pending Table</div>
+            <div class="tab-pane fade" id="pills-confirmed" role="tabpanel">Confirmed Table</div>
+            <div class="tab-pane fade" id="pills-cancelled" role="tabpanel">Cancelled Table</div>
 
-        <!-- Other Tab Content -->
-        <div class="tab-pane fade" id="pills-profile" role="tabpanel">Pending Table Here</div>
-        <div class="tab-pane fade" id="pills-confirmed" role="tabpanel">Confirmed Table Here</div>
-        <div class="tab-pane fade" id="pills-cancelled" role="tabpanel">Cancelled Table Her
         </div>
 
       </div>
     </div>
   </div>
-</div>
 
-<?php include '../Employee Section/includes/emp-scripts.php' ?>
+  <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-<!-- Data tables Script-->
-<script>
-  $(document).ready(function () {
-  $('#fitBookingTable').DataTable({
-    autoWidth: false,
-    searching: false, // ✅ disables the search bar
-    columnDefs: [
-      { width: '10%', targets: 0 },  // Transaction No
-      { width: '15%', targets: 1 },  // Contact Details
-      { width: '12%', targets: 2 },  // Package Name
-      { width: '8%', targets: 3 },   // Nights
-      { width: '15%', targets: 4 },  // Hotel Details
-      { width: '15%', targets: 5 },  // Check-in/out
-      { width: '5%', targets: 6 },   // Guests
-      { width: '10%', targets: 7 },  // Price
-      { width: '10%', targets: 8 },  // Transaction Date
-      { width: '10%', targets: 9 }   // Status
-    ],
-    scrollX: true
-  });
-});
+  <!-- Data tables Script-->
+  <script>
+    $(document).ready(function () {
+      $('#fitBookingTable').DataTable({
+        autoWidth: true,
+        searching: false, // ✅ disables the search bar
+        columnDefs: [
+          { width: '10%', targets: 0 },  // Transaction No
+          { width: '15%', targets: 1 },  // Contact Details
+          { width: '12%', targets: 2 },  // Package Name
+          { width: '8%', targets: 3 },   // Nights
+          { width: '15%', targets: 4 },  // Hotel Details
+          { width: '15%', targets: 5 },  // Check-in/out
+          { width: '5%', targets: 6 },   // Guests
+          { width: '10%', targets: 7 },  // Price
+          { width: '10%', targets: 8 },  // Transaction Date
+          { width: '10%', targets: 9 }   // Status
+        ],
+        scrollX: true
+      });
+    });
 
-</script>
+  </script>
 
-<!-- Row Click Selection JS -->
-<!-- <script>
+  <!-- Row Click Selection JS -->
+  <!-- <script>
 document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll("tr[data-url]").forEach(function(row) {
       row.addEventListener("click", function() {
@@ -245,4 +287,5 @@ document.addEventListener("DOMContentLoaded", function() {
 </script> -->
 
 </body>
+
 </html>

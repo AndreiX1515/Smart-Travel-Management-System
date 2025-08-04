@@ -54,6 +54,14 @@
 
     <!-- Data Fetch JSON Script -->
     <?php
+
+
+
+
+
+
+
+
     if (!isset($_GET['id'])) {
       die("Invalid Voucher ID");
     }
@@ -61,36 +69,37 @@
     $voucherId = intval($_GET['id']); // Ensure it's an integer
     
     $sql = "SELECT 
-            v.voucherId,
-            v.voucherName,
-            v.voucherCode,
-            v.accountId,
-            v.itineraryId,
-            v.flightId,
-            v.createdAt AS voucherCreatedAt,
+    v.voucherId,
+    v.voucherName,
+    v.voucherCode,
+    v.accountId,
+    v.itineraryId,
+    v.flightId,
+    v.createdAt AS voucherCreatedAt,
 
-            d.sentToId,
-            d.sentToName,
-            d.sentFrom,
-            d.tourType,
-            d.attachment,
-            d.tourPeriodStart,
-            d.tourPeriodEnd,
-            d.guideId,
-            d.noOfPax,
+    d.sentToId,
+    d.sentToName,
+    d.sentFrom,
+    d.tourType,
+    d.attachment,
+    d.tourPeriodStart,
+    d.tourPeriodEnd,
+    d.guideId,
+    d.noOfPax,
 
-            e.countryCode AS employeeCountryCode,
-            e.contactNo AS employeeContactNo,
+    e.countryCode AS employeeCountryCode,
+    e.contactNo AS employeeContactNo,
 
-            a.emailAddress AS accountEmail,
-            a.accountType AS accountRole,
-            a.accountStatus AS accountStatus
+    a.emailAddress AS accountEmail,
+    a.accountType AS accountRole,
+    a.accountStatus AS accountStatus
 
-        FROM vouchers v
-        LEFT JOIN voucherdetails d ON v.voucherId = d.voucherId
-        LEFT JOIN employee e ON v.accountId = e.accountId
-        LEFT JOIN accounts a ON v.accountId = a.accountId
-        WHERE v.voucherId = ?
+FROM vouchers v
+LEFT JOIN voucherdetails d ON v.voucherId = d.voucherId
+LEFT JOIN employee e ON v.accountId = e.accountId
+LEFT JOIN accounts a ON v.accountId = a.accountId
+WHERE v.voucherId = ?
+
 
   ";
 
@@ -1008,6 +1017,7 @@
     });
   </script>
 
+
   <!-- JavaScript to Initialize Timepicker -->
   <script>
     $(document).ready(function () {
@@ -1021,33 +1031,43 @@
     });
   </script>
 
+
+
   <!-- PHP Fetch of Area and Hotel Values -->
-  <?php
-  $cityOptions = [];
-  $cityHotelMap = [];
+  <script>
+    let cityOptions = {};
+    let cityHotelMap = {};
 
-  $sql = "
-      SELECT a.areaId, a.areaName AS hotelCity, h.hotelName
-      FROM itineraryDataHotels d
-      JOIN itineraryDataArea a ON a.areaId = d.areaId
-      JOIN hotels h ON h.hotelId = d.hotelId
-    ";
+    fetch('../Employee Section/functions/fetchScripts/getAreaAndHotels.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          data.data.forEach(area => {
+            const areaId = area.areaId;
+            const areaName = area.areaName;
+            const hotels = area.hotels;
 
-  $result = $conn->query($sql);
-  if ($result) {
-    while ($row = $result->fetch_assoc()) {
-      $areaId = $row['areaId'];
-      $cityName = $row['hotelCity'];
-      $hotelName = $row['hotelName'];
+            // Equivalent of PHP: $cityOptions[$areaId] = $cityName;
+            cityOptions[areaId] = areaName;
 
-      if (!isset($cityOptions[$areaId])) {
-        $cityOptions[$areaId] = $cityName;
-      }
+            // Equivalent of PHP: $cityHotelMap[$areaId][] = $hotelName;
+            cityHotelMap[areaId] = hotels.map(hotel => hotel.hotelName);
+          });
 
-      $cityHotelMap[$areaId][] = $hotelName;
-    }
-  }
-  ?>
+          // ✅ Use cityOptions and cityHotelMap as needed
+          console.log('cityOptions:', cityOptions);
+          console.log('cityHotelMap:', cityHotelMap);
+        } else {
+          console.error('Error loading data:', data.message);
+        }
+      })
+      .catch(err => console.error('Fetch failed:', err));
+
+  </script>
+
+
+
+
 
   <!-- Global variable -->
   <script>
@@ -1509,7 +1529,7 @@
       updateDisabledExcludeOptions();
     }
 
-    
+
     function createExcludeRow(index, data) {
       const row = document.createElement('div');
       row.className = 'exclude-row mb-3';
@@ -1795,7 +1815,7 @@
 
       // === Handler: Save Voucher ===
       function handleVoucherSave() {
-        
+
         updateLiveVoucherData(); // builds and assigns window.liveVoucherData
         const voucherPayload = JSON.stringify(window.liveVoucherData);
         const templateName = <?= json_encode($voucher['voucherName']) ?>;

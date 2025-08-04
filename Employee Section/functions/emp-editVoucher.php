@@ -59,7 +59,7 @@ try {
   ");
 
   $stmtDetails = $conn->prepare("
-    INSERT INTO voucherDetails (
+    INSERT INTO voucherdetails (
       voucherId, sentToId, sentToName, sentFrom, tourType, attachment,
       tourPeriodStart, tourPeriodEnd, guideId, noOfPax
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
@@ -71,20 +71,20 @@ try {
   ");
 
   $stmtAir = $conn->prepare("
-    INSERT INTO voucherAirSchedules (
+    INSERT INTO voucherairschedules (
       voucherId, flightSegment, flightDate, flightNumber,
       origin, destination, departureTime, arrivalTime
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   ");
 
   $stmtGuide = $conn->prepare("
-    INSERT INTO voucherGuideMeeting (
+    INSERT INTO voucherguidemeeting (
       voucherId, guideId, meetingDate, meetingTime, meetingPlace
     ) VALUES (?, ?, ?, ?, ?)
   ");
 
-  $stmtInclude = $conn->prepare("INSERT INTO voucherIncludes (voucherId, includeItemId, includeOptionItem) VALUES (?, ?, ?)");
-  $stmtExclude = $conn->prepare("INSERT INTO voucherExcludes (voucherId, excludeItemId, excludeOptionItem) VALUES (?, ?, ?)");
+  $stmtInclude = $conn->prepare("INSERT INTO voucherincludes (voucherId, includeItemId, includeOptionItem) VALUES (?, ?, ?)");
+  $stmtExclude = $conn->prepare("INSERT INTO voucherexcludes (voucherId, excludeItemId, excludeOptionItem) VALUES (?, ?, ?)");
 
   $conn->beginTransaction();
 
