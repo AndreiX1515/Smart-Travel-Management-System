@@ -1,0 +1,38 @@
+[31-Jul-2025 09:44:09 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[31-Jul-2025 09:44:09 Europe/Berlin] 📥 POST request received
+[31-Jul-2025 09:44:09 Europe/Berlin] ✅ Received voucherId: 13
+[31-Jul-2025 09:44:09 Europe/Berlin] 🗑️ Successfully deleted voucherId: 13
+[31-Jul-2025 09:44:16 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[31-Jul-2025 09:44:16 Europe/Berlin] 📥 POST request received
+[31-Jul-2025 09:44:16 Europe/Berlin] ✅ Received voucherId: 10
+[31-Jul-2025 09:44:16 Europe/Berlin] 🗑️ Successfully deleted voucherId: 10
+[31-Jul-2025 09:45:33 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[31-Jul-2025 09:45:33 Europe/Berlin] 📥 POST request received
+[31-Jul-2025 09:45:33 Europe/Berlin] ⚠️ voucherId not set in POST
+[31-Jul-2025 09:47:57 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[31-Jul-2025 09:47:57 Europe/Berlin] 📥 POST request received
+[31-Jul-2025 09:47:57 Europe/Berlin] ⚠️ voucherId not set in POST
+[31-Jul-2025 09:54:20 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[31-Jul-2025 09:54:20 Europe/Berlin] 📥 POST request received
+[31-Jul-2025 09:54:20 Europe/Berlin] ✅ Received voucherId: 11
+[31-Jul-2025 09:54:20 Europe/Berlin] 🗑️ Successfully deleted voucherId: 11
+[31-Jul-2025 10:50:47 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[31-Jul-2025 10:50:47 Europe/Berlin] 📥 POST request received
+[31-Jul-2025 10:50:47 Europe/Berlin] ✅ Received voucherId: 12
+[31-Jul-2025 10:50:48 Europe/Berlin] 🗑️ Successfully deleted voucherId: 12
+[31-Jul-2025 10:50:49 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[31-Jul-2025 10:50:49 Europe/Berlin] 📥 POST request received
+[31-Jul-2025 10:50:49 Europe/Berlin] ✅ Received voucherId: 14
+[31-Jul-2025 10:50:49 Europe/Berlin] 🗑️ Successfully deleted voucherId: 14
+[03-Aug-2025 16:00:38 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[03-Aug-2025 16:00:38 Europe/Berlin] 📥 POST request received
+[03-Aug-2025 16:00:38 Europe/Berlin] ✅ Received voucherId: 34
+[03-Aug-2025 16:00:38 Europe/Berlin] 🗑️ Successfully deleted voucherId: 34
+[03-Aug-2025 16:10:36 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[03-Aug-2025 16:10:36 Europe/Berlin] 📥 POST request received
+[03-Aug-2025 16:10:36 Europe/Berlin] ✅ Received voucherId: 33
+[03-Aug-2025 16:10:36 Europe/Berlin] 🗑️ Successfully deleted voucherId: 33
+[03-Aug-2025 16:11:44 Europe/Berlin] 🔍 Incoming DELETE request for voucher
+[03-Aug-2025 16:11:44 Europe/Berlin] 📥 POST request received
+[03-Aug-2025 16:11:44 Europe/Berlin] ✅ Received voucherId: 32
+[03-Aug-2025 16:11:44 Europe/Berlin] 🗑️ Successfully deleted voucherId: 32

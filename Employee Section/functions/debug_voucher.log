@@ -1397,3 +1397,70 @@ ExportVoucher1Day started at 2025-07-30 10:13:01
 Excel file output success at 2025-07-30 10:13:01
 ExportVoucher1Day started at 2025-07-30 10:13:38
 Excel file output success at 2025-07-30 10:13:38
+ExportVoucher1Day started at 2025-07-31 10:43:27
+Excel file output success at 2025-07-31 10:43:27
+ExportVoucher1Day started at 2025-08-01 05:27:54
+Exception: Class "ZipArchive" not found
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Shared\File.php(186): PhpOffice\PhpSpreadsheet\Shared\File::fileExists('zip://../../Tem...')
+#1 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx.php(79): PhpOffice\PhpSpreadsheet\Shared\File::testFileNoThrow('../../Template/...', '_rels/.rels')
+#2 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(163): PhpOffice\PhpSpreadsheet\Reader\Xlsx->canRead('../../Template/...')
+#3 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(112): PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile('../../Template/...', NULL)
+#4 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\exportVoucher\exportVoucherDefault.php(13): PhpOffice\PhpSpreadsheet\IOFactory::load('../../Template/...')
+#5 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(33): require('C:\\xampp\\htdocs...')
+#6 {main}
+ExportVoucher1Day started at 2025-08-01 05:38:25
+Exception: Class "ZipArchive" not found
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Shared\File.php(186): PhpOffice\PhpSpreadsheet\Shared\File::fileExists('zip://../../Tem...')
+#1 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx.php(79): PhpOffice\PhpSpreadsheet\Shared\File::testFileNoThrow('../../Template/...', '_rels/.rels')
+#2 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(163): PhpOffice\PhpSpreadsheet\Reader\Xlsx->canRead('../../Template/...')
+#3 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(112): PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile('../../Template/...', NULL)
+#4 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\exportVoucher\exportVoucherDefault.php(13): PhpOffice\PhpSpreadsheet\IOFactory::load('../../Template/...')
+#5 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(33): require('C:\\xampp\\htdocs...')
+#6 {main}
+ExportVoucher1Day started at 2025-08-01 06:49:50
+Exception: Class "ZipArchive" not found
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Shared\File.php(186): PhpOffice\PhpSpreadsheet\Shared\File::fileExists('zip://../../Tem...')
+#1 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx.php(79): PhpOffice\PhpSpreadsheet\Shared\File::testFileNoThrow('../../Template/...', '_rels/.rels')
+#2 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(163): PhpOffice\PhpSpreadsheet\Reader\Xlsx->canRead('../../Template/...')
+#3 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(112): PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile('../../Template/...', NULL)
+#4 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\exportVoucher\exportVoucherDefault.php(13): PhpOffice\PhpSpreadsheet\IOFactory::load('../../Template/...')
+#5 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(32): require('C:\\xampp\\htdocs...')
+#6 {main}
+ExportVoucher1Day started at 2025-08-01 07:45:46
+Exception: Class "ZipArchive" not found
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Shared\File.php(186): PhpOffice\PhpSpreadsheet\Shared\File::fileExists('zip://../../Tem...')
+#1 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx.php(79): PhpOffice\PhpSpreadsheet\Shared\File::testFileNoThrow('../../Template/...', '_rels/.rels')
+#2 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(163): PhpOffice\PhpSpreadsheet\Reader\Xlsx->canRead('../../Template/...')
+#3 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(112): PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile('../../Template/...', NULL)
+#4 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\exportVoucher\exportVoucherDefault.php(13): PhpOffice\PhpSpreadsheet\IOFactory::load('../../Template/...')
+#5 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(32): require('C:\\xampp\\htdocs...')
+#6 {main}
+ExportVoucher1Day started at 2025-08-01 07:46:30
+Exception: Class "ZipArchive" not found
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Shared\File.php(186): PhpOffice\PhpSpreadsheet\Shared\File::fileExists('zip://../../Tem...')
+#1 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx.php(79): PhpOffice\PhpSpreadsheet\Shared\File::testFileNoThrow('../../Template/...', '_rels/.rels')
+#2 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(163): PhpOffice\PhpSpreadsheet\Reader\Xlsx->canRead('../../Template/...')
+#3 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(112): PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile('../../Template/...', NULL)
+#4 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\exportVoucher\exportVoucherDefault.php(13): PhpOffice\PhpSpreadsheet\IOFactory::load('../../Template/...')
+#5 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(32): require('C:\\xampp\\htdocs...')
+#6 {main}
+ExportVoucher1Day started at 2025-08-01 08:13:01
+Exception: Class "ZipArchive" not found
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Shared\File.php(186): PhpOffice\PhpSpreadsheet\Shared\File::fileExists('zip://../../Tem...')
+#1 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx.php(79): PhpOffice\PhpSpreadsheet\Shared\File::testFileNoThrow('../../Template/...', '_rels/.rels')
+#2 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(163): PhpOffice\PhpSpreadsheet\Reader\Xlsx->canRead('../../Template/...')
+#3 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(112): PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile('../../Template/...', NULL)
+#4 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\exportVoucher\exportVoucherDefault.php(13): PhpOffice\PhpSpreadsheet\IOFactory::load('../../Template/...')
+#5 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(32): require('C:\\xampp\\htdocs...')
+#6 {main}
+ExportVoucher1Day started at 2025-08-01 08:15:59
+Exception: Class "ZipArchive" not found
+Trace: #0 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Shared\File.php(186): PhpOffice\PhpSpreadsheet\Shared\File::fileExists('zip://../../Tem...')
+#1 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\Reader\Xlsx.php(79): PhpOffice\PhpSpreadsheet\Shared\File::testFileNoThrow('../../Template/...', '_rels/.rels')
+#2 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(163): PhpOffice\PhpSpreadsheet\Reader\Xlsx->canRead('../../Template/...')
+#3 C:\xampp\htdocs\Smart-Travel-Management-System\vendor\phpoffice\phpspreadsheet\src\PhpSpreadsheet\IOFactory.php(112): PhpOffice\PhpSpreadsheet\IOFactory::createReaderForFile('../../Template/...', NULL)
+#4 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\exportVoucher\exportVoucherDefault.php(13): PhpOffice\PhpSpreadsheet\IOFactory::load('../../Template/...')
+#5 C:\xampp\htdocs\Smart-Travel-Management-System\Employee Section\functions\voucher-template-excel.php(32): require('C:\\xampp\\htdocs...')
+#6 {main}
+ExportVoucher1Day started at 2025-08-01 08:23:23
+Excel file output success at 2025-08-01 08:23:24

@@ -43,7 +43,7 @@ try {
   $branchName = '';
 
   if ($toId) {
-    $stmtBranch = $conn->prepare("SELECT branchName FROM branch WHERE branchId = ? LIMIT 1");
+    $stmtBranch = $conn->prepare("SELECT branchName FROM branch WHERE branchId = ? LIMIT 1"); //
     if (!$stmtBranch->execute([$toId])) {
       throw new Exception("Failed to fetch branchName for toId: $toId");
     }
@@ -57,31 +57,31 @@ try {
   }
 
   // Prepare all statements
-  $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM vouchers WHERE voucherCode = ?");
+  $stmtCheck = $conn->prepare("SELECT COUNT(*) FROM vouchers WHERE voucherCode = ?"); //
 
   $stmtVoucher = $conn->prepare("
     INSERT INTO vouchers (voucherName, accountId, voucherCode, itineraryId, flightId) 
     VALUES (?, ?, ?, ?, ?)
   ");
 
-  $stmtDetails = $conn->prepare("INSERT INTO voucherDetails (
+  $stmtDetails = $conn->prepare("INSERT INTO voucherdetails (
       voucherId, sentToId, sentToName, sentFrom, tourType, attachment,
       tourPeriodStart, tourPeriodEnd, guideId, noOfPax
   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-  $stmtHotel = $conn->prepare("INSERT INTO voucherdatehotels (voucherId, startDate, endDate, NoOfnights, city, hotel) VALUES (?, ?, ?, ?, ?, ?)");
+ $stmtHotel = $conn->prepare("INSERT INTO voucherdatehotels (voucherId, startDate, endDate, NoOfnights, city, hotel) VALUES (?, ?, ?, ?, ?, ?)");
 
-  $stmtAir = $conn->prepare("INSERT INTO voucherAirSchedules (
+  $stmtAir = $conn->prepare("INSERT INTO voucherairschedules (
       voucherId, flightSegment, flightDate, flightNumber,
       origin, destination, departureTime, arrivalTime
   ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-  $stmtGuide = $conn->prepare("INSERT INTO voucherGuideMeeting (
+  $stmtGuide = $conn->prepare("INSERT INTO voucherguidemeeting (
       voucherId, guideId, meetingDate, meetingTime, meetingPlace
   ) VALUES (?, ?, ?, ?, ?)");
 
-  $stmtInclude = $conn->prepare("INSERT INTO voucherIncludes (voucherId, includeItemId, includeOptionItem) VALUES (?, ?, ?)");
-  $stmtExclude = $conn->prepare("INSERT INTO voucherExcludes (voucherId, excludeItemId, excludeOptionItem) VALUES (?, ?, ?)");
+ $stmtInclude = $conn->prepare("INSERT INTO voucherincludes (voucherId, includeItemId, includeOptionItem) VALUES (?, ?, ?)");
+$stmtExclude = $conn->prepare("INSERT INTO voucherexcludes (voucherId, excludeItemId, excludeOptionItem) VALUES (?, ?, ?)");
 
   $conn->beginTransaction();
 
@@ -231,11 +231,13 @@ try {
 
 
 } catch (PDOException $e) {
+
   if ($conn->inTransaction()) $conn->rollBack();
   error_log("DB Error: " . $e->getMessage());
   echo json_encode(["status" => "error", "message" => "Database error: " . $e->getMessage()]);
 
 } catch (Exception $e) {
+  
   if ($conn->inTransaction()) $conn->rollBack();
   error_log("General Error: " . $e->getMessage());
   echo json_encode(["status" => "error", "message" => "Error: " . $e->getMessage()]);

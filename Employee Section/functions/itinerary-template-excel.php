@@ -1,14 +1,25 @@
 <?php
+
+
+// Debugging settings
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require '../../conn.php';  // Ensure the database connection is included
 require '../../vendor/autoload.php';  // Ensure Composer's autoloader is included
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+
+
+use PhpOffice\PhpSpreadsheet\Worksheet\Protection;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
-use PhpOffice\PhpSpreadsheet\Writer\Pdf\Dompdf;
+
 
 // Ensure POST request contains itinerary and days details
 if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
@@ -61,8 +72,45 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         $pageMargins->setHeader(0.3);    // 0.3 inch header
         $pageMargins->setFooter(0.3);    // 0.3 inch footer
 
+        // Step 1: Lock all cells (they are usually locked by default, but just in case)
+        $sheet->getStyle($sheet->calculateWorksheetDimension())->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_PROTECTED);
+
+        // Step 2: Protect the sheet (and allow printing)
+        $protection = $sheet->getProtection();
+        $protection->setPassword('smtPassword123'); // Set a password
+        $protection->setSheet(true); // Lock the sheet
+        $protection->setSort(false);
+        $protection->setInsertRows(false);
+        $protection->setFormatCells(false);
+        $protection->setDeleteColumns(false);
+        $protection->setDeleteRows(false);
+
+        // Allow printing specifically
+        $sheet->getProtection()->setPassword('smtPassword123');
+        $sheet->getProtection()->setSheet(true); // Enable sheet protection
+        $sheet->getProtection()->setSort(false);
+        $sheet->getProtection()->setInsertRows(false);
+        $sheet->getProtection()->setFormatCells(false);
+
 
         // Header
+        // Transaction Number 
+
+        // Transaction Number
+        $transactionNumberRaw = $itineraryDetails['itineraryId'] ?? 0; // Default to 0 if not set
+        $transactionNumber = str_pad($transactionNumberRaw, 6, '0', STR_PAD_LEFT); // Pad to 6 digits
+
+        // ✅ Output formatted transaction number to A9
+        $sheet->setCellValue('L2', $transactionNumber);
+
+
+
+
+
+
+
+
+
         // =========== Package Name =========== //
         function formatPackageName($name) {
             $words = preg_split('/\s+/', trim($name));
@@ -101,6 +149,11 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
 
         // ✅ Output formatted name to A9
         $sheet->setCellValue('A9', $formattedItineraryTitle);
+
+
+
+
+
 
        // =========== Hotels =========== //
         $startRow = 11; // Starting row
@@ -748,6 +801,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         $writer->save('php://output');
 
         exit;  // Ensure no other content is sent
+        
     } catch (Exception $e) {
         // Log the error for debugging purposes
         error_log('Excel generation failed: ' . $e->getMessage());

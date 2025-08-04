@@ -18,7 +18,7 @@ body {
 /* Main Container */
 .main-container {
   flex: 1;
-  padding: 0 15px 0 25px;
+  padding: 0;
   background-color: rgba(245, 246, 248, 0.137);
   display: flex;
   flex-direction: row;
@@ -26,32 +26,23 @@ body {
 }
 
 
-
-/* Sidebar Styling */
-.sidebar {
-  height: 100vh;
-  width: 220px;
-  background-color: #343A40;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 1000;
-}
-
-
 /* Main Content */
 .main-content {
   margin-top: 6vh;
-  height: 93vh;
+  height: 94vh;
   width: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: hidden;
   gap: 0px; /* Add spacing between internal sections */
+  padding: 10px 25px 0px 25px;
 
   /* border: 1px solid black; */
 }
 
+
+
+/* ================== Navbar Styles ================== */
 .navbar {
   display: flex;
   align-items: stretch; /* Stretch children vertically */
@@ -65,19 +56,177 @@ body {
   z-index: 1000;
 
   box-sizing: border-box;
+  
+  /* border-bottom: 1px solid gainsboro; */
+}
+
+/* Wrapper for the whole header section */
+.page-header-wrapper {
+  display: flex;
+  align-items: stretch; 
+  gap: 10px;
+  height: 100%; 
+  width: 100%;
+  padding: 0px 25px;
+  /* border: 1px solid black; */
+  box-sizing: border-box;
   /* border: 1px solid black; */
 }
+
+/* Section for back button or similar */
+.page-header-top {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  height: 100%;
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+}
+
+/* Section for main header content */
+.page-header-content {
+  flex: 1; /* Take remaining space */
+  display: flex;
+  justify-content: flex-start; /* Align content to start */
+  align-items: center; /* Center vertically */
+  height: 100%;
+  /* border: 1px solid black; */
+  box-sizing: border-box;
+}
+
+
+/* Back button container */
+.back-btn-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* Back button style */
+.back-btn {
+  background: white;
+  color: #464646;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: .5px solid gainsboro;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn:hover {
+  background: #7c7c7c;
+  color: white;
+}
+
+
+/* Content section */
+.page-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  /* border: 1px solid black; */
+  /* margin-bottom: 5px;
+  margin-left: 5px; */
+}
+
+.page-header-text .header-title {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+  margin-left: 5px;
+  margin-top: 8px;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
 /* ================ Miscellaneous ==================== */
 .separator {
-    border-top: 1px solid rgba(220, 220, 220, 0.493);
-    margin: 0px 10px;
-  }
-
+  border-top: 1px solid rgba(220, 220, 220, 0.493);
+  margin: 0px 10px;
+}
 
 /* ================ Sidebar ==================== */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between; 
+  width: 260px; 
+  background-color: #343A40;
+
+  gap: 15px;
+  padding: 0px 0px;
+
+  overflow: hidden;
+}
+
+
+/* Logo header - flex container for logo and text */
+
+/* Logo container - centers content inside */
+.logo-container {
+  padding: 0px 8px;
+  flex-shrink: 0;
+  margin-bottom: 0px;
+  /* background-color: #ffffff; */
+
+  /* border-bottom: 1px solid rgba(220, 220, 220, 0.5); */
+}
+
+/* Logo content - horizontal layout */
+.logo-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 14px 20px;
+  flex-shrink: 0;
+  /* border: 1px solid black; */
+  
+}
+
+
+.sidebar-logo {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+
+.logo-content span {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+
+/* Logo icon background */
+.logo-backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
 /* Sidebar icons */
 .sidebar .icon {
   display: flex;
@@ -138,98 +287,190 @@ body {
 
 
 .nav-logo-wrapper {
-  margin-top: 10px;
+  margin-top: 5px;
+  /* border: 1px solid black; */
 }
 
 .nav-logo-item-wrapper {
-  padding: 5px 0;
+  padding: 0px 0;
   display: flex;
   align-items: flex-start;
 }
 
 
-/* Logo content layout */
-.logo-content {
+
+
+
+
+
+
+
+/* Navigation area - fills remaining space and scrolls if needed */
+.nav.flex-column {
+  flex-grow: 1;
+  overflow: hidden;
+  max-height: 100%;
+  padding: 0px 10px;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Logout section - fixed at the bottom */
+.logout {
+  padding: 0 10px;
+  flex-shrink: 0;
+  margin-bottom: 15px;
+  height: 8vh; /* Set a fixed height */
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  width: 100%;
-  margin-left: 2.5px;
+
+  /* border: 1px solid gainsboro; */
+
+   /* border: 1px solid black; */
 }
 
-/* Icon container */
-.logo-backdrop {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 35px;
-}
-
-/* Logo image */
-.sidebar-logo {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
-/* Logo text (default hidden) */
-.logo-content span {
-  display: inline;
-  font-size: 0.85rem;
-  line-height: 1;
-  font-weight: bold;
-  color: white;
-  white-space: nowrap;
-  opacity: 1;
-}
-
-/* Push logout to the bottom */
-.sidebar .logout {
-  margin-top: auto;
-}
-
+/* Profile Section (top) */
 .profile-section {
   display: flex;
-  /* justify-content: space-between; */
-  align-items: flex-start;
-  padding: 10px 15px;
-  margin: 10px 5px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
   border-radius: 5px;
   background-color: transparent;
-  transition: background-color 0.3s ease;
   border: 1px solid rgba(220, 220, 220, 0.493);
+  height: 100%; /* Take full height of .logout */
+  width: 100%;
+  margin: 0; /* Remove vertical spacing */
+
+  /* border: 1px solid black; */
 }
 
+
+
+/* Left side (name & icon) */
 .profile-left {
-  display: flex; /* Hidden by default */
-  flex-direction: column;
-  color: white;
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
-.profile-left.show {
   display: flex;
-  opacity: 1;
-}
-
-
-.profile-left .name {
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.profile-left .position {
-  font-size: 14px;
+  align-items: center;
+  flex: 3;
+  gap: 8px;
+  color: white;
+  height: 100%; /* Take full height of .logout */
+  /* border: 1px solid black; */
 }
 
 .profile-icon {
   font-size: 1.5rem;
   color: white;
-  background-color: transparent;
-  margin-left: -5px;
+
+  /* border: 1px solid black; */
 }
+
+.name-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 80%;
+  /* border: 1px solid black; */
+}
+
+.name-section .name {
+  font-weight: bold;
+}
+
+.name-section .empid {
+  font-size: .8rem;
+}
+
+/* Right-side icons */
+.btn-section {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 0 0px;
+  position: relative;
+  margin-left: auto;
+
+  /* border: 1px solid black; */
+}
+
+/* Icon buttons */
+.btn-section .icon {
+  font-size: 0.8rem;
+  color: gainsboro;
+  cursor: pointer;
+  padding: 3px 0px;
+  line-height: .8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  width: 25px;
+  /* border: 1px groove rgba(220, 220, 220, 0.603); */
+  border-radius: 4px;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.btn-section .icon:hover {
+  background-color: #575757;
+}
+
+/* Dropdown Menu - shows ABOVE the icon */
+.dropdown-menu {
+  position: absolute;
+  bottom: 110%; /* show above the icon */
+  right: 0;
+  margin-bottom: 6px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: none;
+  min-width: 140px;
+  z-index: 999;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dropdown-menu li {
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.dropdown-menu li:last-child {
+  border-bottom: none;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 6px 10px;
+  color: #333;
+  text-decoration: none;
+  transition: background 0.2s ease;
+  font-size: 0.75rem;
+}
+
+.dropdown-menu a:hover {
+  background-color: #f2f2f2;
+}
+
+
+
+
 
 
 
@@ -477,11 +718,6 @@ body {
 
 
 
-
-
-
-
-
 /* Individual icon colors */
 #raiseTicketIcon i {
   color: #116530;
@@ -566,91 +802,7 @@ body {
 
 
 
-/* ===================== */
-/* Navbar Styles */
 
-
-
-/* Wrapper for the whole header section */
-.page-header-wrapper {
-  display: flex;
-  align-items: stretch; 
-  gap: 10px;
-  height: 100%; 
-  width: 100%;
-  /* border: 1px solid black; */
-  box-sizing: border-box;
-}
-
-/* Section for back button or similar */
-.page-header-top {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100%;
-  /* border: 1px solid black; */
-  box-sizing: border-box;
-}
-
-/* Section for main header content */
-.page-header-content {
-  flex: 1; /* Take remaining space */
-  display: flex;
-  justify-content: flex-start; /* Align content to start */
-  align-items: center; /* Center vertically */
-  height: 100%;
-  /* border: 1px solid black; */
-  box-sizing: border-box;
-}
-
-
-/* Back button container */
-.back-btn-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-/* Back button style */
-.back-btn {
-  background: white;
-  color: #464646;
-  border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: .5px solid gainsboro;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.back-btn:hover {
-  background: #7c7c7c;
-  color: white;
-}
-
-
-/* Content section */
-.page-header-text {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  /* border: 1px solid black; */
-  /* margin-bottom: 5px;
-  margin-left: 5px; */
-}
-
-.page-header-text .header-title {
-  font-size: 1rem;
-  font-weight: 500;
-  color: #333;
-  margin-left: 5px;
-  margin-top: 8px;
-}
 
 
 

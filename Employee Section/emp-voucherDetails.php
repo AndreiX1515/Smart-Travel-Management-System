@@ -54,6 +54,14 @@
 
     <!-- Data Fetch JSON Script -->
     <?php
+
+
+
+
+
+
+
+
     if (!isset($_GET['id'])) {
       die("Invalid Voucher ID");
     }
@@ -61,36 +69,38 @@
     $voucherId = intval($_GET['id']); // Ensure it's an integer
     
     $sql = "SELECT 
-            v.voucherId,
-            v.voucherName,
-            v.voucherCode,
-            v.accountId,
-            v.itineraryId,
-            v.flightId,
-            v.createdAt AS voucherCreatedAt,
+    v.voucherId,
+    v.voucherName,
+    v.voucherCode,
+    v.accountId,
+    v.itineraryId,
+    v.flightId,
+    v.createdAt AS voucherCreatedAt,
 
-            d.sentToId,
-            d.sentToName,
-            d.sentFrom,
-            d.tourType,
-            d.attachment,
-            d.tourPeriodStart,
-            d.tourPeriodEnd,
-            d.guideId,
-            d.noOfPax,
+    d.sentToId,
+    d.sentToName,
+    d.sentFrom,
+    d.tourType,
+    d.attachment,
+    d.tourPeriodStart,
+    d.tourPeriodEnd,
+    d.guideId,
+    d.noOfPax,
 
-            e.countryCode AS employeeCountryCode,
-            e.contactNo AS employeeContactNo,
+    e.countryCode AS employeeCountryCode,
+    e.contactNo AS employeeContactNo,
 
-            a.emailAddress AS accountEmail,
-            a.accountType AS accountRole,
-            a.accountStatus AS accountStatus
+    a.emailAddress AS accountEmail,
+    a.accountType AS accountRole,
+    a.accountStatus AS accountStatus
 
-        FROM vouchers v
-        LEFT JOIN voucherDetails d ON v.voucherId = d.voucherId
-        LEFT JOIN employee e ON v.accountId = e.accountId
-        LEFT JOIN accounts a ON v.accountId = a.accountId
-        WHERE v.voucherId = ?
+FROM vouchers v
+LEFT JOIN voucherdetails d ON v.voucherId = d.voucherId
+LEFT JOIN employee e ON v.accountId = e.accountId
+LEFT JOIN accounts a ON v.accountId = a.accountId
+WHERE v.voucherId = ?
+
+
   ";
 
     $stmt = $conn->prepare($sql);
@@ -156,9 +166,10 @@
     // Step 2: Fetch voucherDateAndHotels
     $sqlDates = "
         SELECT startDate, endDate, NoOfNights AS nights, city, hotel
-        FROM voucherDateHotels
+        FROM voucherdatehotels
         WHERE voucherId = ?
-        ORDER BY startDate ASC
+        ORDER BY startDate ASC;
+
     ";
 
 
@@ -175,9 +186,10 @@
     // Step 3: Fetch voucherIncludes
     $sqlIncludes = "
         SELECT i.includesId, i.itemName 
-        FROM voucherIncludes vi
-        INNER JOIN voucherIncludeOptions i ON vi.includeItemId = i.includesId
-        WHERE vi.voucherId = ?
+        FROM voucherincludes vi
+        INNER JOIN voucherincludeoptions i ON vi.includeItemId = i.includesId
+        WHERE vi.voucherId = ?;
+
     ";
 
     $stmt = $conn->prepare($sqlIncludes);
@@ -198,9 +210,10 @@
     // Step 4: Fetch voucherExcludes
     $sqlExcludes = "
         SELECT e.excludesId, e.itemName 
-        FROM voucherExcludes ve
-        INNER JOIN voucherExcludeOptions e ON ve.excludeItemId = e.excludesId
-        WHERE ve.voucherId = ?
+        FROM voucherexcludes ve
+        INNER JOIN voucherexcludeoptions e ON ve.excludeItemId = e.excludesId
+        WHERE ve.voucherId = ?;
+
     ";
 
     $stmt = $conn->prepare($sqlExcludes);
@@ -220,16 +233,17 @@
     // Step 5: Fetch Air Schedules
     $sqlAirSchedules = "
       SELECT 
-        flightSegment, 
-        flightDate, 
-        flightNumber, 
-        origin, 
-        destination, 
-        TIME_FORMAT(departureTime, '%H:%i') AS departureTime, 
-        TIME_FORMAT(arrivalTime, '%H:%i') AS arrivalTime
-      FROM voucherAirSchedules
+          flightSegment, 
+          flightDate, 
+          flightNumber, 
+          origin, 
+          destination, 
+          TIME_FORMAT(departureTime, '%H:%i') AS departureTime, 
+          TIME_FORMAT(arrivalTime, '%H:%i') AS arrivalTime
+      FROM voucherairschedules
       WHERE voucherId = ?
-      ORDER BY FIELD(flightSegment, 'departure1', 'departure2'), flightDate ASC
+      ORDER BY FIELD(flightSegment, 'departure1', 'departure2'), flightDate ASC;
+
     ";
 
 
@@ -274,6 +288,8 @@
     // Output to browser console as JSON using JSON.stringify
     $jsonData = json_encode($voucher, JSON_UNESCAPED_UNICODE);
     echo "<script>console.log(JSON.stringify(" . $jsonData . ", null, 2));</script>";
+
+    $itineraryId = $_GET['id'] ?? '';
 
     ?>
 
@@ -909,7 +925,7 @@
           <option value="both" disabled>Excel and PDF </option>
         </select>
 
-        <button type="button" class="btn btn-primary" id="submitVoucher">Generate Itinerary</button>
+        <button type="button" class="btn btn-primary" id="submitVoucher">Generate Voucher</button>
 
         </form>
       </div>
@@ -1001,6 +1017,7 @@
     });
   </script>
 
+
   <!-- JavaScript to Initialize Timepicker -->
   <script>
     $(document).ready(function () {
@@ -1014,33 +1031,43 @@
     });
   </script>
 
+
+
   <!-- PHP Fetch of Area and Hotel Values -->
-  <?php
-  $cityOptions = [];
-  $cityHotelMap = [];
+  <script>
+    let cityOptions = {};
+    let cityHotelMap = {};
 
-  $sql = "
-      SELECT a.areaId, a.areaName AS hotelCity, h.hotelName
-      FROM itineraryDataHotels d
-      JOIN itineraryDataArea a ON a.areaId = d.areaId
-      JOIN hotels h ON h.hotelId = d.hotelId
-    ";
+    fetch('../Employee Section/functions/fetchScripts/getAreaAndHotels.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          data.data.forEach(area => {
+            const areaId = area.areaId;
+            const areaName = area.areaName;
+            const hotels = area.hotels;
 
-  $result = $conn->query($sql);
-  if ($result) {
-    while ($row = $result->fetch_assoc()) {
-      $areaId = $row['areaId'];
-      $cityName = $row['hotelCity'];
-      $hotelName = $row['hotelName'];
+            // Equivalent of PHP: $cityOptions[$areaId] = $cityName;
+            cityOptions[areaId] = areaName;
 
-      if (!isset($cityOptions[$areaId])) {
-        $cityOptions[$areaId] = $cityName;
-      }
+            // Equivalent of PHP: $cityHotelMap[$areaId][] = $hotelName;
+            cityHotelMap[areaId] = hotels.map(hotel => hotel.hotelName);
+          });
 
-      $cityHotelMap[$areaId][] = $hotelName;
-    }
-  }
-  ?>
+          // ✅ Use cityOptions and cityHotelMap as needed
+          console.log('cityOptions:', cityOptions);
+          console.log('cityHotelMap:', cityHotelMap);
+        } else {
+          console.error('Error loading data:', data.message);
+        }
+      })
+      .catch(err => console.error('Fetch failed:', err));
+
+  </script>
+
+
+
+
 
   <!-- Global variable -->
   <script>
@@ -1303,8 +1330,10 @@
     async function fetchIncludeOptions() {
       const res = await fetch('../Employee Section/functions/fetchScripts/getIncludeOptions.php');
       includeOptions = await res.json();
+
       renderIncludes();
     }
+
 
     function renderIncludes() {
       const container = document.getElementById('includesContainer');
@@ -1341,7 +1370,8 @@
       <select id="includesSelect${index}" name="includesSelect${index}" class="form-select include-select" required>
         <option value="" disabled ${!data.value ? 'selected' : ''}>Select Include</option>
       </select>
-      <input type="text" class="form-control mt-2 custom-input ${data.value === 'others' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
+
+      <input type="text" class="form-control mt-2 custom-input ${data.value === '1' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
     `;
 
       const select = row.querySelector('select');
@@ -1359,14 +1389,14 @@
       // Set initial value
       if (data.value) {
         select.value = data.value;
-        if (data.value === 'others') {
+        if (data.value === 1 || data.value === '1') {
           customInput.classList.remove('d-none');
         }
       }
 
       // Event: select change
       select.addEventListener('change', () => {
-        if (select.value === 'others') {
+        if (select.value === '1' || select.value === 1) {
           customInput.classList.remove('d-none');
           customInput.focus();
         } else {
@@ -1475,11 +1505,9 @@
       const res = await fetch('../Employee Section/functions/fetchScripts/getExcludeOptions.php');
       excludeOptions = await res.json();
 
-      // Add "Others" at the end
-      excludeOptions.push({ excludesId: 'others', itemName: 'Others' });
-
       renderExcludes();
     }
+
 
     function renderExcludes() {
       const container = document.getElementById('excludesContainer');
@@ -1501,6 +1529,7 @@
       updateDisabledExcludeOptions();
     }
 
+
     function createExcludeRow(index, data) {
       const row = document.createElement('div');
       row.className = 'exclude-row mb-3';
@@ -1516,7 +1545,8 @@
       <select id="excludesSelect${index}" name="excludesSelect${index}" class="form-select exclude-select" required>
         <option value="" disabled ${!data.value ? 'selected' : ''}>Select Exclude</option>
       </select>
-      <input type="text" class="form-control mt-2 custom-input ${data.value === 'others' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
+
+      <input type="text" class="form-control mt-2 custom-input ${data.value === '1' ? '' : 'd-none'}" placeholder="Please specify..." value="${data.label || ''}">
     `;
 
       const select = row.querySelector('select');
@@ -1534,14 +1564,14 @@
       // Set selected value
       if (data.value) {
         select.value = data.value;
-        if (data.value === 'others') {
+        if (data.value === 1 || data.value === 'others') {
           customInput.classList.remove('d-none');
         }
       }
 
       // Events
       select.addEventListener('change', () => {
-        if (select.value === 'others') {
+        if (select.value === 1 || select.value === 'others') {
           customInput.classList.remove('d-none');
           customInput.focus();
         } else {
@@ -1632,7 +1662,6 @@
     document.addEventListener('DOMContentLoaded', fetchExcludeOptions);
   </script>
 
-
   <!-- Console.log -->
   <script>
     document.addEventListener('input', (e) => {
@@ -1641,8 +1670,6 @@
       }
     }); 
   </script>
-
-
 
   <!-- Field Values JSON -->
   <script>
@@ -1779,8 +1806,6 @@
   </script>
 
 
-
-
   <!-- Generate Voucher File -->
   <script>
     $(document).ready(function () {
@@ -1790,7 +1815,7 @@
 
       // === Handler: Save Voucher ===
       function handleVoucherSave() {
-        
+
         updateLiveVoucherData(); // builds and assigns window.liveVoucherData
         const voucherPayload = JSON.stringify(window.liveVoucherData);
         const templateName = <?= json_encode($voucher['voucherName']) ?>;

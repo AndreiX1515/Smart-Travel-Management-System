@@ -28,18 +28,15 @@ $position = htmlspecialchars(strtoupper($empId));
 
 <div class="sidebar" id="sidebar">
 
-	<ul class="nav flex-column nav-logo-wrapper nav-logo-header">
-		<li class="nav-item nav-logo-item-wrapper">
-			<a class="nav-link logo-link" href="#">
-				<div class="logo-content">
-					<div class="logo-backdrop">
-						<img src="../Assets/Logos/logo-tab.png" alt="Logo" class="sidebar-logo">
-					</div>
-					<span class="fw-bold">SMART TRAVEL</span>
-				</div>
-			</a>
-		</li>
-	</ul>
+	<div class="logo-container">
+		<div class="logo-content">
+			<div class="logo-backdrop">
+				<img src="../Assets/Logos/logo-tab.png" alt="Logo" class="sidebar-logo">
+			</div>
+			<span class="fw-bold">SMART TRAVEL</span>
+		</div>
+	</div>
+
 
 	<ul class="nav flex-column">
 		<li class="nav-item">
@@ -68,8 +65,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item transaction">
-			<a class="nav-link page-button" href="../Employee Section/emp-tableFIT.php"
-				data-page-name="Transactions">
+			<a class="nav-link page-button" href="../Employee Section/emp-tableFIT.php" data-page-name="Transactions">
 				<div class="icon-wrapper">
 					<div class="icon">
 						<i class="fa-solid fa-calendar-check"></i>
@@ -339,8 +335,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item visa-requirements">
-			<a class="nav-link page-button" href="#"
-				data-page-name="Visa Requirements">
+			<a class="nav-link page-button" href="#" data-page-name="Visa Requirements">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-passport"></i></div>
 				</div>
@@ -351,8 +346,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		</li>
 
 		<li class="nav-item visa-requirements">
-			<a class="nav-link page-button" href="../Employee Section/emp-soa.php"
-				data-page-name="Visa Requirements">
+			<a class="nav-link page-button" href="../Employee Section/emp-soa.php" data-page-name="Visa Requirements">
 				<div class="icon-wrapper">
 					<div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
 				</div>
@@ -414,20 +408,62 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		<div class="profile-section">
 			<div class="profile-left" id="profileLeft">
-				<div class="name" style="font-size: <?php echo (strlen($fullName) >= 13) ? '15px' : '17px'; ?>;">
-					<?php echo $fullName; ?>
+				<div class="profile-icon profile-icon-visible">
+					<i class="fa-solid fa-user-circle"></i>
 				</div>
-				<div class="empid fw-bold text-light" style="font-size: 14px;">
-					EMP ID: <span class="fw-normal text-light"><?php echo $empId; ?></span>
+
+				<div class="name-section">
+					<div class="name" style="font-size: <?php echo (strlen($fullName) >= 13) ? '.8rem' : '.9rem'; ?>;">
+						<?php echo $fullName; ?>
+					</div>
+					<div class="empid fw-bold text-light" style="font-size: .8rem">
+						EMP ID: <span class="fw-normal text-light"><?php echo $empId; ?></span>
+					</div>
 				</div>
 			</div>
-			<!-- <div class="profile-icon profile-icon-visible">
-				<i class="fa-solid fa-user-circle"></i>
-			</div> -->
+
+			<div class="btn-section">
+				<!-- 3-dot menu icon -->
+				<div class="icon" id="menuToggle">
+					<i class="fa-solid fa-ellipsis-vertical"></i>
+				</div>
+
+				<!-- Logout icon -->
+				<div class="icon" id="logoutIcon" data-bs-toggle="modal" data-bs-target="#logoutModal">
+					<i class="fa-solid fa-right-from-bracket"></i>
+				</div>
+
+				<!-- Dropdown Menu -->
+				<div class="dropdown-menu" id="dropdownMenu">
+					<ul>
+					<li><a id="changePasswordLink">Change Password</a></li>
+					<li><a id="raiseTicket">Raise a Ticket</a></li>
+					</ul>
+				</div>
+			</div>
+
+
 		</div>
 
+		<script>
+			const menuToggle = document.getElementById('menuToggle');
+			const dropdownMenu = document.getElementById('dropdownMenu');
 
-		<div class="nav-item" id="raiseTicketWrapper">
+			menuToggle.addEventListener('click', (e) => {
+				e.stopPropagation();
+				dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+			});
+
+			document.addEventListener('click', () => {
+				dropdownMenu.style.display = 'none';
+			});
+		</script>
+
+
+
+
+
+		<!-- <div class="nav-item" >
 			<a class="nav-link" id="raiseTicket" href="#">
 				<div class="icon-wrapper">
 					<div class="icon" id="raiseTicketIcon">
@@ -464,7 +500,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					<span class="label">Logout</span>
 				</div>
 			</a>
-		</div>
+		</div> -->
 
 	</div>
 
@@ -473,6 +509,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 
 <!-- Raise Ticket -->
+
 <!-- Raise Ticket Modal -->
 <div class="modal fade" id="raiseTicketModal" tabindex="-1" aria-labelledby="raiseTicketModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -482,7 +519,7 @@ $position = htmlspecialchars(strtoupper($empId));
 				<h5 class="modal-title" id="raiseTicketModalLabel"> Raise a Ticket</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			
+
 			<div class="modal-body">
 				<form id="ticketForm">
 					<div class="mb-3">
@@ -558,15 +595,13 @@ $position = htmlspecialchars(strtoupper($empId));
 	</div>
 </div>
 
-
 <script>
-  document.getElementById('raiseTicket').addEventListener('click', function (e) {
-    e.preventDefault();
-    const raiseModal = new bootstrap.Modal(document.getElementById('raiseTicketModal'));
-    raiseModal.show();
-  });
+	document.getElementById('raiseTicket').addEventListener('click', function (e) {
+		e.preventDefault();
+		const raiseModal = new bootstrap.Modal(document.getElementById('raiseTicketModal'));
+		raiseModal.show();
+	});
 </script>
-
 
 
 <!-- Change Password Modal -->
@@ -1139,4 +1174,3 @@ $position = htmlspecialchars(strtoupper($empId));
 		});
 	});
 </script>
-
