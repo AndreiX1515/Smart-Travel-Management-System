@@ -170,6 +170,7 @@
   border-collapse: collapse; /* Remove space between table cells */
   font-family: 'Arial', sans-serif; /* Cleaner font */
   color: #333; /* Text color */
+  table-layout: fixed;
 }
 
 /* Table Header */

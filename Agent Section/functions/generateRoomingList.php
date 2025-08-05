@@ -202,7 +202,6 @@ foreach ($roomGroups as $group) {
     $suffix = ($guest['suffix'] ?? '') === 'N/A' ? '' : ' ' . trim($guest['suffix']);
     $prefix = $guest['prefix'] ?? '';
 
-    // ⚠️ Columns N & O left blank intentionally — merged later
     $sheet->fromArray([
       $counter++,
       $guest['age'] ?? '',
@@ -217,29 +216,54 @@ foreach ($roomGroups as $group) {
       $guest['passportExp'] ?? '',
       $guest['sex'] ?? '',
       $guest['genderValue'] ?? '',
-      '', // N: room number display
-      '', // O: room type display
+      '', '',
       $guest['tip'] ?? '',
       implode(", ", (array)($guest['luggageText'] ?? [])),
       $guest['remarks'] ?? ''
     ], null, 'A' . $row);
 
+    // Apply background color based on tip
+    $tipping = strtolower($guest['tip'] ?? '');
+    $fillColor = null;
+    if ($tipping === 'in korea') {
+      $fillColor = 'FFFF00';
+    } elseif ($tipping === 'in manila') {
+      $fillColor = 'ADD8E6';
+    }
+    if ($fillColor) {
+      $sheet->getStyle("P{$row}")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB($fillColor);
+    }
+
     $row++;
   }
 
-  // ✅ Now merge and write room number + room type
   $sheet->setCellValue("N{$firstRow}", $displayRoomNumber);
   $sheet->setCellValue("O{$firstRow}", $roomType);
-
   if ($rowSpan > 1) {
     $sheet->mergeCells("N{$firstRow}:N" . ($firstRow + $rowSpan - 1));
     $sheet->mergeCells("O{$firstRow}:O" . ($firstRow + $rowSpan - 1));
   }
 
+  $roomColor = null;
+  if (stripos($roomType, 'twin') !== false) {
+    $roomColor = 'FFFF00';
+  } elseif (stripos($roomType, 'double') !== false) {
+    $roomColor = 'B57EDC';
+  } elseif (stripos($roomType, 'triple') !== false) {
+    $roomColor = '3CFF00';
+  } elseif (stripos($roomType, 'single') !== false) {
+    $roomColor = '003cffff';
+  }
+  if ($roomColor) {
+    $sheet->getStyle("O{$firstRow}:O" . ($firstRow + $rowSpan - 1))->getFill()
+      ->setFillType(Fill::FILL_SOLID)
+      ->getStartColor()->setRGB($roomColor);
+  }
+
   $sheet->getStyle("N{$firstRow}:O" . ($firstRow + $rowSpan - 1))
-        ->getAlignment()
-        ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-        ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    ->getAlignment()
+    ->setVertical(Alignment::VERTICAL_CENTER)
+    ->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
   $displayRoomNumber++;
 }
