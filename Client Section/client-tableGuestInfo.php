@@ -276,13 +276,11 @@
 <script>
   let addedGuests = new Set();
 
-  function addGuestFields(selectElement) 
-  {
+  function addGuestFields(selectElement) {
     const guestId = selectElement.value;
     const guestName = selectElement.options[selectElement.selectedIndex].text;
 
-    if (!guestId || addedGuests.has(guestId)) 
-    {
+    if (!guestId || addedGuests.has(guestId)) {
       alert("Guest already added or invalid selection.");
       return;
     }
@@ -291,65 +289,148 @@
 
     const allGuestFieldsContainer = document.getElementById("allGuestFields");
     const guestFieldsHTML = `
-      <div id="guestFields-${guestId}" class="guest-fields border rounded p-3 mt-3">
-        <h6>Visa Requirements for ${guestName}</h6>
+      <div id="guestFields-${guestId}" class="guest-fields border rounded p-3 mt-3 bg-light">
+        <h6 class="mb-2">Visa Requirements for <strong>${guestName}</strong></h6>
         <input type="hidden" name="guestIds[]" value="${guestId}">
 
-        <div class="mb-3">
-          <label class="form-label">Select Document to Upload:</label>
-          <select class="form-select" onchange="showFileInput(this, ${guestId})">
-            <option selected disabled>-- Select Document --</option>
-            <option value="passport">Passport</option>
-            <option value="permit">Permit</option>
-            <option value="validId">Valid ID</option>
-            <option value="certificate">Certificate</option>
-            <option value="guaranteedLetter">Guaranteed Letter</option>
-          </select>
-        </div>
+        <label class="form-label">Select Document to Upload:</label>
+        <select class="form-select" onchange="showFileInput(this, ${guestId})">
+          <option selected disabled>-- Select Document --</option>
+          <option value="passport">Passport</option>
+          <option value="permit">Permit</option>
+          <option value="validId">Valid ID</option>
+          <option value="certificate">Certificate</option>
+          <option value="guaranteedLetter">Guaranteed Letter</option>
+        </select>
 
-        <div id="fileInputs-${guestId}"></div>
+        <div id="fileInputs-${guestId}" class="mt-3"></div>
 
-        <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeGuestFields('${guestId}')">
+        <button type="button" class="btn btn-danger btn-sm mt-3" onclick="removeGuestFields('${guestId}')">
           Remove ${guestName}
         </button>
       </div>`;
-
+    
     allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
   }
 
-  function showFileInput(selectElement, guestId) 
-  {
+  function showFileInput(selectElement, guestId) {
     const fileInputsContainer = document.getElementById(`fileInputs-${guestId}`);
-
-    if (!fileInputsContainer) 
-    {
-      console.error(`Error: File input container not found for guestId: ${guestId}`);
-      return;
-    }
-
     const selectedValue = selectElement.value;
 
-    if (!selectedValue) 
-    {
-      alert("Please select a document type.");
+    if (!selectedValue) return;
+
+    const insertStaticAbove = ["passport", "validId", "guaranteedLetter"];
+    const inputId = `${selectedValue}-${guestId}`;
+
+    if (document.getElementById(inputId)) {
+      selectElement.selectedIndex = 0;
+      alert("You've already added this document type.");
       return;
     }
 
-    // Allow multiple file inputs for each document type
-    const fileInputHTML = `
-      <div class="mb-3 d-flex align-items-center">
-        <label class="form-label me-2">${selectElement.options[selectElement.selectedIndex].text}:</label>
-        <input type="file" class="form-control me-2" name="${selectedValue}[${guestId}][]" style="width:70%" multiple>
-        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
-      </div>`;
+    if (selectedValue === "certificate") {
+      const certContainerId = `certificateWrapper-${guestId}`;
+      if (!document.getElementById(certContainerId)) {
+        const subCertHTML = `
+          <div id="${certContainerId}" class="mb-3">
+            <label class="form-label">Select Certificate Type:</label>
+            <select class="form-select" onchange="showCertificateInput(this, ${guestId})">
+              <option selected disabled>-- Select Certificate Type --</option>
+              <option value="bankCert">Bank Certificate / Statement</option>
+              <option value="coe">COE</option>
+              <option value="com">COM</option>
+              <option value="birthCert">Birth Certificate</option>
+            </select>
+            <div id="certificateInput-${guestId}"></div>
+          </div>`;
+        fileInputsContainer.insertAdjacentHTML("beforeend", subCertHTML);
+      }
+    } else if (selectedValue === "permit") {
+      const permitContainerId = `permitWrapper-${guestId}`;
+      if (!document.getElementById(permitContainerId)) {
+        const subPermitHTML = `
+          <div id="${permitContainerId}" class="mb-3">
+            <label class="form-label">Select Permit Type:</label>
+            <select class="form-select" onchange="showPermitInput(this, ${guestId})">
+              <option selected disabled>-- Select Permit Type --</option>
+              <option value="businessPermit">Business Permit / Mayor's Permit</option>
+              <option value="secDti">SEC or DTI</option>
+              <option value="itr">ITR</option>
+            </select>
+            <div id="permitInput-${guestId}"></div>
+          </div>`;
+        fileInputsContainer.insertAdjacentHTML("beforeend", subPermitHTML);
+      }
+    } else if (insertStaticAbove.includes(selectedValue)) {
+      const labelText = selectElement.options[selectElement.selectedIndex].text;
+      const staticFileHTML = `
+        <div class="mb-3 d-flex align-items-center" id="${inputId}">
+          <label class="form-label me-2">${labelText}:</label>
+          <input type="file" class="form-control me-2" name="${selectedValue}[${guestId}][]" style="width:70%" multiple>
+          <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
+        </div>`;
+      fileInputsContainer.insertAdjacentHTML("beforeend", staticFileHTML);
+    }
 
-    fileInputsContainer.insertAdjacentHTML("beforeend", fileInputHTML);
+    selectElement.selectedIndex = 0;
   }
 
-  function removeGuestFields(guestId) 
-  {
+  function showCertificateInput(subSelect, guestId) {
+    const value = subSelect.value;
+    const text = subSelect.options[subSelect.selectedIndex].text;
+    const container = document.getElementById(`certificateInput-${guestId}`);
+    const inputId = `${value}-${guestId}`;
+
+    if (document.getElementById(inputId)) return;
+
+    container.insertAdjacentHTML("beforeend", `
+      <input type="hidden" name="docSubType[${guestId}][certificate][${value}][]" value="${value}" id="${inputId}">
+      <small class="text-muted">Selected: ${text}</small>
+    `);
+
+    appendFileInput(container, value, text, guestId, inputId, "certificate");
+
+    subSelect.selectedIndex = 0;
+  }
+
+  function showPermitInput(subSelect, guestId) {
+    const value = subSelect.value;
+    const text = subSelect.options[subSelect.selectedIndex].text;
+    const container = document.getElementById(`permitInput-${guestId}`);
+    const inputId = `${value}-${guestId}`;
+
+    if (document.getElementById(inputId)) return;
+
+    container.insertAdjacentHTML("beforeend", `
+      <input type="hidden" name="docSubType[${guestId}][permit][${value}][]" value="${value}" id="${inputId}">
+      <small class="text-muted">Selected: ${text}</small>
+    `);
+
+    appendFileInput(container, value, text, guestId, inputId, "permit");
+
+    subSelect.selectedIndex = 0;
+  }
+
+  function appendFileInput(container, fieldName, labelText, guestId, inputId, parentDocType = fieldName) {
+    const html = `
+      <div class="row align-items-center mt-2 mb-2" id="${inputId}">
+        <div class="col-md-3">
+          <label class="form-label">${labelText}:</label>
+        </div>
+        <div class="col-md-7">
+          <input type="file" class="form-control" name="${parentDocType}[${guestId}][${fieldName}][]" multiple>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.closest('.row').remove()">Remove</button>
+        </div>
+      </div>`;
+    container.insertAdjacentHTML("beforeend", html);
+  }
+
+  function removeGuestFields(guestId) {
     document.getElementById(`guestFields-${guestId}`).remove();
     addedGuests.delete(guestId);
+    document.getElementById("guestSelect").selectedIndex = 0;
   }
 </script>
 
