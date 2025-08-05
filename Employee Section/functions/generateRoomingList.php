@@ -202,7 +202,7 @@ foreach ($roomGroups as $group) {
     $suffix = ($guest['suffix'] ?? '') === 'N/A' ? '' : ' ' . trim($guest['suffix']);
     $prefix = $guest['prefix'] ?? '';
 
-    // ⚠️ Columns N & O left blank intentionally — merged later
+    // Write guest data row (skip tipping text, add cell background color instead)
     $sheet->fromArray([
       $counter++,
       $guest['age'] ?? '',
@@ -217,19 +217,51 @@ foreach ($roomGroups as $group) {
       $guest['passportExp'] ?? '',
       $guest['sex'] ?? '',
       $guest['genderValue'] ?? '',
-      '', // N: room number display
-      '', // O: room type display
-      $guest['tip'] ?? '',
+      '', // N: Room Number
+      '', // O: Room Type
+      '', // P: Tipping (leave blank, use color instead)
       implode(", ", (array)($guest['luggageText'] ?? [])),
       $guest['remarks'] ?? ''
     ], null, 'A' . $row);
 
+    // Handle tipping color only (column P)
+    $tipping = strtolower(trim($guest['tip'] ?? ''));
+    $fillColor = null;
+
+    if ($tipping === 'in korea') {
+      $fillColor = 'FFFF00'; // Yellow
+    } elseif ($tipping === 'in manila') {
+      $fillColor = 'ADD8E6'; // Light Blue
+    }
+
+    if ($fillColor) {
+      $sheet->getStyle("P{$row}")->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+            ->getStartColor()->setARGB($fillColor);
+    }
+
     $row++;
   }
 
-  // ✅ Now merge and write room number + room type
+  // Merge & write room number and type
   $sheet->setCellValue("N{$firstRow}", $displayRoomNumber);
   $sheet->setCellValue("O{$firstRow}", $roomType);
+
+  $roomColor = null;
+  if (stripos($roomType, 'twin') !== false) {
+    $roomColor = 'FFFF00'; // Yellow
+  } elseif (stripos($roomType, 'double') !== false) {
+    $roomColor = 'B57EDC'; // Lavender
+  } elseif (stripos($roomType, 'triple') !== false) {
+    $roomColor = '3CFF00'; // green
+  } elseif (stripos($roomType, 'single') !== false) {
+    $roomColor = '003cffff'; // blue
+  }
+
+  if ($roomColor) {
+    $sheet->getStyle("O{$firstRow}:O" . ($firstRow + $rowSpan - 1))
+          ->getFill()->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setRGB($roomColor);
+  }
 
   if ($rowSpan > 1) {
     $sheet->mergeCells("N{$firstRow}:N" . ($firstRow + $rowSpan - 1));
@@ -237,12 +269,13 @@ foreach ($roomGroups as $group) {
   }
 
   $sheet->getStyle("N{$firstRow}:O" . ($firstRow + $rowSpan - 1))
-        ->getAlignment()
-        ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
-        ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+    ->getAlignment()
+    ->setVertical(\PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER)
+    ->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
 
   $displayRoomNumber++;
 }
+
 
 
 $dataStart = 9;
@@ -264,6 +297,24 @@ $sheet->getStyle("B{$dataStart}:B{$dataEnd}")->getAlignment()->setHorizontal(Ali
 $sheet->getStyle("C{$dataStart}:C{$dataEnd}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $sheet->getStyle("L{$dataStart}:M{$dataEnd}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $sheet->getStyle("N{$dataStart}:O{$dataEnd}")->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+
+// Define target column
+$tippingCol = 'P';
+
+for ($i = $dataStart; $i <= $dataEnd; $i++) {
+  $cell = $tippingCol . $i;
+  $value = $sheet->getCell($cell)->getValue();
+
+  if (strcasecmp(trim($value), 'In Korea') === 0) {
+    // Blue - Accent 1, Lighter 40% (#A9D0F5 or similar)
+    $sheet->getStyle($cell)->getFill()->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setRGB('A9D0F5');
+  } elseif (strcasecmp(trim($value), 'In Manila') === 0) {
+    // Yellow (standard Excel yellow: FFFF00)
+    $sheet->getStyle($cell)->getFill()->setFillType(Fill::FILL_SOLID)
+          ->getStartColor()->setRGB('FFFF00');
+  }
+}
 
 // Auto-size columns A–R
 // foreach (range('A', 'R') as $col) {

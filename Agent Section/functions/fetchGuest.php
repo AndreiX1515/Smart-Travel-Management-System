@@ -11,10 +11,10 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
 
   // Fetch guests who are assigned to a room
   $sqlAssigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, 
-                    DATE_FORMAT(g.birthdate, '%Y/%m/%d') AS birthdate, g.age, g.sex, 
+                    DATE_FORMAT(g.birthdate, '%d-%b-%y') AS birthdate, g.age, g.sex, 
                     g.nationality, g.passportNo, 
-                    DATE_FORMAT(g.passportExp, '%Y/%m/%d') AS passportExp, 
-                    DATE_FORMAT(g.passportIssuedDate, '%Y/%m/%d') AS passportIssued, 
+                    DATE_FORMAT(g.passportExp, '%d-%b-%y') AS passportExp, 
+                    DATE_FORMAT(g.passportIssuedDate, '%d-%b-%y') AS passportIssued, 
                     g.transactNo, r.roomNumber, r.roomType, r.remarks, r.tip,
                     cd.concernDetailsId, f.flightCode, f.flightDepartureDate, f.returnFlightCode, f.returnArrivalDate, f.flightDepartureTime, f.flightArrivalTime,
                     f.returnDepartureTime, f.returnArrivalTime
@@ -99,10 +99,10 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
 
   // Fetch guests who are NOT assigned to a room
   $sqlUnassigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, 
-                      DATE_FORMAT(g.birthdate, '%Y/%m/%d') AS birthdate, g.age, g.sex, 
+                      DATE_FORMAT(g.birthdate, '%d-%b-%y') AS birthdate, g.age, g.sex, 
                       g.nationality, g.passportNo, 
-                      DATE_FORMAT(g.passportExp, '%Y/%m/%d') AS passportExp,
-                      DATE_FORMAT(g.passportIssuedDate, '%Y/%m/%d') AS passportIssued,
+                      DATE_FORMAT(g.passportExp, '%d-%b-%y') AS passportExp,
+                      DATE_FORMAT(g.passportIssuedDate, '%d-%b-%y') AS passportIssued,
                       g.transactNo
                     FROM `guest` g
                     JOIN `booking` b ON g.transactNo = b.transactNo
