@@ -94,11 +94,11 @@
     a.accountType AS accountRole,
     a.accountStatus AS accountStatus
 
-FROM vouchers v
-LEFT JOIN voucherdetails d ON v.voucherId = d.voucherId
-LEFT JOIN employee e ON v.accountId = e.accountId
-LEFT JOIN accounts a ON v.accountId = a.accountId
-WHERE v.voucherId = ?
+    FROM vouchers v
+    LEFT JOIN voucherdetails d ON v.voucherId = d.voucherId
+    LEFT JOIN employee e ON v.accountId = e.accountId
+    LEFT JOIN accounts a ON v.accountId = a.accountId
+    WHERE v.voucherId = ?
 
 
   ";
@@ -394,51 +394,6 @@ WHERE v.voucherId = ?
 
             </div>
           </div>
-
-          <!-- Connect to Itinerary -->
-          <!-- <div class="card">
-            <div class="card-header bg-secondary">
-              <h5>Connect to Current itinerary (Optional)</h5>
-            </div>
-
-            <div class="card-body">
-              <div class="row">
-
-                <div class="columns col-md-3">
-                  <div class="column-header">
-                    <label for="departure1Date"></label>
-                  </div>
-
-                  <div class="form-check mb-2">
-                    <input class="form-check-input" type="checkbox" id="toggleItinerarySelect">
-                    <label class="form-check-label" for="toggleItinerarySelect">
-                      Connect to Current itinerary:
-                    </label>
-                  </div>
-                </div>
-
-                <div class="columns col-md-6" id="itinerarySelectWrapper" style="display: none;">
-                  <select class="form-select mt-1" id="itineraryId" name="itineraryId">
-                    <option value="" disabled selected>Select Itinerary</option>
-                    <?php
-                    // $sql = "SELECT itineraryId, itineraryName FROM itineraries ORDER BY createdAt DESC";
-                    // $result = $conn->query($sql);
-                    // if ($result && $result->num_rows > 0) {
-                    //   while ($row = $result->fetch_assoc()) {
-                    //     echo "<option value='" . $row['itineraryId'] . "'>" . htmlspecialchars($row['itineraryName']) . "</option>";
-                    //   }
-                    // } else {
-                    //   echo "<option value=''>No itineraries available</option>";
-                    // }
-                    ?>
-                  </select>
-
-                </div>
-
-              </div>
-
-            </div>
-          </div> -->
 
           <!-- Voucher Details Card -->
           <div class="card">

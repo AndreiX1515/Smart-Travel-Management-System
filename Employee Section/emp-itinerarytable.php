@@ -13,6 +13,14 @@
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-voucherTable.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 
+
+  <!-- WickedPicker CSS
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.1/dist/wickedpicker.min.css"> -->
+
+  <!-- WickedPicker JS -->
+  <script src="https://cdn.jsdelivr.net/npm/wickedpicker@0.4.1/dist/wickedpicker.min.js"></script>
+  </body>
+
 </head>
 
 <body>
@@ -125,7 +133,22 @@
                           </div>
                         </div>
 
-                        <!-- Paste dropdown options here to add delete -->
+                        <!-- Dropdown Options -->
+                        <div class="options dropdown">
+                          <button class="btn dropdown-toggle p-0 border-0 bg-transparent" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                              <a class="dropdown-item create-template-btn" href="#" data-id="<?php echo $itineraryId; ?>"
+                                data-name="<?php echo $packageName; ?>">
+                                Create Quick Template
+                              </a>
+                            </li>
+
+                          </ul>
+                        </div>
                       </div>
 
                       <!-- Body Section -->
@@ -188,7 +211,8 @@
                           </button>
                           <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                              <a class="dropdown-item text-danger delete-itinerary" href="#" data-id="<?php echo $itineraryId; ?>" data-id="<?php echo $packageName; ?>">
+                              <a class="dropdown-item text-danger delete-itinerary" href="#"
+                                data-id="<?php echo $itineraryId; ?>" data-id="<?php echo $packageName; ?>">
                                 Delete
                               </a>
                             </li>
@@ -196,11 +220,11 @@
                         </div>
                       </div>
 
-                     <!-- Body Section -->
+                      <!-- Body Section -->
                       <div class="it-card-body">
                         <div class="itinerary-icon itinerary-bg-body"><?php echo $iconLetter; ?></div>
                       </div>
-                      
+
                     </div>
                   </div>
                   <?php
@@ -270,7 +294,7 @@
     </div>
   </div>
 
- 
+
   <!-- Delete Confirmation Modal -->
   <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -279,7 +303,8 @@
           <h5 class="modal-title" id="deleteConfirmLabel">
             Confirm Deletion <small class="text-light" id="itineraryIdLabel"></small>
           </h5>
-          <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="modal-body">
           Are you sure you want to delete this itinerary? This action cannot be undone.
@@ -293,9 +318,501 @@
   </div>
 
 
-  <?php include '../Employee Section/includes/emp-scripts.php' ?>
+  <!-- Step 1: Template Copy Setup -->
+  <div class="modal fade" id="copyTemplateSettingsModal" tabindex="-1" aria-labelledby="copyTemplateSettingsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content custom-modal">
+        <div class="modal-header custom-header">
+          <h6 class="modal-title" id="copyTemplateSettingsLabel">Create Quick Template</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
 
-  
+        <div class="modal-body custom-body">
+          <form>
+            <input type="hidden" id="templateItineraryId" name="itineraryId">
+
+            <div class="row align-items-end mb-3">
+
+              <!-- To -->
+              <div class="col-md-4">
+                <label for="voucherTo" class="custom-label mb-1">To:</label>
+                <select class="form-select" id="voucherTo" name="voucherTo" required>
+                  <option value="" disabled selected>Select Branch</option>
+                  <?php
+                  $sentToValue = $voucher['details']['sentTo'] ?? '';
+                  $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
+                  $res1 = $conn->query($sql1);
+                  if ($res1->num_rows > 0) {
+                    while ($row = $res1->fetch_assoc()) {
+                      $selected = ($row['branchId'] == $sentToValue) ? 'selected' : '';
+                      echo "<option value='" . htmlspecialchars($row['branchId']) . "' $selected>" . htmlspecialchars($row['branchName']) . "</option>";
+                    }
+                  } else {
+                    echo "<option value=''>No branches available</option>";
+                  }
+                  ?>
+                </select>
+              </div>
+
+              <!-- Period Picker -->
+              <div class="col-md-8">
+                <label class="custom-label mb-1">Period:</label>
+                <div class="d-flex align-items-center gap-2">
+
+                  <!-- Start Date -->
+                  <div class="form-group mb-0 flex-grow-1 position-relative">
+                    <input type="text" class="datepicker form-control" id="PeriodStartDate" placeholder="Start Date"
+                      readonly required>
+                    <i class="fas fa-calendar-alt calendar-icon position-absolute"
+                      style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                  </div>
+
+                  <!-- Arrow -->
+                  <span class="fw-bold">→</span>
+
+                  <!-- End Date -->
+                  <div class="form-group mb-0 flex-grow-1 position-relative">
+                    <input type="text" class="datepicker form-control" id="PeriodEndDate" placeholder="End Date"
+                      readonly required>
+                    <i class="fas fa-calendar-alt calendar-icon position-absolute"
+                      style="right: 10px; top: 50%; transform: translateY(-50%); pointer-events: none;"></i>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3">
+
+              <!-- Guide -->
+              <div class="col-md-6">
+                <label class="custom-label">Guide:</label>
+                <select class="form-select" id="guideName" name="guideName" onchange="updateContact(this)">
+                  <option value="" selected disabled>Select Guide</option>
+                  <?php
+                  $query = "SELECT accountId, fName, lName, mName, contactNo, countryCode FROM employee WHERE isTourGuide = 1";
+                  $result = mysqli_query($conn, $query);
+                  while ($row = mysqli_fetch_assoc($result)) {
+                    $accountId = $row['accountId'];
+                    $fName = $row['fName'];
+                    $lName = $row['lName'];
+                    $mName = $row['mName'];
+                    $contactNo = $row['contactNo'];
+                    $countryCode = $row['countryCode'];
+                    $middleName = !empty($mName) ? $mName : '';
+                    $fullName = trim(preg_replace('/\s+/', ' ', $fName . ' ' . $middleName . ' ' . $lName));
+                    echo "<option value=\"$accountId\" data-accountid=\"$accountId\" data-contact=\"$contactNo\" data-code=\"$countryCode\">$fullName</option>";
+                  }
+                  ?>
+                </select>
+              </div>
+
+              <!-- Contact Number -->
+              <div class="col-md-6">
+                <label class="custom-label">Contact Number:</label>
+                <div class="form-group d-flex align-items-center">
+                  <select class="form-select" id="countryCode" style="width: 80px;" disabled>
+                    <option value="+63" selected>+63</option>
+                    <option value="+82">+82</option>
+                  </select>
+                  <input type="text" class="form-control ms-2" id="contactNumber" name="contactNumber"
+                    placeholder="9***********" disabled>
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="row mb-3 align-items-end custom-voucher-row">
+
+              <!-- Voucher Toggle -->
+              <div class="col-md-6">
+                <label class="custom-label">Connect to Voucher:</label>
+
+                <?php
+                $sql = "SELECT voucherId, voucherCode, voucherName FROM vouchers WHERE itineraryId IS NULL OR itineraryId = 0 ORDER BY createdAt DESC";
+                $result = $conn->query($sql);
+                $hasVouchers = ($result && $result->num_rows > 0);
+                ?>
+
+                <div class="form-check">
+                  <input type="hidden" name="isConnectToVoucher" value="false">
+                  <input class="form-check-input" type="checkbox" id="toggleVoucherSelect" name="isConnectToVoucher"
+                    value="true" <?= $hasVouchers ? '' : 'disabled' ?>>
+                  <label class="form-check-label <?= $hasVouchers ? '' : 'text-muted' ?>" for="toggleVoucherSelect">
+                    Connect this itinerary to an existing voucher
+                  </label>
+                </div>
+
+                <?php if (!$hasVouchers): ?>
+                  <small class="text-danger d-block mt-1">No available vouchers to connect.</small>
+                <?php endif; ?>
+              </div>
+
+              <!-- Voucher Select -->
+              <div class="col-md-6" id="voucherSelectWrapper" style="display: none;">
+                <label for="voucherId" class="custom-label d-block mb-1">Select Voucher:</label>
+                <select class="form-select w-100 mt-2 fs-6" id="voucherId" name="voucherId" <?= $hasVouchers ? '' : 'disabled' ?>>
+                  <option value="" disabled selected>
+                    <?= $hasVouchers ? 'Select Voucher' : 'No vouchers available' ?>
+                  </option>
+                  <?php if ($hasVouchers): ?>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                      <option value="<?= htmlspecialchars($row['voucherId']) ?>">
+                        <?= htmlspecialchars($row['voucherCode']) ?>  |  <?= htmlspecialchars($row['voucherName']) ?>
+                      </option>
+                    <?php endwhile; ?>
+                  <?php endif; ?>
+                </select>
+              </div>
+              
+            </div>
+
+          
+        </div>
+
+        <div class="modal-footer custom-footer">
+          <button type="button" class="custom-btn secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="custom-btn primary" id="proceedToNameModal">Next</button>
+        </div>
+
+         </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- JS: Toggle Voucher Select -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.getElementById('toggleVoucherSelect');
+      const wrapper = document.getElementById('voucherSelectWrapper');
+      if (toggle && !toggle.disabled) {
+        toggle.addEventListener('change', () => {
+          wrapper.style.display = toggle.checked ? 'block' : 'none';
+        });
+      }
+    });
+
+    function updateContact(selectElement) {
+      const selectedOption = selectElement.options[selectElement.selectedIndex];
+      document.getElementById('contactNumber').value = selectedOption.getAttribute('data-contact') || '';
+      document.getElementById('countryCode').value = selectedOption.getAttribute('data-code') || '+63';
+    }
+  </script>
+
+
+  <!-- Step 2: Template Name -->
+  <div class="modal fade" id="copyTemplateNameModal" tabindex="-1" aria-labelledby="copyTemplateNameLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-modal">
+        <div class="modal-header custom-header">
+          <h5 class="modal-title" id="copyTemplateNameLabel">Name Your Itinerary</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body custom-body">
+          <div class="row mb-3">
+            <div class="col">
+              <label class="custom-label">Itinerary Name:</label>
+              <input type="text" id="newItineraryName" class="custom-input" placeholder="Enter itinerary name">
+              <small id="itineraryNameMessage" style="display: none;"></small>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer custom-footer">
+          <button type="button" class="custom-btn secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="custom-btn success" id="submitTemplateCopy">Create Template</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- Flatpickr Initialization and Modal Handling -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let templateData = {};
+
+      // ✅ Initialize Flatpickr on demand when modal is shown
+      const initModalFlatpickrs = () => {
+        console.log("Initializing Flatpickr...");
+
+        const commonOptions = {
+          dateFormat: "Y-m-d",
+          disableMobile: true,
+          appendTo: document.body,
+          zIndex: 1055,
+          onOpen: function () {
+            requestAnimationFrame(() => {
+              const calendar = document.querySelector(".flatpickr-calendar");
+              if (calendar) {
+                const inputRect = this.input.getBoundingClientRect();
+                calendar.style.top = `${inputRect.bottom + window.scrollY + 8}px`;
+                // console.log("Calendar repositioned:", inputRect);
+              }
+            });
+          },
+          onReady: function () {
+            // Prevent Bootstrap modal from stealing focus on select inside calendar
+            const calendar = document.querySelector(".flatpickr-calendar");
+            if (calendar) {
+              calendar.querySelectorAll("select").forEach(select => {
+                select.addEventListener("mousedown", (e) => {
+                  e.stopPropagation();
+                  console.log("Stopped mousedown on select to prevent modal focus");
+                });
+              });
+            }
+          }
+        };
+
+        flatpickr("#PeriodStartDate", commonOptions);
+        flatpickr("#PeriodEndDate", commonOptions);
+
+        // Optional: Time picker
+        flatpickr("input.timepicker", {
+          enableTime: true,
+          noCalendar: true,
+          dateFormat: "H:i",
+          time_24hr: true,
+          disableMobile: true,
+          appendTo: document.body,
+          zIndex: 1055,
+          onOpen: function () {
+            requestAnimationFrame(() => {
+              const calendar = document.querySelector(".flatpickr-calendar");
+              if (calendar) {
+                const inputRect = this.input.getBoundingClientRect();
+                calendar.style.top = `${inputRect.bottom + window.scrollY + 8}px`;
+              }
+            });
+          }
+        });
+      };
+
+
+
+      // ✅ Open First Modal and Init Flatpickrs
+      document.querySelectorAll('.create-template-btn').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+
+          const itineraryId = this.getAttribute('data-id');
+          document.getElementById('templateItineraryId').value = itineraryId;
+
+          const modalEl = document.getElementById('copyTemplateSettingsModal');
+          const modal = new bootstrap.Modal(modalEl, {
+            focus: false // 🔒 Prevent modal from stealing focus
+          });
+
+          modal.show();
+
+          modalEl.addEventListener('shown.bs.modal', function handleShown() {
+            console.log("Modal shown: initializing Flatpickr...");
+            initModalFlatpickrs(); // Ensure datepickers load after modal is visible
+            modalEl.removeEventListener('shown.bs.modal', handleShown);
+          });
+        });
+      });
+
+
+
+      // ✅ Move to Second Modal
+      document.getElementById('proceedToNameModal').addEventListener('click', function (e) {
+        e.preventDefault(); // prevent form submission if inside <form>
+
+        const userId = <?php echo json_encode($accountId ?? null); ?>;
+
+        // Get values
+        const itineraryId = document.getElementById('templateItineraryId').value;
+        const to = document.getElementById('voucherTo').value;
+        const startDate = document.getElementById('PeriodStartDate').value;
+        const endDate = document.getElementById('PeriodEndDate').value;
+        const guide = document.getElementById('guideName').value;
+        const countryCode = document.getElementById('countryCode').value;
+        const contactNo = document.getElementById('contactNumber').value;
+        const isConnectToVoucher = document.getElementById('toggleVoucherSelect').checked;
+        const voucherId = isConnectToVoucher ? document.getElementById('voucherId').value : null;
+
+        console.log("Collected Fields:");
+        console.log({ itineraryId, to, startDate, endDate, guide, countryCode, contactNo, voucherId });
+
+        // Validation
+        if (!to || !startDate || !endDate || !guide) {
+          alert("Please fill in all required fields (To, Period, and Guide).");
+          return;
+        }
+
+        // Save to object
+        templateData = {
+          userId: userId,
+          itineraryId,
+          to,
+          periods: { start: startDate, end: endDate },
+          guide,
+          countryCode,
+          contactNo,
+          isConnectToVoucher,
+          voucherId
+        };
+
+
+        console.log("✅ Template data ready:", templateData);
+
+        // Hide current modal
+        const currentModal = bootstrap.Modal.getInstance(document.getElementById('copyTemplateSettingsModal'));
+        if (currentModal) currentModal.hide();
+
+        // Show next modal
+        const nextModal = new bootstrap.Modal(document.getElementById('copyTemplateNameModal'), {
+          focus: false
+        });
+        nextModal.show();
+      });
+
+
+
+      document.getElementById('submitTemplateCopy').addEventListener('click', function () {
+        const name = document.getElementById('newItineraryName').value;
+        if (!name) {
+          alert("Please provide an itinerary name.");
+          return;
+        }
+
+        templateData.name = name;
+        // console.log("Final template data to submit:", templateData);
+        console.log(JSON.stringify(templateData, null, 2));
+
+        $.ajax({
+            url: '../Employee Section/functions/emp-itineraryData.php',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+              itineraryId: templateData.itineraryId // make sure templateData is defined
+            }),
+
+            success: function(response) {
+              console.log("Raw Response: (1)", response);
+
+              try {
+                if (response.success && response.itineraryId && response.itinerary) {
+                  const itineraryId = response.itineraryId;
+                  const itineraryData = response.itinerary;
+
+                  // console.log("Itinerary ID:", itineraryId);
+                  // console.log(JSON.stringify(templateData, null, 2));
+                  // console.log(JSON.stringify(itineraryData, null, 2));
+
+                  $.ajax({
+                    url: '../Employee Section/functions/emp-saveItineraryQuick.php',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                      templateData: templateData, // use the collected data
+                      itineraryData: itineraryData // make sure templateData is defined
+                    }),
+
+                    success: function(response) {
+                    console.log("Raw Response: (2)", response);
+
+                    try {
+                      const data = typeof response === 'string' ? JSON.parse(response) : response;
+                      const messageElem = document.getElementById("itineraryNameMessage");
+
+                      // Always hide the message by default
+                      if (messageElem) {
+                        messageElem.style.display = "none";
+                        messageElem.textContent = "";
+                      }
+
+                      if (data.status === "success") {
+                        console.log("✅ Success:", data.message);
+                        alert("Itinerary created successfully!");
+                        window.location.href = "../Employee Section/emp-itinerarytable.php";
+
+                      } else if (data.status === "error") {
+                        console.error("❌ Error:", data.message);
+                        alert("Error: " + data.message);
+
+                      } else if (data.status === "exists") {
+                        console.warn("⚠️ Duplicate:", data.message);
+
+                        // Show the message below the itinerary name input
+                        if (messageElem) {
+                          messageElem.style.display = "block";
+                          messageElem.textContent = data.message;
+                          messageElem.style.color = "red";
+                        }
+
+                      } else {
+                        console.warn("⚠️ Unexpected status in response:", data);
+                      }
+
+                    } catch (e) {
+                      console.error("Error parsing or processing response:", e);
+                    }
+                  },
+
+                  error: function(xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                    alert("AJAX request failed: " + error);
+                  }
+
+
+
+                  });
+
+
+
+
+
+
+                  
+
+
+                  // Continue using itineraryData as needed
+                } else {
+                  console.error('Invalid response structure or missing fields.');
+                }
+              } catch (e) {
+                console.error('Error processing response:', e);
+              }
+            },
+
+            error: function(xhr, status, error) {
+              console.error('AJAX Error:', status, error);
+            }
+
+          });
+
+
+
+
+
+      });
+
+
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <!-- Create Voucher Page Redirect -->
   <script>
     document.getElementById("createItinerary").addEventListener("click", function () {
@@ -303,7 +820,7 @@
     });
   </script>
 
-  
+
   <!-- Delete Itinerary Script -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -342,15 +859,15 @@
             },
             body: `itineraryId=${encodeURIComponent(itineraryToDelete)}`
           })
-          .then(res => res.text())
-          .then(response => {
-            const card = document.querySelector(`.itinerary-card[data-id="${itineraryToDelete}"]`);
-            if (card) card.remove();
+            .then(res => res.text())
+            .then(response => {
+              const card = document.querySelector(`.itinerary-card[data-id="${itineraryToDelete}"]`);
+              if (card) card.remove();
 
-            showNotification(`Itinerary ID: ${itineraryToDelete} successfully deleted`);
-            modal.hide();
-          })
-          .catch(err => console.error("Delete failed", err));
+              showNotification(`Itinerary ID: ${itineraryToDelete} successfully deleted`);
+              modal.hide();
+            })
+            .catch(err => console.error("Delete failed", err));
         }
       });
 
@@ -374,17 +891,6 @@
       }
     });
   </script>
-
-
-
-
-
-
-
-
-
-
-
 
   <!-- For Button Tabs Status Sorting -->
   <script>
@@ -458,6 +964,7 @@
       });
     });
   </script>
+
 
   <!-- Row Click Selection-->
   <script>

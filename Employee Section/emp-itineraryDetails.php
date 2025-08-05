@@ -353,7 +353,7 @@
                     </label>
                   </div>
 
-                  <div class="datepicker-wrapper d-flex align-items-center gap-2">
+                  <div class="datepicker-wrapper">
 
                     <!-- Start Date -->
                     <div class="form-group mb-0">
@@ -608,9 +608,6 @@
 
               </script>
 
-
-
-
             </div>
           </div>
 
@@ -629,8 +626,7 @@
                     <select class="form-select" id="select-days" name="numberOfDays" required disabled>
                       <option selected disabled>Select Number of Days</option>
                     </select>
-                    <small class="form-text text-muted">Changing this will clear all your data on
-                      the fields.</small>
+                    <small class="form-text text-muted">Changing this will clear all your data on the fields.</small>
                   </div>
                 </div>
               </div>
@@ -771,7 +767,7 @@
   </script>
 
   <!-- JavaScript to Initialize Timepicker -->
-  <script>
+  <!-- <script>
     $(document).ready(function () {
       $('#flightTime').wickedpicker({
         twentyFour: true, // 24-hour format
@@ -781,7 +777,7 @@
         placement: 'top' // Attempt to show above input
       });
     });
-  </script>
+  </script> -->
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -978,7 +974,6 @@
       }
     });
   </script>
-
 
   <!-- Itinerary Day Cards Generation Script -->
   <script>
@@ -1766,8 +1761,6 @@
     });
 
   </script>
-
-
 
   <!-- Form Submission Script -->
   <script>

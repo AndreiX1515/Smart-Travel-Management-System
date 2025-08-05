@@ -291,6 +291,19 @@
 
 /* Date Picker */
 
+.datepicker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding-bottom: 10px; /* Reduced by 5px */
+}
+
+
+
+
+
+
 /* Periods Wrapper */
 .date-range-inputs-wrapper {
   display: flex;

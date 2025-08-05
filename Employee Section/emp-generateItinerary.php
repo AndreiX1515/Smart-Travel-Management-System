@@ -100,7 +100,7 @@
 						</div>
 					</div>
 
-
+					<!-- Flight Data Display Script -->
 					<script>
 						document.getElementById('flightId').addEventListener('change', function () {
 							const selectedOption = this.options[this.selectedIndex];
@@ -108,7 +108,6 @@
 							console.log(JSON.stringify(flightData, null, 2));
 						});
 					</script>
-
 
 
 					<!-- Connect to Voucher -->
@@ -197,11 +196,11 @@
 								});
 							</script>
 
+
 						</div>
 					</div>
 
-
-
+ 
 					<!-- Itinerary Details Card -->
 					<div class="card">
 						<div class="card-header bg-primary">
@@ -1040,17 +1039,50 @@
 
 			// ========= For Itinerary Activities Data Fetching and Rendering ========= 
 			const allItineraries = [
-				"Arrival at Incheon Airport - Flight: 5J118 (MNL-ICN)",
-				"Meeting and Greeting with an English-speaking guide",
-				"Transfer to Seoul and check in at the hotel",
-				"King Canoe Quay", "Chuncheon Samaksan Mountain Lake Cable Car", "Chuncheon Sailo 248 (Suspension Bridge)",
-				"Jade Garden", "PotatoBatt (Bakery)", "Nami Island",
-				"Small France Culture Village", "Italian Village (Pinocchio Village)", "N Seoul Tower", "Everland Theme Park",
-				"Ginseng Museum", "Cosmetic Duty Free Shop", "Free time shopping at Shilla Duty Free Shop",
-				"Myeongdong Street", "Free shopping at Myeongdong Street", "Gyeongbokgung Palace", "Red Pine Store",
-				"Korea Produce Jewel Amethyst Shop", "Jamsil Seokchon Lake (Cherry Blossom)", "Gimpo Hyundai Outlet",
-				"Experience making Kimbop"
+			"Arrival at Incheon Airport - Flight: 5J118 (MNL-ICN)",
+			"Meeting and greeting with an English-speaking guide",
+			"Transfer to Seoul and check-in at the hotel",
+			"King Canoe Quay",
+			"Chuncheon Samaksan Mountain Lake Cable Car",
+			"Chuncheon Suspension Bridge (Sailo 248)",
+			"Jade Garden",
+			"PotatoBatt Bakery",
+			"Nami Island",
+			"Petite France (Small France Culture Village)",
+			"Italian Village (Pinocchio Village)",
+			"N Seoul Tower",
+			"Everland Theme Park",
+			"Ginseng Museum",
+			"Cosmetic Duty-Free Shop",
+			"Free shopping at Shilla Duty-Free Shop",
+			"Myeongdong Street Shopping",
+			"Gyeongbokgung Palace",
+			"Red Pine Store",
+			"Korea Produce Jewel Amethyst Shop",
+			"Jamsil Seokchon Lake (Cherry Blossom Viewing)",
+			"Gimpo Hyundai Outlet",
+			"Experience making Kimbap",
+			"Begonia Bird Park",
+			"Jara Island Suspension Bridge",
+			"Mt. Seorak Tour",
+			"Blue House (Pass By)",
+			"COEX Mall - Starfield Library",
+			"Dragon Head Rock Tour",
+			"Jeju Rainbow Coastal Road",
+			"Jeju National Museum",
+			"Camellia Hill Park Tour",
+			"Viewing the Columnar Joints",
+			"Olle Trail Course 7",
+			"Cheonjiyeon Falls",
+			"Arirang Party Performance",
+			"Seongeup Folk Village",
+			"Seongsan Ilchulbong (Sunrise Peak)",
+			"Songdo Central Park Tour",
+			"Incheon Chinatown Walk",
+			"Soyanggang Skywalk",
+			"Gubongsan Observatory Cafe"
 			];
+
 
 
 
