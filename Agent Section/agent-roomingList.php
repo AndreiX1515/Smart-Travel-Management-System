@@ -141,6 +141,27 @@ require "../conn.php";
           
           <div class="table-container">
             <table class="assigned-rooms-table table table-bordered">
+              <colgroup>
+								<col style="width: 3%;">   <!-- # -->
+								<col style="width: 3%;">   <!-- AGE -->
+								<col style="width: 3%;">   <!-- MS/MR -->
+								<col style="width: 10%;">  <!-- GIVEN NAME -->
+								<col style="width: 10%;">  <!-- SURNAME -->
+								<col style="width: 15%;">  <!-- FULL NAME -->
+								<col style="width: 8%;">   <!-- DOB -->
+								<col style="width: 6%;">   <!-- NAT. -->
+								<col style="width: 8%;">  <!-- PASSPORT -->
+								<col style="width: 8%;">   <!-- I of E -->
+								<col style="width: 8%;">   <!-- D of E -->
+								<col style="width: 3%;">   <!-- SEX M/F -->
+								<col style="width: 3%;">   <!-- SEX 1/2 -->
+								<col style="width: 2%;">   <!-- ROOM TYPE -->
+								<col style="width: 6%;">   <!-- ROOM NO. -->
+								<col style="width: 10%;">   <!-- TIPPING -->
+								<col style="width: 15%;">  <!-- LUGGAGE -->
+								<col style="width: 15%;">  <!-- REMARKS -->
+								<col style="width: 8%;">   <!-- ACTION -->
+							</colgroup>
               <thead class="thead-dark">
                 <tr>
                   <th>#</th>
@@ -175,6 +196,8 @@ require "../conn.php";
 
       </div>
     </div>
+
+  <?php require "../Agent Section/includes/scripts.php"; ?>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
@@ -465,13 +488,10 @@ require "../conn.php";
       let femaleIndex = 1;
       let maleIndex = 1;
 
-      // Sort rooms by roomNumber to ensure consistent display
       const sortedRooms = [...rooms].sort((a, b) => a.roomNumber - b.roomNumber);
 
       sortedRooms.forEach((room, roomIndex) => {
         let firstGuest = true;
-
-        // Sort guests inside the room by fullName (optional for consistency)
         room.guests.sort((a, b) => (a.fullName || "").localeCompare(b.fullName || ""));
 
         room.guests.forEach((guest) => {
@@ -480,8 +500,6 @@ require "../conn.php";
           row.setAttribute("data-transact-no", guest.transactNo);
 
           const luggageCount = (guest.luggageType || []).length;
-
-          // Generate luggage select group
           let luggageSelectGroup = `
             <div id="luggageContainer-${guest.id}" class="luggage-group" data-guest-id="${guest.id}">
               <div id="luggageSelects-${guest.id}">`;
@@ -507,10 +525,32 @@ require "../conn.php";
               <button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
             </div>`;
 
-          // Determine MS/MR title and indexed gender label
           const isFemale = guest.sex?.toLowerCase() === 'female';
           const title = isFemale ? 'MS' : 'MR';
           const sexLabel = isFemale ? `F\t${femaleIndex++}` : `M\t${maleIndex++}`;
+
+          // ✅ Room type color (if first guest)
+          let roomTypeStyle = '';
+          if (firstGuest && room.type) {
+            const lowerRoomType = room.type.toLowerCase();
+            if (lowerRoomType.includes('twin')) {
+              roomTypeStyle = 'background-color: #FFFF00;';
+            } else if (lowerRoomType.includes('double')) {
+              roomTypeStyle = 'background-color: #B57EDC;';
+            } else if (lowerRoomType.includes('triple')) {
+              roomTypeStyle = 'background-color: #3CFF00;';
+            } else if (lowerRoomType.includes('single')) {
+              roomTypeStyle = 'background-color: #003CFF; color: white;';
+            }
+          }
+
+          // ✅ Tipping color
+          let tippingStyle = '';
+          if (guest.tip === 'In Korea') {
+            tippingStyle = 'background-color: #FFFF00;';
+          } else if (guest.tip === 'In Manila') {
+            tippingStyle = 'background-color: #ADD8E6;';
+          }
 
           row.innerHTML = `
             <td style="text-align: center; vertical-align: middle;">${rowNumber++}</td>
@@ -527,8 +567,8 @@ require "../conn.php";
             <td style="text-align: center; vertical-align: middle;">${guest.sex || "N/A"}</td>
             <td style="text-align: center; vertical-align: middle;">${guest.genderValue || ""}</td>
             ${firstGuest ? `<td style="text-align: center; vertical-align: middle;" rowspan="${room.guests.length}">${roomDisplayNumber}</td>` : ''}
-            ${firstGuest ? `<td style="text-align: center;" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''}
-            <td style="text-align: center; vertical-align: middle;">
+            ${firstGuest ? `<td style="text-align: center; vertical-align: middle; ${roomTypeStyle}" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''}
+            <td style="text-align: center; vertical-align: middle; ${tippingStyle}">
               <select name="tipping-${guest.id}" class="form-control">
                 <option value="">Select</option>
                 <option value="In Korea" ${guest.tip === 'In Korea' ? 'selected' : ''}>In Korea</option>

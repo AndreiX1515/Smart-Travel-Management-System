@@ -111,7 +111,7 @@
               </thead>
               <tbody>
                 <?php
-                $sql1 = "SELECT v.requirementId, v.transactNo, v.guestId, v.fileType, v.filePath, f.flightDepartureDate,
+                $sql1 = "SELECT v.requirementId, v.transactNo, v.guestId, v.fileType, v.filePath, v.docSubType, f.flightDepartureDate,
                           CONCAT(g.fName, ' ', IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')), 
                           g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName
                         FROM visarequirements v
@@ -130,7 +130,24 @@
                     $transactNo = $row['transactNo'] ?? '';
                     $requirementId = $row['requirementId'] ?? '';
                     $formmattedDepartureDate = date('Y.m.d', strtotime($row['flightDepartureDate']));
-                    ;
+                    $docSubType = $row['docSubType']; // Ensure it's not NULL
+
+                    if ($docSubType === 'bankCert')
+                    {
+                      $docSubType = 'Bank Certificate';
+                    } elseif ($docSubType === 'coe') {
+                      $docSubType = 'COE';
+                    } elseif ($docSubType === 'com') {
+                      $docSubType = 'COM';
+                    } else if ($docSubType === 'birthCert') {
+                      $docSubType = 'Birth Certificate';
+                    } elseif ($docSubType === 'businessPermit') {
+                      $docSubType = 'Business Permit';
+                    } elseif ($docSubType === 'secDti') {
+                      $docSubType = 'SEC/DTI';
+                    } elseif ($docSubType === 'itr') {
+                      $docSubType = 'ITR';
+                    }
 
                     // Initialize guest data if not set
                     if (!isset($filesByGuest[$guestId])) {
@@ -145,7 +162,8 @@
                     // Store both requirementId and filePath together
                     $filesByGuest[$guestId]['files'][$fileType][] = [
                       'filePath' => $filePath,
-                      'requirementId' => $requirementId
+                      'requirementId' => $requirementId,
+                      'docSubType' => $docSubType
                     ];
                   }
                 }
@@ -171,6 +189,8 @@
                           $filePath = !empty($file['filePath']) ? $file['filePath'] : ''; // Ensure no NULL values
                 
                           echo "<div >
+                                  <label>{$file['docSubType']}</label>
+                                  <br>
                                   <a class='btn btn-info btn-sm' 
                                     href='../Agent Section/functions/view-file.php?file=" . urlencode($filePath) . "' target='_blank'>View File</a> 
 
@@ -210,13 +230,6 @@
 
     </div>
 
-
-
-
-
-
-
-    
   </div>
 
 

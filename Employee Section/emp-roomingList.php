@@ -191,8 +191,8 @@ session_start();
 							</div>
 
 							<div class="assign-btn-wrapper">
-								<button id="resetFilter" class="btn btn-secondary">Reset Filter</button>
-								<button class="btn btn-primary btn-sm" onclick="assignRoom()">Assign</button>
+								<button id="resetFilter" class="btn btn-secondary mx-2">Reset Filter</button>
+								<button class="btn btn-primary" onclick="assignRoom()">Assign</button>
 							</div>
 						</div>
 					</div>
@@ -214,17 +214,17 @@ session_start();
 								<col style="width: 15%;">  <!-- FULL NAME -->
 								<col style="width: 8%;">   <!-- DOB -->
 								<col style="width: 6%;">   <!-- NAT. -->
-								<col style="width: 10%;">  <!-- PASSPORT -->
+								<col style="width: 8%;">  <!-- PASSPORT -->
 								<col style="width: 8%;">   <!-- I of E -->
 								<col style="width: 8%;">   <!-- D of E -->
 								<col style="width: 3%;">   <!-- SEX M/F -->
 								<col style="width: 3%;">   <!-- SEX 1/2 -->
 								<col style="width: 2%;">   <!-- ROOM TYPE -->
 								<col style="width: 6%;">   <!-- ROOM NO. -->
-								<col style="width: 15%;">   <!-- TIPPING -->
+								<col style="width: 10%;">   <!-- TIPPING -->
 								<col style="width: 15%;">  <!-- LUGGAGE -->
 								<col style="width: 15%;">  <!-- REMARKS -->
-								<col style="width: 5%;">   <!-- ACTION -->
+								<col style="width: 8%;">   <!-- ACTION -->
 							</colgroup>
               <thead class="thead-dark">
                 <tr>
@@ -570,100 +570,125 @@ session_start();
 
 		// Function to update the room list
 		function updateRoomList() {
-      const assignedRoomsTable = document.getElementById('assignedRoomsTable');
-      assignedRoomsTable.innerHTML = ''; // Clear the existing table
+			const assignedRoomsTable = document.getElementById('assignedRoomsTable');
+			assignedRoomsTable.innerHTML = ''; // Clear the existing table
 
-      let rowNumber = 1;
-      let roomDisplayNumber = 1;
-      let femaleIndex = 1;
-      let maleIndex = 1;
+			let rowNumber = 1;
+			let roomDisplayNumber = 1;
+			let femaleIndex = 1;
+			let maleIndex = 1;
 
-      // Sort rooms by roomNumber to ensure consistent display
-      const sortedRooms = [...rooms].sort((a, b) => a.roomNumber - b.roomNumber);
+			const sortedRooms = [...rooms].sort((a, b) => a.roomNumber - b.roomNumber);
 
-      sortedRooms.forEach((room, roomIndex) => {
-        let firstGuest = true;
+			sortedRooms.forEach((room, roomIndex) => {
+				let firstGuest = true;
+				room.guests.sort((a, b) => (a.fullName || "").localeCompare(b.fullName || ""));
 
-        // Sort guests inside the room by fullName (optional for consistency)
-        room.guests.sort((a, b) => (a.fullName || "").localeCompare(b.fullName || ""));
+				room.guests.forEach((guest) => {
+					const row = assignedRoomsTable.insertRow();
+					row.setAttribute("data-guest-id", guest.id);
+					row.setAttribute("data-transact-no", guest.transactNo);
 
-        room.guests.forEach((guest) => {
-          const row = assignedRoomsTable.insertRow();
-          row.setAttribute("data-guest-id", guest.id);
-          row.setAttribute("data-transact-no", guest.transactNo);
+					const luggageCount = (guest.luggageType || []).length;
 
-          const luggageCount = (guest.luggageType || []).length;
+					let luggageSelectGroup = `
+						<div id="luggageContainer-${guest.id}" class="luggage-group" data-guest-id="${guest.id}">
+							<div id="luggageSelects-${guest.id}">`;
 
-          // Generate luggage select group
-          let luggageSelectGroup = `
-            <div id="luggageContainer-${guest.id}" class="luggage-group" data-guest-id="${guest.id}">
-              <div id="luggageSelects-${guest.id}">`;
+					for (let i = 0; i < luggageCount; i++) {
+						luggageSelectGroup += `
+							<select class="form-control" name="luggageSelect-${guest.id}[]" 
+								style="width: 100%; display: block; margin-bottom: 5px;" 
+								id="luggageSelect-${guest.id}-${i}">
+								<option value="">Select Luggage</option>`;
 
-          for (let i = 0; i < luggageCount; i++) {
-            luggageSelectGroup += `
-              <select class="form-control" name="luggageSelect-${guest.id}[]" 
-                style="width: 100%; display: block; margin-bottom: 5px;" 
-                id="luggageSelect-${guest.id}-${i}">
-                <option value="">Select Luggage</option>`;
+						luggageOptions.forEach(option => {
+							const selected = option.concernDetailsId == guest.luggageType[i] ? 'selected' : '';
+							luggageSelectGroup += `<option value="${option.concernDetailsId}" ${selected}>${option.details}</option>`;
+						});
 
-            luggageOptions.forEach(option => {
-              const selected = option.concernDetailsId == guest.luggageType[i] ? 'selected' : '';
-              luggageSelectGroup += `<option value="${option.concernDetailsId}" ${selected}>${option.details}</option>`;
-            });
+						luggageSelectGroup += `</select>`;
+					}
 
-            luggageSelectGroup += `</select>`;
-          }
+					luggageSelectGroup += `
+							</div>
+							<button type="button" class="btn btn-sm btn-primary mt-1" style="margin-top: 5px;" onclick="addLuggageSelect(${guest.id})">Add</button>
+							<button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
+						</div>`;
 
-          luggageSelectGroup += `
-              </div>
-              <button type="button" class="btn btn-sm btn-primary mt-1" style="margin-top: 5px;" onclick="addLuggageSelect(${guest.id})">Add</button>
-              <button type="button" class="btn btn-sm btn-danger mt-1" style="margin-top: 5px; margin-left: 5px;" onclick="removeLuggageSelect(${guest.id})">Remove</button>
-            </div>`;
+					const isFemale = guest.sex?.toLowerCase() === 'female';
+					const title = isFemale ? 'MS' : 'MR';
+					const sexLabel = isFemale ? `F\t${femaleIndex++}` : `M\t${maleIndex++}`;
 
-          // Determine MS/MR title and indexed gender label
-          const isFemale = guest.sex?.toLowerCase() === 'female';
-          const title = isFemale ? 'MS' : 'MR';
-          const sexLabel = isFemale ? `F\t${femaleIndex++}` : `M\t${maleIndex++}`;
+					const newRowHTML = `
+						<td style="text-align: center; vertical-align: middle;">${rowNumber++}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.age || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${title}</td>
+						<td style="text-align: center; vertical-align: middle;">${(guest.fName ?? 'N/A')}${guest.suffix && guest.suffix !== 'N/A' ? ' ' + guest.suffix : ''}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.lName || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.fullName || `${guest.fName || ""} ${guest.lName || ""}`}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.dob || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.nationality || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.passport || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.passportIssued || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.passportExp || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.sex || "N/A"}</td>
+						<td style="text-align: center; vertical-align: middle;">${guest.genderValue || ""}</td>
+						${firstGuest ? `<td style="text-align: center; vertical-align: middle;" rowspan="${room.guests.length}">${roomDisplayNumber}</td>` : ''}
+						${firstGuest ? `<td style="text-align: center;" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''}
+						<td style="text-align: center; vertical-align: middle;">
+							<select name="tipping-${guest.id}" class="form-control tipping-select">
+								<option value="">Select</option>
+								<option value="In Korea" ${guest.tip === 'In Korea' ? 'selected' : ''}>In Korea</option>
+								<option value="In Manila" ${guest.tip === 'In Manila' ? 'selected' : ''}>In Manila</option>
+							</select>
+						</td>
+						<td style="text-align: center; vertical-align: middle;">${luggageSelectGroup}</td>
+						<td style="text-align: center; vertical-align: middle;">
+							<textarea name="remarks-${guest.id}" class="form-control" rows="2" style="resize: vertical; width: 100%;">${guest.remarks || ''}</textarea>
+						</td>
+						${firstGuest ? `<td style="vertical-align: middle;" rowspan="${room.guests.length}">
+							<button style="display: block; margin: auto;" class="btn btn-danger btn-sm" onclick="removeRoom(${roomIndex})">
+								Remove
+							</button>
+						</td>` : ''}`;
 
-          row.innerHTML = `
-            <td style="text-align: center; vertical-align: middle;">${rowNumber++}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.age || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${title}</td>
-            <td style="text-align: center; vertical-align: middle;">${(guest.fName ?? 'N/A')}${guest.suffix && guest.suffix !== 'N/A' ? ' ' + guest.suffix : ''}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.lName || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.fullName || `${guest.fName || ""} ${guest.lName || ""}`}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.dob || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.nationality || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.passport || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.passportIssued || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.passportExp || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.sex || "N/A"}</td>
-            <td style="text-align: center; vertical-align: middle;">${guest.genderValue || ""}</td>
-            ${firstGuest ? `<td style="text-align: center; vertical-align: middle;" rowspan="${room.guests.length}">${roomDisplayNumber}</td>` : ''}
-            ${firstGuest ? `<td style="text-align: center;" class="room-type" rowspan="${room.guests.length}">${room.type.toUpperCase()}</td>` : ''}
-            <td style="text-align: center; vertical-align: middle;">
-              <select name="tipping-${guest.id}" class="form-control">
-                <option value="">Select</option>
-                <option value="In Korea" ${guest.tip === 'In Korea' ? 'selected' : ''}>In Korea</option>
-                <option value="In Manila" ${guest.tip === 'In Manila' ? 'selected' : ''}>In Manila</option>
-              </select>
-            </td>
-            <td style="text-align: center; vertical-align: middle;">${luggageSelectGroup}</td>
-            <td style="text-align: center; vertical-align: middle;">
-              <textarea name="remarks-${guest.id}" class="form-control" rows="2" style="resize: vertical; width: 100%;">${guest.remarks || ''}</textarea>
-            </td>
-            ${firstGuest ? `<td style="vertical-align: middle;" rowspan="${room.guests.length}">
-              <button style="display: block; margin: auto;" class="btn btn-danger btn-sm" onclick="removeRoom(${roomIndex})">
-                Remove
-              </button>
-            </td>` : ''}`;
+					row.innerHTML = newRowHTML;
 
-          firstGuest = false;
-        });
+					// === 🎨 Color Logic STARTS HERE ===
 
-        roomDisplayNumber++;
-      });
-    }
+					// Tipping cell background color
+					const tippingSelect = row.querySelector(`select[name="tipping-${guest.id}"]`);
+					const tipValue = guest.tip?.toLowerCase();
+					if (tipValue === 'in korea') {
+						tippingSelect.parentElement.style.backgroundColor = '#FFFF00'; // Yellow
+					} else if (tipValue === 'in manila') {
+						tippingSelect.parentElement.style.backgroundColor = '#ADD8E6'; // Light Blue
+					}
+
+					// Room type cell background color (only once per room)
+					if (firstGuest) {
+						const roomTypeCell = row.querySelector('.room-type');
+						const roomType = room.type.toLowerCase();
+						if (roomType.includes('twin')) {
+							roomTypeCell.style.backgroundColor = '#FFFF00'; // Yellow
+						} else if (roomType.includes('double')) {
+							roomTypeCell.style.backgroundColor = '#B57EDC'; // Lavender
+						} else if (roomType.includes('triple')) {
+							roomTypeCell.style.backgroundColor = '#3CFF00'; // Green
+						} else if (roomType.includes('single')) {
+							roomTypeCell.style.backgroundColor = '#003CFF'; // Blue
+						}
+					}
+
+					// === 🎨 Color Logic ENDS HERE ===
+
+					firstGuest = false;
+				});
+
+				roomDisplayNumber++;
+			});
+		}
 
 		// Add a luggage select dropdown dynamically
 		function addLuggageSelect(guestId) {
