@@ -166,6 +166,16 @@
   cursor: pointer;
 }
 
+
+
+.datepicker-wrapper {
+  display: flex;
+  align-items: center;
+  /* justify-content: left; */
+  gap: 0.5rem;
+  width: 100%;
+}
+
 .date-range-wrapper {
   display: flex;
   align-items: center;
@@ -214,7 +224,7 @@
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 16px;
+  font-size: 12px;
   color: #6c757d;
   pointer-events: none;
 }
@@ -843,9 +853,31 @@
 
 
 
+/* Optional: Make sure calendar always appears above modal content */
+.flatpickr-calendar {
+  z-index: 10000 !important;
+}
 
 
 
+
+/* For Connect to Voucher Row */
+.custom-voucher-row {
+  align-items: flex-end; /* Bottom-align both columns */
+}
+
+.custom-label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 6px;
+  display: block;
+  color: #333;
+}
+
+
+.form-select {
+  font-size: .5rem;
+}
 
 
 

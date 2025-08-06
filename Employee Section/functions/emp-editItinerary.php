@@ -64,6 +64,9 @@ try {
         }
     }
 
+
+
+    
     // ✅ Begin transaction AFTER voucher check
     $conn->beginTransaction();
 
@@ -161,6 +164,8 @@ try {
             'hotelName' => $hotelName
         ];
     }
+
+
 
     // Assume $cityHotels['cities'] is populated from the JSON input
     foreach ($cityHotels['cities'] as $index => $entry) {
