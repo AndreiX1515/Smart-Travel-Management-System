@@ -216,8 +216,9 @@ foreach ($roomGroups as $group) {
       $guest['passportExp'] ?? '',
       $guest['sex'] ?? '',
       $guest['genderValue'] ?? '',
-      '', '',
-      $guest['tip'] ?? '',
+      '', 
+      '',
+      '',
       implode(", ", (array)($guest['luggageText'] ?? [])),
       $guest['remarks'] ?? ''
     ], null, 'A' . $row);
