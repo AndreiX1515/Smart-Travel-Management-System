@@ -216,11 +216,13 @@ foreach ($roomGroups as $group) {
       $guest['passportExp'] ?? '',
       $guest['sex'] ?? '',
       $guest['genderValue'] ?? '',
-      '', '',
-      $guest['tip'] ?? '',
+      '', 
+      '',
+      '', // 👈 EMPTY tipping column, but color will still apply
       implode(", ", (array)($guest['luggageText'] ?? [])),
       $guest['remarks'] ?? ''
     ], null, 'A' . $row);
+
 
     // Apply background color based on tip
     $tipping = strtolower($guest['tip'] ?? '');
