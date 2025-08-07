@@ -66,7 +66,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         // Proceed only if flightId is available
         if ($flightId) {
           // SQL query to join flight and package tables
-          $sql1 = "SELECT flight.*, package.packageName, flight.landPrice as packagePrice,
+          $sql1 = "SELECT flight.*, package.packageName, flight.landPrice as packagePrice
                     FROM flight
                     JOIN package ON flight.packageId = package.packageId
                     WHERE flight.flightId = ?";
