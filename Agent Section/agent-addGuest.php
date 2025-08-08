@@ -28,7 +28,7 @@ error_reporting(E_ALL);
 
   <div class="main-container">
 
-   <?php 
+    <?php 
       // Check if the transaction number is set in the session
       if (isset($_SESSION['transaction_number'])) 
       {
@@ -46,11 +46,16 @@ error_reporting(E_ALL);
       $stmt->bind_param("s", $transactionNumber);
       $stmt->execute();
       $result = $stmt->get_result();
-    
+
       $pax = 0; // Default value if no result is found
+      $infantPax = 0;
+
       if ($row = $result->fetch_assoc()) 
       {
         $_SESSION['pax'] = $row['pax']; // Store the total pax in the session
+        $_SESSION['infantPax'] = $row['infantPax'];
+        $pax = $row['pax'];
+        $infantPax = $row['infantPax'];
         $flightId = $row['flightId'];
       }
 
@@ -63,22 +68,52 @@ error_reporting(E_ALL);
       {
         $flightdate = $row1['flightDepartureDate'];
       }
-    
-      // Fetch the count of existing guests
-      $stmt = $conn->prepare("SELECT COUNT(*) FROM guest WHERE transactNo = ?");
+
+      // 🧠 New: Fetch all existing guests and count by type
+      $stmt = $conn->prepare("SELECT isInfant FROM guest WHERE transactNo = ?");
       $stmt->bind_param("s", $transactionNumber);
       $stmt->execute();
       $result = $stmt->get_result();
-      $guestCount = $result->fetch_row()[0]; // Get the number of guests already added
+
+      $infantCount = 0;
+      $nonInfantCount = 0;
+
+      while ($row = $result->fetch_assoc()) {
+        if ($row['isInfant']) {
+          $infantCount++;
+        } else {
+          $nonInfantCount++;
+        }
+      }
+
       $stmt->close();
-    
-      // Calculate Available Pax
-      $availablePax = $_SESSION['pax'] - $guestCount;
+
+      // Calculate Available Pax (for display only)
+      $availablePax = ($pax + $infantPax) - ($infantCount + $nonInfantCount);
+
+      // 🔐 Check if adding a new guest is allowed
+      // Assume you have this from a form or context:
+      $isInfant = isset($_POST['isInfant']) && $_POST['isInfant'] == '1';
+
+      if ($isInfant) {
+        if ($infantCount >= $infantPax) {
+          $_SESSION['status'] = "You have already added the maximum number of infants.";
+          header("Location: ../agent-addGuest.php?transactNo=" . urlencode($transactionNumber));
+          exit(0);
+        }
+      } else {
+        if ($nonInfantCount >= $pax) {
+          $_SESSION['status'] = "You have already added the maximum number of regular guests (adults/children).";
+          header("Location: ../agent-addGuest.php?transactNo=" . urlencode($transactionNumber));
+          exit(0);
+        }
+      }
     ?>
+
 
     <div class="navbar">
 
-			<div class="page-header-wrapper">
+      <div class="page-header-wrapper">
 
         <div class="first-half">
           <div class="page-header-top">
@@ -95,7 +130,7 @@ error_reporting(E_ALL);
             </div>
           </div>
         </div>
-				
+        
         <div class="second-half">
           <div class="transaction-wrapper">
             <div class="transaction-item">
@@ -107,14 +142,8 @@ error_reporting(E_ALL);
           </div>
         </div>
 
-			</div>
-		</div>
-
-		<script>
-			document.getElementById('redirect-btn').addEventListener('click', function () {
-				window.location.href = '../Agent Section/agent-showGuest.php'; // Replace with your actual URL
-			});
-		</script>
+      </div>
+    </div>
 
     <div class="main-content">
 
@@ -124,9 +153,12 @@ error_reporting(E_ALL);
 
           <div class="transaction-wrapper">
             
-            <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
-            <h6 class="fw-bold">Available Pax: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
-            
+            <h6 class="fw-bold">Total Pax Limit: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
+            <h6 class="fw-bold">Guests Added (Non-Infant): <span class="fw-normal"><?php echo $nonInfantCount; ?></span></h6>
+            <h6 class="fw-bold">Infant Pax Limit: <span class="fw-normal"><?php echo $infantPax; ?></span></h6>
+            <h6 class="fw-bold">Infants Added: <span class="fw-normal"><?php echo $infantCount; ?></span></h6>
+            <h6 class="fw-bold">Remaining Pax Slots: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
+
           </div>
 
           <div>
@@ -223,6 +255,7 @@ error_reporting(E_ALL);
                           <label for="age">Age <span class="text-danger fw-bold">*</span> 
                           <span id="infant"></span></label>
                           <input type="number" name="age[]" class="form-control" placeholder="Age" readonly>
+                          <input type="hidden" name="isInfant[]" value="0">
                           <span id="ageError" class="text-danger"></span> 
                           <!-- Error message for Age -->
                         </div>
@@ -781,6 +814,13 @@ error_reporting(E_ALL);
 
 <?php require "../Agent Section/includes/scripts.php"; ?>
 
+<!-- Back Button -->
+<script>
+  document.getElementById('redirect-btn').addEventListener('click', function () {
+    window.location.href = '../Agent Section/agent-showGuest.php'; // Replace with your actual URL
+  });
+</script>
+
 <script>
   function toggleSubMenu(submenuId) 
   {
@@ -1106,37 +1146,29 @@ error_reporting(E_ALL);
     }
 
     // Event listener for birthdate field
-    $(document).on('change', 'input[name^="birthdate"]', function () 
-    {
+    $(document).on('change', 'input[name^="birthdate"]', function () {
       const birthdate = $(this).val();
 
-      // Make sure the birthdate is in a valid format (YYYY-MM-DD)
-      if (isValidDate(birthdate)) 
-      {
-        const age = calculateAge(birthdate); // Calculate age
-
-        // Update the age field and handle infant text
+      if (isValidDate(birthdate)) {
+        const age = calculateAge(birthdate);
         const parentCard = $(this).closest('.card-body');
+
         parentCard.find('input[name^="age"]').val(age > 0 ? age : 0);
 
         const infantSpan = parentCard.find('span[id^="infant"]');
-        if (age === 0) 
-        {
-          infantSpan.text('Infant'); // Display "Infant" for age 0
-        } 
-        else 
-        {
-          infantSpan.text(''); // Clear if not an infant
-        }
+        infantSpan.text(age === 0 ? 'Infant' : '');
 
-      } 
-      else 
-      {
-        // Clear invalid fields
-        $(this).closest('.card-body').find('input[name^="age"]').val('');
-        $(this).closest('.card-body').find('span[id^="infant"]').text('');
+        const isInfantInput = parentCard.find('input[name^="isInfant"]');
+        isInfantInput.val(age === 0 ? 1 : 0);
+
+      } else {
+        const parentCard = $(this).closest('.card-body');
+        parentCard.find('input[name^="age"]').val('');
+        parentCard.find('span[id^="infant"]').text('');
+        parentCard.find('input[name^="isInfant"]').val('0');
       }
     });
+
 
     $(document).on('change', 'input[name^="passportExp"]', function () 
     {
