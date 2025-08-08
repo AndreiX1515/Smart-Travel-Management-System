@@ -118,6 +118,7 @@ error_reporting(E_ALL);
             $packageName = $row1['packageName'];
             $flightDate = $row1['flightDepartureDate'];
             $pax = $row1['pax'];
+            $infantPax = $row1['infantPax'];
             $status = $row1['status'];
             $price = $row1['totalPrice'];
             $flightId = $row1['flightId']; // Fetch flightId
@@ -182,7 +183,11 @@ error_reporting(E_ALL);
                     </div>
 
                     <div class="info-item">
-                      <p><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                      <p><strong>Number of Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                    </div>
+
+                    <div class="info-item">
+                      <p><strong>Infant Pax:</strong> <?php echo htmlspecialchars($infantPax); ?></p>
                     </div>
 
                     <div class="info-item">
@@ -191,11 +196,6 @@ error_reporting(E_ALL);
 
                     <div class="info-item">
                       <p><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
-                    </div>
-
-                    <div class="info-item">
-                      <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>">
-                          <?php echo htmlspecialchars($status); ?> </span> </p>
                     </div>
                   </div>
 
@@ -214,6 +214,10 @@ error_reporting(E_ALL);
 
                     <div class="info-item">
                       <p><strong>Price: ₱ <?php echo number_format((float)$price, 2); ?></strong></p>
+                    </div>
+                    <div class="info-item">
+                      <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>">
+                        <?php echo htmlspecialchars($status); ?> </span> </p>
                     </div>
                   </div>
                 </div>

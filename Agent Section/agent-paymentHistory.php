@@ -25,14 +25,6 @@ require "../conn.php";
 		<div class="navbar">
 			<div class="page-header-wrapper">
 
-				<!-- <div class="page-header-top">
-			<div class="back-btn-wrapper">
-			  <button class="back-btn" id="redirect-btn">
-				<i class="fas fa-chevron-left"></i>
-			  </button>
-			</div>
-		  </div> -->
-
 				<div class="page-header-content">
 					<div class="page-header-text">
 						<h5 class="header-title">Payments</h5>
@@ -43,7 +35,7 @@ require "../conn.php";
 		</div>
 
 		<?php
-		$statusTab = isset($_GET['status']) ? $_GET['status'] : '';
+			$statusTab = isset($_GET['status']) ? $_GET['status'] : '';
 		?>
 
 		<div class="main-content">
@@ -93,130 +85,125 @@ require "../conn.php";
 						</thead>
 						<tbody>
 							<?php
-							if ($agentRole != 'Head Agent') {
-								$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, f.flightDepartureDate
-                            FROM `booking` b
-														JOIN flight f ON b.flightId = f.flightId
-                            JOIN `payment` p ON b.transactNo = p.transactNo
-                            WHERE b.accountId = $accountId
-                            ORDER BY p.paymentId ASC";
+								if ($agentRole != 'Head Agent') 
+								{
+									$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, f.flightDepartureDate
+													FROM `booking` b
+													JOIN flight f ON b.flightId = f.flightId
+													JOIN `payment` p ON b.transactNo = p.transactNo
+													WHERE b.accountId = $accountId
+													ORDER BY p.paymentId ASC";
 
-								// Execute the query
-								$result1 = $conn->query($sql1);
+									$result1 = $conn->query($sql1);
 
-								// Check if query execution was successful
-								if (!$result1) {
-									die("Query error: " . $conn->error);
-								}
+									if (!$result1) {
+										die("Query error: " . $conn->error);
+									}
 
-								// Fetch results and display rows
-								if ($result1->num_rows > 0) {
-									while ($row = $result1->fetch_assoc()) {
-										$amount = number_format($row['amount'], 2);
-										$date = date("F d, Y", strtotime($row['paymentDate']));
-										$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+									if ($result1->num_rows > 0) 
+									{
+										while ($row = $result1->fetch_assoc()) 
+										{
+											$amount = number_format($row['amount'], 2);
+											$date = date("F d, Y", strtotime($row['paymentDate']));
+											$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+											$formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
+											$status = $row['paymentStatus'] ?? 'Unknown';
 
-										$formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
+											$statusClass = match ($status) 
+											{
+												'Approved' => 'bg-success text-white',
+												'Rejected' => 'bg-danger text-white',
+												'Submitted' => 'bg-warning text-dark',
+												default => 'bg-secondary text-white',
+											};
 
-										$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
-										$statusClass = '';
+											echo "<tr>
+															<td>{$row['transactNo']}</td>
+															<td>{$formattedFlightDate}</td>
+															<td>₱ {$amount}</td>
+															<td>";
+											
+											if (!empty($row['filePath'])) 
+											{
+												$fileLink = urlencode($row['filePath']);
+												echo "<a href='functions/view-file.php?file={$fileLink}' target='_blank'>View File</a> 
+															<a href='functions/download.php?file={$fileLink}' target='_blank'>Download File</a>";
+											} 
+											else 
+											{
+												echo "No file uploaded";
+											}
 
-										switch ($status) {
-											case 'Approved':
-												$statusClass = 'bg-success text-white'; // Green background, white text
-												break;
-											case 'Rejected':
-												$statusClass = 'bg-danger text-white'; // Red background, white text
-												break;
-											case 'Submitted':
-												$statusClass = 'bg-warning text-dark';
-												break;
-											default:
-												$statusClass = 'bg-secondary text-white';
+											echo "</td>
+															<td>{$date}</td>
+															<td>
+																<span class='badge p-2 rounded-pill {$statusClass}'>{$status}</span>
+															</td>
+															<td>{$remarks}</td>
+															<td style='display:none;'>{$row['paymentDate']}</td>
+														</tr>";
 										}
+									}
+								} else 
+								{
+									$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, f.flightDepartureDate
+													FROM `booking` b
+													JOIN flight f ON b.flightId = f.flightId
+													JOIN `payment` p ON b.transactNo = p.transactNo
+													WHERE b.agentCode = '$agentCode'
+													ORDER BY p.paymentId ASC";
 
-										echo "<tr>
-                                <td>" . $row['transactNo'] . "</td>
-																<td>" . $formattedFlightDate . "</td>
-                                <td>₱ " . $amount . "</td>
-                                <td>
-                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-                                </td>
-                                <td>" . $date . "</td>
-                                <td>
-                                  <span class='badge p-2 rounded-pill {$statusClass}'>
-                                    {$status}
-                                  </span>
-                                </td>
-                                <td>" . $remarks . "</td>
-                                <td style='display:none;'>" . $row['paymentDate'] . "</td>
-                              </tr>";
+									$result1 = $conn->query($sql1);
+
+									if (!$result1) 
+									{
+										die("Query error: " . $conn->error);
+									}
+
+									if ($result1->num_rows > 0) 
+									{
+										while ($row = $result1->fetch_assoc()) 
+										{
+											$amount = number_format($row['amount'], 2);
+											$date = date("F d, Y", strtotime($row['paymentDate']));
+											$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
+											$formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
+											$status = $row['paymentStatus'] ?? 'Unknown';
+
+											$statusClass = match ($status) 
+											{
+												'Approved' => 'bg-success text-white',
+												'Rejected' => 'bg-danger text-white',
+												'Submitted' => 'bg-warning text-dark',
+												default => 'bg-secondary text-white',
+											};
+
+											echo "<tr>
+															<td>{$row['transactNo']}</td>
+															<td>{$formattedFlightDate}</td>
+															<td>₱ {$amount}</td>
+															<td>";
+
+											if (!empty($row['filePath'])) {
+												$fileLink = urlencode($row['filePath']);
+												echo "<a href='functions/view-file.php?file={$fileLink}' target='_blank'>View File</a> 
+															<a href='functions/download.php?file={$fileLink}' target='_blank'>Download File</a>";
+											} else {
+												echo "No file uploaded";
+											}
+
+											echo "</td>
+															<td>{$date}</td>
+															<td>
+																<span class='badge p-2 rounded-pill {$statusClass}'>{$status}</span>
+															</td>
+															<td>{$remarks}</td>
+															<td style='display:none;'>{$row['paymentDate']}</td>
+														</tr>";
+										}
 									}
 								}
-							} else {
-								$sql1 = "SELECT b.transactNo, p.paymentId, p.amount, p.filePath, p.paymentDate, p.paymentStatus, p.paymentRemarks, f.flightDepartureDate
-                            FROM `booking` b
-														JOIN flight f ON b.flightId = f.flightId
-                            JOIN `payment` p ON b.transactNo = p.transactNo
-                            WHERE b.agentCode = '$agentCode'
-                            ORDER BY p.paymentId ASC";
-
-								// Execute the query
-								$result1 = $conn->query($sql1);
-
-								// Check if query execution was successful
-								if (!$result1) {
-									die("Query error: " . $conn->error);
-								}
-
-								// Fetch results and display rows
-								if ($result1->num_rows > 0) {
-									while ($row = $result1->fetch_assoc()) {
-										$amount = number_format($row['amount'], 2);
-										$date = date("F d, Y", strtotime($row['paymentDate']));
-										$remarks = !empty($row['paymentRemarks']) ? $row['paymentRemarks'] : 'N/A';
-
-										$formattedFlightDate = date("Y.m.d", strtotime($row['flightDepartureDate']));
-
-										$status = isset($row['paymentStatus']) ? $row['paymentStatus'] : 'Unknown';
-										$statusClass = '';
-
-										switch ($status) {
-											case 'Approved':
-												$statusClass = 'bg-success text-white'; // Green background, white text
-												break;
-											case 'Rejected':
-												$statusClass = 'bg-danger text-white'; // Red background, white text
-												break;
-											case 'Submitted':
-												$statusClass = 'bg-warning text-dark';
-												break;
-											default:
-												$statusClass = 'bg-secondary text-white';
-										}
-
-										echo "<tr>
-                                <td>" . $row['transactNo'] . "</td>
-																<td>" . $formattedFlightDate . "</td>
-                                <td>₱ " . $amount . "</td>
-                                <td>
-                                  <a href='functions/view-file.php?file=" . urlencode($row['filePath']) . "' target='_blank'>View File</a> 
-                                  <a href='functions/download.php?file=" . urlencode($row['filePath']) . "' target='_blank'>Download File</a> 
-                                </td>
-                                <td>" . $date . "</td>
-                                <td>
-                                  <span class='badge p-2 rounded-pill {$statusClass}'>
-                                    {$status}
-                                  </span>
-                                </td>
-                                <td>" . $remarks . "</td>
-                                <td style='display:none;'>" . $row['paymentDate'] . "</td>
-                              </tr>";
-									}
-								}
-							}
-
 							?>
 						</tbody>
 					</table>

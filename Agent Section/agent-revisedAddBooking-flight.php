@@ -66,7 +66,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         // Proceed only if flightId is available
         if ($flightId) {
           // SQL query to join flight and package tables
-          $sql1 = "SELECT flight.*, package.packageName, flight.landPrice as packagePrice,
+          $sql1 = "SELECT flight.*, package.packageName, flight.landPrice as packagePrice
                     FROM flight
                     JOIN package ON flight.packageId = package.packageId
                     WHERE flight.flightId = ?";
@@ -176,6 +176,23 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         <div class="separator"></div>
                         <label id="availSeats"></label>
                       </div>
+                    </div>
+
+                    <!-- Infant Pax Input -->
+                    <div class="form-group mt-2">
+                      <div class="col-header">
+                        <div>
+                          <label for="infantPax">No. of Infants</label>
+                        </div>
+                      </div>
+
+                      <input type="number" class="form-control" id="infantPax" name="infantPax" min="0" value="0" placeholder="Enter No. of Infants">
+
+                      <small class="form-text text-muted">
+                        Infants will not be included in total pax but will require guest info.
+                      </small>
+
+                      <span id="infantPaxError" class="text-danger"></span>
                     </div>
 
                   </div>
@@ -558,10 +575,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                           style="max-width: 250px; max-height: 80px;">
                       </div>
 
-                      
-                     
-
-                       <!-- Combined Info Section -->
+                      <!-- Combined Info Section -->
                       <div class="info-section">
                         <div class="summary-title-container">
                           <!-- Booking Summary Title -->
@@ -582,6 +596,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                         </div>
                         <div class="info-item">
                           <strong>No. of Guests:</strong> <span id="guestCount">1</span>
+                        </div>
+                        <div class="info-item">
+                          <strong>No. of Infant:</strong> <span id="infantCount"></span>
                         </div>
 
                         <!-- Flight/Origin Details -->
@@ -655,6 +672,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
     }
   </script>
 
+  <!-- Form Submission & Flight Date Change Script  -->
   <script>
     $(document).ready(function () {
       // Fetch flight Related Details once changed
@@ -786,6 +804,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         if (isValid) {
           const firstName = $('#fName').val().trim();
           const lastName = $('#lName').val().trim();
+          const infantPax = parseInt($('#infantPax').val()); // Get infant pax, default to 0 if invalid
           let middleName = $('#mName').val().trim() || '';
           let suffix = $('#suffix').val().trim() || '';
           let email = $('#email').val().trim();
@@ -806,6 +825,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             $('#contactPersonName').text(fullName);
             $('#contactPersonEmail').text(email);
             $('#guestCount').text(totalPax);
+            $('#infantCount').text(infantPax);
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
           } else if (totalPax > totalSeats) {
             // If land only is not selected, check for seat availability
@@ -818,6 +838,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             $('#contactPersonEmail').text(email);
             // Set the total number of guests in the guestCount paragraph
             $('#guestCount').text(totalPax);
+            $('#infantCount').text(infantPax);
 
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
           }

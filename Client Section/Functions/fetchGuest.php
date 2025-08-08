@@ -1,8 +1,7 @@
 <?php
 require "../../conn.php"; // Database connection
 
-if (isset($_POST['flightDate']) && isset($_POST['agentCode'])) 
-{
+if (isset($_POST['flightDate']) && isset($_POST['agentCode'])) {
   $flightDate = $_POST['flightDate'];
   $agentCode = $_POST['agentCode'];
 
@@ -10,9 +9,16 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
   $unassignedGuests = [];
 
   // Fetch guests who are assigned to a room
-  $sqlAssigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, DATE_FORMAT(g.birthdate, '%Y %b %d') AS birthdate, g.age, g.sex, 
-                    g.nationality, g.passportNo, DATE_FORMAT(g.passportExp, '%d %b %Y') AS passportExp, g.transactNo, r.roomNumber, r.roomType,
-                    cd.concernDetailsId
+  $sqlAssigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, 
+                    DATE_FORMAT(g.birthdate, '%d-%b-%y') AS birthdate, g.age, g.sex, 
+                    g.nationality, g.passportNo, 
+                    DATE_FORMAT(g.passportExp, '%d-%b-%y') AS passportExp, 
+                    DATE_FORMAT(g.passportIssuedDate, '%d-%b-%y') AS passportIssued, 
+                    g.transactNo, r.roomNumber, r.roomType, r.remarks, r.tip,
+                    cd.concernDetailsId,
+                    f.flightCode, f.flightDepartureDate, f.returnFlightCode, f.returnArrivalDate, 
+                    f.flightDepartureTime, f.flightArrivalTime,
+                    f.returnDepartureTime, f.returnArrivalTime
                   FROM `guest` g
                   LEFT JOIN `roominglist` r ON g.guestId = r.guestId
                   JOIN `booking` b ON g.transactNo = b.transactNo
@@ -24,86 +30,126 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
                     AND b.agentCode = ?
                     AND r.roomNumber IS NOT NULL";
 
-  if ($stmtAssigned = $conn->prepare($sqlAssigned))
-  {
+  if ($stmtAssigned = $conn->prepare($sqlAssigned)) {
     $stmtAssigned->bind_param("ss", $flightDate, $agentCode);
     $stmtAssigned->execute();
     $resultAssigned = $stmtAssigned->get_result();
 
-    $guestMap = []; // temp map for grouping
+    $guestMap = [];
+    $flightDetails = null;
 
-    while ($row = $resultAssigned->fetch_assoc()) 
-    {
+    while ($row = $resultAssigned->fetch_assoc()) {
       $guestId = $row['guestId'];
-      
-      // Initialize guest if not already in map
-      if (!isset($guestMap[$guestId])) 
-      {
-        $guestMap[$guestId] = [
-          "id" => $guestId,
-          "transactNo" => $row['transactNo'],
-          "name" => trim($row['fName'] . " " . ($row['suffix'] === 'N/A' ? '' : $row['suffix']) . " " . $row['lName']),
-          "age" => $row['age'],
-          "dob" => $row['birthdate'] ?: 'N/A',
-          "sex" => $row['sex'],
-          "nationality" => $row['nationality'],
-          "passport" => $row['passportNo'],
-          "passportExp" => $row['passportExp'] ?: 'N/A',
-          "roomNumber" => $row['roomNumber'],
-          "roomType" => $row['roomType'] ?: 'N/A',
-          "luggageType" => [] // store as array first
+      $sexFull = ucfirst(strtolower($row['sex']));
+      $shortSex = $sexFull === 'Male' ? 'M' : ($sexFull === 'Female' ? 'F' : '');
+      $prefix = $sexFull === 'Male' ? 'MR' : ($sexFull === 'Female' ? 'MS' : '');
+      $genderValue = $sexFull === 'Male' ? '1' : ($sexFull === 'Female' ? '2' : '');
+      $suffix = $row['suffix'] !== 'N/A' ? $row['suffix'] : '';
+      $fullName = trim($row['fName'] . ' ' . $suffix . ' ' . $row['lName']);
+
+      if ($flightDetails === null) {
+        $flightDetails = [
+          "flightCode" => $row['flightCode'],
+          "flightDepartureDate" => $row['flightDepartureDate'],
+          "returnFlightCode" => $row['returnFlightCode'],
+          "arrivalDate" => $row['returnArrivalDate'],
+          "flightDepartureTime" => $row['flightDepartureTime'],
+          "flightArrivalTime" => $row['flightArrivalTime'],
+          "returnFlightDepartureTime" => $row['returnDepartureTime'],
+          "returnArrivalTime" => $row['returnArrivalTime']
         ];
       }
 
-      // Add luggage if found
-      if (!empty($row['concernDetailsId'])) 
-      {
+      if (!isset($guestMap[$guestId])) {
+        $guestMap[$guestId] = [
+          "id" => $guestId,
+          "transactNo" => $row['transactNo'],
+          "fName" => $row['fName'],
+          "mName" => $row['mName'],
+          "lName" => $row['lName'],
+          "suffix" => $row['suffix'],
+          "fullName" => $fullName,
+          "age" => $row['age'],
+          "dob" => $row['birthdate'] ?: 'N/A',
+          "sex" => $shortSex,
+          "prefix" => $prefix,
+          "genderValue" => $genderValue,
+          "nationality" => $row['nationality'],
+          "passport" => $row['passportNo'],
+          "passportExp" => $row['passportExp'] ?: 'N/A',
+          "passportIssued" => $row['passportIssued'] ?: 'N/A',
+          "roomNumber" => $row['roomNumber'],
+          "roomType" => $row['roomType'] ?: 'N/A',
+          "tip" => $row['tip'] ?: '',
+          "luggageType" => [],
+          "remarks" => $row['remarks'] ?: ''
+        ];
+      }
+
+      if (!empty($row['concernDetailsId'])) {
         $guestMap[$guestId]['luggageType'][] = $row['concernDetailsId'];
       }
     }
 
-    // Now process map into array, combining luggageType as comma-separated string
     foreach ($guestMap as $guest) {
       $assignedGuests[] = $guest;
     }
   }
 
-
   // Fetch guests who are NOT assigned to a room
-  $sqlUnassigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, DATE_FORMAT(g.birthdate, '%Y %b %d') AS birthdate, g.age, g.sex, 
-                    g.nationality, g.passportNo, DATE_FORMAT(g.passportExp, '%d %b %Y') AS passportExp, g.transactNo
-                  FROM `guest` g
-                  JOIN `booking` b ON g.transactNo = b.transactNo
-                  JOIN `flight` f ON b.flightId = f.flightId
-                  LEFT JOIN `roominglist` r ON g.guestId = r.guestId
-                  WHERE b.status = 'Confirmed' AND f.flightDepartureDate = ? AND b.agentCode = ? AND r.guestId IS NULL";
+  $sqlUnassigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, 
+                      DATE_FORMAT(g.birthdate, '%d-%b-%y') AS birthdate, g.age, g.sex, 
+                      g.nationality, g.passportNo, 
+                      DATE_FORMAT(g.passportExp, '%d-%b-%y') AS passportExp,
+                      DATE_FORMAT(g.passportIssuedDate, '%d-%b-%y') AS passportIssued,
+                      g.transactNo
+                    FROM `guest` g
+                    JOIN `booking` b ON g.transactNo = b.transactNo
+                    JOIN `flight` f ON b.flightId = f.flightId
+                    LEFT JOIN `roominglist` r ON g.guestId = r.guestId
+                    WHERE b.status = 'Confirmed' 
+                      AND f.flightDepartureDate = ? 
+                      AND b.agentCode = ? 
+                      AND r.guestId IS NULL";
 
-  if ($stmtUnassigned = $conn->prepare($sqlUnassigned))
-  {
+  if ($stmtUnassigned = $conn->prepare($sqlUnassigned)) {
     $stmtUnassigned->bind_param("ss", $flightDate, $agentCode);
     $stmtUnassigned->execute();
     $resultUnassigned = $stmtUnassigned->get_result();
 
-    while ($row = $resultUnassigned->fetch_assoc())
-    {
+    while ($row = $resultUnassigned->fetch_assoc()) {
+      $sexFull = ucfirst(strtolower($row['sex']));
+      $shortSex = $sexFull === 'Male' ? 'M' : ($sexFull === 'Female' ? 'F' : '');
+      $prefix = $sexFull === 'Male' ? 'MR' : ($sexFull === 'Female' ? 'MS' : '');
+      $genderValue = $sexFull === 'Male' ? '1' : ($sexFull === 'Female' ? '2' : '');
+      $suffix = $row['suffix'] !== 'N/A' ? $row['suffix'] : '';
+      $fullName = trim($row['fName'] . ' ' . $suffix . ' ' . $row['lName']);
+
       $unassignedGuests[] = [
         "id" => $row['guestId'],
         "transactNo" => $row['transactNo'],
-        "name" => trim($row['fName'] . " " . ($row['suffix'] === 'N/A' ? '' : $row['suffix']) . " " . $row['lName']),
+        "fName" => $row['fName'],
+        "mName" => $row['mName'],
+        "lName" => $row['lName'],
+        "suffix" => $row['suffix'],
+        "fullName" => $fullName,
         "age" => $row['age'],
         "dob" => $row['birthdate'] ?: 'N/A',
-        "sex" => $row['sex'],
+        "sex" => $shortSex,
+        "prefix" => $prefix,
+        "genderValue" => $genderValue,
         "nationality" => $row['nationality'],
         "passport" => $row['passportNo'],
-        "passportExp" => $row['passportExp'] ?: 'N/A'
+        "passportExp" => $row['passportExp'] ?: 'N/A',
+        "passportIssued" => $row['passportIssued'] ?: 'N/A'
       ];
     }
   }
 
-  // Return both assigned and unassigned guests with luggage info
   echo json_encode([
     "assignedGuests" => $assignedGuests,
-    "unassignedGuests" => $unassignedGuests
+    "unassignedGuests" => $unassignedGuests,
+    "flightDetails" => $flightDetails
   ]);
 }
 ?>

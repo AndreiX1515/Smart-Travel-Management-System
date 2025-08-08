@@ -126,7 +126,7 @@ require "../conn.php";
               </div>
 
               <div class="assign-btn-wrapper">
-                <button id="resetFilter" class="btn btn-secondary">Reset Filter</button>
+                <button id="resetFilter" class="btn btn-secondary mx-2">Reset Filter</button>
                 <button class="btn btn-primary" onclick="assignRoom()">Assign</button>
               </div>
 
@@ -817,7 +817,6 @@ require "../conn.php";
       });
     }
   </script>
-
 
   <!-- Dynamic addition of guest in the table as well as the request script
   <script>
