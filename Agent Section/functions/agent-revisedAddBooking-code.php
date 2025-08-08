@@ -20,6 +20,7 @@
     $packageId = $_POST['packageId'];
     $flightId = $_POST['flightDate'];
     $totalPax = $_POST['totalPax'];
+    $infantPax = $_POST['infantPax'];
     $totalPrice = $_POST['totalPrice'];
     $bookingType = isset($_POST['land']) ? 'Land' : 'Package';
     $flightDetails = ($bookingType === 'Land') ? $_POST['flightDetails'] : NULL;
@@ -52,8 +53,8 @@
 
     // Prepare the SQL statement for insertion into the booking table
     $sql1 = "INSERT INTO booking (accountId, transactNo, accountType, agentCode, flightId, packageId, fName, lName, mName, suffix, countryCode, 
-                contactNo, email, pax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
-                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
+                contactNo, email, pax, infantPax, totalPrice, bookingType, flightDetails, status, bookingDate) VALUES 
+                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Reserved', NOW())";
     $stmt1 = $conn->prepare($sql1);
 
     if (!$stmt1) 
@@ -65,8 +66,8 @@
     }
 
     // Bind and execute the booking insertion
-    $stmt1->bind_param('isssiisssssssidss', $accountId, $transactNo, $agentId, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
-    $suffix, $countryCode, $contactNo, $email, $totalPax, $totalPrice, $bookingType, $flightDetails);
+    $stmt1->bind_param('isssiisssssssiidss', $accountId, $transactNo, $agentId, $agentCode, $flightId, $packageId, $fName, $lName, $mName, 
+    $suffix, $countryCode, $contactNo, $email, $totalPax, $infantPax, $totalPrice, $bookingType, $flightDetails);
     
     if (!$stmt1->execute()) 
     {
