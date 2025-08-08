@@ -12,7 +12,7 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
   // Fetch guests who are assigned to a room
   $sqlAssigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, 
                     DATE_FORMAT(g.birthdate, '%d-%b-%y') AS birthdate, g.age, g.sex, 
-                    g.nationality, g.passportNo, 
+                    g.nationality, g.passportNo, g.isInfant,
                     DATE_FORMAT(g.passportExp, '%d-%b-%y') AS passportExp, 
                     DATE_FORMAT(g.passportIssuedDate, '%d-%b-%y') AS passportIssued, 
                     g.transactNo, r.roomNumber, r.roomType, r.remarks, r.tip,
@@ -71,6 +71,7 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
           "suffix" => $row['suffix'],
           "fullName" => $fullName,
           "age" => $row['age'],
+          "isInfant" => $row['isInfant'],
           "dob" => $row['birthdate'] ?: 'N/A',
           "sex" => $shortSex,
           "prefix" => $prefix,
@@ -100,7 +101,7 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
   // Fetch guests who are NOT assigned to a room
   $sqlUnassigned = "SELECT g.guestId, g.fName, g.mName, g.lName, g.suffix, 
                       DATE_FORMAT(g.birthdate, '%d-%b-%y') AS birthdate, g.age, g.sex, 
-                      g.nationality, g.passportNo, 
+                      g.nationality, g.passportNo, g.isInfant,
                       DATE_FORMAT(g.passportExp, '%d-%b-%y') AS passportExp,
                       DATE_FORMAT(g.passportIssuedDate, '%d-%b-%y') AS passportIssued,
                       g.transactNo
@@ -135,6 +136,7 @@ if (isset($_POST['flightDate']) && isset($_POST['agentCode']))
         "suffix" => $row['suffix'],
         "fullName" => $fullName,
         "age" => $row['age'],
+        "isInfant" => $row['isInfant'],
         "dob" => $row['birthdate'] ?: 'N/A',
         "sex" => $shortSex,
         "prefix" => $prefix,

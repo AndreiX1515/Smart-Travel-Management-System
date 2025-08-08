@@ -371,9 +371,9 @@ require "../conn.php";
             // Populate unassigned guests in select dropdown
             if (data.unassignedGuests.length > 0) 
             {
-              data.unassignedGuests.forEach(guest => 
-              {
-                guestSelect.append(new Option(guest.fullName, guest.id));
+              data.unassignedGuests.forEach(guest => {
+                const label = guest.fullName + (guest.isInfant ? " (Infant)" : "");
+                guestSelect.append(new Option(label, guest.id));
               });
 
               guests = data.unassignedGuests; // Store unassigned guests for reference
@@ -409,9 +409,11 @@ require "../conn.php";
       let minCapacity = getMinCapacity(roomType);
       let maxCapacity = getMaxCapacity(roomType);
 
-      if (selectedGuests.length < minCapacity || selectedGuests.length > maxCapacity) 
-      {
-        alert(`A ${roomType} room must have between ${minCapacity} and ${maxCapacity} guests.`);
+      // Count guests that require a bed (not infants)
+      let bedOccupants = selectedGuests.filter(g => !g.isInfant || g.isInfant == 0);
+
+      if (bedOccupants.length < minCapacity || bedOccupants.length > maxCapacity) {
+        alert(`A ${roomType} room must have between ${minCapacity} and ${maxCapacity} non-infant guests.`);
         return;
       }
 
@@ -675,13 +677,19 @@ require "../conn.php";
     {
       let guestSelect = document.getElementById('guestName');
       guestSelect.innerHTML = '';
+
       if (guests.length > 0) 
       {
         guests.forEach(guest => 
         {
+          console.log(guest.fullName, guest.isInfant);
+
           let option = document.createElement('option');
           option.value = guest.id;
-          option.textContent = guest.fullName;
+
+          // 👇 Add " (Infant)" if guest.isInfant == 1 (or true)
+          option.textContent = guest.fullName + (guest.isInfant == 1 ? " (Infant)" : "");
+
           guestSelect.appendChild(option);
         });
       } 
@@ -689,6 +697,7 @@ require "../conn.php";
       {
         guestSelect.innerHTML = '<option selected disabled>No guests available</option>';
       }
+
       sortGuestDropdown();
     }
 
