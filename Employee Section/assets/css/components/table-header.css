@@ -1,0 +1,756 @@
+/* ================= Table Header Styles ================ */
+.second-header-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* Each block (label + select or input) */
+.aligned-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* spacing between label and button */
+}
+
+
+/* Button wrapper tweak (optional) */
+.buttons-wrapper {
+  display: flex;
+  align-items: flex-end;
+}
+
+
+
+
+.search-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  background-color: transparent;
+}
+
+.search-wrapper label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151; /* Tailwind's gray-700 */
+  margin-bottom: 5px;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.package-select {
+  width: 100%;
+  padding: 0.5rem 2.5rem 0.5rem 1rem; /* Add right padding for custom arrow */
+  font-size: 0.875rem;
+  background-color: transparent;
+  color: #374151;
+  border: 1px solid #94a3b8;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+}
+
+select::-ms-expand {
+  display: none; /* IE/Edge legacy support */
+}
+
+
+.package-select:focus {
+  border-color: #0d6efd;
+}
+
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  width: 280px;
+  height: 38px;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb; /* Tailwind's gray-200 */
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.search-input-wrapper input {
+  flex: 1;
+  font-size: 15px;
+  color: #374151;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+}
+
+.search-input-wrapper input::placeholder {
+  color: #9ca3af; /* Tailwind's gray-400 */
+}
+
+.search-input-wrapper .icon {
+  font-size: 16px;
+  color: #9ca3af;
+  margin-left: 8px;
+}
+
+
+
+
+/* ================================== */
+/* Sorting Container */
+
+.sorting-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.sorting-wrapper label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151;
+}
+
+
+/* Select Dropdown */
+.sorting-wrapper select {
+  width: 160px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #374151; /* Tailwind's gray-700 */
+  background-color: #f9fafb; /* Tailwind's gray-50 */
+  border: 1px solid #d1d5db; /* Tailwind's gray-300 */
+  border-radius: 6px;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.sorting-wrapper select:hover,
+.sorting-wrapper select:focus {
+  border-color: #116530; /* Your accent green */
+  background-color: #f3f4f6; /* Tailwind's gray-100 */
+}
+
+/* Filter Field Layout */
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Select Wrapper with Icon */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+  background-color: #f3f4f6; /* Tailwind's gray-100 */
+  border-radius: 6px;
+}
+
+/* Dropdown Arrow Icon */
+.select-wrapper::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: #9ca3af; /* Tailwind's gray-400 */
+  pointer-events: none;
+}
+
+
+
+/* For Flight Datepicker */
+
+/* Date Section Container */
+.filter-date-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.filter-date-wrapper label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #374151; /* gray-700 */
+}
+
+.filter-date-inputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Icon inside input/select */
+.filter-calendar-icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  color: #6b7280; /* gray-500 */
+  pointer-events: none;
+}
+
+/* Input with Icon */
+.filter-input-with-icon--input {
+  position: relative;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.filter-input-with-icon--input input {
+  width: 100%;
+  height: 30px;
+  padding: 6px 30px 6px 10px;
+  font-size: 13px;
+  color: #374151;
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+}
+
+.filter-input-with-icon--input input::placeholder {
+  color: #9ca3af; /* gray-400 */
+}
+
+/* Select with Icon */
+.filter-input-with-icon--select {
+  position: relative;
+  width: 180px;
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.filter-input-with-icon--select select.filter-select {
+  width: 100%;
+  height: 30px;
+  padding: 0 30px 0 10px;
+  font-size: 13px;
+  color: #374151;
+  background: transparent;
+  border: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+
+
+
+/* ========================================
+   🟢 Flatpickr Input Field
+   ======================================== */
+.flatpickr-input {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  outline: none;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: text;
+}
+
+.flatpickr-input:focus {
+  border-color: #116530;
+  box-shadow: 0 0 3px 1px rgba(17, 101, 48, 0.3);
+}
+
+/* ========================================
+   📅 Calendar Container
+   ======================================== */
+.flatpickr-calendar {
+  border-radius: 6px;
+  padding-bottom: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: Arial, sans-serif;
+  font-size: 0.8rem;
+  z-index: 9999;
+}
+
+/* ========================================
+   🟨 Header: Month/Year Bar
+   ======================================== */
+.flatpickr-months {
+  background-color: #fff;
+  color: #333;
+  border-bottom: 1px solid #ccc;
+  border-radius: 6px 6px 0 0;
+  padding: 3px 0;
+
+  /* border: 1px solid black; */
+}
+
+.flatpickr-current-month {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 2px 10px 8px 10px;
+  height: auto;
+}
+
+/* ========== Month Dropdown ========== */
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  padding: 4% 10px 10px 10px;
+  border: none;
+  font-weight: 500;
+  appearance: none;
+  min-width: 120px;
+  min-height: 38px;
+  box-sizing: border-box;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months:focus {
+  border: 1px solid #116530;
+  box-shadow: 0 0 2px rgba(17, 101, 48, 0.3);
+  outline: none;
+}
+
+/* ========== Year Dropdown ========== */
+
+.flatpickr-current-month select.cur-year {
+  background-color: #fff;
+  color: #333;
+  font-size: 10px;
+  padding: 6px 10px;
+  font-weight: 500;
+  width: 90px;
+  min-height: 38px;
+  box-sizing: border-box;
+  line-height: 1.4;
+  text-align: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin-right: 20px;
+}
+
+/* 🔍 Focus style */
+/* .flatpickr-current-month select.cur-year:focus {
+  border: 1px solid #116530;
+  box-shadow: 0 0 2px rgba(17, 101, 48, 0.3);
+  outline: none;
+} */
+
+/* 🧼 Remove default dropdown arrow in legacy IE */
+.flatpickr-current-month select.cur-year::-ms-expand {
+  display: none;
+}
+
+
+/* ========================================
+   🟧 Weekday Labels
+   ======================================== */
+.flatpickr-weekdays {
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 0.8rem;
+  padding: 5px 0;
+  border-bottom: 1px solid gainsboro;
+}
+
+/* ========================================
+   🟫 Calendar Day Cells
+   ======================================== */
+.flatpickr-day {
+  border-radius: 4px;
+  padding: 4px 0;
+  width: 32px;
+  height: 32px;
+  margin: 2px;
+  font-size: 13px;
+  line-height: 23.5px;
+  transition: background-color 0.2s ease;
+}
+
+.flatpickr-day:hover {
+  background-color: #e0f7e9;
+  cursor: pointer;
+}
+
+/* === Selected / Range Day Styles (Circle Highlight) === */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day:focus,
+.flatpickr-day:hover {
+  background-color: #116530 !important;
+  color: #fff !important;
+  font-weight: 600;
+  border: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center;
+  line-height: normal !important;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 2px;
+}
+
+/* === Special States === */
+.flatpickr-day.today {
+  border: 1px solid #116530;
+}
+
+.flatpickr-day.disabled {
+  color: #ccc;
+  background-color: #f8f8f8;
+  cursor: not-allowed;
+}
+
+
+/* ========================================
+   🟥 Navigation Arrows
+   ======================================== */
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  color: #333;
+  font-size: 10px;
+  top: 10px;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+  color: #116530;
+}
+
+
+/* ========================================
+   🟪 Time Picker (if enabled)
+   ======================================== */
+.flatpickr-time {
+  border-top: 1px solid #eee;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 0 0 6px 6px;
+}
+
+.flatpickr-time input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 13px;
+  width: 40px;
+}
+
+.flatpickr-time .flatpickr-time-separator,
+.flatpickr-time .flatpickr-am-pm {
+  font-size: 12px;
+}
+
+/* ========================================
+   🟦 Optional: Week Numbers
+   ======================================== */
+.flatpickr-weekwrapper {
+  background-color: #f8f8f8;
+  border-right: 1px solid #eee;
+  font-size: 12px;
+  padding-right: 4px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======================================== */
+
+.navpills-container {
+  padding: 0.3rem 0;
+  /* border-bottom: 1px solid #e5e7eb; */
+  /* background-color: #f9fafb; Tailwind gray-50 */
+}
+
+.nav-pills {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  border-bottom: none;
+}
+
+.nav-pills .nav-item {
+  margin-bottom: 0; /* ensure no negative margin */
+}
+
+.nav-pills .nav-link {
+  background-color: transparent;
+  color: #374151; /* Tailwind gray-700 */
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-bottom: none !important; /* 🚫 prevent border-bottom */
+  box-shadow: none !important;    /* 🚫 prevent bottom shadow underline */
+}
+
+.nav-pills .nav-link:hover,
+.nav-pills .nav-link:focus,
+.nav-pills .nav-link:active {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  color: #111827;
+  border-bottom: none !important; /* 🚫 explicitly no border on hover */
+  box-shadow: none !important;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #3b82f6; /* Tailwind blue-500 */
+  color: white;
+  border-color: #3b82f6;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+/* Badge Style */
+.nav-pills .badge {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 9999px;
+  line-height: 1;
+  font-weight: 600;
+
+  margin-left: 0.5rem; /* space between badge and text */
+}
+
+.nav-pills .nav-link:not(.active) .badge {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+
+
+
+
+
+
+
+
+
+/* ========= Add Button ========= */
+.btn-add {
+  background-color: #6366f1; /* indigo-500 */
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn-add:hover {
+  background-color: #4f46e5; /* indigo-600 */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Flight Booking Divs */
+.flightbooking-wrapper {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 5px;
+}
+
+.flightbooking-wrapper input {
+  width: 140px;
+  height: 35px;
+}
+
+.flightbooking-wrapper input:hover {
+  cursor: pointer;
+}
+
+.date-range-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  flex-direction: column;
+}
+
+.date-range-wrapper label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.date-range-inputs-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  gap: 10px;
+}
+
+/* Input Field with Icon */
+.input-with-icon {
+  position: relative;
+  width: 150px;
+  border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.input-with-icon input {
+  width: 100%;
+  height: 32px;
+  padding: 10px 35px 10px 10px; /* Space for the icon */
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 14px;
+}
+
+.input-with-icon input::placeholder {
+  color: #999;
+}
+
+/* Icon Inside Input */
+.input-with-icon .calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.input-with-icon input:hover,
+.input-with-icon input:focus {
+  border-color: #116530; /* Match your preferred color */
+  outline: none;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
+}
+
+/* Remove hover effects for now */
+.input-with-icon input:hover {
+  cursor: pointer;
+}
+
+
+
+.buttons-wrapper {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+
+
+
+
+
+
+
+#clearSorting {
+  background-color: #e5e7eb; /* Tailwind's gray-200 */
+  color: #374151; /* Tailwind's gray-700 */
+  padding: 0.35rem .8rem; /* py-2 px-4 */
+  border: 1px solid #d1d5db; /* gray-300 */
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 500; /* font-medium */
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+#clearSorting:hover {
+  background-color: #d1d5db; /* darker on hover */
+  color: #111827; /* Tailwind's gray-900 */
+  border-color: #9ca3af; /* slightly darker border */
+}

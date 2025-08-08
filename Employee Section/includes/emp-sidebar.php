@@ -287,6 +287,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					<span class="label">For Approvals</span>
 				</div>
 			</a>
+			
 			<div class="collapse" id="manageBookingMenu">
 				<ul class="nav flex-column managebooking-menu-wrapper">
 					<li class="nav-item transaction mb-0">

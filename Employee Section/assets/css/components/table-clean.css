@@ -1,0 +1,62 @@
+/* ========= Table Styling ========= */
+.table-clean {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff; /* Tailwind bg-white */
+  font-size: 0.875rem; /* Tailwind text-sm */
+  color: #374151; /* Tailwind gray-700 */
+  /* border-radius: 0.5rem;  */
+  overflow: hidden;
+}
+
+/* Table Head */
+.table-clean thead {
+  border-bottom: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+  background-color: #f9fafb; /* Tailwind gray-50 */
+}
+
+.table-clean th {
+  text-align: left;
+  padding: 1rem 1rem; /* Tailwind py-3 px-4 */
+  height: 31px;
+  text-transform: uppercase;
+  font-weight: normal; /* Tailwind font-semibold */
+  color: #6b7280; /* Tailwind gray-500 */
+  font-size: 0.7rem; /* Tailwind text-xs */
+  letter-spacing: 0.05em;
+}
+
+/* Table Body */
+.table-clean td {
+  padding: 1rem 1rem; /* Tailwind py-3 px-4 */
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb; /* Tailwind border-gray-200 */
+  vertical-align: middle;
+  white-space: nowrap;
+
+  font-weight: normal; /* Tailwind font-semibold */
+  color: #6b7280; /* Tailwind gray-500 */
+  font-size: 0.85rem; /* Tailwind text-xs */
+}
+
+/* Hover effect for entire row */
+.table-clean tbody tr:hover {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  transition: background-color 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+/* Optional: Action Link Cell */
+/*
+.table-clean td:last-child {
+  color: #2563eb; 
+  font-weight: 500;
+  cursor: pointer;
+  transition: text-decoration 0.2s ease;
+}
+*/
+
+.table-clean td:last-child:hover {
+  text-decoration: none;
+  border-bottom: none;
+}

@@ -10,11 +10,13 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Transactions</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionRequestHistory.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet"
+    href="../Employee Section/assets/css/emp-transactionRequestHistory.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 
   <!-- Include Flatpickr -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
@@ -59,7 +61,7 @@ session_start();
 
         <div class="table-content-header">
 
-           <div class="search-wrapper">
+          <div class="search-wrapper">
             <div class="search-input-wrapper">
               <i class="fas fa-search icon"></i>
               <input type="text" id="search" placeholder="Search...">
@@ -71,23 +73,19 @@ session_start();
             <div class="filter-container">
 
               <div class="filter-date-wrapper">
-
                 <div class="filter-date-inputs">
-
                   <div class="filter-input-with-icon--input">
-                   <input type="text" id="FlightStartDate" class="filter-input" placeholder="Flight Date" readonly>
+                    <input type="text" id="FlightStartDate" class="filter-input" placeholder="Flight Date" readonly>
 
                     <i class="fas fa-calendar-alt filter-calendar-icon"></i>
                   </div>
-
                 </div>
-
               </div>
 
               <div class="filter-buttons">
                 <button id="clearSorting" class="btn-material">
                   <svg class="reset-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z"/>
+                    <path d="M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z" />
                   </svg>
                 </button>
               </div>
@@ -329,5 +327,6 @@ session_start();
   </script>
 
 
-  </body>
+</body>
+
 </html>

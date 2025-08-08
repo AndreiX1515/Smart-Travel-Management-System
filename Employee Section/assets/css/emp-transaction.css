@@ -1,992 +1,249 @@
-/* .main-content {
-  display: flex;
-  flex-direction: column;
-  height: 93.5vh; 
-} */
-
-/* ==================================== */
-.tabs-wrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-end;
-  padding: 0px;
-  height: 4.7vh;
-  margin-bottom: 0px; /* to overlap tab-content top border */
-  border: solid gainsboro;
-  border-width: 0px 0px 1px 0px;
-  border-bottom: none;
+.main-content {
+  margin-top: 5vh;
+  padding: 10px 0px 0px 0px;
   /* border: 1px solid black; */
 }
 
-.navs-wrapper .nav-pills {
+/* ======================================= */
+
+
+/* Main Content Area After Tabs */
+.tab-content {
+  flex: 1;
+  min-height: 90vh; /* or adjust accordingly */
+  background-color: #ffffff;
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Individual Pane - must be absolutely controlled */
+.tab-pane {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: none; /* hide by default */
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+
+
+
+/* ================================
+   Scoped Styles for Main Container Tabs
+   ================================ */
+.main-tabs-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center; /* ensure tabs sit aligned at the bottom */
+  padding: 0 25px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  border-bottom: 1px solid #e5e7eb; /* Tailwind gray-200 */
+  box-sizing: border-box;
+  z-index: 10;
+  position: relative;
+
+  /* border: 1px solid black; */
+}
+
+
+/* Nav Wrapper */
+.main-tabs-wrapper .navs-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Nav Pills Container */
+.main-tabs-wrapper .navs-wrapper .nav-pills {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: flex-end;
   margin: 0;
   padding: 0;
-  display: flex;
-  gap: 5px;
 }
 
-.navs-wrapper .nav-pills .nav-link {
-  background-color: #f0f0f0;
-  color: #757575;
-  padding: 8px 18px;
-  margin-right: 4px;
-  border: 1px solid gainsboro;
-  border-bottom: none;
+/* Tab Button */
+.main-tabs-wrapper .navs-wrapper .nav-pills .nav-link {
+  background-color: transparent;
+  color: #4b5563;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 6px 6px 0 0;
+  border-bottom: 2px solid transparent;
+  box-sizing: border-box;
+  line-height: 1;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* Hover State */
+.main-tabs-wrapper .navs-wrapper .nav-pills .nav-link:hover {
+  color: #2563eb;
+  background-color: #f9fafb;
+}
+
+/* Active Tab */
+.main-tabs-wrapper .navs-wrapper .nav-pills .nav-link.active {
+  color: #2563eb !important;
   font-weight: 600;
-  font-size: 0.8rem;
-  border-radius: 0;
-  width: auto;
-  min-width: 150px;
-  text-align: center;
-}
-
-.navs-wrapper .nav-pills .nav-link:hover {
-  background-color: #dfeee3;
-  color: #0d4a28;
-}
-
-.navs-wrapper .nav-pills .nav-link.active {
-  font-size: 0.8rem;
-  background-color: #fff;
-  color: #116530;
-  border: 1px solid gainsboro;
-  border-bottom: none; /* Seamless with tab-content */
+  border-bottom: 1px solid #2563eb !important;
+  background-color: #ffffff;
   z-index: 2;
 }
 
-/* ==================================== */
-.tab-content {
-  flex: 1;
-  overflow-y: hidden;
-  border: 1px solid gainsboro;
-  border-bottom: none;
-  border-left: none;
-  border-right: none;
-  background-color: #fff;
 
-  /* border: 1px solid black; */
+
+
+
+
+
+/* ====================================== */
+.tab-main-content {
+  display: flex;
+  flex-direction: column;
+  padding: 0px 25px;
 }
 
-/* ==================================== */
 
-.navTabs-wrapper {
-  width: 50%;
-  padding: 0;
+
+
+.tab-main-content .tab-pane {
+  height: 88vh;
+}
+
+
+.tab-main-content .tab-pane .table-container {
   display: flex;
+  flex-direction: column;
   gap: 10px;
-}
+  height: 100%;
 
-.nav-pills {
-  display: flex;
-  padding: 0;
-  margin: 0;
-  list-style-type: none;
-}
-
-.nav-item {
-  margin-right: 0;
-}
-
-.navTabs-wrapper .nav-link {
-  background-color: #f0f0f0;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-  border-radius: 0; /* Square shape */
-  border: solid gainsboro;
-  border-width: 1px 1px 0 1px; /* Connects with tab-content */
-  color: #116530;
-  font-weight: 500;
-}
-
-.navTabs-wrapper .nav-link:hover {
-  background-color: #dfeee3;
-  color: #0d4a28;
-}
-
-.navTabs-wrapper .nav-link.active {
-  background-color: #116530;
-  color: white;
-  border-color: #116530 #116530 white #116530; /* Match tab-content background */
-}
-
-/* ==================================== */
-
-.table-container {
-  width: 100%;
-  height: 100%; /* Fill parent container */
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 0px 0px;
-  gap: 5px;
-  box-sizing: border-box;
-  border-bottom: none;
-}
-
-.balance-table-wrapper {
-  width: 100%;
-  height: 100%; /* Fill parent container */
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  padding: 0px 10px;
-  gap: 5px;
-  box-sizing: border-box;
   /* border: 1px solid black; */
 }
 
-.navpills-container {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding: 5px 0 0 0;
-  margin-bottom: 5px;
 
-  height: 5vh;
+.table-container .table-header {
+  display: flex; 
+  justify-content: space-between;
+  align-items: last baseline;
+  gap: 10px;
+  padding: 5px 0px 0px 0px;
+  height: 10vh;
   /* border: 1px solid black; */
 }
 
-.filter-tabs {
-  display: flex;
-  gap: 15px;
-  width: 100%;
-  border-bottom: 1px solid #ddd;
+
+
+.table-container .navpills-container {
+  padding: 0.6rem 0;
+  /* border: 1px solid black; */
 }
+
+
+
 
 .body-content-wrapper {
   display: flex;
   flex-direction: column;
-  height: 75vh; /* Fixed height container */
-  gap: 10px; /* Gap between children */
-  box-sizing: border-box;
-  /* border: 1px solid black; */
-  padding: 0px; /* Optional padding for inner spacing */
-}
-
-/* Table wrapper takes all remaining space after footer */
-.table-wrapper {
-  flex-grow: 1; /* Take all available vertical space */
-  display: flex;
-  flex-direction: column;
-  background-color: transparent;
-  overflow-y: auto; /* Scroll if content overflows */
-  box-sizing: border-box;
-  /* Optional styles */
-  /* border: 1px solid gainsboro; */
-  /* border-radius: 0 0 8px 8px; */
-}
-
-/* Table footer enhancements */
-.table-footer {
-  height: 6vh; /* Fixed footer height */
-  background-color: #f9fafb;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 20px;
-  border-top: 1px solid gainsboro;
-  font-size: 0.95rem;
-  color: #333;
+  height: 90%;
   gap: 10px;
-  flex-wrap: wrap;
-  border-radius: 0 0 8px 8px;
-  /* border: 1px solid black; */
-}
-
-.d-none {
-  display: none !important;
-}
-
-/* ====================== */
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  padding: 5px 5px 5px 0px;
-  height: 6vh;
 
   /* border: 1px solid black; */
 }
 
-.search-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.search-input-wrapper {
-  display: flex;
-  align-items: center;
-  width: 300px;
-  height: 40px;
-  padding: 12px 15px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  border: 1px solid gainsboro;
-}
-
-.search-input-wrapper input {
+.body-content-wrapper .table-wrapper {
   flex: 1;
-  border: none;
-  font-size: 16px;
-  color: #333;
-  background-color: transparent;
-  outline: none;
-  padding: 0;
+  /* border: 1px solid black; */
+
+  background-color: #ffffff;           
+  border: 1px solid #e5e7eb;           
+  border-radius: 0.3rem;                
+  /* box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); Tailwind's shadow-sm */
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-.search-input-wrapper input::placeholder {
-  color: #999;
-}
 
-.search-input-wrapper .icon {
-  color: #999;
-  font-size: 18px;
-  margin-left: 10px;
-}
 
-.second-header-wrapper {
+/* Optional Table Footer */
+.table-footer {
+  height: 6vh;
+  background-color: #f8f9fa; /* Bootstrap light gray (similar to table bg) */
   display: flex;
-  gap: 12px;
-  justify-content: left;
   align-items: center;
-  height: auto;
-}
+  justify-content: space-between;
+  padding: 0px 20px;
+  border-radius: 0.3rem;      
 
-/* Sorting Wrapper */
-.sorting-wrapper {
-  display: flex;
-  justify-content: start;
-  gap: 10px;
+  border: 1px solid #dee2e6; /* Bootstrap's light border */
+  margin-top: 0; /* Prevent spacing between table and footer */
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow for separation */
+
   /* border: 1px solid black; */
 }
 
-/* .sorting-wrapper label {
- font-size: 12px;
- font-weight: 600;
-} */
-
-.sorting-wrapper select {
-  width: 160px;
-  padding: 6px 10px;
-  font-size: 13px;
-  border: 1px solid grey;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #333;
-  font-weight: 600;
-  appearance: none;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-}
-
-/* .sorting-wrapper select:hover,
-.sorting-wrapper select:focus {
-  border-color: #116530;
-  background-color: #c9c9c9;
-} */
-
-.filter-field {
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-  gap: 10px;
-}
-
-.select-wrapper {
-  position: relative;
-  justify-content: start;
-  width: 100%;
-  background-color: #dbdbdb;
-}
-
-.select-wrapper::after {
-  content: "\25BC";
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  font-size: 12px;
-  color: #8b8b8b;
-  pointer-events: none;
-}
-
-/* .custom-select, 
-.filter-group select {
-  appearance: none; 
-  width: 100%;
-  padding: 5px 40px; 
-  font-size: 14px;
-  border: 1px solid gainsboro;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  background-clip: padding-box;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-} */
-
-/* Flight Booking Divs */
-.flightbooking-wrapper {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 5px;
-}
-
-.flightbooking-wrapper input {
-  width: 140px;
-  height: 35px;
-}
-
-.flightbooking-wrapper input:hover {
-  cursor: pointer;
-}
-
-.date-range-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  flex-direction: column;
-}
-
-.date-range-wrapper label {
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.date-range-inputs-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  gap: 10px;
-}
-
-/* Input Field with Icon */
-.input-with-icon {
-  position: relative;
-  width: 150px;
-  border: 1px solid grey;
-  border-radius: 5px;
-}
-
-.input-with-icon input {
-  width: 100%;
-  height: 32px;
-  padding: 10px 35px 10px 10px; /* Space for the icon */
-  border: 1px solid #e0e0e0;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  color: #333;
-  font-size: 14px;
-}
-
-.input-with-icon input::placeholder {
-  color: #999;
-}
-
-/* Icon Inside Input */
-.input-with-icon .calendar-icon {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 16px;
-  color: #6c757d;
-  pointer-events: none;
-}
-
-.input-with-icon input:hover,
-.input-with-icon input:focus {
-  border-color: #116530; /* Match your preferred color */
-  outline: none;
-  background-color: #f9f9f9;
-  box-shadow: 0 0 4px rgba(17, 101, 48, 0.4);
-}
-
-/* Remove hover effects for now */
-.input-with-icon input:hover {
-  cursor: pointer;
-}
-
-.buttons-wrapper {
-  display: flex;
-  justify-content: left;
-  align-items: center;
-  /* border: 1px solid black; */
-}
-
-#clearSorting {
-  font-size: 12px;
-  padding: 8px 10px;
-  align-self: center;
-}
-
-/* ====================== */
-
-.filter-btn {
-  background: transparent;
-  border: none;
+.btn-pagination {
   padding: 8px 16px;
-  cursor: pointer;
   font-size: 14px;
   font-weight: 500;
-  color: #333;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  position: relative;
-  text-wrap: nowrap;
-}
-
-.filter-btn:hover {
-  color: #116530;
-}
-
-.filter-btn.active {
-  font-weight: 600;
-  color: #116530;
-  border-bottom: 3px solid #116530;
-}
-
-.badge-status-tab {
-  background-color: #116530;
-  color: white;
-  margin-left: 3%;
-  font-size: 12px;
-  font-weight: 500;
-  width: 25px; /* Reduced width for a smaller badge */
-  height: 25px; /* Reduced height for a smaller badge */
-  border-radius: 55%; /* Ensures a perfect circle */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.badge-status-tab h6 {
-  margin: 0;
-  font-size: 10px; /* Slightly smaller for readability */
-  font-weight: 600;
-  text-align: center;
-}
-
-.remaining-balance {
-  text-wrap: nowrap;
-}
-
-/* Mobile Optimization */
-@media (max-width: 768px) {
-  .filter-tabs {
-    gap: 10px;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .filter-btn {
-    font-size: 13px;
-    padding: 6px 12px;
-  }
-}
-
-/* ======================= */
-
-/* Left side - Last updated section */
-.last-update-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #6c757d;
-  white-space: nowrap;
-  flex-shrink: 1;
-}
-
-/* Right side - Pagination controls */
-.pagination-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 1;
-  white-space: nowrap;
-}
-
-.pagination-btn {
-  padding: 6px 12px;
-  background-color: #f0f0f0;
-  border: 1px solid gainsboro;
-  color: #333;
-  font-size: 0.9rem;
-  border-radius: 4px;
+  color: #ffffff;
+  background-color: #0d6efd; /* Bootstrap primary blue */
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-.pagination-btn:hover {
-  background-color: #e6f3ea;
-  color: #116530;
+.btn-pagination:hover {
+  background-color: #0b5ed7; /* Bootstrap's btn-primary:hover */
+}
+
+.btn-pagination:disabled {
+  background-color: #0d6efd;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .page-info {
-  font-weight: 500;
-  color: #116530;
-}
-
-/* ========== PRODUCT TABLE ========== */
-/* Table Styles for Product Table */
-.product-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  table-layout: fixed; /* Make columns of fixed width */
-  /* border: 1px solid black; */
-}
-
-/* Header Styling */
-.product-table th {
-  position: sticky; /* Keep header fixed during scrolling */
-  top: 0;
-  z-index: 1; /* Ensure header stays on top of content */
-  background-color: #e6e6e6; /* Light background for headers */
-  font-weight: bold;
-  text-align: left;
-  border: 1px solid #ddd; /* Add side and bottom borders */
-  font-size: 0.70em; /* Compact font size */
-  white-space: nowrap; /* Prevent text wrapping */
-  text-transform: uppercase; /* Uppercase text for headers */
-  border-top: none; /* Remove top border so the thead's top border-radius is visible */
-  padding: 3px 6px;
-}
-
-.product-table thead {
-  overflow: hidden;
-  /* padding: 10px; */
-}
-
-.product-table td {
-  padding: 3px 6px;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid #ddd;
-  font-size: 0.85em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.product-table tr {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.product-table tr:hover {
-  background-color: #f2f2f2;
-  color: #000;
-  cursor: pointer;
-}
-
-/* Column width adjustments */
-.product-table th:nth-child(1),
-.product-table td:nth-child(1) {
-  width: 6%; /* Transact No */
-}
-
-.product-table th:nth-child(2),
-.product-table td:nth-child(2) {
-  width: 15%; /* Branch */
-}
-
-.product-table th:nth-child(3),
-.product-table td:nth-child(3) {
-  width: 6%; /* Flight Date */
-}
-
-.product-table th:nth-child(4),
-.product-table td:nth-child(4) {
-  width: 4%; /* Total Pax */
-  text-align: center;
-}
-
-.product-table th:nth-child(5),
-.product-table td:nth-child(5) {
-  width: 10%; /* Package Price */
-  text-align: center;
-}
-
-.product-table th:nth-child(6),
-.product-table td:nth-child(6) {
-  width: 10%; /* Total Request Cost */
-  text-align: center;
-}
-
-.product-table th:nth-child(7),
-.product-table td:nth-child(7) {
-  width: 10%; /* Amount Paid */
-  text-align: center;
-}
-
-.product-table th:nth-child(8),
-.product-table td:nth-child(8) {
-  width: 10%; /* Balance */
-  text-align: center;
-}
-
-.product-table th:nth-child(9),
-.product-table td:nth-child(9) {
-  width: 6%; /* Booking Date */
-  text-align: center;
-}
-
-.product-table th:nth-child(10),
-.product-table td:nth-child(10) {
-  width: 4%; /* Status */
-  text-align: center;
-}
-
-
-
-
-
-/* Table Actions (buttons, etc.) */
-.table-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-/* Show Column Filter Styles */
-.show-column span {
-  color: black;
-  font-weight: 600;
-}
-
-.show-column select {
-  margin-left: 5px;
-  padding: 3px;
-  border-radius: 10px;
-}
-
-.dataTables_paginate {
-  display: none;
-}
-
-.dataTables_paginate .paginate_button {
-  padding: 3px 6px; /* Reduced padding */
-  margin: 0 3px; /* Reduced margin */
-  background-color: #007bff;
-  color: white;
-  border-radius: 3px; /* Smaller border radius */
-  font-size: 14px; /* Smaller font size */
-  border: none;
-  cursor: pointer;
-}
-
-.dataTables_paginate .paginate_button:hover {
-  background-color: #0056b3;
-}
-
-.dataTables_paginate .paginate_button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* DataTable Entries Length Styling */
-.dataTables_length select {
-  padding: 3px;
-  font-size: 12px; /* Smaller font size */
-  border-radius: 3px; /* Smaller border radius */
-}
-
-/* Hide the 'Show entries' text */
-.dataTables_length label {
-  display: none; /* Hide the 'Show entries' text */
-}
-
-.dataTables_info {
-  display: none;
-}
-
-/* ========== REMAINING BALANCE TABLE ========== */
-.remaining-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  table-layout: auto;
-}
-
-.remaining-table thead {
-  overflow: hidden;
-}
-
-.remaining-table th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: #f4f4f4;
-  font-weight: bold;
-  text-align: left;
-  border: 1px solid #ddd;
-  font-size: 0.8em;
-  white-space: nowrap;
-  text-transform: uppercase;
-  border-top: none;
-}
-
-.remaining-table td {
-  padding: 6px 10px;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid #ddd;
-  font-size: 0.85em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.remaining-table tr {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.remaining-table tr:hover {
-  background-color: #f2f2f2;
-  color: #000;
-  cursor: pointer;
-}
-
-.remaining-table th:nth-child(1),
-.remaining-table td:nth-child(1) {
-  width: 8.67%;
-}
-
-.remaining-table th:nth-child(2),
-.remaining-table td:nth-child(2) {
-  width: 5.67%;
-}
-
-.remaining-table th:nth-child(3),
-.remaining-table td:nth-child(3) {
-  width: 12.67%;
-}
-
-.remaining-table th:nth-child(4),
-.remaining-table td:nth-child(4) {
-  width: 10.67%;
-  text-align: center;
-}
-
-.remaining-table th:nth-child(5),
-.remaining-table td:nth-child(5) {
-  width: 14.67%;
-  text-align: center;
-  color: #007bff;
-  font-weight: 600;
-}
-
-.remaining-table th:nth-child(6),
-.remaining-table td:nth-child(6) {
-  width: 14.67%;
-  text-align: center;
-  color: #28a745;
-  font-weight: 600;
-}
-
-.remaining-table th:nth-child(7),
-.remaining-table td:nth-child(7) {
-  width: 14.67%;
-  text-align: center;
-  color: #dc3545;
-  font-weight: bold;
-}
-
-.remaining-table th:nth-child(8),
-.remaining-table td:nth-child(8) {
-  width: 8.67%;
-  text-align: center;
-}
-
-.remaining-table th:nth-child(9),
-.remaining-table td:nth-child(9) {
-  width: 9.67%;
-  text-align: center;
-}
-
-/* Table top tools and actions */
-.table-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-}
-
-.show-column span {
-  color: black;
-  font-weight: 600;
-}
-
-.show-column select {
-  margin-left: 5px;
-  padding: 3px;
-  border-radius: 10px;
-}
-
-/* Pagination styling */
-.dataTables_paginate {
-  display: none;
-}
-
-.dataTables_paginate .paginate_button {
-  padding: 3px 6px;
-  margin: 0 3px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 3px;
   font-size: 14px;
-  border: none;
-  cursor: pointer;
+  color: #4b5563; /* Tailwind-inspired gray-700 */
+  font-weight: 500;
+  opacity: 0.8;
+  margin: 0px 15px;
 }
 
-.dataTables_paginate .paginate_button:hover {
-  background-color: #0056b3;
+.accent-text {
+  font-size: 13px;
+  color: #808080; /* Tailwind blue-500 */
+  opacity: 0.8;
+  font-weight: 400;
 }
 
-.dataTables_paginate .paginate_button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Entries dropdown */
-.dataTables_length select {
-  padding: 3px;
-  font-size: 12px;
-  border-radius: 3px;
-}
-
-.dataTables_length label {
-  display: none;
-}
-
-.dataTables_info {
-  display: none;
-}
-
-/* ========== ON-DUE TABLE STYLES ========== */
-.ondue-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  table-layout: fixed;
-}
-
-.ondue-table thead {
-  overflow: hidden;
-}
-
-.ondue-table th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background-color: #f4f4f4;
-  font-weight: bold;
-  text-align: left;
-  border: 1px solid #ddd;
-  font-size: 0.8em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.ondue-table td {
-  padding: 6px 10px;
-  text-align: left;
-  vertical-align: middle;
-  border-bottom: 1px solid #ddd;
-  font-size: 0.85em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ondue-table tr {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.ondue-table tr:hover {
-  background-color: #f2f2f2;
-  color: #000;
-  cursor: pointer;
-}
-
-/* ===== COLUMN WIDTHS AND STYLES ===== */
-.ondue-table th:nth-child(1),
-.ondue-table td:nth-child(1) {
-  width: 8%; /* Transaction No */
-}
-
-.ondue-table th:nth-child(2),
-.ondue-table td:nth-child(2) {
-  width: 14%; /* Client Name */
-}
-
-.ondue-table th:nth-child(3),
-.ondue-table td:nth-child(3) {
-  width: 12%; /* Due Date */
-}
-
-.ondue-table th:nth-child(4),
-.ondue-table td:nth-child(4) {
-  width: 10%; /* Pax */
-  text-align: center;
-}
-
-.ondue-table th:nth-child(5),
-.ondue-table td:nth-child(5) {
-  width: 14%; /* Package Price */
-  text-align: center;
-  color: #007bff;
+.last-update-wrapper .header-text {
   font-weight: 600;
 }
 
-.ondue-table th:nth-child(6),
-.ondue-table td:nth-child(6) {
-  width: 14%; /* Total Paid */
-  text-align: center;
-  color: #28a745;
-  font-weight: 600;
-}
 
-.ondue-table th:nth-child(7),
-.ondue-table td:nth-child(7) {
-  width: 14%; /* Remaining Balance */
-  text-align: center;
-  color: #dc3545;
-  font-weight: bold;
-}
 
-.ondue-table th:nth-child(8),
-.ondue-table td:nth-child(8) {
-  width: 8%; /* Status */
-  text-align: center;
-}
 
-/* ===== TABLE TOOLS & FILTERS ===== */
-.table-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
 
-.show-column span {
-  color: #000;
-  font-weight: 600;
-}
 
-.show-column select {
-  margin-left: 5px;
-  padding: 4px 8px;
-  border-radius: 8px;
-  font-size: 0.85em;
-}
+
+
+
 
 /* ===== PAGINATION OVERRIDE ===== */
 .dataTables_paginate {
@@ -1002,4 +259,68 @@
   padding: 3px;
   font-size: 12px;
   border-radius: 3px;
+}
+
+
+
+/* ===== Toggle ===== */
+/* Toggle Container */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+/* Toggle Switch Base */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;     /* thinner width */
+  height: 16px;     /* thinner height */
+}
+
+/* Hide default checkbox */
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Slider Track */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: transparent;
+  border: 1px solid #007bff; /* outline */
+  border-radius: 16px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: all 0.3s;
+}
+
+/* Slider Circle */
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 10px;
+  width: 10px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #007bff;
+  transition: all 0.3s;
+  border-radius: 50%;
+}
+
+/* When Checked */
+input:checked + .slider {
+  border-color: #0056b3;
+  background-color: rgba(0, 123, 255, 0.08); /* subtle blue */
+}
+
+input:checked + .slider:before {
+  transform: translateX(14px);
+  background-color: #0056b3;
 }

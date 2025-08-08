@@ -28,7 +28,7 @@ body {
 
 /* Main Content */
 .main-content {
-  margin-top: 6vh;
+  margin-top: 5.5vh;
   height: 94vh;
   width: 100%;
   display: flex;
@@ -58,6 +58,7 @@ body {
   box-sizing: border-box;
   
   /* border-bottom: 1px solid gainsboro; */
+  /* border: 1px solid black; */
 }
 
 /* Wrapper for the whole header section */
@@ -537,7 +538,7 @@ body {
 .sidebar .collapse .nav-link:hover::before {
   content: '';
   position: absolute;
-  top: 0;
+  top: 5px;
   left: 0;
   height: 100%;
   width: 5px;
