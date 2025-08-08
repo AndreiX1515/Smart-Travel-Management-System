@@ -5,46 +5,38 @@
 
     <div class="table-header">
       <?php
-      // Check if 'id' is passed in the URL
-      if (isset($_GET['id'])) {
-        $transactionNumber = htmlspecialchars($_GET['id']);
-        $_SESSION['transaction_number'] = $transactionNumber;
-      }
+        $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
+                          b.pax AS pax, b.infantPax as infantPax
+                    FROM booking b
+                    LEFT JOIN guest g ON g.transactNo = b.transactNo 
+                    WHERE b.transactNo = '$transactionNumber'";
 
-      // Run the query to get guest count and pax
-      $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
-                          b.pax AS pax 
-                        FROM booking b
-                        LEFT JOIN guest g ON g.transactNo = b.transactNo 
-                        WHERE b.transactNo = '$transactionNumber'";
+        $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
+                      b.pax AS pax 
+                    FROM booking b
+                    LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
+                    WHERE b.transactNo = '$transactionNumber'";
 
-      $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
-                          b.pax AS pax 
-                        FROM booking b
-                        LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
-                        WHERE b.transactNo = '$transactionNumber'";
+        $result2 = $conn->query($query2);
+        $result3 = $conn->query($query3);
 
-      $result2 = $conn->query($query2);
-      $result3 = $conn->query($query3);
+        if ($result2 && $result2->num_rows > 0) {
+          $row2 = $result2->fetch_assoc();
+          $guest_count = $row2['guest_count'];
+          $pax2 = $row2['pax'];
+          $infantPax = $row2['infantPax'];
 
-      // Check if the query returned results
-      if ($result2 && $result2->num_rows > 0) {
-        // Fetch the result
-        $row2 = $result2->fetch_assoc();
-        $guest_count = $row2['guest_count'];
-        $pax2 = $row2['pax'];
-      }
+          // Adjust expected guest total if infants are also saved in guest table
+          $expected_total = $pax2 + $infantPax;
+          $disable_button = ($guest_count >= $expected_total) ? 'disabled' : '';
+        }
 
-      if ($result3 && $result3->num_rows > 0) {
-        // Fetch the result
-        $row3 = $result3->fetch_assoc();
-        $visa_count = $row3['visa_count'];
-        $pax3 = $row3['pax'];
-      }
-
-      // Determine whether to disable the button
-      $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
-      $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
+        if ($result3 && $result3->num_rows > 0) {
+          $row3 = $result3->fetch_assoc();
+          $visa_count = $row3['visa_count'];
+          $pax3 = $row3['pax'];
+          $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : '';
+        }
       ?>
 
       <!-- Add Guest Button -->
@@ -90,65 +82,65 @@
           </thead>
           <tbody>
             <?php
-            $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
-                    CASE 
-                      WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
-                      ELSE CONCAT(countryCode2, ' ', contactNo2)
-                    END AS contactNo2, CONCAT(addressLine1, ', ', 
-                    CASE 
-                      WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
-                      ELSE '' 
-                    END, city, ', ', state, ', ', zipcode, ', ', country) AS address
-                    FROM guest 
-                    WHERE transactNo = '$transactionNumber'";
+              $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
+                      CASE 
+                        WHEN countryCode2 IS NULL OR contactNo2 IS NULL THEN 'N/A'
+                        ELSE CONCAT(countryCode2, ' ', contactNo2)
+                      END AS contactNo2, CONCAT(addressLine1, ', ', 
+                      CASE 
+                        WHEN addressLine2 IS NOT NULL AND addressLine2 != '' THEN CONCAT(addressLine2, ', ') 
+                        ELSE '' 
+                      END, city, ', ', state, ', ', zipcode, ', ', country) AS address
+                      FROM guest 
+                      WHERE transactNo = '$transactionNumber'";
 
-            $res1 = $conn->query($sql1);
+              $res1 = $conn->query($sql1);
 
-            if ($res1->num_rows > 0) {
-              while ($row = $res1->fetch_assoc()) {
-                // Define the full name variable with suffix
-                // Define the full name without suffix first
-                $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
+              if ($res1->num_rows > 0) {
+                while ($row = $res1->fetch_assoc()) {
+                  // Define the full name variable with suffix
+                  // Define the full name without suffix first
+                  $fullName = $row['fName'] . ' ' . $row['mName'] . ' ' . $row['lName'];
 
-                // Append suffix only if it is not "N/A"
-                if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
-                  $fullName .= ' ' . $row['suffix']; // Append suffix if it exists and is not "N/A"
+                  // Append suffix only if it is not "N/A"
+                  if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
+                    $fullName .= ' ' . $row['suffix']; // Append suffix if it exists and is not "N/A"
+                  }
+
+                  // Escape values for safety
+                  $guestId = htmlspecialchars($row['guestId']);
+                  $birthdate = htmlspecialchars($row['birthdate']);
+                  $age = htmlspecialchars($row['age']);
+                  $sex = htmlspecialchars($row['sex']);
+                  $nationality = htmlspecialchars($row['nationality']);
+                  $contactNo = htmlspecialchars($row['contactNo']);
+                  $contactNo2 = htmlspecialchars($row['contactNo2']);
+                  $emailAdd = htmlspecialchars($row['emailAdd']);
+                  $address = htmlspecialchars($row['address']);
+                  $passportNo = htmlspecialchars($row['passportNo']);
+                  $passportIssuedDate = $row['passportIssuedDate'] ?? '';
+                  $passportExp = htmlspecialchars($row['passportExp']);
+
+                  echo "<tr data-url='agent-updateGuestInfo.php?id={$guestId}'>
+                            <td>{$guestId}</td>
+                            <td>{$fullName}</td>
+                            <td>{$birthdate}</td>
+                            <td>{$age}</td>
+                            <td>{$sex}</td>
+                            <td>{$nationality}</td>
+                            <td>{$contactNo}</td>
+                            <td>{$contactNo2}</td>
+                            <td>{$emailAdd}</td>
+                            <td>{$address}</td>
+                            <td>{$passportNo}</td>
+                            <td>{$passportIssuedDate}</td>
+                            <td>{$passportExp}</td>
+                            <td>{$row['visaStatus']}</td>
+                          </tr>";
                 }
-
-                // Escape values for safety
-                $guestId = htmlspecialchars($row['guestId']);
-                $birthdate = htmlspecialchars($row['birthdate']);
-                $age = htmlspecialchars($row['age']);
-                $sex = htmlspecialchars($row['sex']);
-                $nationality = htmlspecialchars($row['nationality']);
-                $contactNo = htmlspecialchars($row['contactNo']);
-                $contactNo2 = htmlspecialchars($row['contactNo2']);
-                $emailAdd = htmlspecialchars($row['emailAdd']);
-                $address = htmlspecialchars($row['address']);
-                $passportNo = htmlspecialchars($row['passportNo']);
-                $passportIssuedDate = $row['passportIssuedDate'] ?? '';
-                $passportExp = htmlspecialchars($row['passportExp']);
-
-                echo "<tr data-url='agent-updateGuestInfo.php?id={$guestId}'>
-                          <td>{$guestId}</td>
-                          <td>{$fullName}</td>
-                          <td>{$birthdate}</td>
-                          <td>{$age}</td>
-                          <td>{$sex}</td>
-                          <td>{$nationality}</td>
-                          <td>{$contactNo}</td>
-                          <td>{$contactNo2}</td>
-                          <td>{$emailAdd}</td>
-                          <td>{$address}</td>
-                          <td>{$passportNo}</td>
-                          <td>{$passportIssuedDate}</td>
-                          <td>{$passportExp}</td>
-                          <td>{$row['visaStatus']}</td>
-                        </tr>";
+              } else {
+                echo "<tr><td colspan='100' style='text-align: center;'>No Guest found</td></tr>";
               }
-            } else {
-              echo "<tr><td colspan='100' style='text-align: center;'>No Guest found</td></tr>";
-            }
             ?>
           </tbody>
         </table>
