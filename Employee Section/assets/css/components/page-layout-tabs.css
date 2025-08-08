@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+.main-content {
+  padding: 0px;
+}
+
+
+.table-wrapper {
+  width: 100%;
+  height: 100%; /* or set to 100vh or a fixed px value as needed */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  gap: 10px;
+
+  /* border: 1px solid black; */
+}
+
+.table-header {
+  display: flex; 
+  justify-content: space-between;
+  align-items: last baseline;
+  gap: 10px;
+  padding: 5px 0px;
+  height: 8vh;
+
+}
+
+.navpills-container {
+  padding: 0.3rem 0;
+  /* border-bottom: 1px solid #e5e7eb; */
+  /* background-color: #f9fafb; Tailwind gray-50 */
+  /* border: 1px solid black; */
+}
+
+
+.tab-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  overflow: hidden;
+  gap: 10px; /* Add gap between header and table */
+}
+
+
+/* Make tab-pane fill full height with no spacing issues */
+.tab-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 10px;      
+}
+
+
+/* Table Container Styling */
+.table-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-bottom: 10px;
+
+  /* border: 1px solid black; */
+  border-bottom: 1px solid gainsboro;
+}
+
+/* Scrollable wrapper for table body */
+.table-scroll-wrapper {
+  flex: 1;
+  overflow: auto;
+}
+
+
+/* Optional Table Footer */
+.table-footer {
+  height: 6vh;
+  background-color: #f8f9fa; /* Bootstrap light gray (similar to table bg) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 20px;
+  border-radius: 0.3rem;      
+
+  border: 1px solid #dee2e6; /* Bootstrap's light border */
+  margin-top: 0; /* Prevent spacing between table and footer */
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow for separation */
+}
+
+.btn-pagination {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #0d6efd; /* Bootstrap primary blue */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-pagination:hover {
+  background-color: #0b5ed7; /* Bootstrap's btn-primary:hover */
+}
+
+.btn-pagination:disabled {
+  background-color: #0d6efd;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #4b5563; /* Tailwind-inspired gray-700 */
+  font-weight: 500;
+}
+
+.accent-text {
+  font-size: 13px;
+  color: #808080; /* Tailwind blue-500 */
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.last-update-wrapper .header-text {
+  font-weight: 600;
+}

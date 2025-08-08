@@ -10,10 +10,25 @@
 
   <?php include '../Employee Section/includes/emp-head.php' ?>
 
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
-  
+  <!-- Include Flatpickr CSS and JS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <!-- Necessary CSS -->
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+
+  <!-- Components CSS -->
+  <!-- <link rel="stylesheet" href="../Employee Section/assets/css/components/page-layout-tabs.css?v=<?php echo time(); ?>"> -->
+
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/table-header.css?v=<?php echo time(); ?>">
+
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/table-clean.css?v=<?php echo time(); ?>">
+
+  <!-- Page Specifics CSS -->
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
+
+
 </head>
 
 <body>
@@ -51,65 +66,65 @@
 
     <?php $tab = isset($_GET['tab']) ? $_GET['tab'] : 'status'; ?>
 
+    <!-- Tab Navigation Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        function getParameterByName(name) {
+          const url = window.location.href;
+          name = name.replace(/[\[\]]/g, '\\$&');
+          const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+          const results = regex.exec(url);
+          if (!results) return null;
+          if (!results[2]) return '';
+          return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        const tabParam = getParameterByName('tab');
+
+        const tabMap = {
+          status: {
+            tabId: 'pills-profile-tab',
+            defaultFilterValue: 'current'
+          },
+          onDue: {
+            tabId: 'pills-home-tab',
+            defaultFilterValue: 'all'
+          },
+          remainBal: {
+            tabId: 'pills-remaining-balance-tab',
+            defaultFilterValue: 'all'
+          }
+        };
+
+        let targetTab = 'status'; // Default to STATUS if no ?tab=
+        if (tabParam && tabMap[tabParam]) {
+          targetTab = tabParam;
+        }
+
+        const { tabId, defaultFilterValue } = tabMap[targetTab];
+        const tabTriggerEl = document.getElementById(tabId);
+
+        if (tabTriggerEl) {
+          const tab = new bootstrap.Tab(tabTriggerEl);
+          tab.show();
+
+          // Delay filter button click until after tab is activated
+          setTimeout(() => {
+            const defaultFilterBtn = document.querySelector(
+              `[data-filter="${defaultFilterValue}"]`
+            );
+            if (defaultFilterBtn) defaultFilterBtn.click();
+          }, 300);
+        }
+      });
+    </script>
+
     <div class="main-content">
 
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          function getParameterByName(name) {
-            const url = window.location.href;
-            name = name.replace(/[\[\]]/g, '\\$&');
-            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-            const results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-          }
-
-          const tabParam = getParameterByName('tab');
-
-          const tabMap = {
-            status: {
-              tabId: 'pills-profile-tab',
-              defaultFilterValue: 'current'
-            },
-            onDue: {
-              tabId: 'pills-home-tab',
-              defaultFilterValue: 'all'
-            },
-            remainBal: {
-              tabId: 'pills-remaining-balance-tab',
-              defaultFilterValue: 'all'
-            }
-          };
-
-          let targetTab = 'status'; // Default to STATUS if no ?tab=
-          if (tabParam && tabMap[tabParam]) {
-            targetTab = tabParam;
-          }
-
-          const { tabId, defaultFilterValue } = tabMap[targetTab];
-          const tabTriggerEl = document.getElementById(tabId);
-
-          if (tabTriggerEl) {
-            const tab = new bootstrap.Tab(tabTriggerEl);
-            tab.show();
-
-            // Delay filter button click until after tab is activated
-            setTimeout(() => {
-              const defaultFilterBtn = document.querySelector(
-                `[data-filter="${defaultFilterValue}"]`
-              );
-              if (defaultFilterBtn) defaultFilterBtn.click();
-            }, 300);
-          }
-        });
-      </script>
-
       <!-- Main Container Tabs -->
-      <div class="tabs-wrapper">
+      <div class="main-tabs-wrapper">
         <div class="navs-wrapper">
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
-
             <!-- Status Tab -->
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
@@ -122,36 +137,28 @@
               <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">ON DUE</button>
             </li>
-
-            <!-- With Remaining Balance Tab -->
-            <!-- <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-remaining-balance-tab" data-bs-toggle="pill"
-                data-bs-target="#pills-remaining-balance" type="button" role="tab"
-                aria-controls="pills-remaining-balance" aria-selected="false">WITH REMAINING BALANCE</button>
-            </li> -->
-
           </ul>
         </div>
       </div>
 
-      <div class="tab-content" id="pills-tabContent">
+      <div class="tab-main-content" id="pills-tabContent">
 
         <!-- Status Table -->
         <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
           tabindex="0">
 
-          <?php
-            include '../Employee Section/transactionTable/transactionTable-Status.php';
-          ?>
+        <?php
+        include '../Employee Section/transactionTable/transactionTable-Status.php';
+        ?>
 
         </div>
 
         <!-- On Due Table -->
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-          <?php
-            include '../Employee Section/transactionTable/transactionTable-OnDue.php';
-          ?>
+        <?php
+        include '../Employee Section/transactionTable/transactionTable-OnDue.php';
+        ?>
 
         </div>
 
@@ -168,6 +175,7 @@
       </div>
 
     </div>
+    
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
