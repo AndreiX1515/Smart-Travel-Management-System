@@ -653,9 +653,9 @@
           <button type="button" class="btn btn-primary btn-sm" id="submitTour">Submit Edit</button>
 
           <select id="actionSelector" class="form-select" style="width: 120px;">
-            <option value="xlsx" selected>Excel (.xlsx)</option>
-            <option value="pdf" disabled>PDF</option>
-            <option value="both" disabled>Excel & PDF</option>
+            <option value="xlsx">Excel (.xlsx)</option>
+            <option value="pdf" selected>PDF</option>
+            <option value="both">Excel & PDF</option>
           </select>
 
           <!-- <button type="button" class="btn btn-primary btn-sm" id="submitTourAndVoucher">Generate Itinerary & Voucher</button> -->
