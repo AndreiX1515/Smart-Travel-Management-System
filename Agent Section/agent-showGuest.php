@@ -234,54 +234,50 @@ error_reporting(E_ALL);
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#requestModal" 
                   data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
 
-                  <?php
-                    // Run the query to get guest count and pax
-                    $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
-                                      b.pax AS pax 
-                                    FROM booking b
-                                    LEFT JOIN guest g ON g.transactNo = b.transactNo 
-                                    WHERE b.transactNo = '$transactionNumber'";
+                <?php
+                  $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
+                                    b.pax AS pax, b.infantPax as infantPax
+                              FROM booking b
+                              LEFT JOIN guest g ON g.transactNo = b.transactNo 
+                              WHERE b.transactNo = '$transactionNumber'";
 
-                    $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
-                                      b.pax AS pax 
-                                    FROM booking b
-                                    LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
-                                    WHERE b.transactNo = '$transactionNumber'";
+                  $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
+                                    b.pax AS pax 
+                              FROM booking b
+                              LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
+                              WHERE b.transactNo = '$transactionNumber'";
 
-                    $result2 = $conn->query($query2);
-                    $result3 = $conn->query($query3);
+                  $result2 = $conn->query($query2);
+                  $result3 = $conn->query($query3);
 
-                    // Check if the query returned results
-                    if ($result2 && $result2->num_rows > 0) 
-                    {
-                      // Fetch the result
-                      $row2 = $result2->fetch_assoc();
-                      $guest_count = $row2['guest_count'];
-                      $pax2 = $row2['pax'];
-                    }
+                  if ($result2 && $result2->num_rows > 0) {
+                    $row2 = $result2->fetch_assoc();
+                    $guest_count = $row2['guest_count'];
+                    $pax2 = $row2['pax'];
+                    $infantPax = $row2['infantPax'];
 
-                    if ($result3 && $result3->num_rows > 0) 
-                    {
-                      // Fetch the result
-                      $row3 = $result3->fetch_assoc();
-                      $visa_count = $row3['visa_count'];
-                      $pax3 = $row3['pax'];
-                    }
+                    // Adjust expected guest total if infants are also saved in guest table
+                    $expected_total = $pax2 + $infantPax;
+                    $disable_button = ($guest_count >= $expected_total) ? 'disabled' : '';
+                  }
 
-                    // Determine whether to disable the button
-                    $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
-                    $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
-                  ?>
+                  if ($result3 && $result3->num_rows > 0) {
+                    $row3 = $result3->fetch_assoc();
+                    $visa_count = $row3['visa_count'];
+                    $pax3 = $row3['pax'];
+                    $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : '';
+                  }
+                ?>
 
-                  <!-- Add Guest Button -->
-                  <button type="button" class="btn btn-primary" <?php echo $disable_button; ?>
-                    onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
-                    Add Guest Information
-                  </button>
+                <!-- Add Guest Button -->
+                <button type="button" class="btn btn-primary" <?php echo $disable_button; ?>
+                  onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
+                  Add Guest Information
+                </button>
 
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#visaModal">
-                    Attach Visa Requirements
-                  </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#visaModal">
+                  Attach Visa Requirements
+                </button>
               </div>
             </div>
 
