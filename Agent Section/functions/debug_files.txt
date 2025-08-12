@@ -4,7 +4,7 @@ Array
         (
             [name] => Array
                 (
-                    [22] => Array
+                    [23] => Array
                         (
                             [0] => SMT-MANILA-LOGO.png
                         )
@@ -13,7 +13,7 @@ Array
 
             [full_path] => Array
                 (
-                    [22] => Array
+                    [23] => Array
                         (
                             [0] => SMT-MANILA-LOGO.png
                         )
@@ -22,7 +22,7 @@ Array
 
             [type] => Array
                 (
-                    [22] => Array
+                    [23] => Array
                         (
                             [0] => image/png
                         )
@@ -31,16 +31,16 @@ Array
 
             [tmp_name] => Array
                 (
-                    [22] => Array
+                    [23] => Array
                         (
-                            [0] => C:\xampp\tmp\phpDDF9.tmp
+                            [0] => C:\xampp\tmp\phpCDC0.tmp
                         )
 
                 )
 
             [error] => Array
                 (
-                    [22] => Array
+                    [23] => Array
                         (
                             [0] => 0
                         )
@@ -49,7 +49,7 @@ Array
 
             [size] => Array
                 (
-                    [22] => Array
+                    [23] => Array
                         (
                             [0] => 132056
                         )
