@@ -125,6 +125,7 @@
       <div class="main-tabs-wrapper">
         <div class="navs-wrapper">
           <ul class="nav nav-pills" id="pills-tab" role="tablist">
+
             <!-- Status Tab -->
             <li class="nav-item" role="presentation">
               <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
@@ -137,6 +138,16 @@
               <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">ON DUE</button>
             </li>
+
+            <!-- View All Tab -->
+            <!-- <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-remaining-balance-tab"
+                data-bs-toggle="pill" data-bs-target="#pills-remaining-balance"
+                type="button" role="tab" aria-controls="pills-remaining-balance" aria-selected="false">
+                ALL TRANSACTIONS
+              </button>
+            </li> -->
+
           </ul>
         </div>
       </div>
@@ -157,20 +168,19 @@
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
         <?php
-        include '../Employee Section/transactionTable/transactionTable-OnDue.php';
+        // include '../Employee Section/transactionTable/transactionTable-OnDue.php';
         ?>
 
         </div>
 
         <!-- With Remaining Balance Table -->
-        <div class="tab-pane fade" id="pills-remaining-balance" role="tabpanel"
-          aria-labelledby="pills-remaining-balance-tab">
+        <!-- <div class="tab-pane fade" id="pills-remaining-balance" role="tabpanel" aria-labelledby="pills-remaining-balance-tab">
 
           <?php
-          include '../Employee Section/transactionTable/transactionTable-RemainingBalance.php';
+          // include '../Employee Section/transactionTable/transactionTable-ViewAllTransactions.php';
           ?>
 
-        </div>
+        </div> -->
 
       </div>
 
@@ -180,7 +190,70 @@
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
-  <!-- Row Click Selection-->
+  <!-- <script>
+    document.querySelectorAll('[data-filter]').forEach(tabBtn => {
+      tabBtn.addEventListener('click', function () {
+        const filter = this.getAttribute('data-filter');
+        fetchTableData(filter); // always refetch when tab is clicked
+      });
+    });
+
+  </script> -->
+
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    // Map each tab ID to its "All" filter button ID
+    const defaultFilters = {
+        "pills-profile": "status-all-filter",           // Status tab
+        "pills-home": "onDue-all-filter",               // On Due tab
+        "pills-remaining-balance": "viewAll-all-filter" // View All tab
+    };
+
+    // When a tab becomes active
+    document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(tabBtn => {
+        tabBtn.addEventListener('shown.bs.tab', function (event) {
+            // Use 'this' to reliably refer to the button that triggered the event
+            const btn = this;
+
+            // Get data-bs-target safely
+            const target = btn.getAttribute("data-bs-target");
+
+            if (!target) {
+                console.warn("No data-bs-target attribute found on tab button", btn);
+                return;
+            }
+
+            const targetPaneId = target.replace("#", "");
+            const filterBtnId = defaultFilters[targetPaneId];
+
+            if (filterBtnId) {
+                const filterBtn = document.getElementById(filterBtnId);
+                if (filterBtn) {
+                    filterBtn.classList.add("active");
+                    filterBtn.click();
+                }
+            }
+        });
+    });
+
+    // Run once for the initially active tab on page load
+    const activePane = document.querySelector(".tab-pane.show.active");
+    if (activePane) {
+        const filterBtnId = defaultFilters[activePane.id];
+        if (filterBtnId) {
+            const filterBtn = document.getElementById(filterBtnId);
+            if (filterBtn) {
+                filterBtn.classList.add("active");
+                filterBtn.click();
+            }
+        }
+    }
+  });
+
+  </script>
+
+
+  <!-- Row Click Selection
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       document.querySelectorAll("tr[data-url]").forEach(function (row) {
@@ -209,7 +282,7 @@
         });
       });
     });
-  </script>
+  </script> -->
 
 
 </body>

@@ -15,17 +15,20 @@
     <div class="second-header-wrapper">
 
       <!-- Show All Transaction Toggle -->
-      <div class="sorting-wrapper aligned-item">
+      <!-- <div class="sorting-wrapper aligned-item">
         <label style="opacity: 0;">Clear</label>
         <form method="GET">
           <label class="toggle-switch">
-            <input type="checkbox" id="showAll" name="showAll" value="1" <?= isset($_GET['showAll']) ? 'checked' : '' ?>
+            <input type="checkbox" id="showAll" name="showAll" value="1" 
+            <?= 
+              isset($_GET['showAll']) ? 'checked' : '' 
+            ?>
               onchange="this.form.submit()">
             <span class="slider"></span>
           </label>
           <label for="showAll">Show All Transactions</label>
         </form>
-      </div>
+      </div> -->
 
       <!-- Flight Date Filter -->
       <div class="sorting-wrapper aligned-item">
@@ -72,7 +75,7 @@
 
       <!-- All On Due -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if (empty($onDueTab) || strtolower($onDueTab) == 'all')
+        <button id="onDue-all-filter" class="nav-link <?php if (empty($onDueTab) || strtolower($onDueTab) == 'all')
           echo 'active'; ?>"
           data-filter="all" type="button">
           All
@@ -91,7 +94,7 @@
 
       <!-- 5 Days -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($onDueTab == '5days')
+        <button id="onDue-5d-filter" class="nav-link <?php if ($onDueTab == '5days')
           echo 'active'; ?>" data-filter="5days" type="button">
           5 Days
           <span class="badge">
@@ -109,7 +112,7 @@
 
       <!-- 10 Days -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($onDueTab == '10days')
+        <button id="onDue-10d-filter" class="nav-link <?php if ($onDueTab == '10days')
           echo 'active'; ?>" data-filter="10days" type="button">
           10 Days
           <span class="badge">
@@ -127,7 +130,7 @@
 
       <!-- 20 Days -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($onDueTab == '20days')
+        <button id="onDue-20d-filter" class="nav-link <?php if ($onDueTab == '20days')
           echo 'active'; ?>" data-filter="20days" type="button">
           20 Days
           <span class="badge">
@@ -145,7 +148,7 @@
 
       <!-- > 30 Days -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($onDueTab == '30daysplus')
+        <button id="onDue-30d-filter" class="nav-link <?php if ($onDueTab == '30daysplus')
           echo 'active'; ?>" data-filter="30daysplus"
           type="button">
           > 30 Days
@@ -164,7 +167,6 @@
 
     </ul>
   </div>
-
 
   <!-- Table & Pagination -->
   <div class="body-content-wrapper">
@@ -288,8 +290,6 @@
   </div>
 
 </div>
-
-
 
 
 <script>
