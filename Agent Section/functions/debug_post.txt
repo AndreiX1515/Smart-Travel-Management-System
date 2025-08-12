@@ -1,32 +1,10 @@
 Array
 (
-    [transaction_number] => BU1-000002
+    [transaction_number] => BU1-000113
     [accId] => 23
     [guestIds] => Array
         (
-            [0] => 15
-        )
-
-    [docSubType] => Array
-        (
-            [15] => Array
-                (
-                    [certificate] => Array
-                        (
-                            [coe] => Array
-                                (
-                                    [0] => coe
-                                )
-
-                            [bankCert] => Array
-                                (
-                                    [0] => bankCert
-                                )
-
-                        )
-
-                )
-
+            [0] => 23
         )
 
     [attachVisaRequirements] => 

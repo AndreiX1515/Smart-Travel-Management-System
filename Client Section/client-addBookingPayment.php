@@ -37,14 +37,6 @@ session_start();
     <div class="navbar">
       <div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
-          <div class="back-btn-wrapper">
-            <button class="back-btn" id="logout-btn">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-          </div>
-        </div> -->
-
         <div class="page-header-content">
           <div class="page-header-text">
             <h5 class="header-title">Payment Details</h5>
@@ -188,35 +180,37 @@ session_start();
 
         <div class="order-summary">
           <?php
-          $packageName = "N/A";
-          $pax = 0;
-          $flightDate = "N/A";
-          $formattedDP = "0.00";
-          $formattedPrice = "0.00";
+            $packageName = "N/A";
+            $pax = 0;
+            $infantPax = 0;
+            $flightDate = "N/A";
+            $formattedDP = "0.00";
+            $formattedPrice = "0.00";
 
-          $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice,
-                  IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') 
-                  AS onboardFlightSched, p.packageName 
-              FROM booking b 
-              JOIN flight f ON b.flightId = f.flightId 
-              JOIN package p ON b.packageId = p.packageId 
-              WHERE b.transactNo = '$transactionNumber'");
+            $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice, b.infantPax,
+                    IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') 
+                    AS onboardFlightSched, p.packageName 
+                FROM booking b 
+                JOIN flight f ON b.flightId = f.flightId 
+                JOIN package p ON b.packageId = p.packageId 
+                WHERE b.transactNo = '$transactionNumber'");
 
-          if ($sql1 && mysqli_num_rows($sql1) > 0) {
-            while ($res1 = mysqli_fetch_array($sql1)) {
-              $totalPrice = $res1['totalPrice'];
-              $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
-              $downpayment = $res1['pax'] * 3000;
-              $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
-          
-              // Get additional fields
-              $flightDate = $res1['onboardFlightSched'];
-              $packageName = $res1['packageName'];
-              $pax = $res1['pax'];
+            if ($sql1 && mysqli_num_rows($sql1) > 0) {
+              while ($res1 = mysqli_fetch_array($sql1)) {
+                $totalPrice = $res1['totalPrice'];
+                $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
+                $downpayment = $res1['pax'] * 3000;
+                $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
+            
+                // Get additional fields
+                $flightDate = $res1['onboardFlightSched'];
+                $packageName = $res1['packageName'];
+                $pax = $res1['pax'];
+                $infantPax = $res1['infantPax'];
+              }
+            } else {
+              echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
             }
-          } else {
-            echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
-          }
           ?>
 
           <div class="row">
@@ -231,8 +225,17 @@ session_start();
           <div class="row">
             <div class="col-sm">
               <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0"><strong>Total Number of Guest:</strong></p>
+                <p class="mb-0"><strong>Number of Guest:</strong></p>
                 <p class="mb-0"><?php echo $pax; ?></p> <!-- Added commas for better readability -->
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm">
+              <div class="d-flex justify-content-between mb-1">
+                <p class="mb-0"><strong>Number of Infant:</strong></p>
+                <p class="mb-0"><?php echo $infantPax; ?></p> <!-- Added commas for better readability -->
               </div>
             </div>
           </div>

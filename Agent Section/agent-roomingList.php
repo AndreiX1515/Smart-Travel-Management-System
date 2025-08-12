@@ -224,6 +224,17 @@ require "../conn.php";
     });
   </script>
 
+  <!-- Searchable FlightDate -->
+  <script>
+    $(document).ready(function() {
+      $('#flightDate').select2({
+        placeholder: "Select a Flight Date",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+    });
+  </script>
+
   <!-- Combined script working -->
   <script>
     let guests = [];  // Stores all guests fetched from PHP
@@ -549,9 +560,9 @@ require "../conn.php";
           // ✅ Tipping color
           let tippingStyle = '';
           if (guest.tip === 'In Korea') {
-            tippingStyle = 'background-color: #FFFF00;';
-          } else if (guest.tip === 'In Manila') {
             tippingStyle = 'background-color: #ADD8E6;';
+          } else if (guest.tip === 'In Manila') {
+            tippingStyle = 'background-color: #FFFF00;';
           }
 
           row.innerHTML = `

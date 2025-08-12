@@ -56,19 +56,20 @@ require "../conn.php";
               <select id="flightDate" class="form-control" required>
                 <option disabled selected>Select a Flight Date</option>
                 <?php
-                $sql1 = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
-                $result = $conn->query($sql1);
+                  $sql1 = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
+                  $result = $conn->query($sql1);
 
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    $formattedFlightDate = date("F j, Y", strtotime($row['flightDepartureDate']));
-                    echo "<option value='" . $row['flightDepartureDate'] . "'>" . $formattedFlightDate . "</option>";
+                  if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      $formattedFlightDate = date("F j, Y", strtotime($row['flightDepartureDate']));
+                      echo "<option value='" . $row['flightDepartureDate'] . "'>" . $formattedFlightDate . "</option>";
+                    }
+                  } else {
+                    echo "<option value='' disabled>No flights available</option>";
                   }
-                } else {
-                  echo "<option value='' disabled>No flights available</option>";
-                }
                 ?>
-              </select>
+            </select>
+
             </div>
 
           </div>
@@ -210,6 +211,17 @@ require "../conn.php";
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+  <!-- Searchable FlightDate -->
+  <script>
+    $(document).ready(function() {
+      $('#flightDate').select2({
+        placeholder: "Select a Flight Date",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+    });
+  </script>
 
   <!-- Combined script working -->
   <script>
@@ -534,9 +546,9 @@ require "../conn.php";
           // ✅ Tipping color
           let tippingStyle = '';
           if (guest.tip === 'In Korea') {
-            tippingStyle = 'background-color: #FFFF00;';
-          } else if (guest.tip === 'In Manila') {
             tippingStyle = 'background-color: #ADD8E6;';
+          } else if (guest.tip === 'In Manila') {
+            tippingStyle = 'background-color: #FFFF00;';
           }
 
           row.innerHTML = `

@@ -179,23 +179,19 @@
             <select class="form-select" id="guestSelect" onchange="addGuestFields(this)">
               <option selected disabled>-- Select Guest --</option>
               <?php
-                if ($res1) 
-                {
-                  $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
-                              CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
-                              CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
-                            FROM guest g
-                            WHERE g.transactNo = '$transactionNumber'";
-                  $res1 = mysqli_query($conn, $query1);
-                  while ($row = mysqli_fetch_assoc($res1)) 
-                  {
+                $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
+                            CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
+                            CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
+                          FROM guest g
+                          WHERE g.transactNo = '$transactionNumber'";
+                $res1 = mysqli_query($conn, $query1);
+                if ($res1 && mysqli_num_rows($res1) > 0) {
+                  while ($row = mysqli_fetch_assoc($res1)) {
                     $guestId = $row['guestId'];
                     $fullName = htmlspecialchars($row['FULLNAME']);
                     echo "<option value='$guestId'>$fullName</option>";
                   }
-                } 
-                else 
-                {
+                } else {
                   echo "<option value=''>No guests available</option>";
                 }
               ?>
@@ -311,6 +307,7 @@
       </div>`;
     
     allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
+    selectElement.selectedIndex = 0;
   }
 
   function showFileInput(selectElement, guestId) {
@@ -319,9 +316,7 @@
 
     if (!selectedValue) return;
 
-    const insertStaticAbove = ["passport", "validId", "guaranteedLetter"];
     const inputId = `${selectedValue}-${guestId}`;
-
     if (document.getElementById(inputId)) {
       selectElement.selectedIndex = 0;
       alert("You've already added this document type.");
@@ -329,90 +324,56 @@
     }
 
     if (selectedValue === "certificate") {
-      const certContainerId = `certificateWrapper-${guestId}`;
-      if (!document.getElementById(certContainerId)) {
-        const subCertHTML = `
-          <div id="${certContainerId}" class="mb-3">
-            <label class="form-label">Select Certificate Type:</label>
-            <select class="form-select" onchange="showCertificateInput(this, ${guestId})">
-              <option selected disabled>-- Select Certificate Type --</option>
-              <option value="bankCert">Bank Certificate / Statement</option>
-              <option value="coe">COE</option>
-              <option value="com">COM</option>
-              <option value="birthCert">Birth Certificate</option>
-            </select>
-            <div id="certificateInput-${guestId}"></div>
-          </div>`;
-        fileInputsContainer.insertAdjacentHTML("beforeend", subCertHTML);
-      }
+      fileInputsContainer.insertAdjacentHTML("beforeend", getSubSelectHTML(guestId, "certificate", [
+        {value: "bankCert", label: "Bank Certificate / Statement"},
+        {value: "coe", label: "COE"},
+        {value: "com", label: "COM"},
+        {value: "birthCert", label: "Birth Certificate"}
+      ]));
     } else if (selectedValue === "permit") {
-      const permitContainerId = `permitWrapper-${guestId}`;
-      if (!document.getElementById(permitContainerId)) {
-        const subPermitHTML = `
-          <div id="${permitContainerId}" class="mb-3">
-            <label class="form-label">Select Permit Type:</label>
-            <select class="form-select" onchange="showPermitInput(this, ${guestId})">
-              <option selected disabled>-- Select Permit Type --</option>
-              <option value="businessPermit">Business Permit / Mayor's Permit</option>
-              <option value="secDti">SEC or DTI</option>
-              <option value="itr">ITR</option>
-            </select>
-            <div id="permitInput-${guestId}"></div>
-          </div>`;
-        fileInputsContainer.insertAdjacentHTML("beforeend", subPermitHTML);
-      }
-    } else if (insertStaticAbove.includes(selectedValue)) {
-      const labelText = selectElement.options[selectElement.selectedIndex].text;
-      const staticFileHTML = `
-        <div class="mb-3 d-flex align-items-center" id="${inputId}">
-          <label class="form-label me-2">${labelText}:</label>
-          <input type="file" class="form-control me-2" name="${selectedValue}[${guestId}][]" style="width:70%" multiple>
-          <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
-        </div>`;
-      fileInputsContainer.insertAdjacentHTML("beforeend", staticFileHTML);
+      fileInputsContainer.insertAdjacentHTML("beforeend", getSubSelectHTML(guestId, "permit", [
+        {value: "businessPermit", label: "Business Permit / Mayor's Permit"},
+        {value: "secDti", label: "SEC or DTI"},
+        {value: "itr", label: "ITR"}
+      ]));
+    } else {
+      fileInputsContainer.insertAdjacentHTML("beforeend", getDirectFileHTML(selectedValue, guestId, selectElement.options[selectElement.selectedIndex].text));
     }
 
     selectElement.selectedIndex = 0;
   }
 
-  function showCertificateInput(subSelect, guestId) {
+  function getSubSelectHTML(guestId, type, options) {
+    const wrapperId = `${type}Wrapper-${guestId}`;
+    if (document.getElementById(wrapperId)) return '';
+    let optsHTML = `<option selected disabled>-- Select ${type.charAt(0).toUpperCase() + type.slice(1)} Type --</option>`;
+    options.forEach(opt => {
+      optsHTML += `<option value="${opt.value}">${opt.label}</option>`;
+    });
+    return `
+      <div id="${wrapperId}" class="mb-3">
+        <label class="form-label">Select ${type.charAt(0).toUpperCase() + type.slice(1)} Type:</label>
+        <select class="form-select" onchange="showSubtypeFileInput(this, ${guestId}, '${type}')">
+          ${optsHTML}
+        </select>
+        <div id="${type}Input-${guestId}"></div>
+      </div>`;
+  }
+
+  function showSubtypeFileInput(subSelect, guestId, parentType) {
     const value = subSelect.value;
     const text = subSelect.options[subSelect.selectedIndex].text;
-    const container = document.getElementById(`certificateInput-${guestId}`);
-    const inputId = `${value}-${guestId}`;
+    const container = document.getElementById(`${parentType}Input-${guestId}`);
+    const inputId = `${parentType}-${value}-${guestId}`;
 
-    if (document.getElementById(inputId)) return;
+    if (!value || document.getElementById(inputId)) return;
 
-    container.insertAdjacentHTML("beforeend", `
-      <input type="hidden" name="docSubType[${guestId}][certificate][${value}][]" value="${value}" id="${inputId}">
-      <small class="text-muted">Selected: ${text}</small>
-    `);
-
-    appendFileInput(container, value, text, guestId, inputId, "certificate");
-
+    container.insertAdjacentHTML("beforeend", getSubtypeFileHTML(value, text, guestId, inputId, parentType));
     subSelect.selectedIndex = 0;
   }
 
-  function showPermitInput(subSelect, guestId) {
-    const value = subSelect.value;
-    const text = subSelect.options[subSelect.selectedIndex].text;
-    const container = document.getElementById(`permitInput-${guestId}`);
-    const inputId = `${value}-${guestId}`;
-
-    if (document.getElementById(inputId)) return;
-
-    container.insertAdjacentHTML("beforeend", `
-      <input type="hidden" name="docSubType[${guestId}][permit][${value}][]" value="${value}" id="${inputId}">
-      <small class="text-muted">Selected: ${text}</small>
-    `);
-
-    appendFileInput(container, value, text, guestId, inputId, "permit");
-
-    subSelect.selectedIndex = 0;
-  }
-
-  function appendFileInput(container, fieldName, labelText, guestId, inputId, parentDocType = fieldName) {
-    const html = `
+  function getSubtypeFileHTML(fieldName, labelText, guestId, inputId, parentDocType) {
+    return `
       <div class="row align-items-center mt-2 mb-2" id="${inputId}">
         <div class="col-md-3">
           <label class="form-label">${labelText}:</label>
@@ -424,7 +385,16 @@
           <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.closest('.row').remove()">Remove</button>
         </div>
       </div>`;
-    container.insertAdjacentHTML("beforeend", html);
+  }
+
+  function getDirectFileHTML(docType, guestId, labelText) {
+    const inputId = `${docType}-${guestId}`;
+    return `
+      <div class="mb-3 d-flex align-items-center" id="${inputId}">
+        <label class="form-label me-2">${labelText}:</label>
+        <input type="file" class="form-control me-2" name="${docType}[${guestId}][]" style="width:70%" multiple>
+        <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
+      </div>`;
   }
 
   function removeGuestFields(guestId) {
@@ -735,8 +705,4 @@
       window.location.href = url; // Redirect to the specified URL
     });
   });
-</script>
-
-<script>
-
 </script>

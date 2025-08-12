@@ -58,11 +58,16 @@ error_reporting(E_ALL);
       $stmt->bind_param("s", $transactionNumber);
       $stmt->execute();
       $result = $stmt->get_result();
-    
+
       $pax = 0; // Default value if no result is found
+      $infantPax = 0;
+
       if ($row = $result->fetch_assoc()) 
       {
         $_SESSION['pax'] = $row['pax']; // Store the total pax in the session
+        $_SESSION['infantPax'] = $row['infantPax'];
+        $pax = $row['pax'];
+        $infantPax = $row['infantPax'];
         $flightId = $row['flightId'];
       }
 
@@ -75,17 +80,46 @@ error_reporting(E_ALL);
       {
         $flightdate = $row1['flightDepartureDate'];
       }
-    
-      // Fetch the count of existing guests
-      $stmt = $conn->prepare("SELECT COUNT(*) FROM guest WHERE transactNo = ?");
+
+      // 🧠 New: Fetch all existing guests and count by type
+      $stmt = $conn->prepare("SELECT isInfant FROM guest WHERE transactNo = ?");
       $stmt->bind_param("s", $transactionNumber);
       $stmt->execute();
       $result = $stmt->get_result();
-      $guestCount = $result->fetch_row()[0]; // Get the number of guests already added
+
+      $infantCount = 0;
+      $nonInfantCount = 0;
+
+      while ($row = $result->fetch_assoc()) {
+        if ($row['isInfant']) {
+          $infantCount++;
+        } else {
+          $nonInfantCount++;
+        }
+      }
+
       $stmt->close();
-    
-      // Calculate Available Pax
-      $availablePax = $_SESSION['pax'] - $guestCount;
+
+      // Calculate Available Pax (for display only)
+      $availablePax = ($pax + $infantPax) - ($infantCount + $nonInfantCount);
+
+      // 🔐 Check if adding a new guest is allowed
+      // Assume you have this from a form or context:
+      $isInfant = isset($_POST['isInfant']) && $_POST['isInfant'] == '1';
+
+      if ($isInfant) {
+        if ($infantCount >= $infantPax) {
+          $_SESSION['status'] = "You have already added the maximum number of infants.";
+          header("Location: ../agent-addGuest.php?transactNo=" . urlencode($transactionNumber));
+          exit(0);
+        }
+      } else {
+        if ($nonInfantCount >= $pax) {
+          $_SESSION['status'] = "You have already added the maximum number of regular guests (adults/children).";
+          header("Location: ../agent-addGuest.php?transactNo=" . urlencode($transactionNumber));
+          exit(0);
+        }
+      }
     ?>
 
     <div class="navbar">
@@ -128,23 +162,23 @@ error_reporting(E_ALL);
 			});
 		</script>
 
-
-     <div class="main-content">
+    <div class="main-content">
 
       <div class="addguest-wrapper">
 
         <div class="wrapper-header">
 
           <div class="transaction-wrapper">
-              <h6 class="fw-bold">Transaction No: <span class="fw-normal"><?php echo $transactionNumber ?></span></h6>
-              <h6 class="fw-bold">Total Pax: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
-              <h6 class="fw-bold">Available Pax: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
-              <h6 class="fw-bold">Flight Date: <span class="fw-normal"><?php echo $flightdate; ?></span></h6>
-            </div>
+            <h6 class="fw-bold">Total Pax Limit: <span class="fw-normal"><?php echo $_SESSION['pax']; ?></span></h6>
+            <h6 class="fw-bold">Guests Added (Non-Infant): <span class="fw-normal"><?php echo $nonInfantCount; ?></span></h6>
+            <h6 class="fw-bold">Infant Pax Limit: <span class="fw-normal"><?php echo $infantPax; ?></span></h6>
+            <h6 class="fw-bold">Infants Added: <span class="fw-normal"><?php echo $infantCount; ?></span></h6>
+            <h6 class="fw-bold">Remaining Pax Slots: <span class="fw-normal"><?php echo $availablePax; ?></span></h6>
+          </div>
 
-            <div>
-              <button id="addGuestFormButton" type="button" class="btn btn-primary">Add Guest Information Form</button>
-            </div>
+          <div>
+            <button id="addGuestFormButton" type="button" class="btn btn-primary">Add Guest Information Form</button>
+          </div>
 
         </div>
 
@@ -784,15 +818,10 @@ error_reporting(E_ALL);
           </form>
         </div>
 
-        
-
       </div>
       
+    </div>
 
-     </div>
-
-
-    
   </div>
 
 

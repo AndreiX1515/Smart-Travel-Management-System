@@ -228,9 +228,9 @@ foreach ($roomGroups as $group) {
     $tipping = strtolower($guest['tip'] ?? '');
     $fillColor = null;
     if ($tipping === 'in korea') {
-      $fillColor = 'FFFF00';
-    } elseif ($tipping === 'in manila') {
       $fillColor = 'ADD8E6';
+    } elseif ($tipping === 'in manila') {
+      $fillColor = 'FFFF00';
     }
     if ($fillColor) {
       $sheet->getStyle("P{$row}")->getFill()->setFillType(Fill::FILL_SOLID)->getStartColor()->setRGB($fillColor);

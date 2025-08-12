@@ -229,9 +229,9 @@ foreach ($roomGroups as $group) {
     $fillColor = null;
 
     if ($tipping === 'in korea') {
-      $fillColor = 'FFFF00'; // Yellow
-    } elseif ($tipping === 'in manila') {
       $fillColor = 'ADD8E6'; // Light Blue
+    } elseif ($tipping === 'in manila') {
+      $fillColor = 'FFFF00'; // Yellow
     }
 
     if ($fillColor) {

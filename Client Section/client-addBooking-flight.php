@@ -194,8 +194,24 @@ require "../conn.php";
                     </div>
                   </div>
 
-                </div>
+                  <!-- Infant Pax Input -->
+                  <div class="form-group mt-2">
+                    <div class="col-header">
+                      <div>
+                        <label for="infantPax">No. of Infants</label>
+                      </div>
+                    </div>
 
+                    <input type="number" class="form-control" id="infantPax" name="infantPax" min="0" value="0" placeholder="Enter No. of Infants">
+
+                    <small class="form-text text-muted">
+                      Infants will not be included in total pax but will require guest info.
+                    </small>
+
+                    <span id="infantPaxError" class="text-danger"></span>
+                  </div>
+
+                </div>
               </div>
 
               <div class="row">
@@ -576,9 +592,6 @@ require "../conn.php";
                         style="max-width: 250px; max-height: 80px;">
                     </div>
 
-
-
-
                     <!-- Combined Info Section -->
                     <div class="info-section">
                       <div class="summary-title-container">
@@ -600,6 +613,9 @@ require "../conn.php";
                       </div>
                       <div class="info-item">
                         <strong>No. of Guests:</strong> <span id="guestCount">1</span>
+                      </div>
+                      <div class="info-item">
+                        <strong>No. of Infant:</strong> <span id="infantCount"></span>
                       </div>
 
                       <!-- Flight/Origin Details -->
@@ -697,6 +713,7 @@ require "../conn.php";
     }
   </script>
 
+  <!-- Form Submission & Flight Date Change Script  -->
   <script>
     $(document).ready(function () {
       // Fetch flight Related Details once changed
@@ -826,6 +843,7 @@ require "../conn.php";
         if (isValid) {
           const firstName = $('#fName').val().trim();
           const lastName = $('#lName').val().trim();
+          const infantPax = parseInt($('#infantPax').val()); // Get infant pax, default to 0 if invalid
           let middleName = $('#mName').val().trim() || '';
           let suffix = $('#suffix').val().trim() || '';
           let email = $('#email').val().trim();
@@ -846,6 +864,7 @@ require "../conn.php";
             $('#contactPersonName').text(fullName);
             $('#contactPersonEmail').text(email);
             $('#guestCount').text(totalPax);
+            $('#infantCount').text(infantPax);
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
           } else if (totalPax > totalSeats) {
             // If land only is not selected, check for seat availability
@@ -858,6 +877,7 @@ require "../conn.php";
             $('#contactPersonEmail').text(email);
             // Set the total number of guests in the guestCount paragraph
             $('#guestCount').text(totalPax);
+            $('#infantCount').text(infantPax);
 
             $('#BookingSummaryModal').modal('show'); // Trigger modal display
           }

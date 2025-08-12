@@ -171,35 +171,6 @@
   </div>
 </div>
 
-
-<!-- Upload Modal For Existing -->
-<!-- <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="uploadModalLabel">Upload File</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form id="uploadForm" action="../Client Section/Functions/client-visaRequirementsUpdate-code.php" method="POST" enctype="multipart/form-data">
-        <div class="modal-body">
-          <input type="hidden" name="guestId" id="modalGuestId">
-          <input type="hidden" name="fileType" id="modalFileType">
-          <input type="hidden" name="transactNo" value="<?php echo $transactionNumber; ?>">
-
-          <div class="mb-3">
-            <label for="fileInput" class="form-label">Select File</label>
-            <input type="file" class="form-control" name="file" id="fileInput" required>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" name="upload" class="btn btn-success">Upload</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div> -->
-
 <!-- Confirmation Modal -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
   <div class="modal-dialog">

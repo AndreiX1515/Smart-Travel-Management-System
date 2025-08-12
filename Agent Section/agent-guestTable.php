@@ -58,7 +58,6 @@
     <p>Guest Count: <?php echo $guest_count; ?></p>
     <p>Visa Count: <?php echo $visa_count; ?></p> -->
 
-
     <div class="table-container">
       <div class="table-wrapper-container">
         <table class="product-table">
@@ -177,21 +176,21 @@
             <select class="form-select" id="guestSelect" onchange="addGuestFields(this)">
               <option selected disabled>-- Select Guest --</option>
               <?php
-              if ($res1) {
-                $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
+                if ($res1) {
+                  $query1 = "SELECT g.guestId, CONCAT(g.lName, ', ', g.fName, ' ', 
                               CASE WHEN g.suffix = 'N/A' THEN '' ELSE g.suffix END, ' ',
                               CASE WHEN g.mName = 'N/A' THEN '' ELSE CONCAT(SUBSTRING(g.mName, 1, 1), '.') END) AS FULLNAME 
                             FROM guest g
                             WHERE g.transactNo = '$transactionNumber'";
-                $res1 = mysqli_query($conn, $query1);
-                while ($row = mysqli_fetch_assoc($res1)) {
-                  $guestId = $row['guestId'];
-                  $fullName = htmlspecialchars($row['FULLNAME']);
-                  echo "<option value='$guestId'>$fullName</option>";
+                  $res1 = mysqli_query($conn, $query1);
+                  while ($row = mysqli_fetch_assoc($res1)) {
+                    $guestId = $row['guestId'];
+                    $fullName = htmlspecialchars($row['FULLNAME']);
+                    echo "<option value='$guestId'>$fullName</option>";
+                  }
+                } else {
+                  echo "<option value=''>No guests available</option>";
                 }
-              } else {
-                echo "<option value=''>No guests available</option>";
-              }
               ?>
             </select>
           </div>
@@ -211,210 +210,154 @@
 
 <!-- New Visa Requirements Guest Script -->
 <script>
-  let addedGuests = new Set();
+let addedGuests = new Set();
 
-  function addGuestFields(selectElement) {
-    const guestId = selectElement.value;
-    const guestName = selectElement.options[selectElement.selectedIndex].text;
+function addGuestFields(selectElement) {
+  const guestId = selectElement.value;
+  const guestName = selectElement.options[selectElement.selectedIndex].text;
 
-    if (!guestId || addedGuests.has(guestId)) {
-      alert("Guest already added or invalid selection.");
-      return;
-    }
-
-    console.log(`Adding fields for guestId: ${guestId}, guestName: ${guestName}`);
-    addedGuests.add(guestId);
-
-    const allGuestFieldsContainer = document.getElementById("allGuestFields");
-    const guestFieldsHTML = `
-      <div id="guestFields-${guestId}" class="guest-fields border rounded p-4 mt-4 bg-light shadow-sm">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h6 class="mb-0">Visa Requirements for <strong>${guestName}</strong></h6>
-          <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeGuestFields('${guestId}')">
-            Remove ${guestName}
-          </button>
-        </div>
-        <input type="hidden" name="guestIds[]" value="${guestId}">
-
-        <label class="form-label">Select Document to Upload:</label>
-        <select class="form-select" onchange="showFileInput(this, ${guestId})">
-          <option selected disabled>-- Select Document --</option>
-          <option value="passport">Passport</option>
-          <option value="permit">Permit</option>
-          <option value="validId">Valid ID</option>
-          <option value="certificate">Certificate</option>
-          <option value="guaranteedLetter">Guaranteed Letter</option>
-        </select>
-
-        <div id="fileInputs-${guestId}"></div>
-      </div>`;
-
-    allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
+  if (!guestId || addedGuests.has(guestId)) {
+    alert("Guest already added or invalid selection.");
+    return;
   }
 
-  function showFileInput(selectElement, guestId) {
-    const fileInputsContainer = document.getElementById(`fileInputs-${guestId}`);
-    const selectedValue = selectElement.value;
+  addedGuests.add(guestId);
 
-    console.log(`Document selected for guest ${guestId}: ${selectedValue}`);
+  const allGuestFieldsContainer = document.getElementById("allGuestFields");
+  const guestFieldsHTML = `
+    <div id="guestFields-${guestId}" class="guest-fields border rounded p-3 mt-3 bg-light">
+      <h6 class="mb-2">Visa Requirements for <strong>${guestName}</strong></h6>
+      <input type="hidden" name="guestIds[]" value="${guestId}">
 
-    if (!selectedValue) {
-      alert("Please select a document type.");
-      return;
-    }
+      <label class="form-label">Select Document to Upload:</label>
+      <select class="form-select" onchange="showFileInput(this, ${guestId})">
+        <option selected disabled>-- Select Document --</option>
+        <option value="passport">Passport</option>
+        <option value="permit">Permit</option>
+        <option value="validId">Valid ID</option>
+        <option value="certificate">Certificate</option>
+        <option value="guaranteedLetter">Guaranteed Letter</option>
+      </select>
 
-    const insertStaticAbove = ["passport", "validId", "guaranteedLetter"];
-    const inputId = `${selectedValue}-${guestId}`;
+      <div id="fileInputs-${guestId}" class="mt-3"></div>
 
-    if (document.getElementById(inputId)) {
-      selectElement.selectedIndex = 0;
-      console.warn(`Input for ${selectedValue} already exists for guest ${guestId}`);
-      return;
-    }
+      <button type="button" class="btn btn-danger btn-sm mt-3" onclick="removeGuestFields('${guestId}')">
+        Remove ${guestName}
+      </button>
+    </div>`;
+  
+  allGuestFieldsContainer.insertAdjacentHTML("beforeend", guestFieldsHTML);
+  selectElement.selectedIndex = 0;
+}
 
-    if (selectedValue === "certificate") {
-      const certContainerId = `certificateWrapper-${guestId}`;
-      if (!document.getElementById(certContainerId)) {
-        const subCertificateHTML = `
-          <div id="${certContainerId}" class="mt-3 mb-3">
-            <label class="form-label">Select Certificate Type:</label>
-            <select class="form-select" onchange="showCertificateInput(this, ${guestId})">
-              <option selected disabled>-- Select Certificate Type --</option>
-              <option value="bankCert">Bank Certificate / Statement</option>
-              <option value="coe">COE</option>
-              <option value="com">COM</option>
-              <option value="birthCert">Birth Certificate</option>
-            </select>
-            <div id="certificateInput-${guestId}"></div>
-          </div>
-        `;
-        console.log(`Rendering certificate selector for guest ${guestId}`);
-        fileInputsContainer.insertAdjacentHTML("beforeend", subCertificateHTML);
-      }
-    } else if (selectedValue === "permit") {
-      const permitContainerId = `permitWrapper-${guestId}`;
-      if (!document.getElementById(permitContainerId)) {
-        const subPermitHTML = `
-          <div id="${permitContainerId}" class="mt-3 mb-3">
-            <label class="form-label">Select Permit Type:</label>
-            <select class="form-select" onchange="showPermitInput(this, ${guestId})">
-              <option selected disabled>-- Select Permit Type --</option>
-              <option value="businessPermit">Business Permit / Mayor's Permit</option>
-              <option value="secDti">SEC or DTI</option>
-              <option value="itr">ITR</option>
-            </select>
-            <div id="permitInput-${guestId}"></div>
-          </div>
-        `;
-        console.log(`Rendering permit selector for guest ${guestId}`);
-        fileInputsContainer.insertAdjacentHTML("beforeend", subPermitHTML);
-      }
-    } else if (insertStaticAbove.includes(selectedValue)) {
-      const labelText = selectElement.options[selectElement.selectedIndex].text;
-      const fileInputHTML = `
-        <div class="mt-3 mb-3 d-flex align-items-center" id="${inputId}">
-          <label class="form-label me-2">${labelText}:</label>
-          <input type="file" class="form-control me-2" name="${selectedValue}[${guestId}][]" style="width:70%" multiple>
-          <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
-        </div>`;
-      const certWrapper = document.getElementById(`certificateWrapper-${guestId}`);
-      const permitWrapper = document.getElementById(`permitWrapper-${guestId}`);
-      const insertBefore = certWrapper || permitWrapper;
+function showFileInput(selectElement, guestId) {
+  const fileInputsContainer = document.getElementById(`fileInputs-${guestId}`);
+  const selectedValue = selectElement.value;
 
-      console.log(`Appending basic input for ${selectedValue} to guest ${guestId}`);
-      if (insertBefore) {
-        fileInputsContainer.insertAdjacentHTML("afterbegin", fileInputHTML);
-      } else {
-        fileInputsContainer.insertAdjacentHTML("beforeend", fileInputHTML);
-      }
-    }
+  if (!selectedValue) return;
 
+  const inputId = `${selectedValue}-${guestId}`;
+  if (document.getElementById(inputId)) {
     selectElement.selectedIndex = 0;
+    alert("You've already added this document type.");
+    return;
   }
 
-  function showCertificateInput(subSelectElement, guestId) {
-    const certValue = subSelectElement.value;
-    const certText = subSelectElement.options[subSelectElement.selectedIndex].text;
-    const certInputContainer = document.getElementById(`certificateInput-${guestId}`);
-    const inputId = `${certValue}-${guestId}`;
-    const parentDocType = 'certificate';
-    const fieldName = certValue;
-
-    if (document.getElementById(inputId)) return;
-
-    console.log(`Selected Certificate Subtype for guest ${guestId}: ${certValue}`);
-
-    const hiddenInput = document.createElement('input');
-    hiddenInput.type = 'hidden';
-    hiddenInput.name = `docSubType[${guestId}][${parentDocType}][${fieldName}][]`;
-    hiddenInput.value = certValue;
-    hiddenInput.id = inputId;
-    certInputContainer.appendChild(hiddenInput);
-
-    const small = document.createElement('small');
-    small.className = 'text-muted';
-    small.textContent = `Selected: ${certText}`;
-    certInputContainer.appendChild(small);
-
-    appendFileInput(certInputContainer, fieldName, certText, guestId, inputId, parentDocType);
-
-    subSelectElement.selectedIndex = 0;
+  // ✅ For passport, validId, guaranteedLetter → append directly (Client behavior)
+  if (["passport", "validId", "guaranteedLetter"].includes(selectedValue)) {
+    fileInputsContainer.insertAdjacentHTML(
+      "beforeend",
+      getDirectFileHTML(selectedValue, guestId, selectElement.options[selectElement.selectedIndex].text)
+    );
+  }
+  // ✅ Certificates have subtypes
+  else if (selectedValue === "certificate") {
+    fileInputsContainer.insertAdjacentHTML(
+      "beforeend",
+      getSubSelectHTML(guestId, "certificate", [
+        { value: "bankCert", label: "Bank Certificate / Statement" },
+        { value: "coe", label: "COE" },
+        { value: "com", label: "COM" },
+        { value: "birthCert", label: "Birth Certificate" }
+      ])
+    );
+  }
+  // ✅ Permits have subtypes
+  else if (selectedValue === "permit") {
+    fileInputsContainer.insertAdjacentHTML(
+      "beforeend",
+      getSubSelectHTML(guestId, "permit", [
+        { value: "businessPermit", label: "Business Permit / Mayor's Permit" },
+        { value: "secDti", label: "SEC or DTI" },
+        { value: "itr", label: "ITR" }
+      ])
+    );
   }
 
-  function showPermitInput(subSelectElement, guestId) {
-    const permitValue = subSelectElement.value;
-    const permitText = subSelectElement.options[subSelectElement.selectedIndex].text;
-    const permitInputContainer = document.getElementById(`permitInput-${guestId}`);
-    const inputId = `${permitValue}-${guestId}`;
-    const parentDocType = 'permit';
-    const fieldName = permitValue;
+  selectElement.selectedIndex = 0;
+}
 
-    if (document.getElementById(inputId)) return;
+function getSubSelectHTML(guestId, type, options) {
+  const wrapperId = `${type}Wrapper-${guestId}`;
+  if (document.getElementById(wrapperId)) return '';
+  let optsHTML = `<option selected disabled>-- Select ${type.charAt(0).toUpperCase() + type.slice(1)} Type --</option>`;
+  options.forEach(opt => {
+    optsHTML += `<option value="${opt.value}">${opt.label}</option>`;
+  });
+  return `
+    <div id="${wrapperId}" class="mb-3">
+      <label class="form-label">Select ${type.charAt(0).toUpperCase() + type.slice(1)} Type:</label>
+      <select class="form-select" onchange="showSubtypeFileInput(this, ${guestId}, '${type}')">
+        ${optsHTML}
+      </select>
+      <div id="${type}Input-${guestId}"></div>
+    </div>`;
+}
 
-    console.log(`Selected Permit Subtype for guest ${guestId}: ${permitValue}`);
+function showSubtypeFileInput(subSelect, guestId, parentType) {
+  const value = subSelect.value;
+  const text = subSelect.options[subSelect.selectedIndex].text;
+  const container = document.getElementById(`${parentType}Input-${guestId}`);
+  const inputId = `${parentType}-${value}-${guestId}`;
 
-    const hiddenInput = document.createElement('input');
-    hiddenInput.type = 'hidden';
-    hiddenInput.name = `docSubType[${guestId}][${parentDocType}][${fieldName}][]`;
-    hiddenInput.value = permitValue;
-    hiddenInput.id = inputId;
-    permitInputContainer.appendChild(hiddenInput);
+  if (!value || document.getElementById(inputId)) return;
 
-    const small = document.createElement('small');
-    small.className = 'text-muted';
-    small.textContent = `Selected: ${permitText}`;
-    permitInputContainer.appendChild(small);
+  container.insertAdjacentHTML("beforeend", getSubtypeFileHTML(value, text, guestId, inputId, parentType));
+  subSelect.selectedIndex = 0;
+}
 
-    appendFileInput(permitInputContainer, fieldName, permitText, guestId, inputId, parentDocType);
+function getSubtypeFileHTML(fieldName, labelText, guestId, inputId, parentDocType) {
+  return `
+    <div class="row align-items-center mt-2 mb-2" id="${inputId}">
+      <div class="col-md-3">
+        <label class="form-label">${labelText}:</label>
+      </div>
+      <div class="col-md-7">
+        <input type="file" class="form-control" name="${parentDocType}[${guestId}][${fieldName}][]" multiple>
+      </div>
+      <div class="col-md-2">
+        <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.closest('.row').remove()">Remove</button>
+      </div>
+    </div>`;
+}
 
-    subSelectElement.selectedIndex = 0;
-  }
+function getDirectFileHTML(docType, guestId, labelText) {
+  const inputId = `${docType}-${guestId}`;
+  return `
+    <div class="mb-3 d-flex align-items-center" id="${inputId}">
+      <label class="form-label me-2">${labelText}:</label>
+      <input type="file" class="form-control me-2" name="${docType}[${guestId}][]" style="width:70%" multiple>
+      <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove()">X</button>
+    </div>`;
+}
 
-  function appendFileInput(container, fieldName, labelText, guestId, inputId, parentDocType = fieldName) {
-    const fileInputHTML = `
-      <div class="row align-items-center mt-3 mb-3" id="${inputId}">
-        <div class="col-md-3">
-          <label class="form-label">${labelText}:</label>
-        </div>
-        <div class="col-md-7">
-          <input type="file" class="form-control" name="${parentDocType}[${guestId}][${fieldName}][]" multiple>
-        </div>
-        <div class="col-md-2">
-          <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.closest('.row').remove()">Remove</button>
-        </div>
-      </div>`;
-    container.insertAdjacentHTML("beforeend", fileInputHTML);
-
-    console.log(`File input added: name="${parentDocType}[${guestId}][${fieldName}][]"`);
-  }
-
-  function removeGuestFields(guestId) {
-    document.getElementById(`guestFields-${guestId}`).remove();
-    addedGuests.delete(guestId);
-    console.log(`Removed guest fields for guestId: ${guestId}`);
-    document.getElementById("guestSelect").selectedIndex = 0;
-  }
+function removeGuestFields(guestId) {
+  document.getElementById(`guestFields-${guestId}`).remove();
+  addedGuests.delete(guestId);
+  document.getElementById("guestSelect").selectedIndex = 0;
+}
 </script>
+
 
 <!-- Old Visa Requirements Guest Script -->
 <!-- <script>

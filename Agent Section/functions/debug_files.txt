@@ -1,81 +1,57 @@
 Array
 (
-    [certificate] => Array
+    [passport] => Array
         (
             [name] => Array
                 (
-                    [15] => Array
+                    [23] => Array
                         (
-                            [bankCert] => Array
-                                (
-                                    [0] => SMT-MANILA-LOGO.png
-                                )
-
+                            [0] => SMT-MANILA-LOGO.png
                         )
 
                 )
 
             [full_path] => Array
                 (
-                    [15] => Array
+                    [23] => Array
                         (
-                            [bankCert] => Array
-                                (
-                                    [0] => SMT-MANILA-LOGO.png
-                                )
-
+                            [0] => SMT-MANILA-LOGO.png
                         )
 
                 )
 
             [type] => Array
                 (
-                    [15] => Array
+                    [23] => Array
                         (
-                            [bankCert] => Array
-                                (
-                                    [0] => image/png
-                                )
-
+                            [0] => image/png
                         )
 
                 )
 
             [tmp_name] => Array
                 (
-                    [15] => Array
+                    [23] => Array
                         (
-                            [bankCert] => Array
-                                (
-                                    [0] => C:\xampp\tmp\php8D37.tmp
-                                )
-
+                            [0] => C:\xampp\tmp\phpCDC0.tmp
                         )
 
                 )
 
             [error] => Array
                 (
-                    [15] => Array
+                    [23] => Array
                         (
-                            [bankCert] => Array
-                                (
-                                    [0] => 0
-                                )
-
+                            [0] => 0
                         )
 
                 )
 
             [size] => Array
                 (
-                    [15] => Array
+                    [23] => Array
                         (
-                            [bankCert] => Array
-                                (
-                                    [0] => 132056
-                                )
-
+                            [0] => 132056
                         )
 
                 )

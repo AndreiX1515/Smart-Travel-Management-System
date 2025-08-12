@@ -289,6 +289,33 @@ session_start();
 		});
 	</script>
 
+	<!-- Searchable FlightDate, Branch, Guest-->
+  <script>
+    $(document).ready(function() {
+
+			// Flight Date dropdown (single select)
+      $('#flightDate').select2({
+        placeholder: "Select a Flight Date",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+			// Branch dropdown (single select)
+			$('#branch').select2({
+				placeholder: "Select a Branch",
+				allowClear: true,
+				width: '100%' // Makes it match Bootstrap form-control width
+			});
+
+			// Guest Name dropdown (multiple select)
+			// $('#guestName').select2({
+			// 	placeholder: "Select Guests",
+			// 	allowClear: true,
+			// 	width: '100%'
+			// });
+    });
+  </script>
+
 	<!-- Reset Filter Script -->
 	<script>
 		document.getElementById("resetFilter").addEventListener("click", function () {
@@ -661,9 +688,9 @@ session_start();
 					const tippingSelect = row.querySelector(`select[name="tipping-${guest.id}"]`);
 					const tipValue = guest.tip?.toLowerCase();
 					if (tipValue === 'in korea') {
-						tippingSelect.parentElement.style.backgroundColor = '#FFFF00'; // Yellow
-					} else if (tipValue === 'in manila') {
 						tippingSelect.parentElement.style.backgroundColor = '#ADD8E6'; // Light Blue
+					} else if (tipValue === 'in manila') {
+						tippingSelect.parentElement.style.backgroundColor = '#FFFF00'; // Yellow
 					}
 
 					// Room type cell background color (only once per room)

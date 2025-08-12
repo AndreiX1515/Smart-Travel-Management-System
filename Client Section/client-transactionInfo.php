@@ -70,67 +70,75 @@ error_reporting(E_ALL);
     ?>
 
     <?php
-    $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
-                    FROM booking 
-                    JOIN package ON booking.packageId = package.packageId
-                    LEFT JOIN flight ON booking.flightId = flight.flightId
-                    WHERE transactNo = '$transactionNumber'";
+      $query1 = "SELECT booking.*, package.packageName, flight.flightDepartureDate 
+                  FROM booking 
+                  JOIN package ON booking.packageId = package.packageId
+                  LEFT JOIN flight ON booking.flightId = flight.flightId
+                  WHERE transactNo = '$transactionNumber'";
 
-    $result1 = $conn->query($query1);
+      $result1 = $conn->query($query1);
 
-    if ($result1->num_rows > 0) {
-      // Output data of each row
-      while ($row1 = $result1->fetch_assoc()) {
-        $transactNum = $row1['transactNo'];
-        $fName = $row1['fName'];
-        $mName = $row1['mName'];
-        $lName = $row1['lName'];
-        $suffix = $row1['suffix'];
-        $countryCode = $row1['countryCode'];
-        $contact = $row1['contactNo'];
-        $email = $row1['email'];
-        $packageName = $row1['packageName'];
-        $flightDate = $row1['flightDepartureDate'];
-        $pax = $row1['pax'];
-        $status = $row1['status'];
-        $price = $row1['totalPrice'];
-        $flightId = $row1['flightId']; // Fetch flightId
-    
-        // Construct the full name using the conditions for middle name and suffix
-        $fullName = $lName . ", " . $fName . " " .
-          ($suffix !== 'N/A' ? $suffix . " " : "") .  // Add space after suffix only if it's not 'N/A'
-          ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : "");  // Add middle initial with dot only if it's not 'N/A'
-        $contactNo = $countryCode . $contact;
+      if ($result1->num_rows > 0) 
+      {
+        // Output data of each row
+        while ($row1 = $result1->fetch_assoc()) 
+        {
+          $transactNum = $row1['transactNo'];
+          $fName = $row1['fName'];
+          $mName = $row1['mName'];
+          $lName = $row1['lName'];
+          $suffix = $row1['suffix'];
+          $countryCode = $row1['countryCode'];
+          $contact = $row1['contactNo'];
+          $email = $row1['email'];
+          $packageName = $row1['packageName'];
+          $flightDate = $row1['flightDepartureDate'];
+          $pax = $row1['pax'];
+          $infantPax = $row1['infantPax'];
+          $status = $row1['status'];
+          $price = $row1['totalPrice'];
+          $flightId = $row1['flightId']; // Fetch flightId
 
-        // Check if flightId is NULL and set flightDate accordingly
-        if (is_null($flightId)) {
-          $flightDate = "Land Package Only";
+
+          $fullName = $lName . ", " . $fName . " " .
+            ($suffix !== 'N/A' ? $suffix . " " : "") .  
+            ($mName !== 'N/A' ? substr($mName, 0, 1) . ". " : ""); 
+
+          $contactNo = $countryCode . $contact;
+
+
+          if (is_null($flightId)) 
+          {
+            $flightDate = "Land Package Only";
+          }
+
+          $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
+
+          // Initialize an empty class string
+          $statusClass = '';
+
+          // Assign classes based on the status value using switch
+          switch ($status) 
+          {
+            case 'Confirmed':
+              $statusClass = 'bg-success text-white'; // Green background, white text
+              break;
+            case 'Cancelled':
+              $statusClass = 'bg-danger text-white'; // Red background, white text
+              break;
+            case 'Pending':
+              $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
+              break;
+            default:
+              $statusClass = 'bg-secondary text-white'; // Gray background, white text
+              break;
+          }
         }
-
-        $status = isset($row1['status']) ? $row1['status'] : 'Unknown';
-
-        // Initialize an empty class string
-        $statusClass = '';
-
-        // Assign classes based on the status value using switch
-        switch ($status) {
-          case 'Confirmed':
-            $statusClass = 'bg-success text-white'; // Green background, white text
-            break;
-          case 'Cancelled':
-            $statusClass = 'bg-danger text-white'; // Red background, white text
-            break;
-          case 'Pending':
-            $statusClass = 'bg-warning text-dark'; // Yellow background, dark text
-            break;
-          default:
-            $statusClass = 'bg-secondary text-white'; // Gray background, white text
-            break;
-        }
+      } 
+      else 
+      {
+        echo "0 results";
       }
-    } else {
-      echo "0 results";
-    }
     ?>
 
     <div class="main-content">
@@ -149,7 +157,11 @@ error_reporting(E_ALL);
                   </div>
 
                   <div class="info-item">
-                    <p><strong>Total Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                    <p><strong>Number of Pax:</strong> <?php echo htmlspecialchars($pax); ?></p>
+                  </div>
+
+                  <div class="info-item">
+                    <p><strong>Infant Pax:</strong> <?php echo htmlspecialchars($infantPax); ?></p>
                   </div>
 
                   <div class="info-item">
@@ -158,11 +170,6 @@ error_reporting(E_ALL);
 
                   <div class="info-item">
                     <p><strong>Flight Date:</strong> <?php echo htmlspecialchars($flightDate); ?></p>
-                  </div>
-
-                  <div class="info-item">
-                    <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>">
-                        <?php echo htmlspecialchars($status); ?> </span> </p>
                   </div>
                 </div>
 
@@ -182,6 +189,11 @@ error_reporting(E_ALL);
                   <div class="info-item">
                     <p><strong>Price: ₱ <?php echo number_format((float) $price, 2); ?></strong></p>
                   </div>
+
+                  <div class="info-item">
+                    <p><strong>Status:</strong> <span class="badge rounded-pill <?php echo $statusClass; ?>">
+                      <?php echo htmlspecialchars($status); ?> </span> </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -199,40 +211,38 @@ error_reporting(E_ALL);
                 data-transaction-id="<?= $transactionNumber ?>">Add Request</button>
 
               <?php
-              // Run the query to get guest count and pax
-              $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
-                                      b.pax AS pax 
-                                    FROM booking b
-                                    LEFT JOIN guest g ON g.transactNo = b.transactNo 
-                                    WHERE b.transactNo = '$transactionNumber'";
+                $query2 = "SELECT COALESCE(COUNT(g.transactNo), 0) AS guest_count, 
+                                  b.pax AS pax, b.infantPax as infantPax
+                            FROM booking b
+                            LEFT JOIN guest g ON g.transactNo = b.transactNo 
+                            WHERE b.transactNo = '$transactionNumber'";
 
-              $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
-                                      b.pax AS pax 
-                                    FROM booking b
-                                    LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
-                                    WHERE b.transactNo = '$transactionNumber'";
+                $query3 = "SELECT COALESCE(COUNT(v.transactNo), 0) AS visa_count, 
+                                  b.pax AS pax 
+                            FROM booking b
+                            LEFT JOIN visarequirements v ON v.transactNo = b.transactNo 
+                            WHERE b.transactNo = '$transactionNumber'";
 
-              $result2 = $conn->query($query2);
-              $result3 = $conn->query($query3);
+                $result2 = $conn->query($query2);
+                $result3 = $conn->query($query3);
 
-              // Check if the query returned results
-              if ($result2 && $result2->num_rows > 0) {
-                // Fetch the result
-                $row2 = $result2->fetch_assoc();
-                $guest_count = $row2['guest_count'];
-                $pax2 = $row2['pax'];
-              }
+                if ($result2 && $result2->num_rows > 0) {
+                  $row2 = $result2->fetch_assoc();
+                  $guest_count = $row2['guest_count'];
+                  $pax2 = $row2['pax'];
+                  $infantPax = $row2['infantPax'];
 
-              if ($result3 && $result3->num_rows > 0) {
-                // Fetch the result
-                $row3 = $result3->fetch_assoc();
-                $visa_count = $row3['visa_count'];
-                $pax3 = $row3['pax'];
-              }
+                  // Adjust expected guest total if infants are also saved in guest table
+                  $expected_total = $pax2 + $infantPax;
+                  $disable_button = ($guest_count >= $expected_total) ? 'disabled' : '';
+                }
 
-              // Determine whether to disable the button
-              $disable_button = ($guest_count >= $pax2) ? 'disabled' : ''; // Disable if guest_count >= pax
-              $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : ''; // Disable if guest_count >= pax
+                if ($result3 && $result3->num_rows > 0) {
+                  $row3 = $result3->fetch_assoc();
+                  $visa_count = $row3['visa_count'];
+                  $pax3 = $row3['pax'];
+                  $disable_button2 = ($visa_count >= $pax3) ? 'disabled' : '';
+                }
               ?>
 
               <!-- Add Guest Button -->
