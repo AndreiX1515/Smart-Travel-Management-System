@@ -546,9 +546,9 @@ require "../conn.php";
           // ✅ Tipping color
           let tippingStyle = '';
           if (guest.tip === 'In Korea') {
-            tippingStyle = 'background-color: #FFFF00;';
-          } else if (guest.tip === 'In Manila') {
             tippingStyle = 'background-color: #ADD8E6;';
+          } else if (guest.tip === 'In Manila') {
+            tippingStyle = 'background-color: #FFFF00;';
           }
 
           row.innerHTML = `
