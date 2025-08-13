@@ -714,6 +714,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         </div>
 
+        <hr>
+
         <div class="second-div">
 
           <div class="navTabs-wrapper">
@@ -722,8 +724,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
                   data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                  aria-selected="false">Flight Seat
-                  Tracker</button>
+                  aria-selected="false">Flight Seat Tracker</button>
               </li>
 
               <li class="nav-item" role="presentation">
@@ -733,7 +734,8 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               </li>
 
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" 
+                type="button" role="tab" aria-controls="pills-profile" aria-selected="false">F.I.T</button>
               </li>
             </ul>
           </div>
@@ -741,7 +743,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
           <div class="content-heading">
             <div class="tabs-sorting-wrapper">
               <div class="second-header-wrapper">
-
 
                 <div class="date-range-wrapper flightbooking-wrapper">
                   <div class="date-range-inputs-wrapper">
@@ -789,115 +790,138 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         </div>
 
+        <hr>
+
         <div class="tab-content" id="pills-tabContent">
 
           <!-- Flight Seat - Booking Tab -->
-          <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
-            tabindex="0">
+          <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
-            <!-- Flight Seat -->
-            <div class="one">
+            <ul class="nav nav-pills" id="airlines" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="cebuPac-tab" data-bs-toggle="pill"
+                  data-bs-target="#cebuPac-pane" type="button" role="tab" aria-controls="cebuPac-pane"
+                  aria-selected="true">Cebu Pacific</button>
+              </li>
 
-              <div class="table-wrapper confirm-table-container-flight">
-                <table id="info-table" class="info-table">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="airAsia-tab" data-bs-toggle="pill"
+                  data-bs-target="#airAsia-pane" type="button" role="tab" aria-controls="airAsia-pane"
+                  aria-selected="false">Air Asia</button>
+              </li>
+            </ul>
 
-                  <thead>
-                    <tr>
-                      <th rowspan="2">ORIGIN</th>
-                      <th colspan="2" class="text-center">FLIGHT DATE</th>
-                      <th rowspan="2">AVAILABLE SEATS</th>
-                      <th rowspan="2">ADDITIONAL SEATS</th>
-                      <th rowspan="2">PRICE</th>
-                      <th rowspan="2"></th>
-                    </tr>
+            <hr>
 
-                    <tr style="top: -8px">
-                      <th>START</th>
-                      <th>END</th>
-                    </tr>
-                  </thead>
+            <div class="tab-content">
+              <!-- Cebu Pacific -->
+              <div class="tab-pane fade show active" id="cebuPac-pane" role="tabpanel" aria-labelledby="cebuPac-tab">
+                <!-- Flight Seat -->
+                <div class="one">
+                  <div class="table-wrapper confirm-table-container-flight">
+                    <table id="info-table" class="info-table">
+                      <thead>
+                        <tr>
+                          <th rowspan="2">ORIGIN</th>
+                          <th colspan="2" class="text-center">FLIGHT DATE</th>
+                          <th rowspan="2">AVAILABLE SEATS</th>
+                          <th rowspan="2">ADDITIONAL SEATS</th>
+                          <th rowspan="2">PRICE</th>
+                          <th rowspan="2"></th>
+                        </tr>
+                        <tr style="top: -8px">
+                          <th>START</th>
+                          <th>END</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <?php
+                          $sql = "SELECT branchName, branchAgentCode FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
+                          $result = $conn->query($sql);
 
-                  <tbody>
-                    <?php
-                      $sql = "SELECT branchName, branchAgentCode FROM branch WHERE branchAgentCode IS NOT NULL AND branchAgentCode != ''";
-                      $result = $conn->query($sql);
+                          $agentColumns = '';
+                          while ($row = $result->fetch_assoc()) {
+                            $agentCode = $row['branchAgentCode'];
+                            $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
+                                      AND (b.status = 'Confirmed' OR b.status = 'Reserved')
+                                      AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode') 
+                                      AND (a.agentType = 'Retailer' OR c.clientType = 'Retailer')
+                                      THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`,
+                  
+                                  IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
+                                      AND (b.status = 'Confirmed' OR b.status = 'Reserved')
+                                      AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode')
+                                      AND (a.agentType = 'Wholeseller' OR c.clientType = 'Wholeseller')
+                                      THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
+                          }
 
-                      $agentColumns = '';
-                      while ($row = $result->fetch_assoc()) {
-                        $agentCode = $row['branchAgentCode'];
-                        $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
-                                  AND (b.status = 'Confirmed' OR b.status = 'Reserved')
-                                  AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode') 
-                                  AND (a.agentType = 'Retailer' OR c.clientType = 'Retailer')
-                                  THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`,
-              
-                              IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
-                                  AND (b.status = 'Confirmed' OR b.status = 'Reserved')
-                                  AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode')
-                                  AND (a.agentType = 'Wholeseller' OR c.clientType = 'Wholeseller')
-                                  THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_LO`, ";
-                      }
+                          $agentColumns = rtrim($agentColumns, ', ');
 
-                      $agentColumns = rtrim($agentColumns, ', ');
+                          $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
+                                  CONCAT(e.lName, ', ', e.fName, 
+                                      IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
+                                  f.availSeats AS FlightSeat, 
+                                  GREATEST(f.availSeats - IFNULL(SUM(CASE 
+                                      WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                      AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
+                                  IF((f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                      AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
+                                      ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
+                                          AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
+                                  f.flightPrice AS RetailPrice, 
+                                  $agentColumns
+                                  FROM employee e
+                                  RIGHT JOIN flight f ON f.employeeId = e.employeeId
+                                  LEFT JOIN booking b ON b.flightId = f.flightId
+                                  LEFT JOIN package p ON f.packageId = p.packageId
+                                  LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                  LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
+                                  WHERE f.flightDepartureDate >= CURDATE()
+                                  GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
+                                      f.wholesalePrice, f.flightPrice, p.packagePrice, f.landPrice
+                                  ORDER BY f.flightDepartureDate";
 
-                      $sql = "SELECT f.flightId, f.is_active, f.origin, f.flightDepartureDate AS Start, f.returnDepartureDate AS End,
-                              CONCAT(e.lName, ', ', e.fName, 
-                                  IF(e.mName IS NOT NULL AND e.mName != '', CONCAT(' ', LEFT(e.mName, 1)), '')) AS TeamOP,
-                              f.availSeats AS FlightSeat, 
-                              GREATEST(f.availSeats - IFNULL(SUM(CASE 
-                                  WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                  AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0), 0) AS AvailSeats, 
-                              IF((f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                  AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)) < 0, 
-                                  ABS(f.availSeats - IFNULL(SUM(CASE WHEN (b.status = 'Confirmed' OR b.status = 'Reserved') 
-                                      AND b.bookingType = 'Package' THEN b.pax ELSE 0 END), 0)), 0) AS AdditionalSeats,
-                              f.flightPrice AS RetailPrice, 
-                              $agentColumns
-                              FROM employee e
-                              RIGHT JOIN flight f ON f.employeeId = e.employeeId
-                              LEFT JOIN booking b ON b.flightId = f.flightId
-                              LEFT JOIN package p ON f.packageId = p.packageId
-                              LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                              LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
-                              WHERE f.flightDepartureDate >= CURDATE()
-                              GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
-                                  f.wholesalePrice, f.flightPrice, p.packagePrice, f.landPrice
-                              ORDER BY f.flightDepartureDate";
+                          $result = $conn->query($sql);
 
-                      $result = $conn->query($sql);
+                          if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
 
-                      if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
+                              $formattedStartDate = date('Y.m.d', strtotime($row['Start']));
+                              $formattedEndDate = date('Y.m.d', strtotime($row['End']));
+                              echo '<tr>';
+                              echo '<td>' . $row['origin'] . '</td>';
+                              echo '<td>' . $formattedStartDate . '</td>';
+                              echo '<td>' . $formattedEndDate . '</td>';
+                              echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
+                              echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
+                              echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
+                              echo '<td>
+                                    <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn-bookNow">Book Now</a></td>';
+                              echo '</tr>';
+                            }
+                          } else {
+                            echo "<tr><td colspan='7' class='text-center'>No records found</td></tr>";
+                          }
+                        ?>
+                      </tbody>
+                    </table>
+                  </div>
 
-                          $formattedStartDate = date('Y.m.d', strtotime($row['Start']));
-                          $formattedEndDate = date('Y.m.d', strtotime($row['End']));
-                          echo '<tr>';
-                          echo '<td>' . $row['origin'] . '</td>';
-                          echo '<td>' . $formattedStartDate . '</td>';
-                          echo '<td>' . $formattedEndDate . '</td>';
-                          echo '<td class="fw-bold">' . $row['AvailSeats'] . '</td>';
-                          echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
-                          echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
-                          echo '<td>
-                                <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn-bookNow">Book Now</a></td>';
-                          echo '</tr>';
-                        }
-                      } else {
-                        echo "<tr><td colspan='7' class='text-center'>No records found</td></tr>";
-                      }
-                    ?>
-                  </tbody>
-                </table>
+                  <!-- <div class="flight-seat-footer">
+                    <div class="pagination-controls">
+                      <button id="prevPage" class="pagination-btn">Previous</button>
+                      <div id="pageNumbers" class="page-numbers"></div>
+                      <button id="nextPage" class="pagination-btn">Next</button>
+                    </div>
+                  </div> -->
+
+                </div>
               </div>
 
-              <!-- <div class="flight-seat-footer">
-                <div class="pagination-controls">
-                  <button id="prevPage" class="pagination-btn">Previous</button>
-                  <div id="pageNumbers" class="page-numbers"></div>
-                  <button id="nextPage" class="pagination-btn">Next</button>
-                </div>
-              </div> -->
-
+              <!-- Air Asia -->
+              <div class="tab-pane fade" id="airAsia-pane" role="tabpanel" aria-labelledby="airAsia-tab">
+                Air Asia Flights
+              </div>
             </div>
 
           </div>
