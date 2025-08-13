@@ -546,7 +546,7 @@ error_reporting(E_ALL);
       
       <hr>
       
-      <!-- Flight Seat Tracker Tab -->
+      <!-- Tabs -->
       <div class="tab-content" id="pills-tabContent">
 
         <!-- Flight Seat Tracker Tab -->
@@ -555,14 +555,14 @@ error_reporting(E_ALL);
 
           <ul class="nav nav-pills" id="airlines" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="manila-tab" data-bs-toggle="pill"
-                data-bs-target="#manila-pane" type="button" role="tab" aria-controls="manila-pane"
+              <button class="nav-link active" id="cebuPac-tab" data-bs-toggle="pill"
+                data-bs-target="#cebuPac-pane" type="button" role="tab" aria-controls="cebuPac-pane"
                 aria-selected="true">Cebu Pacific</button>
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="cebu-tab" data-bs-toggle="pill"
-                data-bs-target="#cebu-pane" type="button" role="tab" aria-controls="cebu-pane"
+              <button class="nav-link" id="airAsia-tab" data-bs-toggle="pill"
+                data-bs-target="#airAsia-pane" type="button" role="tab" aria-controls="airAsia-pane"
                 aria-selected="false">Air Asia</button>
             </li>
           </ul>
@@ -571,7 +571,7 @@ error_reporting(E_ALL);
 
           <div class="tab-content">
             <!-- Cebu Pacific -->
-            <div class="tab-pane fade show active" id="manila-pane" role="tabpanel" aria-labelledby="manila-tab">
+            <div class="tab-pane fade show active" id="cebuPac-pane" role="tabpanel" aria-labelledby="cebuPac-tab">
               <div class="info-table-wrapper">
                 <!-- Flight Seat Tracker Table -->
                 <div class="table-wrapper info-table-container">
@@ -787,7 +787,7 @@ error_reporting(E_ALL);
             </div>
 
             <!-- Air Asia -->
-            <div class="tab-pane fade" id="cebu-pane" role="tabpanel" aria-labelledby="cebu-tab">
+            <div class="tab-pane fade" id="airAsia-pane" role="tabpanel" aria-labelledby="airAsia-tab">
               Air Asia Flights
             </div>
           </div>
