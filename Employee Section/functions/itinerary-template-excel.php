@@ -18,6 +18,7 @@ use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 
+
 // Ensure POST request contains itinerary and days details
 if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
     $itineraryDetails = json_decode($_POST['itineraryDetails'], true);
@@ -540,6 +541,7 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         if ($format === 'pdf') {
             // === PDF-Specific Configuration === //
             
+            
             // Configure PDF page setup before generation
             $sheet->getPageSetup()->setPaperSize(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::PAPERSIZE_A4);
             $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_PORTRAIT);
@@ -602,40 +604,27 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
                 ->setSize(8);
             
 
-            // === SOLUTION 5: Cell-by-cell with forced removal === //
-            $allCellsInRanges = [];
+            $sheet->getStyle('B21:B54')->applyFromArray([
+                'borders' => [
+                    'allBorders' => ['borderStyle' => Border::BORDER_NONE],
+                    'insideHorizontal' => ['borderStyle' => Border::BORDER_NONE],
+                    'insideVertical' => ['borderStyle' => Border::BORDER_NONE],
+                ]
+            ]);
 
-            // Generate all cells in ranges
-            foreach (['B21:B27', 'B30:B36', 'B39:B45', 'B48:B54'] as $range) {
-                $parts = explode(':', $range);
-                $startRow = (int)filter_var($parts[0], FILTER_SANITIZE_NUMBER_INT);
-                $endRow = (int)filter_var($parts[1], FILTER_SANITIZE_NUMBER_INT);
-                
-                for ($row = $startRow; $row <= $endRow; $row++) {
-                    $allCellsInRanges[] = 'B' . $row;
-                }
-            }
+            $sheet->setShowGridlines(false);
 
-            // Force remove all borders from each cell
-            foreach ($allCellsInRanges as $cell) {
-                // Multiple methods to ensure removal
-                $cellStyle = $sheet->getStyle($cell);
-                
-                $cellStyle->getBorders()->getTop()->setBorderStyle(Border::BORDER_NONE);
-                $cellStyle->getBorders()->getBottom()->setBorderStyle(Border::BORDER_NONE);
-                $cellStyle->getBorders()->getLeft()->setBorderStyle(Border::BORDER_NONE);
-                $cellStyle->getBorders()->getRight()->setBorderStyle(Border::BORDER_NONE);
-                
-                // Also try with applyFromArray
-                $cellStyle->applyFromArray([
-                    'borders' => [
-                        'top' => ['borderStyle' => Border::BORDER_NONE],
-                        'bottom' => ['borderStyle' => Border::BORDER_NONE],
-                        'left' => ['borderStyle' => Border::BORDER_NONE],
-                        'right' => ['borderStyle' => Border::BORDER_NONE]
-                    ]
-                ]);
-            }
+
+
+
+
+
+            // // Target specific problem cells
+            // $problemCells = ['B27', 'B36', 'B45', 'B54'];
+            // foreach ($problemCells as $cell) {
+            //     $sheet->getStyle($cell)->getBorders()->getBottom()
+            //         ->setBorderStyle(Border::BORDER_NONE);
+            // }
 
 
 

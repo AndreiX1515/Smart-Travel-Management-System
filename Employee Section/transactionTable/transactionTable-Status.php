@@ -1,23 +1,22 @@
 <?php
-$statusTab = isset($_GET['status']) && $_GET['status'] !== ''
-  ? $_GET['status']
-  : 'all';
+$statusTab = isset($_GET['status']) && $_GET['status'] !== '' ? $_GET['status'] : 'all';
 $showAll = isset($_GET['showAll']) && $_GET['showAll'] == '1';
 $dateFilter = $showAll ? '' : "f.flightDepartureDate > CURDATE()";
 
 // Build status WHERE condition only when not 'All'
 $whereStatus = '';
-if ($statusTab !== 'All') {
+
+if ($statusTab !== 'all') {
   $statusEsc = mysqli_real_escape_string($conn, $statusTab);
   $whereStatus = " AND b.status = '{$statusEsc}'";
 }
 
-// Example: main query that feeds the table (use $whereStatus)
-$sql = "SELECT b.*, f.* 
-        FROM booking b 
-        JOIN flight f ON f.flightId = b.flightId
-        WHERE 1 {$whereStatus} " . ($dateFilter ? "AND $dateFilter" : "");
-$result = mysqli_query($conn, $sql);
+// // Example: main query that feeds the table (use $whereStatus)
+// $sql = "SELECT b.*, f.* 
+//         FROM booking b 
+//         JOIN flight f ON f.flightId = b.flightId
+//         WHERE 1 {$whereStatus} " . ($dateFilter ? "AND $dateFilter" : "");
+// $result = mysqli_query($conn, $sql);
 ?>
 
 
@@ -58,16 +57,27 @@ $result = mysqli_query($conn, $sql);
 
       <!-- Show All Transaction Toggle -->
       <div class="sorting-wrapper aligned-item">
-        <label style="opacity: 0;">Clear</label>
-        <form method="GET">
+        <form id="showAllForm">
+          <label style="opacity: 0;">Clear</label>
           <label class="toggle-switch">
-            <input type="checkbox" id="showAll" name="showAll" value="1" <?= isset($_GET['showAll']) ? 'checked' : '' ?>
-              onchange="this.form.submit()">
+            <input type="checkbox" id="showAllToggle">
             <span class="slider"></span>
           </label>
-          <label for="showAll">Show All Transactions</label>
+          <label for="showAllToggle">Show From Today Onwards</label>
+          <input type="hidden" name="showAll" id="showAllInput">
         </form>
       </div>
+
+      <!-- <script>
+        document.getElementById('showAllToggle').addEventListener('change', function() {
+          const val = this.checked ? '1' : '0';
+          document.getElementById('showAllInput').value = val;
+          console.log("showAll value:", val);
+          // document.getElementById('showAllForm').submit();
+        });
+      </script> -->
+
+
 
       <!-- Clear Button -->
       <div class="aligned-item">
@@ -82,103 +92,78 @@ $result = mysqli_query($conn, $sql);
   </div>
 
   <div class="navpills-container">
+
     <ul class="nav nav-pills nav-underline" id="booking-filter-tabs" role="tablist">
+
       <!-- All -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if (empty($statusTab) || strtolower($statusTab) == 'all')
-          echo 'active'; ?>"
-          data-filter="all" type="button">
+        <button class="nav-link filter-btn <?php if ($statusTab == 'all' || !$statusTab)
+          echo 'active'; ?>" id="status-all-filter" data-filter="all" data-bs-toggle="pill" type="button" role="tab"
+          aria-controls="all-tab"
+          aria-selected="<?php echo ($statusTab == 'all' || !$statusTab) ? 'true' : 'false'; ?>">
           All <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                    FROM booking b 
-                    JOIN flight f ON f.flightId = b.flightId 
-                    WHERE 1 " . ($dateFilter ? "AND $dateFilter" : "");
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
+            
           </span>
         </button>
+
       </li>
 
       <!-- Pending -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($statusTab == 'Pending')
-          echo 'active'; ?>" data-filter="Pending" type="button">
+        <button class="nav-link filter-btn <?php if ($statusTab == 'Pending')
+          echo 'active'; ?>" id="status-pending-filter" data-filter="Pending" data-bs-toggle="pill" type="button"
+          role="tab" aria-controls="pending-tab"
+          aria-selected="<?php echo ($statusTab == 'Pending') ? 'true' : 'false'; ?>">
           Pending <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                    FROM booking b 
-                    JOIN flight f ON f.flightId = b.flightId 
-                    WHERE b.status = 'Pending' " . ($dateFilter ? "AND $dateFilter" : "");
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
+            
           </span>
         </button>
       </li>
 
       <!-- Reserved -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($statusTab == 'Reserved')
-          echo 'active'; ?>" data-filter="Reserved"
-          type="button">
+        <button class="nav-link filter-btn <?php if ($statusTab == 'Reserved')
+          echo 'active'; ?>" id="status-reserved-filter" data-filter="Reserved" data-bs-toggle="pill" type="button"
+          role="tab" aria-controls="reserved-tab"
+          aria-selected="<?php echo ($statusTab == 'Reserved') ? 'true' : 'false'; ?>">
           Reserved <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                    FROM booking b 
-                    JOIN flight f ON f.flightId = b.flightId 
-                    WHERE b.status = 'Reserved' " . ($dateFilter ? "AND $dateFilter" : "");
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
+            
           </span>
         </button>
       </li>
 
       <!-- Confirmed -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($statusTab == 'Confirmed')
-          echo 'active'; ?>" data-filter="Confirmed"
-          type="button">
+        <button class="nav-link filter-btn <?php if ($statusTab == 'Confirmed')
+          echo 'active'; ?>" id="status-confirmed-filter" data-filter="Confirmed" data-bs-toggle="pill" type="button"
+          role="tab" aria-controls="confirmed-tab"
+          aria-selected="<?php echo ($statusTab == 'Confirmed') ? 'true' : 'false'; ?>">
           Confirmed <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                    FROM booking b 
-                    JOIN flight f ON f.flightId = b.flightId 
-                    WHERE b.status = 'Confirmed' " . ($dateFilter ? "AND $dateFilter" : "");
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
+           
           </span>
         </button>
       </li>
 
       <!-- Cancelled -->
       <li class="nav-item" role="presentation">
-        <button class="nav-link <?php if ($statusTab == 'Cancelled')
-          echo 'active'; ?>" data-filter="Cancelled"
-          type="button">
+        <button class="nav-link filter-btn <?php if ($statusTab == 'Cancelled')
+          echo 'active'; ?>" id="status-cancelled-filter" data-filter="Cancelled" data-bs-toggle="pill" type="button"
+          role="tab" aria-controls="cancelled-tab"
+          aria-selected="<?php echo ($statusTab == 'Cancelled') ? 'true' : 'false'; ?>">
           Cancelled <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                    FROM booking b 
-                    JOIN flight f ON f.flightId = b.flightId 
-                    WHERE b.status = 'Cancelled' " . ($dateFilter ? "AND $dateFilter" : "");
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
+            
           </span>
         </button>
       </li>
+
     </ul>
+
   </div>
 
 
   <div class="body-content-wrapper">
-
     <div class="table-wrapper">
-      <table id="product-table" class="table-clean">
+      <table id="bookingTable" class="table-clean">
         <thead>
           <tr>
             <th>TRANSACTION NO.</th>
@@ -194,105 +179,8 @@ $result = mysqli_query($conn, $sql);
           </tr>
         </thead>
 
-        <tbody>
-          <?php
-          // Ensure $conn is properly initialized
-          if (!isset($conn)) {
-            die("Database connection error.");
-          }
+        <tbody id="statusTableBody">
 
-          $whereClauses = [];
-          
-          if ($dateFilter)
-            $whereClauses[] = $dateFilter;
-
-          $where = count($whereClauses) ? 'WHERE ' . implode(' AND ', $whereClauses) : '';
-
-          $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
-                      b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
-                      p.packageName AS PackageName, b.bookingDate, b.pax AS TotalPax,  
-                      b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
-                      CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
-                      COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
-                      CASE 
-                      WHEN a.accountId IS NOT NULL 
-                          THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
-                      WHEN cl.accountId IS NOT NULL 
-                          THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
-                      ELSE 'Unknown'END AS `ACCOUNT NAME`
-                    FROM booking b
-                    JOIN branch br ON b.agentCode = br.branchAgentCode
-                    JOIN flight f ON f.flightId = b.flightId
-                    JOIN package p ON p.packageId = b.packageId
-                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                    LEFT JOIN company c ON a.companyId = c.companyId
-                    LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-                    LEFT JOIN company cc ON cl.companyId = cc.companyId
-                    LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                    LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                    $where
-                    GROUP BY 
-                        b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
-                        p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
-                    ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
-
-          // Execute the query
-          $result = $conn->query($sql);
-
-          // Check if there are results
-          if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-              // Safely handle null values
-              $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-              $agentName = htmlspecialchars($row['agentName'] ?? '');
-              $packageName = htmlspecialchars($row['PackageName'] ?? '');
-              $departureDate = $row['departureDate'] ?? null;
-              $returnDate = $row['returnDate'] ?? null;
-              $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-              $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-              $packagePrice = $row['PackagePrice'] ?? 0;
-              $requestTotal = $row['TotalRequestAmount'] ?? 0;
-              $amountPaid = $row['TotalAmountPaid'] ?? 0;
-              $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
-              $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
-
-              // Determine the status class
-              $statusClass = match ($status) {
-                "Pending" => "bg-warning text-dark",
-                "Confirmed" => "bg-success text-white",
-                "Cancelled" => "bg-danger text-white",
-                "Reject" => "bg-secondary text-white",
-                default => "bg-secondary text-white",
-              };
-
-              // Format dates
-              // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-              $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
-              $formattedBookingDate = date('m.d.Y', strtotime($row['bookingDate']));
-
-              // Securely encode URL
-              $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
-
-              // Output each row as a table row
-              echo "<tr data-url='$transactionUrl'>";
-              echo "<td>$transactNo</td>";
-              echo "<td>" . htmlspecialchars($row['branchName'] ?? '') . "</td>";
-              echo "<td>$departureDate</td>";
-              echo "<td class='fw-bold ps-3'>$totalPax</td>";
-              echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-              echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
-              echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
-              echo "<td>₱ " . number_format($balance, 2) . "</td>";
-              echo "<td>" . $formattedBookingDate . "</td>";
-              echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-              echo "</tr>";
-            }
-          } else {
-            echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
-          }
-
-          echo "<!-- DEBUG: Total rows = " . ($result->num_rows ?? 0) . " -->";
-          ?>
         </tbody>
 
       </table>
@@ -312,90 +200,230 @@ $result = mysqli_query($conn, $sql);
     </div>
 
   </div>
+
 </div>
 
 
-<!-- For Button Tabs Status Sorting -->
+
+<!-- Navpills Active State Change -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('#booking-filter-tabs .filter-btn');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active from all
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        // Add active to clicked
+        button.classList.add('active');
+
+        // TODO: Add your filtering logic here
+        // For example: filter your DataTable or fetch filtered data
+      });
+    });
+  });
+</script>
+
+<!-- Tabs Based Status Filter Script -->
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    const statusTabBtn = document.getElementById('pills-profile-tab'); // Tab trigger
+    const statusTabBtn = document.getElementById('pills-profile-tab'); // Bootstrap tab trigger button
     const statusTabPane = document.getElementById('pills-profile');    // Tab content
 
     if (!statusTabBtn || !statusTabPane) return;
 
+    const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
+    const tableSelector = '#bookingTable'; // Change if your table ID is different
+    const statusColIndex = 9;
+
+    function filterTableByStatus(filterValue) {
+      if ($.fn.DataTable.isDataTable(tableSelector)) {
+        let searchTerm = filterValue && filterValue.toLowerCase() !== 'all' ? filterValue : '';
+        $(tableSelector).DataTable()
+          .column(statusColIndex)
+          .search(searchTerm, true, false)
+          .draw();
+      }
+    }
+
     function initStatusFilter() {
+      // Read status from PHP or default to 'all'
       const status = "<?php echo isset($_GET['status']) ? $_GET['status'] : 'all'; ?>";
+
       console.log("Status from URL:", status);
 
-      const buttons = document.querySelectorAll("#booking-filter-tabs .filter-btn");
-
-      // Reset classes
+      // Remove all active classes
       buttons.forEach(btn => btn.classList.remove("active"));
 
-      // Find and activate matching button
+      // Find button matching status (case-insensitive)
       const matchedButton = Array.from(buttons).find(btn =>
-        btn.getAttribute("data-filter") === status
+        btn.getAttribute("data-filter").toLowerCase() === status.toLowerCase()
       );
 
       if (matchedButton) {
         matchedButton.classList.add("active");
-        console.log("Activating button:", matchedButton.innerText);
-        setTimeout(() => matchedButton.click(), 10);
+        filterTableByStatus(matchedButton.getAttribute("data-filter"));
       } else {
-        const defaultButton = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='']");
-        if (defaultButton) {
-          defaultButton.classList.add("active");
-          console.log("Activating default button: All");
-          setTimeout(() => defaultButton.click(), 100);
+
+        // Fallback to 'all'
+        const defaultBtn = document.querySelector("#booking-filter-tabs .filter-btn[data-filter='all']");
+        if (defaultBtn) {
+          defaultBtn.classList.add("active");
+          filterTableByStatus(defaultBtn.getAttribute("data-filter"));
         }
       }
 
-      // Rebind click events to avoid duplication
-      buttons.forEach(button => {
-        button.removeEventListener("click", handleClick);
-        button.addEventListener("click", handleClick);
-      });
+    }
 
-      function handleClick() {
+    // Add click listeners once
+    buttons.forEach(button => {
+      button.addEventListener("click", function () {
         buttons.forEach(btn => btn.classList.remove("active"));
         this.classList.add("active");
 
         const filterValue = this.getAttribute("data-filter");
-
-        if ($.fn.DataTable.isDataTable("#product-table")) {
-          console.log(filterValue);
-
-          $('#product-table').DataTable()
-            .column(9) // STATUS column
-            .search(filterValue || '', true, false)
-            .draw();
-        }
-      }
-    }
-
-    // Bind tab show event correctly
-    statusTabBtn.addEventListener('shown.bs.tab', function () {
-      initStatusFilter();
+        filterTableByStatus(filterValue);
+      });
     });
 
-    // Initialize if already active
+    // Run initStatusFilter when tab is shown
+    statusTabBtn.addEventListener('shown.bs.tab', initStatusFilter);
+
+    // Also initialize if tab content already active on page load
     if (statusTabPane.classList.contains('active')) {
       initStatusFilter();
     }
   });
 </script>
 
-<!-- DataTables #product-table -->
-<script>
-  $(document).ready(function () {
 
-    // Destroy old DataTable if exists
-    if ($.fn.DataTable.isDataTable('#product-table')) {
-      $('#product-table').DataTable().destroy();
+
+<!-- Table Data Generation -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    loadBookings();
+  });
+
+  let tableProduct = null;
+
+  function loadBookings() {
+    fetch("../Employee Section/functions/fetchScripts/tableFetch/fetchTransactionTable.php")
+      .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
+      .then(data => {
+        const tbody = document.querySelector("#bookingTable tbody");
+        tbody.innerHTML = ""; // Clear table rows
+
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="10">No available bookings</td></tr>`;
+        }
+
+        else {
+          data.forEach(row => {
+            // Determine the status class based on row.status (case-insensitive)
+            let statusClass = 'bg-secondary text-white'; // default
+            switch (row.status.toLowerCase()) {
+              case 'pending':
+                statusClass = 'bg-warning text-dark';
+                break;
+              case 'confirmed':
+                statusClass = 'bg-success text-white';
+                break;
+              case 'cancelled':
+                statusClass = 'bg-danger text-white';
+                break;
+              case 'reject':
+                statusClass = 'bg-secondary text-white';
+                break;
+            }
+
+            // Format bookingDate to mm.dd.yyyy if not already formatted
+            let formattedBookingDate = row.bookingDate;
+
+            try {
+              const dateObj = new Date(row.bookingDate);
+              if (!isNaN(dateObj)) {
+                formattedBookingDate = dateObj.toLocaleDateString('en-US', {
+                  month: '2-digit',
+                  day: '2-digit',
+                  year: 'numeric'
+                }).replace(/\//g, '.');
+              }
+            } catch {
+              // fallback keep original
+            }
+
+            // Create URL with safe encoding
+            const transactionUrl = `emp-transactionInfo.php?id=${encodeURIComponent(row.transactNo)}`;
+
+            tbody.innerHTML += `
+                        <tr data-url="${transactionUrl}" style="cursor:pointer;">
+                            <td>${row.transactNo}</td>
+                            <td>${row.branchName || ''}</td>
+                            <td>${row.departureDate || ''}</td>
+                            <td class="fw-bold ps-3">${row.totalPax || ''}</td>
+                            <td>₱ ${row.packagePrice || '0.00'}</td>
+                            <td>₱ ${row.requestTotal || '0.00'}</td>
+                            <td>₱ ${row.amountPaid || '0.00'}</td>
+                            <td>₱ ${row.balance || '0.00'}</td>
+                            <td>${formattedBookingDate}</td>
+                            <td><span class="badge rounded-pill ${statusClass} p-2">${row.status}</span></td>
+                        </tr>
+                    `;
+
+          });
+        }
+
+
+        initDataTable();
+
+        // Transaction Id Based Redirect
+        bindRowClickEvents();
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  }
+
+  // Function: With Transaction Id Page Redirect
+  function bindRowClickEvents() {
+    document.querySelectorAll("tr[data-url]").forEach(row => {
+      row.addEventListener("click", () => {
+        const transactionUrl = row.getAttribute("data-url");
+        const transactionNumber = transactionUrl.split('=')[1];
+
+        console.log("Transaction Number:", transactionNumber);
+
+        // Using jQuery AJAX to set session then redirect
+        $.ajax({
+          url: '../Agent Section/functions/fetchTransactNo.php',
+          type: 'POST',
+          data: { transaction_number: transactionNumber },
+          success: function (response) {
+            console.log("Response:", response);
+            window.location.href = transactionUrl;
+          },
+          error: function (xhr, status, error) {
+            console.error("AJAX Error:", status, error);
+          }
+        });
+      });
+    });
+  }
+
+
+
+  function initDataTable() {
+    // Destroy existing DataTable if exists
+    if ($.fn.DataTable.isDataTable('#bookingTable')) {
+      $('#bookingTable').DataTable().destroy();
     }
 
-    // Init DataTable
-    const tableProduct = $('#product-table').DataTable({
+
+    // Initialize DataTable
+    tableProduct = $('#bookingTable').DataTable({
       dom: 'rtip',
       language: { emptyTable: "No Transaction Records Available" },
       order: [[2, 'asc']],
@@ -403,30 +431,35 @@ $result = mysqli_query($conn, $sql);
       paging: true,
       pageLength: 13,
       autoWidth: false,
+      responsive: true,
       columnDefs: [
-        { targets: [1, 3, 4, 5, 6, 7], orderable: false }
-      ]
+        { targets: [1, 3, 4, 5, 6, 7], orderable: false },
+        { targets: 0, width: '10%' },
+        { targets: 1, width: '12%' },
+        { targets: 2, width: '8%' },
+        { targets: 3, width: '6%' },
+        { targets: 4, width: '11%' },
+        { targets: 5, width: '11%' },
+        { targets: 6, width: '11%' },
+        { targets: 7, width: '11%' },
+        { targets: 8, width: '11%' },
+        { targets: 9, width: '11%' },
+      ],
+      drawCallback: function () {
+        $('#bookingTable tbody tr').css('height', '36px');
+      }
     });
 
-    // Adjust column widths after init
-    setTimeout(() => { tableProduct.columns.adjust().draw(); }, 100);
-
+    // Apply status filter from URL param
     const statusColIndex = 9;
-
-    // Get status from URL or default to "all"
     const urlParams = new URLSearchParams(window.location.search);
     let initialFilter = urlParams.get('status') || 'all';
 
-    // Apply initial table filter
     if (initialFilter.toLowerCase() !== 'all') {
       tableProduct.column(statusColIndex).search('^' + initialFilter + '$', true, false).draw();
     } else {
       tableProduct.column(statusColIndex).search('').draw();
     }
-
-    // Set active tab visually
-    $('.navpills-container .nav-link').removeClass('active')
-      .filter(`[data-filter="${initialFilter}"]`).addClass('active');
 
     // === Pagination Info Update
     function updatePagination() {
@@ -448,56 +481,224 @@ $result = mysqli_query($conn, $sql);
       tableProduct.search(this.value).draw();
     });
 
-    // Clear filters
-    $('#clearSorting').on('click', function () {
-        // Clear other filters
-        $('#search').val('');
-        tableProduct.search('').draw();
-        $('#branch').val('').trigger('change');
-        $('#status').val('').trigger('change');
-        tableProduct.order([[2, 'asc']]).columns().search('').draw();
-
-        // Reset toggle (uncheck)
-        $('#showAll').prop('checked', false);
-
-        // Remove "showAll" from URL
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.delete('showAll');
-        history.replaceState(null, '', newUrl.toString());
-
-
-        // OPTIONAL: If you need to re-fetch default table data via AJAX without reload
-        // tableProduct.ajax.url('your-default-data-url.php').load();
-    });
-
-
     // Packages dropdown filter
     $('#branch').on('change', function () {
       tableProduct.column(1).search($(this).val() || '').draw();
     });
 
-    // === Nav pills click handler
-    $('.navpills-container .nav-link').on('click', function () {
-        const status = $(this).data('filter') || 'all';
+    // Trigger filtering based on toggle change - Fixed: use showAllToggle
+    $('#showAllToggle').on('change', function () {
+      tableProduct.draw();
 
-        // Only change active state if the clicked tab isn't already active
-        if (!$(this).hasClass('active')) {
-            $('.navpills-container .nav-link').removeClass('active');
-            $(this).addClass('active');
-        }
-
-        // Filter table
-        if (status.toLowerCase() === 'all') {
-            tableProduct.column(statusColIndex).search('').draw();
-            history.replaceState(null, '', window.location.pathname);
-        } else {
-            tableProduct.column(statusColIndex).search('^' + status + '$', true, false).draw();
-            const newUrl = new URL(window.location.href);
-            newUrl.searchParams.set('status', status);
-            history.replaceState(null, '', newUrl.toString());
-        }
+      // Update URL parameter
+      const newUrl = new URL(window.location.href);
+      if (this.checked) {
+        newUrl.searchParams.set('showAll', '1');
+      } else {
+        newUrl.searchParams.delete('showAll');
+      }
+      history.replaceState(null, '', newUrl.toString());
     });
 
 
-  });
+    // Custom search filter for flight date column based on toggle
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+      if (settings.nTable.id !== 'bookingTable') {
+        return true; // Only apply to #bookingTable
+      }
+
+      const showAll = $('#showAllToggle').prop('checked'); // toggle state
+
+      if (!showAll) {
+        return true; // If toggle unchecked, show all rows (no date filter)
+      }
+
+      const flightDateStr = data[2]; // Flight Date column (index 2)
+      if (!flightDateStr || flightDateStr.trim() === '') {
+        return false; // Hide empty dates when filtering
+      }
+
+      // Parse date assuming YYYY.MM.DD or adjust if different
+      // This example assumes flightDateStr is already in YYYY.MM.DD format
+      const today = new Date();
+      today.setHours(0,0,0,0);
+
+      // Convert flightDateStr to Date
+      const parts = flightDateStr.split('.');
+      if(parts.length !== 3) return false;
+      const flightDate = new Date(`${parts[0]}-${parts[1]}-${parts[2]}`);
+      if (isNaN(flightDate)) return false;
+
+      return flightDate >= today;
+    });
+
+
+    function updateStatusTabCountsFromServer() {
+      const showCurrentDate = $('#showAllToggle').prop('checked'); // true or false
+
+      console.log('Fetching counts with showCurrentDate:', showCurrentDate);
+
+      fetch('../Employee Section/functions/fetchScripts/tableFetch/getTransactionCounts-Status.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ showCurrentDate: showCurrentDate ? 1 : 0 }) // Send as 1 or 0
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Counts received:', data);
+
+        // Update badges if they exist
+        const badges = {
+          all: document.querySelector('#status-all-filter .badge'),
+          Pending: document.querySelector('#status-pending-filter .badge'),
+          Reserved: document.querySelector('#status-reserved-filter .badge'),
+          Confirmed: document.querySelector('#status-confirmed-filter .badge'),
+          Cancelled: document.querySelector('#status-cancelled-filter .badge')
+        };
+
+        for (const [key, badge] of Object.entries(badges)) {
+          if (badge) {
+            // Use fallback '0' if data missing
+            badge.textContent = data[key] !== undefined ? data[key] : '0';
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+      });
+    }
+
+
+    function initDataTable() {
+      if ($.fn.DataTable.isDataTable('#bookingTable')) {
+        $('#bookingTable').DataTable().destroy();
+      }
+
+      window.tableProduct = $('#bookingTable').DataTable({
+        dom: 'rtip',
+        language: { emptyTable: "No Transaction Records Available" },
+        order: [[2, 'asc']],
+        scrollX: false,
+        paging: true,
+        pageLength: 13,
+        autoWidth: false,
+        responsive: true,
+        columnDefs: [
+          { targets: [1, 3, 4, 5, 6, 7], orderable: false },
+          { targets: 0, width: '10%' },
+          { targets: 1, width: '12%' },
+          { targets: 2, width: '8%' },
+          { targets: 3, width: '6%' },
+          { targets: 4, width: '11%' },
+          { targets: 5, width: '11%' },
+          { targets: 6, width: '11%' },
+          { targets: 7, width: '11%' },
+          { targets: 8, width: '11%' },
+          { targets: 9, width: '11%' }
+        ],
+        drawCallback: function () {
+          $('#bookingTable tbody tr').css('height', '36px');
+        }
+      });
+
+      // Initial draw to apply the filter
+      tableProduct.draw();
+    }
+
+    $(document).ready(function() {
+      initDataTable();
+
+      // Listen for toggle change
+      $('#showAllToggle').on('change', function() {
+        const val = this.checked ? '1' : '0';
+        $('#showAllInput').val(val);
+        console.log('showAll value:', val);
+
+        if ($.fn.DataTable.isDataTable('#bookingTable')) {
+          $('#bookingTable').DataTable().draw(); // re-filter table rows
+        }
+
+        updateStatusTabCountsFromServer(); // update counts after toggle change
+      });
+
+      // Initial badge update on page load
+      updateStatusTabCountsFromServer();
+    });
+
+
+    // Clear filters
+    $('#clearSorting').on('click', function () {
+      // Clear filters and search
+      $('#search').val('');
+      tableProduct.search('').draw();
+      $('#branch').val('').trigger('change');
+      $('#status').val('').trigger('change');
+      tableProduct.order([[2, 'asc']]).columns().search('').draw();
+
+      // Reset toggle (uncheck)
+      $('#showAllToggle').prop('checked', false);
+
+      // Run the same function/logic as when toggling back
+      if (typeof handleShowAllToggle === 'function') {
+        handleShowAllToggle(false); // Pass false to mimic uncheck
+      } else {
+        $('#showAllToggle').trigger('change'); // Fallback if no separate function
+      }
+
+      // Remove "showAll" from URL
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete('showAll');
+      history.replaceState(null, '', newUrl.toString());
+    });
+
+
+
+
+    // Update active tab visually
+    $('.navpills-container .nav-link').removeClass('active')
+      .filter(`[data-filter="${initialFilter}"]`).addClass('active');
+    }
+
+
+
+
+  // // Call this function on page load to initialize counts
+  // document.addEventListener('DOMContentLoaded', function() {
+  //   console.log('DOM loaded, initializing counts...');
+  //   updateStatusTabCountsFromServer();
+  // });
+
+  // // Also call when window loads (backup)
+  // window.addEventListener('load', function() {
+  //   console.log('Window loaded, updating counts...');
+  //   setTimeout(() => {
+  //     updateStatusTabCountsFromServer();
+  //   }, 500);
+  // });
+
+  // Test function to manually check badge updates
+  // function testBadgeUpdate() {
+  //   const testData = {
+  //     all: 10,
+  //     Pending: 2,
+  //     Reserved: 3,
+  //     Confirmed: 4,
+  //     Cancelled: 1
+  //   };
+    
+  //   console.log('Testing badge updates with test data:', testData);
+    
+  //   document.querySelector('#status-all-filter .badge').textContent = testData.all;
+  //   document.querySelector('#status-pending-filter .badge').textContent = testData.Pending;
+  //   document.querySelector('#status-reserved-filter .badge').textContent = testData.Reserved;
+  //   document.querySelector('#status-confirmed-filter .badge').textContent = testData.Confirmed;
+  //   document.querySelector('#status-cancelled-filter .badge').textContent = testData.Cancelled;
+  // }
+
+  // Call this in browser console to test if badge updates work: testBadgeUpdate();
+    
+  
+
+
+
 </script>
