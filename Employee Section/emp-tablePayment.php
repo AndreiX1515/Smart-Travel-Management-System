@@ -17,7 +17,32 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <?php include '../Employee Section/includes/emp-navbar.php' ?>
+
+    <div class="navbar">
+      <div class="page-header-wrapper">
+
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Payment</h5>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
 
     <div class="main-content">
 

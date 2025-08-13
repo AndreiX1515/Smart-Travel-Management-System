@@ -8,8 +8,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Employee - Transactions</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-tableRequestPayment.css?v=<?php echo time(); ?>">
+
+  <!-- Page Layout CSS -->
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/page-layout-tabs.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+
+  <!-- Components CSS -->
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/table-clean.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/table-header.css?v=<?php echo time(); ?>">
+
+
+  <!-- Page Specific CSS -->
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-tableRequestPayment.css?v=<?php echo time(); ?>">
+
+
 
 <body>
 
@@ -20,90 +32,45 @@
 
     <div class="navbar">
       <div class="page-header-wrapper">
+
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
+
         <div class="page-header-content">
           <div class="page-header-text">
-            <h5 class="header-title">Dashboard</h5>
+            <h5 class="header-title">No Downpayment</h5>
           </div>
         </div>
 
       </div>
     </div>
 
+    <!-- Navbar Back Button Script -->
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
+
+
     <div class="main-content">
-      <div class="table-container">
 
-        <!-- <div class="table-subheader">
-          <div class="search-wrapper position-relative">
-            <input type="text" placeholder="Search..." class="form-control search-input"
-              oninput="toggleClearButton(this)" />
-            <button type="button" class="clear-button" onclick="clearInput(this)" style="display: none;">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
+      <div class="table-wrapper">
 
-          <div class="dropdowns d-flex align-items-center gap-3">
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="itemsPerPageDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Items per Page
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="itemsPerPageDropdown">
-                <li><a class="dropdown-item" href="#">5</a></li>
-                <li><a class="dropdown-item" href="#">10</a></li>
-                <li><a class="dropdown-item" href="#">50</a></li>
-                <li><a class="dropdown-item" href="#">100</a></li>
-              </ul>
-            </div>
+        <div class="table-header">
 
-           
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dateRangeDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Date Range
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dateRangeDropdown">
-                <li><a class="dropdown-item" href="#">Today</a></li>
-                <li><a class="dropdown-item" href="#">This Week</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">Custom Range</a></li>
-              </ul>
-            </div>
 
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filterDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Filter Options
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="filterDropdown">
-                <li><a class="dropdown-item" href="#">Status</a></li>
-                <li><a class="dropdown-item" href="#">Category</a></li>
-                <li><a class="dropdown-item" href="#">Priority</a></li>
-                <li><a class="dropdown-item" href="#">Custom Filter</a></li>
-              </ul>
-            </div>
+        </div>
 
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Export
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="exportDropdown">
-                <li><a class="dropdown-item" href="#">Export as CSV</a></li>
-                <li><a class="dropdown-item" href="#">Export as Excel</a></li>
-                <li><a class="dropdown-item" href="#">Export as PDF</a></li>
-              </ul>
-            </div>
+        <div class="table-container">
 
-            <div class="clear-button-wrapper">
-              <button class="btn btn-danger">
-                <i class="fa-solid fa-circle-xmark"></i>
-              </button>
-            </div>
-          </div>
-        </div> -->
+          <table class="table-clean">
 
-        <div class="table-wrapper">
-          <table class="table">
             <thead>
               <tr>
                 <th>Transact No</th>
@@ -115,6 +82,7 @@
                 <th>Status</th>
               </tr>
             </thead>
+
             <tbody>
               <?php
               $sql1 = "SELECT b.transactNo AS `T.N`, br.branchName as branchName,
@@ -169,19 +137,24 @@
                           </td>
                         </tr>";
                 }
+
               } else {
                 echo "<tr><td colspan='10'>No bookings found</td></tr>";
               }
               ?>
+
             </tbody>
           </table>
+
         </div>
 
       </div>
     </div>
+
   </div>
 
-  <?php include '../Employee Section/includes/emp-scripts.php' ?>            
+
+  <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
   <!-- Booking Status Modal-->
   <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel"
@@ -224,7 +197,6 @@
     </div>
   </div>
 
-
   <?php
   // Fetch the status from the session
   $statusMessage = isset($_SESSION['status']) ? $_SESSION['status'] : '';
@@ -238,8 +210,8 @@
   }
 
   // Debugging output (you can remove these in production)
-  echo 'Session ID: ' . session_id();  // Check if session ID is being generated
-  echo 'Session Status: ' . $_SESSION['status']; // Show session status for debugging
+  // echo 'Session ID: ' . session_id();  
+  // echo 'Session Status: ' . $_SESSION['status']; 
   
   // Display the session status message if available
   if (!empty($statusMessage)) {
@@ -313,6 +285,5 @@
     });
   </script>
 
-</body>
-
+  </body>
 </html>

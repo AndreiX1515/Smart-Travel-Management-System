@@ -1,9 +1,29 @@
+<?php
+$statusTab = isset($_GET['status']) && $_GET['status'] !== '' ? $_GET['status'] : 'all';
+$showAll = isset($_GET['showAll']) && $_GET['showAll'] == '1';
+$dateFilter = $showAll ? '' : "f.flightDepartureDate > CURDATE()";
+
+// Build status WHERE condition only when not 'All'
+$whereStatus = '';
+
+if ($statusTab !== 'all') {
+  $statusEsc = mysqli_real_escape_string($conn, $statusTab);
+  $whereStatus = " AND b.status = '{$statusEsc}'";
+}
+
+// // Example: main query that feeds the table (use $whereStatus)
+// $sql = "SELECT b.*, f.* 
+//         FROM booking b 
+//         JOIN flight f ON f.flightId = b.flightId
+//         WHERE 1 {$whereStatus} " . ($dateFilter ? "AND $dateFilter" : "");
+// $result = mysqli_query($conn, $sql);
+?>
+
+
 <div class="table-container">
 
-  <!-- Header Section -->
   <div class="table-header">
 
-    <!-- Search Input -->
     <div class="search-wrapper">
       <label class="" for="">Search: </label>
       <div class="search-input-wrapper">
@@ -11,39 +31,13 @@
       </div>
     </div>
 
-    <!-- Filters -->
     <div class="second-header-wrapper">
-
-      <!-- Show All Transaction Toggle -->
-      <!-- <div class="sorting-wrapper aligned-item">
-        <label style="opacity: 0;">Clear</label>
-        <form method="GET">
-          <label class="toggle-switch">
-            <input type="checkbox" id="showAll" name="showAll" value="1" 
-            <?= 
-              isset($_GET['showAll']) ? 'checked' : '' 
-            ?>
-              onchange="this.form.submit()">
-            <span class="slider"></span>
-          </label>
-          <label for="showAll">Show All Transactions</label>
-        </form>
-      </div> -->
-
-      <!-- Flight Date Filter -->
-      <div class="sorting-wrapper aligned-item">
-        <label class="" for="">Flight Date: </label>
-        <div class="input-with-icon">
-          <input type="text" class="datepicker" id="FlightStartDate" placeholder="Flight Date" readonly>
-          <i class="fas fa-calendar-alt calendar-icon"></i>
-        </div>
-      </div>
 
       <!-- Branch Selection -->
       <div class="sorting-wrapper aligned-item">
-        <label class="" for="">Select Branch: </label>
+        <label for="branch">Select Branch</label>
         <div class="select-wrapper">
-          <select id="packages">
+          <select id="branch">
             <option value="" disabled selected>Select Branch</option>
             <?php
             $sql1 = "SELECT branchId, branchName FROM branch ORDER BY branchName ASC";
@@ -53,41 +47,75 @@
                 echo "<option value='" . $row['branchName'] . "'>" . $row['branchName'] . "</option>";
               }
             } else {
-              echo "<option value=''>No branches available</option>";
+              echo "<option value=''>No companies available</option>";
             }
             ?>
           </select>
         </div>
       </div>
 
-      <!-- Clear Filters Button -->
+      <!-- Show All Transaction Toggle -->
+      <div class="sorting-wrapper aligned-item">
+        <form id="showAllForm">
+          <label style="opacity: 0;">Clear</label>
+          <label class="toggle-switch">
+            <input type="checkbox" id="showAllToggle" checked>
+            <span class="slider"></span>
+          </label>
+          <label for="showAllToggle">Show All Transaction</label>
+          <input type="hidden" name="showAll" id="showAllInput" value="1">
+        </form>
+      </div>
+
+
+      <!-- Reverse Toggle State (Default - 1) -->
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const toggle = document.getElementById("showAllToggle");
+          const hiddenInput = document.getElementById("showAllInput");
+
+          // Set default value to 1 on page load
+          hiddenInput.value = toggle.checked ? 1 : 0;
+
+          // Update value on toggle change
+          toggle.addEventListener("change", function () {
+            hiddenInput.value = this.checked ? 1 : 0;
+          });
+        });
+      </script>
+
+
+      <!-- <script>
+        document.getElementById('showAllToggle').addEventListener('change', function() {
+          const val = this.checked ? '1' : '0';
+          document.getElementById('showAllInput').value = val;
+          console.log("showAll value:", val);
+          // document.getElementById('showAllForm').submit();
+        });
+      </script> -->
+
+
+      <!-- Clear Button -->
       <div class="aligned-item">
-        <button id="clearSorting" class="btn btn-secondary">Clear Filters</button>
+        <label style="opacity: 0;">Clear</label> <!-- invisible label to align height -->
+        <button id="clearSorting" class="btn btn-secondary">
+          Clear Filters
+        </button>
       </div>
 
     </div>
-    
+
   </div>
 
-  <!-- On Due Filter Tabs -->
   <div class="navpills-container">
     <ul class="nav nav-pills nav-underline" id="ondue-filter-tabs" role="tablist">
 
       <!-- All On Due -->
       <li class="nav-item" role="presentation">
         <button id="onDue-all-filter" class="nav-link <?php if (empty($onDueTab) || strtolower($onDueTab) == 'all')
-          echo 'active'; ?>"
-          data-filter="all" type="button">
+          echo 'active'; ?>" data-filter="all" type="button">
           All
           <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                  FROM booking b
-                  JOIN flight f ON b.flightId = f.flightId
-                  WHERE b.status = 'Confirmed' AND f.flightDepartureDate < CURDATE()";
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
           </span>
         </button>
       </li>
@@ -98,14 +126,6 @@
           echo 'active'; ?>" data-filter="5days" type="button">
           5 Days
           <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                  FROM booking b
-                  JOIN flight f ON b.flightId = f.flightId
-                  WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) <= 5";
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
           </span>
         </button>
       </li>
@@ -116,14 +136,6 @@
           echo 'active'; ?>" data-filter="10days" type="button">
           10 Days
           <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                  FROM booking b
-                  JOIN flight f ON b.flightId = f.flightId
-                  WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 6 AND 10";
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
           </span>
         </button>
       </li>
@@ -134,14 +146,6 @@
           echo 'active'; ?>" data-filter="20days" type="button">
           20 Days
           <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                  FROM booking b
-                  JOIN flight f ON b.flightId = f.flightId
-                  WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) BETWEEN 11 AND 20";
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
           </span>
         </button>
       </li>
@@ -149,18 +153,9 @@
       <!-- > 30 Days -->
       <li class="nav-item" role="presentation">
         <button id="onDue-30d-filter" class="nav-link <?php if ($onDueTab == '30daysplus')
-          echo 'active'; ?>" data-filter="30daysplus"
-          type="button">
+          echo 'active'; ?>" data-filter="30daysplus" type="button">
           > 30 Days
           <span class="badge">
-            <?php
-            $sql = "SELECT COUNT(*) AS totalBookings 
-                  FROM booking b
-                  JOIN flight f ON b.flightId = f.flightId
-                  WHERE b.status = 'Confirmed' AND DATEDIFF(f.flightDepartureDate, CURDATE()) > 30";
-            $res = mysqli_query($conn, $sql);
-            echo ($res) ? mysqli_fetch_assoc($res)['totalBookings'] : 0;
-            ?>
           </span>
         </button>
       </li>
@@ -168,13 +163,12 @@
     </ul>
   </div>
 
-  <!-- Table & Pagination -->
   <div class="body-content-wrapper">
     <div class="table-wrapper">
-      <table id="ondue-table" class="table-clean">
+      <table id="bookingTableOnDue" class="table-clean">
         <thead>
           <tr>
-            <th>TRANSACT NO</th>
+            <th>TRANSACTION NO.</th>
             <th>BRANCH</th>
             <th>FLIGHT DATE</th>
             <th>TOTAL PAX</th>
@@ -182,305 +176,332 @@
             <th>TOTAL REQUEST COST</th>
             <th>AMOUNT PAID</th>
             <th>BALANCE</th>
+            <th>BOOKING DATE</th>
             <th>STATUS</th>
           </tr>
         </thead>
-        <tbody>
-          <?php
-            $sql = "SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%m-%d-%Y') AS departureDate, f.returnDepartureDate AS returnDate, 
-                      b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
-                      p.packageName AS PackageName, DATE_FORMAT(b.bookingDate, '%m.%d.%Y') AS BookingDate, b.pax AS TotalPax,  
-                      b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
-                      CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
-                      COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
-                      CASE 
-                        WHEN a.accountId IS NOT NULL 
-                          THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
-                        WHEN cl.accountId IS NOT NULL 
-                          THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
-                        ELSE 'Unknown'END AS `ACCOUNT NAME`
-                    FROM booking b
-                    JOIN branch br ON b.agentCode = br.branchAgentCode
-                    JOIN flight f ON f.flightId = b.flightId
-                    JOIN package p ON p.packageId = b.packageId
-                    LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
-                    LEFT JOIN company c ON a.companyId = c.companyId
-                    LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
-                    LEFT JOIN company cc ON cl.companyId = cc.companyId
-                    LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                    LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                    GROUP BY 
-                      b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
-                      p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
-                    ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)";
 
-            // Execute the query
-            $result = $conn->query($sql);
+        <tbody id="onDueTableBody">
 
-            // Check if there are results
-            if ($result->num_rows > 0) 
-            {
-              while ($row = $result->fetch_assoc()) 
-              {
-                // Safely handle null values
-                $transactNo = htmlspecialchars($row['transactNo'] ?? '');
-                $agentName = htmlspecialchars($row['agentName'] ?? '');
-                $packageName = htmlspecialchars($row['PackageName'] ?? '');
-                $departureDate = $row['departureDate'] ?? null;
-                $returnDate = $row['returnDate'] ?? null;
-                $bookingDate = htmlspecialchars($row['BookingDate'] ?? '');
-                $totalPax = htmlspecialchars($row['TotalPax'] ?? 0);
-                $packagePrice = $row['PackagePrice'] ?? 0;
-                $requestTotal = $row['TotalRequestAmount'] ?? 0;
-                $amountPaid = $row['TotalAmountPaid'] ?? 0;
-                $balance = max(($packagePrice + $requestTotal) - $amountPaid, 0); // Prevent negative balances
-                $status = htmlspecialchars($row['bookingStatus'] ?? 'Unknown');
-
-                // Determine the status class
-                $statusClass = match ($status) {
-                  "Pending" => "bg-warning text-dark",
-                  "Confirmed" => "bg-success text-white",
-                  "Cancelled" => "bg-danger text-white",
-                  "Reject" => "bg-secondary text-white",
-                  default => "bg-secondary text-white",};
-
-                // Format dates
-                // $formattedDepartureDate = $departureDate ? (new DateTime($departureDate))->format('F j, Y') : 'N/A';
-                $formattedReturnDate = $returnDate ? (new DateTime($returnDate))->format('F j, Y') : 'N/A';
-
-                // Securely encode URL
-                $transactionUrl = htmlspecialchars("emp-transactionInfo.php?id=$transactNo");
-
-                // Output each row as a table row
-                echo "<tr data-url='$transactionUrl'>";
-                echo "<td>$transactNo</td>";
-                echo "<td>" . htmlspecialchars($row['ACCOUNT NAME'] ?? '') . "</td>";
-                echo "<td>$departureDate</td>";
-                echo "<td class='fw-bold ps-3'>$totalPax</td>";
-                echo "<td>₱ " . number_format($packagePrice, 2) . "</td>";
-                echo "<td>₱ " . number_format($requestTotal, 2) . "</td>";
-                echo "<td>₱ " . number_format($amountPaid, 2) . "</td>";
-                echo "<td>₱ " . number_format($balance, 2) . "</td>";
-                echo "<td> <span class='badge rounded-pill $statusClass p-2'>$status</span></td>";
-                echo "</tr>";
-              }
-            } 
-            else 
-            {
-              echo "<tr><td colspan='8' class='text-center'>No records found</td></tr>";
-            }
-          ?>
         </tbody>
+
       </table>
     </div>
 
-    <!-- Footer -->
     <div class="table-footer">
       <div class="last-update-wrapper accent-text">
         <span class="header-text">Last updated:</span>
-        <span>April 30, 2025 • 10:15 AM</span>
+        <span>April 30, 2025 - 10:15 AM</span>
       </div>
 
-      <div class="pagination-controls">
-        <button id="onduePrevPage" class="btn-pagination">Previous</button>
-        <span id="onduePageInfo" class="page-info">Page 1 of 10</span>
-        <button id="ondueNextPage" class="btn-pagination">Next</button>
+      <div class="">
+        <button id="onDuePrevPage" class="btn-pagination">Previous</button>
+        <span id="onDuePageInfo" class="page-info"></span>
+        <button id="onDueNextPage" class="btn-pagination">Next</button>
       </div>
     </div>
+
   </div>
 
 </div>
 
 
+<!-- OnDue Table Data Generation -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const tableSelector = '#ondue-table';
-    const dateColIndex = 2; // Column index for flight departure date
-    const navLinks = document.querySelectorAll(".navpills-container .nav-link");
+  document.addEventListener("DOMContentLoaded", () => {
+    loadOnDueTransactions();
+  });
 
-    const prevBtn = document.getElementById('onduePrevPage');
-    const nextBtn = document.getElementById('ondueNextPage');
-    const pageInfoEl = document.getElementById('onduePageInfo');
+  let onDueDataTable = null;
 
+  function loadOnDueTransactions() {
+    fetch("../Employee Section/functions/fetchScripts/tableFetch/fetchTransactionTable.php")
+      .then(response => {
+        if (!response.ok) throw new Error("Network response was not ok");
+        return response.json();
+      })
+      .then(data => {
+        const tbody = document.querySelector("#bookingTableOnDue tbody");
+        tbody.innerHTML = ""; // Clear table rows
 
-    // Init DataTable
-    if ($.fn.DataTable.isDataTable(tableSelector)) {
-        $(tableSelector).DataTable().destroy();
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="10">No available transactions on due</td></tr>`;
+        } else {
+          data.forEach(row => {
+            // Determine the status class based on row.status (case-insensitive)
+            let statusClass = 'bg-secondary text-white'; // default
+            switch (row.status.toLowerCase()) {
+              case 'pending':
+                statusClass = 'bg-warning text-dark';
+                break;
+              case 'confirmed':
+                statusClass = 'bg-success text-white';
+                break;
+              case 'cancelled':
+                statusClass = 'bg-danger text-white';
+                break;
+              case 'reject':
+                statusClass = 'bg-secondary text-white';
+                break;
+            }
+
+            // Format bookingDate to mm.dd.yyyy if not already formatted
+            let formattedBookingDate = row.bookingDate;
+
+            try {
+              const dateObj = new Date(row.bookingDate);
+              if (!isNaN(dateObj)) {
+                formattedBookingDate = dateObj.toLocaleDateString('en-US', {
+                  month: '2-digit',
+                  day: '2-digit',
+                  year: 'numeric'
+                }).replace(/\//g, '.');
+              }
+            } catch {
+              // fallback keep original
+            }
+
+            // Create URL with safe encoding
+            const transactionUrl = `emp-transactionInfo.php?id=${encodeURIComponent(row.transactNo)}`;
+
+            tbody.innerHTML += `
+              <tr data-url="${transactionUrl}" style="cursor:pointer;">
+                <td>${row.transactNo}</td>
+                <td>${row.branchName || ''}</td>
+                <td>${row.departureDate || ''}</td>
+                <td class="fw-bold ps-3">${row.totalPax || ''}</td>
+                <td>₱ ${row.packagePrice || '0.00'}</td>
+                <td>₱ ${row.requestTotal || '0.00'}</td>
+                <td>₱ ${row.amountPaid || '0.00'}</td>
+                <td>₱ ${row.balance || '0.00'}</td>
+                <td>${formattedBookingDate}</td>
+                <td><span class="badge rounded-pill ${statusClass} p-2">${row.status}</span></td>
+              </tr>
+            `;
+          });
+        }
+
+        initOnDueDataTable();
+        bindOnDueRowClickEvents();
+      })
+      .catch(error => {
+        console.error("Error fetching onDue data:", error);
+      });
+  }
+
+  // Function: OnDue Transaction Id Based Redirect
+  function bindOnDueRowClickEvents() {
+    document.querySelectorAll("tr[data-url]").forEach(row => {
+      row.addEventListener("click", () => {
+        const transactionUrl = row.getAttribute("data-url");
+        const transactionNumber = transactionUrl.split('=')[1];
+
+        console.log("OnDue Transaction Number:", transactionNumber);
+
+        // Using jQuery AJAX to set session then redirect
+        $.ajax({
+          url: '../Agent Section/functions/fetchTransactNo.php',
+          type: 'POST',
+          data: { transaction_number: transactionNumber },
+          success: function (response) {
+            console.log("OnDue Response:", response);
+            window.location.href = transactionUrl;
+          },
+          error: function (xhr, status, error) {
+            console.error("OnDue AJAX Error:", status, error);
+          }
+        });
+      });
+    });
+  }
+
+  function initOnDueDataTable() {
+    // Destroy existing DataTable if exists
+    if ($.fn.DataTable.isDataTable('#bookingTableOnDue')) {
+      $('#bookingTableOnDue').DataTable().destroy();
     }
 
-    const table = $(tableSelector).DataTable({
-        dom: 'rtip',
-        language: { emptyTable: "No Transaction Records Available" },
-        order: [[dateColIndex, 'asc']],
-        scrollX: false,
-        paging: true,
-        pageLength: 13,
-        autoWidth: false,
-        columnDefs: [
-            { targets: [1, 3, 4, 5, 6, 7], orderable: false }
-        ]
-    });
-
-    setTimeout(() => { table.columns.adjust().draw(); }, 100);
-
-
-    function updatePageInfo() {
-        const pageInfo = table.page.info();
-        pageInfoEl.textContent = `Page ${pageInfo.page + 1} of ${pageInfo.pages}`;
-        
-        // Disable buttons if at ends
-        prevBtn.disabled = pageInfo.page === 0;
-        nextBtn.disabled = pageInfo.page === pageInfo.pages - 1 || pageInfo.pages === 0;
-    }
-
-    // Bind buttons
-    prevBtn.addEventListener('click', () => {
-        table.page('previous').draw('page');
-        updatePageInfo();
-    });
-
-    nextBtn.addEventListener('click', () => {
-        table.page('next').draw('page');
-        updatePageInfo();
-    });
-
-    // Update on table draw
-    table.on('draw', updatePageInfo);
-
-    // Init state
-    updatePageInfo();
-
-
-    // Search
-    $('#search').on('keyup', function () {
-      tableProduct.search(this.value).draw();
-    });
-
-    // Clear filters
-    $('#clearSorting').on('click', function () {
-        // Clear other filters
-        $('#search').val('');
-        tableProduct.search('').draw();
-        $('#branch').val('').trigger('change');
-        $('#status').val('').trigger('change');
-        tableProduct.order([[2, 'asc']]).columns().search('').draw();
-
-        // Reset toggle (uncheck)
-        $('#showAll').prop('checked', false);
-
-        // Remove "showAll" from URL
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.delete('showAll');
-        history.replaceState(null, '', newUrl.toString());
-
-
-        // OPTIONAL: If you need to re-fetch default table data via AJAX without reload
-        // tableProduct.ajax.url('your-default-data-url.php').load();
-    });
-
-
-    // Packages dropdown filter
-    $('#branch').on('change', function () {
-      tableProduct.column(1).search($(this).val() || '').draw();
-    });
-
-
-
-    flatpickr("#FlightStartDate", {
-      dateFormat: "Y-m-d",
-      allowInput: true,
-      defaultDate: null,
-      yearSelectorType: "dropdown", // Enable dropdown for year
-      minDate: `${new Date().getFullYear() - 10}-01-01`,
-      maxDate: `${new Date().getFullYear() + 10}-12-31`,
-      onChange: function (selectedDates, dateStr) {
-        $('#FlightStartDate').val(dateStr);
-        table.column(2).search(dateStr || '').draw();
+    // Initialize DataTable
+    onDueDataTable = $('#bookingTableOnDue').DataTable({
+      dom: 'rtip',
+      language: { emptyTable: "No OnDue Transaction Records Available" },
+      order: [[2, 'asc']],
+      scrollX: false,
+      paging: true,
+      pageLength: 13,
+      autoWidth: false,
+      responsive: true,
+      columnDefs: [
+        { targets: [1, 3, 4, 5, 6, 7], orderable: false },
+        { targets: 0, width: '10%' },
+        { targets: 1, width: '12%' },
+        { targets: 2, width: '8%' },
+        { targets: 3, width: '6%' },
+        { targets: 4, width: '11%' },
+        { targets: 5, width: '11%' },
+        { targets: 6, width: '11%' },
+        { targets: 7, width: '11%' },
+        { targets: 8, width: '11%' },
+        { targets: 9, width: '11%' },
+      ],
+      drawCallback: function () {
+        $('#bookingTableOnDue tbody tr').css('height', '36px');
       }
     });
 
-
-    // Get URL params
+    // Apply status filter from URL param
+    const statusColIndex = 9;
     const urlParams = new URLSearchParams(window.location.search);
-    let initialOnDue = urlParams.get('onDue') || 'all';
+    let initialFilter = urlParams.get('status') || 'all';
 
-    // Apply initial filter
-    applyOnDueFilter(initialOnDue);
+    if (initialFilter.toLowerCase() !== 'all') {
+      onDueDataTable.column(statusColIndex).search('^' + initialFilter + '$', true, false).draw();
+    } else {
+      onDueDataTable.column(statusColIndex).search('').draw();
+    }
 
-    // Set active tab visually
-    navLinks.forEach(link => {
-        if ((link.dataset.filter || '') === initialOnDue) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
+    setupOnDuePagination();
+    setupOnDueFilters();
+    setupOnDueDateFilter();
+
+    // Update active tab visually
+    $('.navpills-container .nav-link').removeClass('active')
+      .filter(`[data-filter="${initialFilter}"]`).addClass('active');
+  }
+
+  function setupOnDuePagination() {
+    // === Pagination Info Update
+    function updateOnDuePagination() {
+      const info = onDueDataTable.page.info();
+      $('#onDuePageInfo').text(`Page ${info.page + 1} of ${info.pages}`);
+      $('#onDuePrevPage').prop('disabled', info.page + 1 === 1 || info.pages <= 1);
+      $('#onDueNextPage').prop('disabled', info.page + 1 === info.pages || info.pages <= 1);
+    }
+
+    onDueDataTable.on('draw', updateOnDuePagination);
+    onDueDataTable.draw();
+
+    // Pagination buttons
+    $('#onDueNextPage').on('click', () => onDueDataTable.page('next').draw('page'));
+    $('#onDuePrevPage').on('click', () => onDueDataTable.page('previous').draw('page'));
+  }
+
+  function setupOnDueFilters() {
+    // Search
+    $('#onDueSearch').on('keyup', function () {
+      onDueDataTable.search(this.value).draw();
     });
 
-    // Nav click handler
-    navLinks.forEach(link => {
-        link.addEventListener('click', function () {
-            const filter = this.dataset.filter || 'all';
-            navLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            applyOnDueFilter(filter);
-            updateUrlParam('onDue', filter);
-        });
+    // Branch dropdown filter
+    $('#onDueBranch').on('change', function () {
+      onDueDataTable.column(1).search($(this).val() || '').draw();
     });
 
-    // Apply On Due filter logic (date range only)
-    function applyOnDueFilter(filterValue) {
-        // Remove any previous date filter
-        $.fn.dataTable.ext.search = $.fn.dataTable.ext.search.filter(fn => fn.name !== 'dueDateFilter');
+    // Clear filters
+    $('#onDueClearSorting').on('click', function () {
+      // Clear filters and search
+      $('#onDueSearch').val('');
+      onDueDataTable.search('').draw();
+      $('#onDueBranch').val('').trigger('change');
+      onDueDataTable.order([[2, 'asc']]).columns().search('').draw();
 
-        // If "all" → show everything (skip date filter)
-        if (filterValue === 'all') {
-            table.draw();
-            return;
-        }
+      // Reset toggle (uncheck)
+      $('#onDueShowAllToggle').prop('checked', false);
+      $('#onDueShowAllToggle').trigger('change');
 
-        const dueDateFilter = function dueDateFilter(settings, data) {
-            const dateStr = data[dateColIndex];
-            if (!dateStr) return false;
+      // Remove "showAll" from URL
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete('showAll');
+      history.replaceState(null, '', newUrl.toString());
+    });
+  }
 
-            const flightDate = new Date(dateStr);
-            if (isNaN(flightDate)) return false;
+  function setupOnDueDateFilter() {
+    // Trigger filtering based on toggle change
+    $('#onDueShowAllToggle').on('change', function () {
+      onDueDataTable.draw();
 
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            flightDate.setHours(0, 0, 0, 0);
+      // Update URL parameter
+      const newUrl = new URL(window.location.href);
+      if (this.checked) {
+        newUrl.searchParams.set('showAll', '1');
+      } else {
+        newUrl.searchParams.delete('showAll');
+      }
+      history.replaceState(null, '', newUrl.toString());
 
-            const diffInDays = Math.floor((flightDate - today) / (1000 * 60 * 60 * 24));
+      updateOnDueStatusTabCounts();
+    });
 
-            switch (filterValue) {
-                case "5days": return diffInDays <= 5;
-                case "10days": return diffInDays >= 6 && diffInDays <= 10;
-                case "20days": return diffInDays >= 11 && diffInDays <= 20;
-                case "30daysplus": return diffInDays >= 31;
-                default: return true;
-            }
+    // Custom search filter for flight date column based on toggle
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+      if (settings.nTable.id !== 'bookingTableOnDue') {
+        return true; // Only apply to #bookingTableOnDue
+      }
+
+      const showAll = $('#onDueShowAllToggle').prop('checked');
+
+      if (!showAll) {
+        return true; // If toggle unchecked, show all rows (no date filter)
+      }
+
+      const flightDateStr = data[2]; // Flight Date column (index 2)
+      if (!flightDateStr || flightDateStr.trim() === '') {
+        return false; // Hide empty dates when filtering
+      }
+
+      // Parse date assuming YYYY.MM.DD format
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Convert flightDateStr to Date
+      const parts = flightDateStr.split('.');
+      if (parts.length !== 3) return false;
+      const flightDate = new Date(`${parts[0]}-${parts[1]}-${parts[2]}`);
+      if (isNaN(flightDate)) return false;
+
+      return flightDate >= today;
+    });
+  }
+
+  function updateOnDueStatusTabCounts() {
+    const showCurrentDate = $('#onDueShowAllToggle').prop('checked');
+
+    console.log('Fetching onDue counts with showCurrentDate:', showCurrentDate);
+
+    fetch('../Employee Section/functions/fetchScripts/tableFetch/getTransactionCounts-OnDue.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ showCurrentDate: showCurrentDate ? 1 : 0 })
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('OnDue counts received:', data);
+
+        // Update badges if they exist
+        const badges = {
+          pastDue: document.querySelector('#onDue-all-filter .badge'),
+          fiveDays: document.querySelector('#onDue-5d-filter .badge'),
+          tenDays: document.querySelector('#onDue-10d-filter .badge'),
+          twentyDays: document.querySelector('#onDue-20d-filter .badge'),
+          thirtyDays: document.querySelector('#onDue-30d-filter .badge')
         };
 
-        dueDateFilter.name = 'dueDateFilter';
-        $.fn.dataTable.ext.search.push(dueDateFilter);
-
-        table.draw();
-    }
-
-    // Update URL without reload
-    function updateUrlParam(key, value) {
-        const newUrl = new URL(window.location.href);
-        if (value === 'all') {
-            newUrl.searchParams.delete(key);
-        } else {
-            newUrl.searchParams.set(key, value);
+        for (const [key, badge] of Object.entries(badges)) {
+          if (badge) {
+            badge.textContent = data[key] !== undefined ? data[key] : '0';
+          }
         }
-        history.replaceState(null, '', newUrl.toString());
-    }
-});
+      })
+      .catch(error => {
+        console.error('OnDue fetch error:', error);
+      });
+  }
+
+  // Initialize everything when document is ready
+  $(document).ready(function () {
+    // Initial badge update on page load
+    updateOnDueStatusTabCounts();
+  });
+
 </script>
-
-
-<script>
-    
-
-  </script>

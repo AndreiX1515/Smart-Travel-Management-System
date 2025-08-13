@@ -20,10 +20,10 @@
 
   <!-- Components CSS -->
   <!-- <link rel="stylesheet" href="../Employee Section/assets/css/components/page-layout-tabs.css?v=<?php echo time(); ?>"> -->
-
   <link rel="stylesheet" href="../Employee Section/assets/css/components/table-header.css?v=<?php echo time(); ?>">
-
   <link rel="stylesheet" href="../Employee Section/assets/css/components/table-clean.css?v=<?php echo time(); ?>">
+
+  
 
   <!-- Page Specifics CSS -->
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
@@ -168,7 +168,7 @@
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
         <?php
-        // include '../Employee Section/transactionTable/transactionTable-OnDue.php';
+        include '../Employee Section/transactionTable/transactionTable-OnDue.php';
         ?>
 
         </div>
@@ -200,6 +200,7 @@
 
   </script> -->
 
+  <!-- Page All Status Default -->
   <script>
    document.addEventListener("DOMContentLoaded", function () {
     // Map each tab ID to its "All" filter button ID
@@ -251,6 +252,39 @@
   });
 
   </script>
+
+
+  <!-- Record Last Tab -->
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tabKey = "activeTab"; // storage key
+
+        // Restore the active tab on page load
+        const lastTab = localStorage.getItem(tabKey);
+        if (lastTab) {
+            const tabTriggerEl = document.querySelector(`[data-bs-target="${lastTab}"]`);
+            if (tabTriggerEl) {
+                const tab = new bootstrap.Tab(tabTriggerEl);
+                tab.show();
+            }
+        }
+
+        // Listen for tab changes and store the active tab
+        const tabButtons = document.querySelectorAll('#pills-tab button[data-bs-toggle="pill"]');
+        tabButtons.forEach((tabBtn) => {
+            tabBtn.addEventListener("shown.bs.tab", function (event) {
+                localStorage.setItem(tabKey, event.target.getAttribute("data-bs-target"));
+            });
+        });
+    });
+  </script>
+
+
+
+
+
+
+
 
 
   <!-- Row Click Selection

@@ -4,492 +4,90 @@
   
 }
 
+.table-header {
+  padding: 15px 20px 0px 20px;
+  /* border: 1px solid #000; */
+  display: flex;
+  align-items: first baseline;
+  flex-direction: column;
+  gap: 10px; /* space between top and bottom parts */
+  height: auto; /* let height adjust naturally */
+  background-color: transparent; 
+}
 
-.content-wrapper {
+
+.table-header .top-part-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* space out inner elements */
+  padding: 5px 12px;
+  /* border: 1px solid #000; */
+  border-radius: 4px; /* smooth corners */
+  /* background-color: #fff; white for separation */
+}
+
+
+.table-header .bottom-part-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* space out inner elements */
+  padding: 5px 12px;
+  /* border: 1px solid #000; */
+  border-radius: 4px; /* smooth corners */
+  /* background-color: #fff; white for separation */
+
+  width: 100%;
+}
+
+.bottom-col {
   display: flex;
   flex-direction: column;
-  height: 91vh;
-  width: 98%;
-  margin: 15px 30px 0px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background-color: transparent;
-  box-sizing: border-box;
-  /* border: 1px solid black; */
-}
-
-.content-header {
-  font-family: Arial, sans-serif;
-  color: #333;
-  width: 100%;
-  background-color: #fff;
-  z-index: 10;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-}
-
-.content-header h1 {
-  font-size: 22px;
-  font-weight: bold;
-  margin: 0;
-  color: #1d1d1d;
-}
-
-.content-header p {
-  font-size: 16px;
-  font-weight: 400;
-  margin: 0;
-  color: #6b6b6b;
-}
-
-.back-button-wrapper {
-  margin-bottom: 10px;
-}
-
-.back-button-link {
-  text-decoration: none;
-  color: #6c757d;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  transition: color 0.3s ease, text-decoration 0.3s ease;
-}
-
-.back-button-link:hover {
-  color: #116530;
-}
-
-/* General Layout for Content */
-.content-body {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  gap: 10px;
-  height: 81vh;
-  /* border: 1px solid black; */
-  overflow-y: auto;
-}
-
-.table-wrapper {
-  /* border: 1px solid black; */
-  overflow-y: auto;
-}
-
-.content-footer {
-  width: 100%;
-  height: 8vh;
-  padding: 15px 10px 10px 10px;
-  border-top: 1px solid gainsboro; /* Flat top border */
-  border-left: 1px solid gainsboro;
-  border-right: 1px solid gainsboro;
-  border-bottom: 1px solid gainsboro;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
-}
-
-.content-footer .btn {
-  padding: 10px 20px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  border-radius: 8px;
-}
-
-.content-footer .btn:hover {
-  opacity: 0.9; /* Slight hover effect */
-}
-
-/* Message Box */
-
-/* .counts-section {
-  display: flex;
-  height: 15vh;
-  width: 100%;
-} */
-
-/* Disable sorting on columns 1 through 8
- table.dataTable th:nth-child(1),
- table.dataTable th:nth-child(2),
- table.dataTable th:nth-child(3),
- table.dataTable th:nth-child(4),
- table.dataTable th:nth-child(5),
- table.dataTable th:nth-child(6),
- table.dataTable th:nth-child(7),
- table.dataTable th:nth-child(8) {
-     pointer-events: none;  
-     user-select: none; 
- } */
-
-.table-actions {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-  border: 1px solid gainsboro;
-  height: 12vh;
-}
-
-.table-actions .first-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: center;
-  width: 75%;
-  height: 100%;
-  gap: 10px; /* Adjust spacing between elements */
-  /* border: 1px solid black; */
-  padding: 0px 15px;
-}
-
-.table-filters-container {
-  display: flex;
-  flex-direction: row; /* Change from column to row */
-  gap: 10px;
-  width: 250px;
-  align-items: left;
-  /* border: 1px solid black; */
-  margin-top: 15px;
-}
-
-.filters-wrapper .columns {
-  display: flex;
-  flex-direction: row;
-  align-items: left;
-}
-
-/* Styling for the Label */
-.table-filters-container label {
-  font-size: 12px;
-  color: #333;
-  display: block;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-/* Styling for the Container */
-.table-filters-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: 8px;
 }
 
 
-.table-actions .second-wrapper {
-  display: flex;
-  flex-direction: row;
-  justify-content: end;
-  align-items: center;
-  width: 25%;
-  height: 100%;
-  gap: 10px; /* Adjust spacing between elements */
-  /* border: 1px solid black; */
-  padding: 25px 15px 0px 15px;
-  /* border: 1px solid black; */
-}
-
-
-
-.reset-filters {
-  display: none;
-}
-
-
-.vertical-separator {
-  width: 2px; /* Line thickness */
-  height: 65%; /* Full height */
-  background-color: #ccc; /* Line color */
-  margin: 10px 15px; /* Adds spacing around the line */
-}
-
-
-
-
-
-
-/* Rest of the styling */
-.table-filters-container select {
-  width: 100%;
-  padding: 10px 12px;
-  font-size: 14px;
-  color: #333;
-  background-color: transparent;
-  border: 2px solid #ddd; /* No border-radius for flat look */
-  font-weight: 400;
-  transition: border-color 0.3s, color 0.3s;
-  outline: none;
-  appearance: none;
-  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"%3E%3Cpath fill="none" stroke="%23333" d="M2 6l6 6 6-6" /%3E%3C/svg%3E');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 12px;
-}
-
-/* Hover and Focus Effect */
-.table-filters-container select:hover,
-.table-filters-container select:focus {
-  border-color: #116530;
-  color: #116530;
-}
-
-.table-filters-container select:focus {
-  box-shadow: none;
-}
-
-.table-filters-container select option {
-  background-color: #fff;
-  color: #333;
-}
-
-
-.show-column span {
-  color: black;
-  font-weight: 600;
-}
-
-.show-column select {
-  margin-left: 5px;
-  padding: 3px;
-  border-radius: 10px;
-}
-
-/* Table container styling */
-.table-container-product {
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  align-items: center;
-  height: 95vh; /* Adjusted to full height */
-  background-color: transparent;
-  overflow-y: auto; /* Enable vertical overflow */
-  overflow-x: auto; /* Enable horizontal overflow */
-  border: 1px solid gainsboro;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Box shadow */
-}
-
-/* Transaction Table */
-.product-table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; /* Make all columns relative to each other */
-}
-
-.product-table thead {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  background-color: #e6e6e6;
-  border-left: 1px solid #ddd; /* Add left border */
-  border-right: 1px solid #ddd; /* Add right border */
-}
-
-.product-table th {
-  padding: 6px 15px;
-  text-align: left;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 0.9em;
-  border-bottom: 2px solid #ddd;
-  border-left: 1px solid #ddd; /* Add left border */
-  border-right: 1px solid #ddd; /* Add right border */
-  white-space: nowrap;
-}
-
-.product-table td {
-  padding: 6px 15px;
-  text-align: left;
-  font-size: 0.9em;
-  border-bottom: 1px solid #ddd;
-  border-left: 1px solid #ddd; /* Add left border */
-  border-right: 1px solid #ddd; /* Add right border */
-  white-space: nowrap;
-}
-
-.product-table tr {
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.product-table tr:hover {
-  background-color: #f2f2f2;
-  color: #000;
-  cursor: pointer;
-}
-
-.product-table th:nth-child(1),
-.product-table td:nth-child(1) {
-  width: 4%; /* Adjust width for 'No.' column */
-}
-
-.product-table th:nth-child(2),
-.product-table td:nth-child(2) {
-  width: 30%; /* Adjust width for 'Contents' column */
-}
-
-.product-table th:nth-child(3),
-.product-table td:nth-child(3) {
-  width: 15%; /* Adjust width for 'Price (USD)' column */
-  text-align: end;
-}
-
-.product-table th:nth-child(4),
-.product-table td:nth-child(4) {
-  width: 15%; /* Adjust width for 'Price (PHP)' column */
-  text-align: end;
-}
-
-.product-table th:nth-child(5),
-.product-table td:nth-child(5) {
-  width: 5%; /* Adjust width for 'PAX' column */
-  text-align: center;
-}
-
-.product-table th:nth-child(6),
-.product-table td:nth-child(6) {
-  width: 15%; /* Adjust width for 'Total (USD)' column */
-  text-align: end;
-}
-
-.product-table th:nth-child(7),
-.product-table td:nth-child(7) {
-  width: 15%; /* Adjust width for 'TOTAL (PHP)' column */
-  text-align: end;
-}
-
-.subtotal-container {
-  border: 1px solid #ddd;
-  display: flex;
-  justify-content: end;
-  font-size: 0.95em;
-  font-weight: bold;
-  background-color: #d3d3d3;
-}
-
-.subtotal-item-usd,
-.subtotal-item-php {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd; /* Added bottom border */
-  padding: 6px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  background-color: #d3d3d3;
-}
-
-.subtotal-item-usd {
-  border-top: none; /* Removed top border for the first item */
-  width: 15.2%;
-}
-
-.subtotal-item-php {
-  border-top: none; /* No top border for the second item */
-  width: 15.1%;
-}
-
-/* Balance Container */
-.balance-container {
-  border: 1px solid #ddd;
-  display: flex;
-  width: 100%;
-  background-color: #f9f9f9;
-  font-size: 0.95em;
-  font-weight: bold;
-}
-
-/* Balance Item (Main Balance) */
-.balance {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd; /* Only side and bottom borders */
-  width: 100%;
-  gap: 0;
-  padding: 6px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: end;
-  background-color: #d3d3d3; /* Slightly different shade for distinction */
-}
-
-/* Balance Subtotals (USD and PHP) */
-.balanceUSD,
-.balancePHP {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  border-bottom: 1px solid #ddd; /* Only side and bottom borders */
-  padding: 6px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  background-color: #d3d3d3;
-}
-
-.balance:first-child {
-  border-top: none; /* No top border for the first item */
-  width: 69.7%;
-}
-
-.balanceUSD {
-  border-top: none; /* No top border for the first subtotal */
-  width: 15.2%;
-}
-
-.balancePHP {
-  border-top: none; /* No top border for the second subtotal */
-  width: 15.1%;
-}
-
-/* Customize DataTable pagination for smaller design
-.dataTables_paginate {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.dataTables_paginate .paginate_button {
-  padding: 3px 6px; 
-  background-color: #007bff;
-  color: white;
-  border-radius: 3px; 
-  font-size: 14px; 
+.table-wrapper .tab-content {
   border: none;
-  cursor: pointer;
-}
-
-.dataTables_paginate .paginate_button:hover {
-  background-color: #0056b3;
-}
-
-.dataTables_paginate .paginate_button.disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-.dataTables_length select {
-  padding: 3px;
-  font-size: 12px; 
-  border-radius: 3px; 
 }
 
 
-.dataTables_length label {
-  display: none; 
+#soaWrapper {
+  padding: 15px;
 }
 
-.dataTables_length select {
-  font-size: 12px; 
-  padding: 3px; 
-}
-.dataTables_info {
-  display: none;
-} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Modal */
 /* Modal Overlay */

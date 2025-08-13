@@ -60,13 +60,31 @@ if ($statusTab !== 'all') {
         <form id="showAllForm">
           <label style="opacity: 0;">Clear</label>
           <label class="toggle-switch">
-            <input type="checkbox" id="showAllToggle">
+            <input type="checkbox" id="showAllToggle" checked>
             <span class="slider"></span>
           </label>
-          <label for="showAllToggle">Show From Today Onwards</label>
-          <input type="hidden" name="showAll" id="showAllInput">
+          <label for="showAllToggle">Show All Transaction</label>
+          <input type="hidden" name="showAll" id="showAllInput" value="1">
         </form>
       </div>
+
+      
+      <!-- Reverse Toggle State (Default - 1) -->
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const toggle = document.getElementById("showAllToggle");
+          const hiddenInput = document.getElementById("showAllInput");
+
+          // Set default value to 1 on page load
+          hiddenInput.value = toggle.checked ? 1 : 0;
+
+          // Update value on toggle change
+          toggle.addEventListener("change", function () {
+            hiddenInput.value = this.checked ? 1 : 0;
+          });
+        });
+      </script>
+
 
       <!-- <script>
         document.getElementById('showAllToggle').addEventListener('change', function() {

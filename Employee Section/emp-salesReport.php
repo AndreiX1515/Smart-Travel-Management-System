@@ -5,10 +5,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Employee - Transactions</title>
+  <title>Sales Report</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  
+
+  <!-- Page Layout CSS -->
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/page-layout-tabs.css?v=<?php echo time(); ?>">
+
+  <!-- Components CSS -->
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/table-clean.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/components/table-header.css?v=<?php echo time(); ?>">
+
+
+  <!-- Page Specific CSS -->
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-soa.css?v=<?php echo time(); ?>">
 
 </head>
@@ -19,9 +28,17 @@
 
   <!-- Main Container -->
   <div class="main-container">
-    <?php include '../Employee Section/includes/emp-navbar.php' ?>
+
     <div class="navbar">
       <div class="page-header-wrapper">
+
+        <div class="page-header-top">
+          <div class="back-btn-wrapper">
+            <button class="back-btn" id="redirect-btn">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+        </div>
 
         <div class="page-header-content">
           <div class="page-header-text">
@@ -32,153 +49,196 @@
       </div>
     </div>
 
+    <script>
+      document.getElementById('redirect-btn').addEventListener('click', function () {
+        window.location.href = '../Employee Section/emp-dashboard.php'; // Replace with your actual URL
+      });
+    </script>
+
     <div class="main-content">
-      <div class="content-wrapper">
 
-        <!-- 🔹 Row 1: Report Type Radio Buttons (Right-aligned) -->
-        <div class="row mb-4">
-          <div class="col-md-6 d-flex justify-content-start align-items-start">
-            <div>
+      <div class="table-wrapper">
+
+        <div class="table-header">
+
+          <div class="top-part-wrapper">
+
+            <!-- 🔹 Row 1: Report Type Radio Buttons (Right-aligned) -->
+            <div class="row mb-2">
               <label class="form-label d-block">Filter By:</label>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="reportType" id="flightReport" value="flight" checked>
-                <label class="form-check-label" for="flightReport">Flight</label>
+              <div class="col-md-6 d-flex justify-content-start align-items-start">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="reportType" id="flightReport" value="flight"
+                    checked>
+                  <label class="form-check-label" for="flightReport">Flight</label>
+                </div>
               </div>
-              <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="reportType" id="monthlyReport" value="monthly">
-                <label class="form-check-label" for="monthlyReport">Monthly</label>
+
+              <div class="col-md-6 d-flex justify-content-start align-items-start">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="reportType" id="monthlyReport" value="monthly">
+                  <label class="form-check-label" for="monthlyReport">Monthly</label>
+                </div>
+              </div>
+
+
+            </div>
+
+          </div>
+
+          <div class="bottom-part-wrapper">
+
+            <!-- 🔹 Row 2: Branch (Left) + Dynamic Selectors (Right) -->
+            <div class="row w-50">
+
+              <!-- Branch Selector -->
+              <div class="col-md-4 mb-3">
+                <label for="branchSelect" class="form-label">Select Branch:</label>
+                <select class="form-select" name="selectedBranch" id="branchSelect">
+                  <option selected disabled>Select Branch</option>
+                  <?php
+                  $branchQuery = "SELECT branchName, branchAgentCode FROM branch ORDER BY branchAgentCode";
+                  $branchResult = $conn->query($branchQuery);
+
+                  if ($branchResult->num_rows > 0) {
+                    while ($row = $branchResult->fetch_assoc()) {
+                      echo "<option value=\"{$row['branchAgentCode']}\">{$row['branchName']}</option>";
+                    }
+                  } else {
+                    echo "<option disabled>No agents available</option>";
+                  }
+                  ?>
+                </select>
+              </div>
+
+              <!-- Flight Selector -->
+              <div id="flightSelector" class="col-md-4 mb-3" style="display: none;">
+                <label for="flightDate" class="form-label">Select Flight Date:</label>
+                <select class="form-select" name="flightDate" id="flightDate">
+                  <option selected disabled>Select a flight date</option>
+                  <?php
+                  $query = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
+                  $result = $conn->query($query);
+                  if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      $date = $row['flightDepartureDate'];
+                      $formattedDate = date("M d, Y", strtotime($date));
+                      echo "<option value=\"$date\">$formattedDate</option>";
+                    }
+                  } else {
+                    echo "<option disabled>No flight dates available</option>";
+                  }
+                  ?>
+                </select>
+              </div>
+
+              <!-- Monthly Selector -->
+              <div id="monthlySelector" class="col-md-4 mb-3" style="display: none;">
+                <label for="month" class="form-label">Select Month:</label>
+                <select class="form-select" name="month" id="month">
+                  <option selected disabled>Select Month</option>
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              </div>
+
+              <!-- Year Selector -->
+              <div id="yearSelector" class="col-md-4 mb-3" style="display: none;">
+                <label for="year" class="form-label">Select Year:</label>
+                <select class="form-select" name="year" id="year">
+                  <option selected disabled>Select Year</option>
+                  <?php
+                  $currentYear = date("Y");
+                  for ($i = $currentYear; $i >= $currentYear - 10; $i--) {
+                    echo "<option value=\"$i\">$i</option>";
+                  }
+                  ?>
+                </select>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- 🔹 Row 2: Branch (Left) + Dynamic Selectors (Right) -->
-        <div class="row mb-3">
-          <!-- Branch Selector -->
-          <div class="col-md-6 mb-3">
-            <label for="branchSelect" class="form-label">Select Branch:</label>
-            <select class="form-select" name="selectedBranch" id="branchSelect">
-              <option selected disabled>Select Branch</option>
-              <?php
-                $branchQuery = "SELECT branchName, branchAgentCode FROM branch ORDER BY branchAgentCode";
-                $branchResult = $conn->query($branchQuery);
-
-                if ($branchResult->num_rows > 0) {
-                  while ($row = $branchResult->fetch_assoc()) {
-                    echo "<option value=\"{$row['branchAgentCode']}\">{$row['branchName']}</option>";
-                  }
-                } else {
-                  echo "<option disabled>No agents available</option>";
-                }
-              ?>
-            </select>
-          </div>
-
-          <!-- Flight Selector -->
-          <div id="flightSelector" class="col-md-6 mb-3" style="display: none;">
-            <label for="flightDate" class="form-label">Select Flight Date:</label>
-            <select class="form-select" name="flightDate" id="flightDate">
-              <option selected disabled>Select a flight date</option>
-              <?php
-                $query = "SELECT DISTINCT flightDepartureDate FROM flight ORDER BY flightDepartureDate ASC";
-                $result = $conn->query($query);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    $date = $row['flightDepartureDate'];
-                    $formattedDate = date("M d, Y", strtotime($date));
-                    echo "<option value=\"$date\">$formattedDate</option>";
-                  }
-                } else {
-                  echo "<option disabled>No flight dates available</option>";
-                }
-              ?>
-            </select>
-          </div>
-
-          <!-- Monthly Selector -->
-          <div id="monthlySelector" class="col-md-3 mb-3" style="display: none;">
-            <label for="month" class="form-label">Select Month:</label>
-            <select class="form-select" name="month" id="month">
-              <option selected disabled>Select Month</option>
-              <option value="01">January</option>
-              <option value="02">February</option>
-              <option value="03">March</option>
-              <option value="04">April</option>
-              <option value="05">May</option>
-              <option value="06">June</option>
-              <option value="07">July</option>
-              <option value="08">August</option>
-              <option value="09">September</option>
-              <option value="10">October</option>
-              <option value="11">November</option>
-              <option value="12">December</option>
-            </select>
-          </div>
-
-          <!-- Year Selector -->
-          <div id="yearSelector" class="col-md-3 mb-3" style="display: none;">
-            <label for="year" class="form-label">Select Year:</label>
-            <select class="form-select" name="year" id="year">
-              <option selected disabled>Select Year</option>
-              <?php
-                $currentYear = date("Y");
-                for ($i = $currentYear; $i >= $currentYear - 10; $i--) {
-                  echo "<option value=\"$i\">$i</option>";
-                }
-              ?>
-            </select>
-          </div>
-        </div>
-
-        <!-- Buttons Row -->
-        <div class="row">
-          <div class="col-12 d-flex justify-content-end">
-            <div class="me-2">
-              <button id="generate-report-btn" class="btn btn-primary">Preview Report</button>
+            <!-- Buttons Row -->
+            <div class="row">
+              <div class="col-12 d-flex justify-content-end">
+                <div class="me-2">
+                  <button id="generate-report-btn" class="btn btn-primary">Preview Report</button>
+                </div>
+                <div class="me-2">
+                  <button id="reset-filter-btn" class="btn btn-secondary">Reset Filters</button>
+                </div>
+              </div>
             </div>
-            <div class="me-2">
-              <button id="reset-filter-btn" class="btn btn-secondary">Reset Filters</button>
-            </div>
+
+            <input name="accountId" id="accountId" value="<?php echo $accountId; ?>" hidden>
           </div>
+
         </div>
 
-        <input name="accountId" id="accountId" value="<?php echo $accountId; ?>" hidden>
+        <!-- Tab Content -->
+        <div class="tab-content">
 
-        <!-- Table and Export Button -->
-        <table class="table" id="dataTable" style="display:none;">
-          <thead>
-            <tr>
-              <th>ITEM</th>
-              <th>PAX</th>
-              <th>AMOUNT</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-          <tfoot>
-            <tr style="font-weight: bold; border-top: 2px solid #000;">
-              <td>Total Flight Sales</td>
-              <td></td>
-              <td id="totalFlightAmountCell"></td>
-            </tr>
-            <tr style="font-weight: bold;">
-              <td>Total Requests</td>
-              <td></td>
-              <td id="totalRequestAmountCell"></td>
-            </tr>
-          </tfoot>
-        </table>
+          <div class="table-container">
+
+            <!-- Table and Export Button -->
+            <table class="table-clean" id="dataTable" style="display:none;">
+              <thead>
+                <tr>
+                  <th>ITEM</th>
+                  <th>PAX</th>
+                  <th>AMOUNT</th>
+                </tr>
+              </thead>
+
+              <tbody></tbody>
+
+              <tfoot>
+                <tr style="font-weight: bold; border-top: 2px solid #000;">
+                  <td>Total Flight Sales</td>
+                  <td></td>
+                  <td id="totalFlightAmountCell"></td>
+                </tr>
+                <tr style="font-weight: bold;">
+                  <td>Total Requests</td>
+                  <td></td>
+                  <td id="totalRequestAmountCell"></td>
+                </tr>
+              </tfoot>
+            </table>
+
+          </div>
+
+          <div class="table-footer">
+            <button id="downloadReport" class="btn btn-success" style="display: none;">Download Report</button>
+          </div>
 
 
-        <button id="downloadReport" class="btn btn-success" style="display: none;">Download Report</button>
+        </div>
 
       </div>
     </div>
 
+
   </div>
+
+
+
+
+
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
   <!-- Script to Toggle Report Type Selectors -->
+   
   <script>
     // Report Type Radio Buttons
     const flightRadio = document.getElementById('flightReport');
@@ -234,7 +294,7 @@
 
   <!-- Reset Filter Script -->
   <script>
-    document.getElementById('reset-filter-btn').addEventListener('click', function(e) {
+    document.getElementById('reset-filter-btn').addEventListener('click', function (e) {
       e.preventDefault();
 
       // Reset select elements if they exist
@@ -429,28 +489,27 @@
         },
         body: JSON.stringify(payload)
       })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Failed to generate report.");
-        }
-        return response.blob();
-      })
-      .then(blob => {
-        const link = document.createElement('a');
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `SalesReport_${reportType}_${branchName}.xlsx`;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-      })
-      .catch(error => {
-        console.error("Error exporting report:", error);
-        alert("Something went wrong while exporting the sales report.");
-      });
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Failed to generate report.");
+          }
+          return response.blob();
+        })
+        .then(blob => {
+          const link = document.createElement('a');
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `SalesReport_${reportType}_${branchName}.xlsx`;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        })
+        .catch(error => {
+          console.error("Error exporting report:", error);
+          alert("Something went wrong while exporting the sales report.");
+        });
     });
   </script>
 
 
 </body>
-
 </html>
