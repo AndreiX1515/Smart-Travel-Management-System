@@ -512,8 +512,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
               <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="pills-profile-tab" data-bs-toggle="pill"
                   data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
-                  aria-selected="false">Flight Seat
-                  Tracker</button>
+                  aria-selected="false">Flight Seat Tracker</button>
               </li>
 
               <li class="nav-item" role="presentation">
@@ -593,7 +592,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
             <hr>
 
-            <div class="tab-pane-content">
+            <div class="tab-content">
               <!-- Cebu Pacific -->
               <div class="tab-pane fade show active" id="cebuPac-pane" role="tabpanel" aria-labelledby="cebuPac-tab">
                 <!-- Flight Seat -->
@@ -708,7 +707,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
               <!-- Air Asia -->
               <div class="tab-pane fade" id="airAsia-pane" role="tabpanel" aria-labelledby="airAsia-tab">
-                Air Asia Flights
+                <h3>Air Asia Flights</h3>
               </div>
             </div>
 
