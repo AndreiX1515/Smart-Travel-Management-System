@@ -233,37 +233,37 @@ require "../conn.php";
                 </div>
               </div>
 
-              <input type="hidden" id="agentCode" name="agentCode" value="<?php echo $_SESSION['clientCode']; ?>"
+              <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['clientCode']; ?>"
                 placeholder="Agent Code Input">
 
-              <input type="hidden" id="flightId" name="flightId" value="<?php echo $flightId; ?>"
+              <input type="text" id="flightId" name="flightId" value="<?php echo $flightId; ?>"
                 placeholder="Flight Id Input">
 
               <!-- Adjusted Fields -->
-              <input type="hidden" id="packagePrice" name="packagePrice"
+              <input type="text" id="packagePrice" name="packagePrice"
                 value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
 
-              <input type="hidden" name="flightPrice" id="flightPricee" placeholder="Flight Price" value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) :
+              <input type="text" name="flightPrice" id="flightPricee" placeholder="Flight Price" value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) :
                 htmlspecialchars($wholesalePrice)) : ''; ?>">
 
-              <input type="hidden" name="agentId" id="agentId" value="<?php echo $_SESSION['clientId']; ?>"
+              <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['clientId']; ?>"
                 placeholder="Agent Id">
 
-              <input type="hidden" name="agentType" placeholder="Agent Type Input"
+              <input type="text" name="agentType" placeholder="Agent Type Input"
                 value="<?php echo $_SESSION['clientType']; ?>">
 
-              <input type="hidden" name="accId" id="accId" placeholder="Account Id Input"
+              <input type="text" name="accId" id="accId" placeholder="Account Id Input"
                 value="<?php echo $_SESSION['client_accountId']; ?>">
 
 
               <!-- Adjusted Package Fields -->
-              <input type="hidden" name="packageId" id="packageId"
+              <input type="text" name="packageId" id="packageId"
                 value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
 
-              <input type="hidden" name="packageName" id="packageName"
+              <input type="text" name="packageName" id="packageName"
                 value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
 
-              <input type="hidden" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>"
+              <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>"
                 placeholder="Origin Input">
 
             </div>
@@ -566,7 +566,7 @@ require "../conn.php";
               <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
             </div>
 
-            <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
+            <input type="text" id="totalPrice" name="totalPrice" placeholder="Total Price">
           </div>
 
           <!-- Booking Summary Modal -->

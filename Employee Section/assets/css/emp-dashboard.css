@@ -1,8 +1,4 @@
-.header-counts {
-  width: 100%;
-  padding: 5px 0px 5px 5px;
-  /* border: 1px solid black; */
-}
+
 
 
 /* Main Content */
@@ -14,6 +10,8 @@
   flex-direction: column;
   overflow: hidden;
   gap: 0px; /* Add spacing between internal sections */
+
+  /* border: 1px solid black; */
 }
 
 /* Card Header */
@@ -22,21 +20,19 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 0px;
-  min-height: 20px; /* Make height adaptive but with a sensible minimum */
+  min-height: 20px; 
   background-color: #fdfdfd;
   color: #333;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.25px;
   height: 4vh;
+
   /* border: 1px solid black; */
 }
 
 
-
-
 /* Title Wrapper */
-
 .title-wrapper {
   display: flex;
   align-items: center;
@@ -113,27 +109,6 @@
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .main-content .header-counts {
   display: flex;
   flex-wrap: wrap;
@@ -144,6 +119,7 @@
   box-sizing: border-box;
   padding: 0px 0; /* Add some padding instead of fixed height */
   height: auto;
+
   /* border: 1px solid black; */
 }
 
@@ -681,9 +657,10 @@
   align-items: stretch; /* Makes children take full height */
   gap: 10px;
   width: 100%;
-  min-height: 45px;
-  margin: 5px 0px;
-  padding: 0;
+  height: 6vh;
+  padding: 5px 0px;
+
+  /* border: 1px solid black; */
 }
 
 /* Navigation Tabs Wrapper */
@@ -696,6 +673,7 @@
   flex-wrap: nowrap;
   align-items: center; /* Optional: vertically center nav pills */
   gap: 10px;
+
   /* border: 1px solid black; */
 }
 
@@ -755,6 +733,172 @@
 .content-heading .saveBtn {
   display: none;
 }
+
+
+
+
+
+
+
+
+/* ===== Folder Style Tab Container ===== */
+
+
+/* ===== Pills Adjustments ===== */
+.tab-container .nav-pills {
+  display: flex;
+  gap: 0; /* No gap so tabs are connected */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* ===== Tab Link ===== */
+.tab-container .nav-link {
+  padding: 5px 30px;
+  font-weight: 500;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-bottom: none; /* Remove bottom to connect to content */
+  border-radius: 6px 6px 0 0; /* Rounded top corners */
+  color: #333;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Hover Effect */
+.tab-container .nav-link:hover {
+  background: #eef4ff;
+  color: #007bff;
+}
+
+/* ===== Active Tab ===== */
+.tab-container .nav-link.active {
+  background: #fff;
+  color: #007bff;
+  border-color: #ddd;
+  border-bottom: 2px solid #fff; /* Seamless with content */
+  position: relative;
+  z-index: 2; /* Ensure active tab overlaps border line */
+}
+
+/* ===== Tab Header Save Button ===== */
+.tab-header {
+  margin-left: auto;
+}
+
+.tab-header .btn-save {
+  display: none;
+}
+
+
+
+/* ===== Payment, Request, Confirm Wrapper Styles ====== */
+
+
+/* Main Tab-content - Tab-pane */
+
+
+/* Tabbed Content */
+
+
+
+
+
+
+.tab-content-1 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 71vh;
+  min-height: 0; /* Ensure flex children can shrink */
+
+  /* border: 1px solid black; */
+}
+
+/* Collapse inactive tab-pane-1 completely */
+.tab-content-1 .tab-pane-1 {
+  display: none;
+}
+
+.tab-content-1 .tab-pane-1.active {
+  flex: 1; /* Fill parent */
+  display: flex; /* Needed so inner content can stretch */
+  flex-direction: column;
+  height: 100%;
+  min-height: 0; /* Prevent overflow pushing height */
+  box-sizing: border-box;
+
+  /* border: 1px solid black; */
+}
+
+.tab-pane-1 .tab-pane-content {
+  flex: 1; /* Fill .tab-pane-1 height */
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Important for proper flex height behavior */
+  
+}
+
+.tab-pane-content .tab-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  border-bottom: 1px solid #ddd;
+  padding: 0px 10px 0px 0px;
+  height: 4vh;
+}
+
+.tab-pane-content .tab-content {
+  flex: 1;
+  min-height: 0; /* Prevent pushing height of parent */
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.tab-pane-content .tab-content .tab-pane-2 {
+  flex: 1;
+  max-height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1265,12 +1409,6 @@
 }
 
 /* ===================================== */
-
-
-
-
-
-
 .payment-info {
   display: flex;
   flex-direction: column;
@@ -1347,52 +1485,6 @@
 }
 
 
-
-
-
-
-/* ======================================= */
-/* General Table Styles */
-/* ======================================= */
-/* Apply to your wrapper or globally */
-/* .table-wrapper::-webkit-scrollbar,
-.payment-wrapper::-webkit-scrollbar {
-  width: 6px; 
-  height: 6px; /
-}
-
-.table-wrapper::-webkit-scrollbar-track,
-.payment-wrapper::-webkit-scrollbar-track {
-  background: transparent; 
-}
-
-.table-wrapper::-webkit-scrollbar-thumb,
-.payment-wrapper::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2); 
-  transition: background-color 0.3s;
-}
-
-.table-wrapper::-webkit-scrollbar-thumb:hover,
-.payment-wrapper::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0, 0, 0, 0.4); 
-} */
-
-
-
-
-/* ===== Payment, Request, Confirm Wrapper Styles ====== */
-
-/* Tabbed Content */
-.tab-content {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 72vh; 
-  gap: 5px; 
-
-
-  /* border: 1px solid black; */
-}
 
 /* Header Section */
 .header-wrapper {
@@ -1880,6 +1972,61 @@
   width: 100px;
   font-size: 0.8rem;
 }
+
+
+
+
+/* F.I.T Table */
+
+/* Confirm Section */
+.FIT-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0px 0px 0px 0px;
+  width: 100%;
+
+  border: 1px solid #e0e0e0;
+}
+
+
+
+/* --------------------------------------- */
+/* Table Container */
+
+.table-container {
+  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  overflow-x: auto;
+  display: block;
+}
+
+/* --------------------------------------- */
+/* Table Base Styles */
+
+.table-container .table {
+  width: 100%;
+  font-size: 12px;
+  background-color: transparent;
+  white-space: nowrap;
+  table-layout: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
