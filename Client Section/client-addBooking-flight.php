@@ -150,7 +150,7 @@ require "../conn.php";
                           $formattedWholesalePrice = number_format($res1['wholesalePrice'], 2);
 
                           if ($agentType === 'Retailer') {
-                            $selected = ($res1['flightDepartureDate'] == $flightDepartureDate) ? 'selected' : '';
+                            $selected = ($res1['flightId'] == $flightId) ? 'selected' : '';
                             echo "<option value='{$res1['flightId']}' {$selected}>
                                         " . date('M j, Y', strtotime($res1['flightDepartureDate'])) . " || Price: ₱ {$formattedRetailPrice}
                                       </option>";
