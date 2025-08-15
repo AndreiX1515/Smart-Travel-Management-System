@@ -814,6 +814,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             <hr>
 
             <div class="tab-content">
+
               <!-- Cebu Pacific -->
               <div class="tab-pane fade show active" id="cebuPac-pane" role="tabpanel" aria-labelledby="cebuPac-tab">
                 <!-- Flight Seat -->
@@ -877,8 +878,10 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                                   LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
                                   LEFT JOIN client c ON b.accountType = 'Client' AND b.accountId = c.accountId
                                   WHERE f.flightDepartureDate >= CURDATE()
+
                                   GROUP BY f.flightId, f.is_active, f.origin, f.flightDepartureDate, f.returnDepartureDate, f.availSeats, 
                                       f.wholesalePrice, f.flightPrice, p.packagePrice, f.landPrice
+                                      
                                   ORDER BY f.flightDepartureDate";
 
                           $result = $conn->query($sql);

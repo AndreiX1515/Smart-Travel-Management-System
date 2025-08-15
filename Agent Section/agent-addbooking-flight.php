@@ -1,8 +1,9 @@
 <?php
 session_start();
 require "../conn.php";
-
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,17 +37,20 @@ require "../conn.php";
         echo "</pre>";
         ?>
 
+
+
         <?php
         if (isset($_SESSION['status'])):
-        ?>
+          ?>
           <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong></strong> <?= $_SESSION['status']; ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>
-        <?php
+          <?php
           unset($_SESSION['status']);
         endif;
         ?>
+
 
         <?php
         // Set flightId to session value by default, if available
@@ -54,52 +58,52 @@ require "../conn.php";
 
         // If GET is set, override flightId and update session
         if (isset($_GET['flightid'])) {
-            $flightId = $_GET['flightid'];
-            $_SESSION['agent_flightId'] = $flightId;
+          $flightId = $_GET['flightid'];
+          $_SESSION['agent_flightId'] = $flightId;
         }
 
         // Proceed only if flightId is available
         if ($flightId) {
-            // SQL query to join flight and package tables
-            $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
+          // SQL query to join flight and package tables
+          $sql1 = "SELECT flight.*, package.packageName, package.packagePrice
                     FROM flight
                     JOIN package ON flight.packageId = package.packageId
                     WHERE flight.flightId = ?";
 
-            // Prepare the statement
-            if ($stmt = $conn->prepare($sql1)) {
-                // Bind the flightId as an integer parameter
-                $stmt->bind_param("i", $flightId);
+          // Prepare the statement
+          if ($stmt = $conn->prepare($sql1)) {
+            // Bind the flightId as an integer parameter
+            $stmt->bind_param("i", $flightId);
 
-                // Execute the statement
-                if ($stmt->execute()) {
-                    $result = $stmt->get_result();
+            // Execute the statement
+            if ($stmt->execute()) {
+              $result = $stmt->get_result();
 
-                    // Check if a row is returned
-                    if ($result->num_rows > 0) {
-                        // Fetch the data
-                        while ($row = $result->fetch_assoc()) {
-                            $packageId = $row['packageId'];
-                            $packageName = $row['packageName'];
-                            $packagePrice = $row['packagePrice'];
-                            $origin = $row['origin'];
-                            $year = date('Y', strtotime($row['flightDepartureDate']));
-                            $month = date('F', strtotime($row['flightDepartureDate']));
-                            $flightDepartureDate = $row['flightDepartureDate'];
-                            $flightPrice = $row['flightPrice'];
-                            $wholesalePrice = $row['wholesalePrice'];
-                        }
-                    } else {
-                        echo "No flight found with that ID.";
-                    }
-                } else {
-                    echo "Error executing query: " . $stmt->error;
+              // Check if a row is returned
+              if ($result->num_rows > 0) {
+                // Fetch the data
+                while ($row = $result->fetch_assoc()) {
+                  $packageId = $row['packageId'];
+                  $packageName = $row['packageName'];
+                  $packagePrice = $row['packagePrice'];
+                  $origin = $row['origin'];
+                  $year = date('Y', strtotime($row['flightDepartureDate']));
+                  $month = date('F', strtotime($row['flightDepartureDate']));
+                  $flightDepartureDate = $row['flightDepartureDate'];
+                  $flightPrice = $row['flightPrice'];
+                  $wholesalePrice = $row['wholesalePrice'];
                 }
-                // Close the statement
-                $stmt->close();
+              } else {
+                echo "No flight found with that ID.";
+              }
             } else {
-                echo "Error preparing statement: " . $conn->error;
+              echo "Error executing query: " . $stmt->error;
             }
+            // Close the statement
+            $stmt->close();
+          } else {
+            echo "Error preparing statement: " . $conn->error;
+          }
         }
         ?>
 
@@ -161,7 +165,8 @@ require "../conn.php";
                         </div>
                       </div>
 
-                      <input type="number" class="form-control" id="totalPax" name="totalPax" min="1" placeholder="Enter Total Pax" required>
+                      <input type="number" class="form-control" id="totalPax" name="totalPax" min="1"
+                        placeholder="Enter Total Pax" required>
 
                       <span id="totalPaxError" class="text-danger"></span>
                       <!-- Error message for Total Pax -->
@@ -188,37 +193,49 @@ require "../conn.php";
 
                 <div class="row ">
                   <!-- Flight Details Input -->
-                  <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer" style="display: none;">
+                  <div class="columns col-md-12 flight-details-wrapper" id="flightDetailsContainer"
+                    style="display: none;">
+                    
                     <div class="form-group">
                       <label for="flightDetails">Flight Details for Package Only</label>
 
-                      <textarea class="form-control" id="flightDetails" name="flightDetails" placeholder="Input Flight Details Here"></textarea>
+                      <textarea class="form-control" id="flightDetails" name="flightDetails"
+                        placeholder="Input Flight Details Here"></textarea>
                     </div>
                   </div>
                 </div>
 
-                <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>" placeholder="Agent Code Input">
+                <input type="text" id="agentCode" name="agentCode" value="<?php echo $_SESSION['agentCode']; ?>"
+                  placeholder="Agent Code Input">
 
-                <input type="text" id="flightId" name="flightId" value="<?php echo $flightId; ?>" placeholder="Flight Id Input">
+                <input type="text" id="flightId" name="flightId" value="<?php echo $flightId; ?>"
+                  placeholder="Flight Id Input">
 
                 <!-- Adjusted Fields -->
-                <input type="text" id="packagePrice" name="packagePrice" value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
+                <input type="text" id="packagePrice" name="packagePrice"
+                  value="<?php echo isset($packagePrice) ? $packagePrice : ''; ?>" placeholder="Package Price">
 
                 <input type="text" name="flightPrice" id="flightPricee" placeholder="Flight Price"
                   value="<?php echo isset($agentType) ? ($agentType === 'Retailer' ? htmlspecialchars($flightPrice) : htmlspecialchars($wholesalePrice)) : ''; ?>">
 
-                <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>" placeholder="Agent Id">
+                <input type="text" name="agentId" id="agentId" value="<?php echo $_SESSION['agentId']; ?>"
+                  placeholder="Agent Id">
 
-                <input type="text" name="agentType" placeholder="Agent Type Input" value="<?php echo $_SESSION['agentType']; ?>">
-                
-                <input type="text" name="accId" id="accId" placeholder="Account Id Input" value="<?php echo $_SESSION['agent_accountId']; ?>">
+                <input type="text" name="agentType" placeholder="Agent Type Input"
+                  value="<?php echo $_SESSION['agentType']; ?>">
+
+                <input type="text" name="accId" id="accId" placeholder="Account Id Input"
+                  value="<?php echo $_SESSION['agent_accountId']; ?>">
 
                 <!-- Adjusted Package Fields -->
-                <input type="text" name="packageId" id="packageId" value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
+                <input type="text" name="packageId" id="packageId"
+                  value="<?php echo isset($packageId) ? $packageId : ''; ?>" placeholder="Package Id Input">
 
-                <input type="text" name="packageName" id="packageName" value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
+                <input type="text" name="packageName" id="packageName"
+                  value="<?php echo isset($packageName) ? $packageName : ''; ?>" placeholder="Package Name Input">
 
-                <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>" placeholder="Origin Input">
+                <input type="text" name="origin" id="origin" value="<?php echo isset($origin) ? $origin : ''; ?>"
+                  placeholder="Origin Input">
 
               </div>
 
@@ -238,7 +255,8 @@ require "../conn.php";
                   <div class="columns col-md-3">
                     <div class="form-group">
                       <label for="fName">First Name <span class="text-danger"> *</span></label>
-                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name" required>
+                      <input type="text" name="fName" id="fName" class="form-control" placeholder="Enter First Name"
+                        required>
                       <span id="fNameError" class="text-danger"></span>
                       <!-- Error message for First Name -->
                     </div>
@@ -248,7 +266,8 @@ require "../conn.php";
                   <div class="columns col-md-3">
                     <div class="form-group">
                       <label for="lName">Last Name <span class="text-danger"> *</span> </label>
-                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name" required>
+                      <input type="text" name="lName" id="lName" class="form-control" placeholder="Enter Last Name"
+                        required>
                       <span id="lNameError" class="text-danger"></span>
                       <!-- Error message for Last Name -->
                     </div>
@@ -259,7 +278,8 @@ require "../conn.php";
                     <div class="form-group">
                       <label for="mName">Middle Name <span class="text-danger mText">Type N/A if none</span></label>
 
-                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name" required>
+                      <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name"
+                        required>
 
                       <span id="mNameError" class="text-danger"></span>
                       <!-- Error message for Middle Name -->
@@ -484,7 +504,8 @@ require "../conn.php";
                           <option value="+263">Zimbabwe (+263)</option>
                         </select>
 
-                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo" placeholder="Contact Number" required>
+                        <input type="tel" class="form-control mt-2" id="contactNo" name="contactNo"
+                          placeholder="Contact Number" required>
                       </div>
 
                       <span id="contactNoError" class="text-danger"></span>
@@ -496,7 +517,8 @@ require "../conn.php";
                   <div class="columns col-md-4 email-fields">
                     <div class="form-group">
                       <label for="email">Email <span class="text-danger">*</span></label>
-                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address" required>
+                      <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address"
+                        required>
                       <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
                     </div>
                   </div>
@@ -514,22 +536,25 @@ require "../conn.php";
                 <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
               </div>
 
-              <input type="hidden" id="totalPrice" name="totalPrice" placeholder="Total Price">
+              <input type="text" id="totalPrice" name="totalPrice" placeholder="Total Price">
             </div>
 
             <!-- Booking Summary Modal -->
-            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="BookingSummaryModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
               <div class="modal-dialog modal-lg modal-dialog-centered"> <!-- Added modal-lg for a wider modal -->
                 <div class="modal-content position-relative">
 
-                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal" aria-label="Close"></button>
+                  <button type="button" class="btn-close close-outside p-4" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
 
                   <div class="modal-body">
                     <div class="confirmation-container container">
                       <!-- Logo Section -->
                       <div class="row d-flex justify-content-center align-items-center text-center mb-3 mt-2">
                         <div class="col">
-                          <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid" style="max-width: 250px; max-height: 80px;">
+                          <img src="../Assets/Logos/SMART LOGO 2 (2).png" alt="Trip Image" class="img-fluid"
+                            style="max-width: 250px; max-height: 80px;">
                         </div>
                       </div>
 
@@ -641,12 +666,12 @@ require "../conn.php";
   </script>
 
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       // Fetch flight Related Details once changed
-      $('#flightDate').on('change', function() {
+      $('#flightDate').on('change', function () {
         var flightId = $(this).val();
         var agentType = $(this).val();
-        
+
         $('#flightId').val(flightId); // Set the value of the input field
         var selectedFlight = $("#flightDate option:selected").text();
         var selectedDate = selectedFlight.split(' || ')[0].trim();
@@ -660,7 +685,7 @@ require "../conn.php";
             flightId: flightId,
             agentType: agentType
           },
-          success: function(response) {
+          success: function (response) {
             var data = JSON.parse(response); // Parse the JSON response
             console.log(data);
 
@@ -673,7 +698,7 @@ require "../conn.php";
             updateTotalPaxMax();
 
           },
-          error: function(xhr, status, error) {
+          error: function (xhr, status, error) {
             console.error('Error fetching return flight:', error); // Log the error to console
           }
         });
@@ -684,7 +709,7 @@ require "../conn.php";
       $('#land').on('change', updateTotalPaxMax); // Trigger on "Land Only" checkbox toggle
 
       // Ensure that if the user manually enters a number greater than the max, it's automatically corrected
-      $('#totalPax').on('input', function() {
+      $('#totalPax').on('input', function () {
         var maxSeats = parseInt($(this).attr('max'));
         var currentPax = parseInt($(this).val());
 
@@ -697,7 +722,7 @@ require "../conn.php";
       });
 
       // New Book Now Button Click Event
-      $('#bookNowButton').click(function(event) {
+      $('#bookNowButton').click(function (event) {
         $('#selectedPackage').text($('#packageName').val());
         $('#selectedOrigin').text($('#origin').val());
         var selectedFlight = $("#flightDate option:selected").text();
@@ -759,7 +784,7 @@ require "../conn.php";
         }
 
         // Clear error messages when inputs are focused or changed
-        $('select, input').on('focus change', function() {
+        $('select, input').on('focus change', function () {
           const errorSpanId = `#${$(this).attr('id')}Error`;
           $(this).removeClass('is-invalid'); // Remove invalid class
           $(errorSpanId).text(''); // Clear error message
@@ -812,12 +837,12 @@ require "../conn.php";
       });
 
       // Automatically recalculate total price when flightDate or totalPax changes
-      $('#flightDate, #totalPax').on('input change', function() {
+      $('#flightDate, #totalPax').on('input change', function () {
         updateTotalPrice(); // Recalculate total price
       });
 
       // Recalculate total price when "land" checkbox is toggled
-      document.getElementById('land').addEventListener('change', function() {
+      document.getElementById('land').addEventListener('change', function () {
         updateTotalPrice(); // Recalculate total price when land is checked/unchecked
       });
 
@@ -873,7 +898,7 @@ require "../conn.php";
 
       // Optional: Listen for changes in pax fields
       document.querySelectorAll('.pax').forEach((element) => {
-        element.addEventListener('input', function() {
+        element.addEventListener('input', function () {
           updateTotalPrice(); // Recalculate when pax value changes
         });
       });
@@ -900,7 +925,7 @@ require "../conn.php";
               accId: accId
             }, // Send the flightId to the server
             dataType: 'json', // Specify that we're expecting JSON response
-            success: function(response) {
+            success: function (response) {
               if (response.flightId !== null) {
                 // Extract the maxSeats from the response
                 var maxSeats = response.maxSeats;
@@ -932,7 +957,7 @@ require "../conn.php";
                 $('#maxSeats').text('Available Seats for this Flight: N/A');
               }
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
               // Log any errors
               console.error('AJAX Error:', error);
             }
