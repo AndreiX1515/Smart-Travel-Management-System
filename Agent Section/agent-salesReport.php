@@ -223,6 +223,47 @@
   <!-- SheetJS XLSX library -->
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
+  <!-- Filter Mode, and User Type -->
+  <script>
+    $(document).ready(function() {
+      $('#flightDate').select2({
+        placeholder: "Select a Flight Date",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#month').select2({
+        placeholder: "Select month",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#year').select2({
+        placeholder: "Select year",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#year-filter').select2({
+        placeholder: "Select year",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#agentSelect').select2({
+        placeholder: "Select Agent",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#clientSelect').select2({
+        placeholder: "Select Travel Agency",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+    });
+  </script>
+
   <!-- Script to Toggle Selectors -->
   <script>
     // Report Type Radio Buttons
