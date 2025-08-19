@@ -255,12 +255,6 @@
         width: '100%' // Makes it match Bootstrap form-control width
       });
 
-      $('#year-filter').select2({
-        placeholder: "Select year",
-        allowClear: true,
-        width: '100%' // Makes it match Bootstrap form-control width
-      });
-
       $('#agent-filter').select2({
         placeholder: "Select Agent",
         allowClear: true,
