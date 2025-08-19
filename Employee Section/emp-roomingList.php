@@ -296,14 +296,14 @@ session_start();
 			// Flight Date dropdown (single select)
       $('#flightDate').select2({
         placeholder: "Select a Flight Date",
-        allowClear: true,
+        allowClear: false,
         width: '100%' // Makes it match Bootstrap form-control width
       });
 
 			// Branch dropdown (single select)
 			$('#branch').select2({
-				placeholder: "Select a Branch",
-				allowClear: true,
+				placeholder: "Select Branch",
+				allowClear: false,
 				width: '100%' // Makes it match Bootstrap form-control width
 			});
 
