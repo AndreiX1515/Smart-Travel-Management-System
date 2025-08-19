@@ -13375,3 +13375,47 @@ CT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate
                  p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
         ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)
 [2025-08-15 08:48:27] Total records fetched: 126
+[2025-08-19 07:13:12] WHERE clause: 
+[2025-08-19 07:13:12] SQL Query: SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
+        b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
+        p.packageName AS PackageName, b.bookingDate, b.pax AS TotalPax,  
+        b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
+        CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
+        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
+        FROM booking b
+        JOIN branch br ON b.agentCode = br.branchAgentCode
+        JOIN flight f ON f.flightId = b.flightId
+        JOIN package p ON p.packageId = b.packageId
+        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+        LEFT JOIN company c ON a.companyId = c.companyId
+        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+        LEFT JOIN company cc ON cl.companyId = cc.companyId
+        LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+        LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+        
+        GROUP BY b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
+                 p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
+        ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)
+[2025-08-19 07:13:12] Total records fetched: 8
+[2025-08-19 07:13:12] WHERE clause: 
+[2025-08-19 07:13:12] SQL Query: SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
+        b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
+        p.packageName AS PackageName, b.bookingDate, b.pax AS TotalPax,  
+        b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
+        CONCAT(a.lName, ', ', a.fName, ' ', IFNULL(CONCAT(SUBSTRING(a.mName, 1, 1), '.'), '')) AS agentName,
+        COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
+        FROM booking b
+        JOIN branch br ON b.agentCode = br.branchAgentCode
+        JOIN flight f ON f.flightId = b.flightId
+        JOIN package p ON p.packageId = b.packageId
+        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+        LEFT JOIN company c ON a.companyId = c.companyId
+        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+        LEFT JOIN company cc ON cl.companyId = cc.companyId
+        LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+        LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+        
+        GROUP BY b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
+                 p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
+        ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)
+[2025-08-19 07:13:12] Total records fetched: 8
