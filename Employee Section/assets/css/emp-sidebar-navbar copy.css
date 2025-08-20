@@ -19,20 +19,279 @@ body {
   box-sizing: border-box;
 }
 
+/* ==================================================== */
 /* Navbar */
 .navbar {
   flex-shrink: 0;
-  height: 5vh; /* Responsive height */
+  height: 5.5vh; /* Responsive height */
   display: flex;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #343A40;
   z-index: 1000;
-  padding: 0 1rem;
+  padding: 0;
   box-sizing: border-box;
 
-  border-bottom: 1px groove gainsboro;
+  /* border: 1px solid white; */
 }
 
+/* Logo container - fixed width */
+.logo-container {
+  height: 100%;
+  width: 260px;           /* Fixed width */
+  display: flex;
+  align-items: center;    /* Vertically center logo */
+  padding: 0 7px;
+  flex-shrink: 0;         /* Prevent shrinking */
+  margin: 0;
+  box-sizing: border-box;
+
+  /* border: 1px solid white; */
+}
+
+/* Logo content - auto-adjust inside container */
+.logo-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  height: 100%;
+  padding: 0 23px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+
+  /* border: 1px solid white; */
+}
+
+.logo-content span {
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* Logo icon background */
+.logo-backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+/* Main nav container - fills remaining space */
+.navbar .main-nav-container {
+  flex: 1;                     /* Take remaining width */
+  height: 100%;                /* Match navbar height */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;   /* Align to right */
+  box-sizing: border-box;
+
+  /* border: 1px solid white; */
+}
+
+/* ==================== */
+/* Wrapper for lang + user */
+.main-nav-container .lang-user-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;  /* cleaner spacing */
+  padding: 5px 15px;
+  height: 100%;
+  width: auto;
+}
+
+
+
+/* ==================== */
+/* Language dropdown */
+.main-nav-container .nav-language-dropdown {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+
+  padding: 0px 0px;
+  border-radius: 6px;
+  border: 1px solid gainsboro;
+}
+
+.main-nav-container .nav-language-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* space between globe and text */
+  
+  background: none;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #ffffff;
+  transition: background 0.2s ease;
+}
+
+.main-nav-container .nav-language-btn i {
+  font-size: 16px; /* adjust globe size */
+}
+
+
+.main-nav-container .nav-language-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.main-nav-container .nav-language-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  background: #fff;
+  border: 1px solid #e5e7eb; /* light gray */
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  display: none;
+  min-width: 130px;
+  z-index: 20;
+}
+
+.main-nav-container .nav-language-menu li a {
+  display: block;
+  padding: 8px 14px;
+  text-decoration: none;
+  color: #374151; /* neutral gray */
+  font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.main-nav-container .nav-language-menu li a:hover {
+  background: #f9fafb; /* subtle hover */
+  color: #111827;
+}
+
+.main-nav-container .nav-language-dropdown:hover .nav-language-menu {
+  display: block;
+}
+
+
+
+/* ==================== */
+/* User dropdown */
+.main-nav-container .nav-user-dropdown {
+  position: relative;
+  display: inline-block;
+  height: 100%;
+
+  padding: 0;
+  border-radius: 6px;
+  border: 1px solid gainsboro;
+}
+
+.main-nav-container .nav-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  height: 100%;
+  padding: 6px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+  color: white;
+}
+
+.main-nav-container .nav-user-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.main-nav-container .nav-user-btn i {
+  font-size: 28px; /* larger profile icon */
+  color: #ffffff;
+}
+
+.main-nav-container .nav-user-btn .user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  line-height: 1.2;
+}
+
+.main-nav-container .nav-user-btn .user-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.main-nav-container .nav-user-btn .user-id {
+  font-size: 12px;
+  color: #d1d5db; /* Tailwind gray-300 */
+}
+
+.main-nav-container .nav-user-btn .dropdown-icon {
+  font-size: 12px;
+  color: #f3f4f6; /* subtle arrow */
+}
+
+
+
+/* User dropdown menu */
+.main-nav-container .nav-user-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 85%;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  min-width: 150px;
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 6px 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  z-index: 20;
+}
+
+.main-nav-container .nav-user-menu li a {
+  display: block;
+  padding: 8px 14px;
+  text-decoration: none;
+  color: #374151; /* neutral gray */
+  font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.main-nav-container .nav-user-menu li a:hover {
+  background: #f9fafb;
+  color: #111827;
+}
+
+.main-nav-container .nav-user-dropdown:hover .nav-user-menu {
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ==================================================== */
 /* Body Content Wrapper */
 .body-container {
   flex: 1; /* Take remaining space under navbar */
@@ -42,283 +301,33 @@ body {
   overflow: hidden;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+/* ==================================================== */
 /* Sidebar */
 .sidebar {
-  width: 260px;
+  width: 250px;
   background-color: #343A40;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 15px;
-  padding: 0;
+  padding: .6rem 0 0 0;
   overflow: hidden;
-
   /* border: 1px solid black; */
 }
-
-/* Main Content Wrapper */
-.main-content {
-  flex: 1; /* Fill available height from parent */
-  display: flex;
-  flex-direction: column;
-  background-color: gainsboro;
-  min-height: 0; /* Prevent overflow collapse */
-  box-sizing: border-box;
-
-  /* border: 1px solid black; */
-}
-
-/* Page Header (Top Fixed Height) */
-.page-header {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 6vh; /* Adjust with viewport height for zoom friendliness */
-  padding: 0 1rem;
-  background-color: white;
-  border-bottom: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-/* Page Body (Auto Expand to Fill Space) */
-.page-body {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-height: 0; /* Prevents overflow */
-  gap: 1rem;
-  padding: 1rem;
-  overflow: hidden;
-}
-
-/* Stats Row */
-.stats-row {
-  display: flex;
-  gap: 1rem;
-  flex-shrink: 0; /* Fixed height area */
-}
-
-.stat-card {
-  flex: 1;
-  padding: 1rem;
-  background: white;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  text-align: center;
-}
-
-/* Content Grid */
-.content-grid {
-  display: flex;
-  gap: 1rem;
-  flex: 1; /* Fill remaining height */
-  min-height: 0; /* Required for inner scrolls */
-}
-
-.panel {
-  display: flex;
-  flex-direction: column;
-  background: white;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  flex: 1;
-  min-height: 0;
-}
-
-.panel-header {
-  flex-shrink: 0;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #ddd;
-  font-weight: bold;
-}
-
-.panel-body {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto; /* Scroll if content overflows */
-}
-
-.chart-placeholder {
-  height: 200px;
-  background: #f5f5f5;
-  border: 1px dashed #bbb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Page Footer (Bottom Fixed Height) */
-.page-footer {
-  flex-shrink: 0;
-  height: 6vh;
-  padding: 0 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  border-top: 1px solid #ccc;
-  box-sizing: border-box;
-}
-
-
-
-
-
-
-
-/* ================== Navbar Styles ================== */
-
-
-/* Wrapper for the whole header section */
-.page-header-wrapper {
-  display: flex;
-  align-items: stretch; 
-  gap: 7px;
-  height: 100%; 
-  width: 100%;
-  padding: 0px 0px;
-  box-sizing: border-box;
-
-  /* border: 1px solid black; */
-}
-
-/* Section for back button or similar */
-.page-header-top {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  height: 100%;
-  box-sizing: border-box;
-
-  /* border: 1px solid black; */
-}
-
-/* Section for main header content */
-.page-header-content {
-  flex: 1; /* Take remaining space */
-  display: flex;
-  justify-content: flex-start; /* Align content to start */
-  align-items: center; /* Center vertically */
-  height: 100%;
-  box-sizing: border-box;
-
-  /* border: 1px solid black; */
-}
-
-
-
-
-/* Back button container */
-.back-btn-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-/* Back button style */
-.back-btn {
-  background: white;
-  color: #464646;
-  border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: .5px solid gainsboro;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.back-btn:hover {
-  background: #7c7c7c;
-  color: white;
-}
-
-
-/* Content section */
-.page-header-text {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  /* border: 1px solid black; */
-  /* margin-bottom: 5px;
-  margin-left: 5px; */
-}
-
-.page-header-text .header-title {
-  font-size: 1.2rem;
-  font-weight: 500;
-  color: #333;
-  margin-left: 5px;
-  margin-top: 8px;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ================ Miscellaneous ==================== */
-.separator {
-  border-top: 1px solid rgba(220, 220, 220, 0.493);
-  margin: 0px 10px;
-}
-
-/* ================ Sidebar ==================== */
-
-
 
 
 /* Logo header - flex container for logo and text */
-
-/* Logo container - centers content inside */
-.logo-container {
-  padding: 0px 8px;
-  flex-shrink: 0;
-  margin-bottom: 0px;
-  /* background-color: #ffffff; */
-
-  /* border-bottom: 1px solid rgba(220, 220, 220, 0.5); */
-}
-
-/* Logo content - horizontal layout */
-.logo-content {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  padding: 14px 20px;
-  flex-shrink: 0;
-  /* border: 1px solid black; */
-  
-}
-
-
 .sidebar-logo {
   width: 28px;
   height: 28px;
@@ -326,33 +335,15 @@ body {
 }
 
 
-.logo-content span {
-  color: white;
-  font-size: 0.9rem;
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-
-/* Logo icon background */
-.logo-backdrop {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-
 /* Sidebar icons */
 .sidebar .icon {
   display: flex;
-  justify-content: center; /* Center icons horizontally */
-  align-items: center; /* Center icons vertically */
+  justify-content: center; 
+  align-items: center; 
   height: 50px;
   width: 50px;
   color: white;
   font-size: 20px;
-  /* transition: transform 0.3s ease, color 0.3s ease; Smooth icon transition */
 }
 
 /* Sidebar labels */
@@ -381,8 +372,6 @@ body {
   /* border: 1px solid black; */
   padding: 0;
 }
-
-
 
 /* Logo link structure */
 .nav-link.logo-link {
@@ -414,13 +403,6 @@ body {
 }
 
 
-
-
-
-
-
-
-
 /* Navigation area - fills remaining space and scrolls if needed */
 .nav.flex-column {
   flex-grow: 1;
@@ -431,16 +413,6 @@ body {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 /* Logout section - fixed at the bottom */
 .logout {
   padding: 0 10px;
@@ -449,11 +421,8 @@ body {
   height: 8vh; /* Set a fixed height */
   display: flex;
   align-items: center;
-
-  /* border: 1px solid gainsboro; */
-
-   /* border: 1px solid black; */
 }
+
 
 /* Profile Section (top) */
 .profile-section {
@@ -470,7 +439,6 @@ body {
 
   /* border: 1px solid black; */
 }
-
 
 
 /* Left side (name & icon) */
@@ -1039,13 +1007,8 @@ body {
 
 
 
-
-
-
-/* =========================== */
-/* =========================== */
-/*================================= */
-/* Change Password Modal - Styling */
+/* ==================================================== */
+/* Change Password Modal */
 
 #changePasswordModal .modal-dialog {
   max-width: 500px;
@@ -1180,7 +1143,8 @@ body {
 
 
 
-/* =========================== */
+/* ==================================================== */
+/* Change Password OTP Modal */
 
 #otpAlert {
   display: none;
@@ -1373,8 +1337,16 @@ body {
 
 
 
-/* =========================== */
-/* Logout Confirmation Modal - Minimalist Style */
+
+
+
+
+
+
+
+
+/* ==================================================== */
+/* Logout Confirmation Modal */
 #logoutModal .modal-content {
   border-radius: 6px;
   border: none;
@@ -1522,110 +1494,644 @@ body {
 
 
 
+/* ==================================================== */
+/* Main Content Wrapper */
 
+.main-content {
+  flex: 1; /* Fill available height from parent */
+  display: flex;
+  flex-direction: column;
+  background-color: gainsboro;
+  min-height: 0; /* Prevent overflow collapse */
+  box-sizing: border-box;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width: 1736px) {
-
-}
-
-@media (max-width: 1580px) {
-  /* Sidebar */
-  .sidebar {
-    width: 200px;
-    overflow: hidden; /* Prevent sidebar scroll */
-    flex-shrink: 0;
-    /* background-color: #121212; */
-  }
-
-  .sidebar .label {
-    font-size: 12px;
-    color: white;
-    white-space: nowrap; /* Prevent label text from breaking */
-    overflow: hidden;
-    text-overflow: ellipsis; /* Adds '...' if text is too long */
-  }
-
-  /* Visa requirements labels inside the sidebar or elsewhere */
-  .visa-requirements .label {
-    font-size: 10px;
-    color: white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* Main container with vertical scroll and padding */
-  .main-container {
-    padding: 0 10px 0 20px;
-    height: 100vh; /* Makes it fill the screen */
-  }
-
-  /* Optional scrollbar style (modern browsers) */
-  .main-container::-webkit-scrollbar {
-    width: 3px;
-  }
-
-  .main-container::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-  }
-
-  /* Inner main content padding adjustment */
-  .main-content {
-    padding: 0 0px 0 0;
-    scroll-behavior: smooth; /* Smooth scrolling experience */
-    overflow-y: auto; /* Enables scrolling when content exceeds height */
-  }
-
-
-
-
-
-
-
-
-
-
-
-
+  /* border: 1px solid black; */
 }
 
 
-
-
-
-@media (max-width: 768px) {
-
-
-
+/* =============================== */ 
+/* Page Header (Top Fixed Height) */
+.page-header {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 5.5vh;                 /* Larger height */
+  min-height: 52px;            /* Comfortable minimum */
+  padding: 0 1rem;
+  background-color: #ffffff;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+  
 }
+
+/* Wrapper for the whole header section */
+.page-header-wrapper {
+  display: flex;
+  align-items: center;          
+  gap: 10px;                   /* More breathing room */
+  height: 100%; 
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Section for back button or similar */
+.page-header-top {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Back button container */
+.back-btn-wrapper {
+  display: flex;
+  align-items: center;
+  height: 100%;                
+}
+
+/* Back button style */
+.back-btn {
+  background: white;
+  color: #464646;
+  border: 1px solid transparent;   /* Invisible by default */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+}
+
+.back-btn:hover {
+  background: #7c7c7c;
+  color: #fff;
+  border-color: gainsboro;        /* Border appears on hover */
+}
+
+
+/* Section for main header content */
+.page-header-content {
+  flex: 1;
+  display: flex;
+  align-items: center;         
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Content section */
+.page-header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;     
+  height: 100%;
+}
+
+.page-header-text .header-title {
+  font-size: 1rem;             /* Slightly larger font */
+  font-weight: 600;
+  color: #4e4e4e;
+  margin: 0;                   
+  line-height: 1.2;            /* Balanced spacing */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ============================ */
+/* Page Body (Auto Expand to Fill Space) */
+.page-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; /* Prevents overflow */
+  gap: .4rem;
+  padding: .5rem .75rem;
+  overflow: hidden;
+}
+
+
+
+/* ============================ */
+/* Page-body Header */
+.page-body .page-body-header {
+  display: flex;
+  flex-wrap: wrap; /* allow wrapping */
+  gap: .5rem;
+  width: 100%;
+  justify-content: space-between; /* keep even spacing */
+}
+
+.page-body-header .header-card {
+  flex: 0 0 calc(25% - .5rem); /* fixed 4 per row */
+  height: 15vh; /* fixed height */
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+/* Header */
+.header-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.1rem .7rem;
+  height: 3.5vh;
+  font-size: 0.5rem;
+  font-weight: bold;
+
+  /* background: #f7f7f7;
+  border-bottom: 1px solid #ddd; */
+
+  border: 1px solid black;
+}
+
+
+.header-left,
+.header-right {
+  width: 50%;
+  /* border: 1px solid black; */
+}
+
+.header-card-header .header-left {
+  text-align: left;
+}
+
+
+
+.header-title-wrapper {
+  display: inline-block;
+  background: #116530;   /* pill background color */
+  color: #fff;           /* text color */
+  padding: 0.2rem .8rem;  /* pill padding */
+  border-radius: 50px;   /* makes it pill-like */
+  font-size: 0.7rem;    /* adjust size */
+  font-weight: 500;
+  white-space: nowrap;   /* keep text in one line */
+}
+
+
+
+
+
+
+/* ================================== */
+/* Card Body */
+.page-body .header-card-body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  padding: 0;
+
+  border: 1px solid black;
+}
+
+.header-card-body .tab-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: auto; /* 2 tabs x max-width (180px) */
+  padding: 0;
+  box-sizing: border-box;
+
+  /* border: 1px solid black; */
+}
+
+/* Tabs: fixed 50% of container minus gap */
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.5rem 0.5rem;
+  background-color: #f5f5f5;
+  font-size: 0.75rem;
+  height: 4.5vh;
+  flex: 0 0 calc(50% - 0.25rem); /* fixed 50% of container minus half gap */
+
+  gap: 1rem;
+  max-width: 180px;
+  min-width: 100px;
+}
+
+.tab-icon {
+  width: 35px; /* fixed width */
+  height: 100%;
+  font-size: 1.5rem;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* border: 1px solid black; */
+}
+
+.tab-info {
+  flex: 1; /* fill remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 1.1;
+
+  /* border: 1px solid black; */
+}
+
+.tab-count {
+  font-weight: bold;
+  font-size: 1rem;
+  width: 100%;
+
+  /* border: 1px solid black; */
+}
+
+.tab-name {
+  font-size: 0.65rem;
+  color: #555;
+  width: 100%;
+
+  /* border: 1px solid black; */
+}
+
+/* Optional: make container responsive */
+/* @media (max-width: 400px) {
+  .header-card-body .tab-container {
+    width: 100%; 
+  }
+  .tab {
+    flex: 0 0 calc(50% - 0.25rem);
+  }
+} */
+
+
+
+
+
+
+/* Responsive */
+/* @media (max-width: 768px) {
+  .tab {
+    flex: 1 1 calc(50% - 0.5rem);
+    max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab {
+    flex: 1 1 100%;
+  }
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ================================= */
+/* Footer */
+.header-card-footer {
+  padding: .4rem;
+  background: #f7f7f7;
+  border-top: 1px solid #ddd;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ============================ */
+/* Responsive: wrap but keep same card size */
+@media (max-width: 1024px) {
+  .page-body-header .header-card {
+    flex: 0 0 calc(50% - .5rem); /* still fixed 2 per row */
+    height: 20vh; /* same height */
+  }
+}
+
+@media (max-width: 600px) {
+  .page-body-header .header-card {
+    flex: 0 0 100%; /* 1 per row */
+    height: 20vh; /* same height */
+  }
+}
+
+
+
+
+
+
+
+/* ============================== */
+/* Page Tabs */
+.page-tabs {
+  display: flex;
+  background: transparent;
+  padding: 0 0 0px 0;
+  height: auto;
+  border-bottom: 1px solid #afafaf; /* bottom separator */
+}
+
+/* Override Bootstrap nav-tabs */
+.page-tabs .custom-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 0;
+  border-bottom: none !important; /* remove BS underline */
+}
+
+/* All tabs base style */
+.custom-tabs .nav-link {
+  border: none !important;                 /* kill all borders */
+  border-bottom: 3px solid transparent !important; 
+  border-radius: 0 !important;
+  background: transparent !important;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  height: 42px;
+  display: flex;
+  align-items: center;
+}
+
+/* Hover */
+.custom-tabs .nav-link:hover {
+  color: #111827;
+  background: #f3f4f6 !important;
+}
+
+/* Active Tab (force bottom border highlight) */
+.custom-tabs .nav-link.active {
+  color: #111827 !important;
+  /* background: #fff !important; */
+  font-weight: 600;
+  border: none !important;
+  border-bottom: 1px solid #020202 !important; /* ✅ forced visible border */
+}
+
+/* Optional icons inside */
+.custom-tabs .nav-link i {
+  font-size: 12px;
+  margin-right: 4px;
+  color: #9ca3af;
+}
+
+.custom-tabs .nav-link.active i {
+  color: #111827;
+}
+
+
+
+
+/* ======================= */
+/* Tab Content Container */
+.tab-content {
+  margin-top: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* Kill Bootstrap fade + force consistent display */
+.tab-pane {
+  display: none;
+  padding: 20px;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+.tab-pane.fade {
+  transition: none !important;
+  opacity: 1 !important;
+}
+
+
+
+/* ======================= */
+/* Content Grid */
+.content-grid {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  min-height: 0;
+
+  border: 1px solid #dee2e6;
+  border-radius: 0 10px 10px 10px;
+  padding: 0;
+  background: #ffffff;
+}
+
+.tab-pane {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+  padding: .5rem;
+  border: 1px solid black;
+  
+}
+
+
+/* Panels */
+.panel {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid black;
+  height: 100%;   /* ✅ Take full height of parent container */
+  min-height: 0;  /* ✅ Prevent overflow issues */
+}
+
+/* Header */
+.panel-header {
+  flex-shrink: 0; 
+  height: 5vh; /* Fixed height */
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+
+  border: 1px solid black;
+}
+
+/* Body adapts to remaining height */
+.panel-body {
+  flex: 1;          /* ✅ Take remaining height */
+  min-height: 0;    /* ✅ Ensures proper flexbox shrinking */
+  padding: 1rem;
+  overflow-y: auto; /* ✅ Scroll if content overflows */
+
+  border: 1px solid black;
+}
+
+
+
+
+
+.chart-placeholder {
+  height: 200px;
+  background: #f5f5f5;
+  border: 1px dashed #bbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+/* Page Footer (Bottom Fixed Height) */
+.page-footer {
+  flex-shrink: 0;
+  height: 6vh;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border-top: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+
+/* ============================================== */
+/* Flight Seat Tracker Tab */
+
+/* Panel Header */
+.flight-tabs-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0; 
+  padding: 0.5rem 0rem;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  border: 1px solid black; /* debug border */
+}
+
+.flight-tabs-header .tabs-wrapper,
+.flight-tabs-header .actions-wrapper {
+  flex: 1;          /* take equal space */
+  width: 50%;       /* enforce 50% each */
+  border: 1px solid black; /* debug border */
+}
+
+/* Optional: if you want the right side aligned to the right */
+.flight-tabs-header .actions-wrapper {
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 0px 10px;
+}
+
+
+
+
+
+/* Container for segmented tabs */
+.panel .nav-pills {
+  display: inline-flex;
+  gap: 10px;
+  background: #f3f4f6; /* light gray background */
+  border-radius: 9999px; /* fully rounded container */
+  padding: 4px 4px;
+  margin: 0; /* remove default spacing */
+  border: 1px solid #e5e7eb; /* subtle border */
+}
+
+/* Base tab style */
+.panel .nav-link {
+  border-radius: 9999px; /* round pill buttons */
+  padding: 6px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151; /* gray-700 text */
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+/* Active tab */
+.panel .nav-link.active {
+  background: #ffffff; /* white active button */
+  color: #111827; /* near black text */
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08); /* subtle shadow */
+  border: 1px solid #d1d5db;
+}
+
+/* Hover effect */
+.panel .nav-link:hover {
+  color: #111827;
+  background-color: #e5e7eb; /* light hover gray */
+}
+
+
+
+
+/* ===================================== */
+
+.flight-seat-panel .flight-tabs-body {
+  padding: 10px 0px;
+}
+
+
+
+
+
+
+
+
+/* ================ Miscellaneous ==================== */
+.separator {
+  border-top: 1px solid rgba(247, 247, 247, 0.493);
+  margin: 0px 10px;
+}
+
+
+
+
+
+
 
 
 
