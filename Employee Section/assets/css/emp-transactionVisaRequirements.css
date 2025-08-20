@@ -1,0 +1,1123 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  padding: 0;
+  width: 100%;
+  height: 100%; /* Make sure parent has height */
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  width: 100%;
+  height: 100%; /* Fill main-content */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+  gap: 10px;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 1rem 1.5rem;
+  height: 12vh; /* Fixed height */
+  border-bottom: 1px solid gainsboro;
+  flex-shrink: 0; /* Prevent it from shrinking */
+}
+
+.table-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  margin-bottom: 10px;
+  padding: 0rem 1.5rem;
+
+  /* border: 1px solid black; */
+}
+
+.navpills-container {
+  padding: 0.3rem 0;
+  /* border-bottom: 1px solid #e5e7eb; */
+  /* background-color: #f9fafb; Tailwind gray-50 */
+
+  /* border: 1px solid black; */
+}
+
+.tab-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  overflow: hidden;
+  gap: 10px; /* Add gap between header and table */
+}
+
+/* Make tab-pane fill full height with no spacing issues */
+.tab-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  gap: 10px;
+}
+
+/* Scrollable wrapper for table body */
+.table-scroll-wrapper {
+  flex: 1;
+  overflow: auto;
+}
+
+/* Optional Table Footer */
+.table-footer {
+  height: 6vh;
+  background-color: #f8f9fa; /* Bootstrap light gray (similar to table bg) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 20px;
+  border-radius: 0.3rem;
+
+  border: 1px solid #dee2e6; /* Bootstrap's light border */
+  margin-top: 0; /* Prevent spacing between table and footer */
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05); /* Subtle shadow for separation */
+}
+
+.btn-pagination {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: #0d6efd; /* Bootstrap primary blue */
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-pagination:hover {
+  background-color: #0b5ed7; /* Bootstrap's btn-primary:hover */
+}
+
+.btn-pagination:disabled {
+  background-color: #0d6efd;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 14px;
+  color: #4b5563; /* Tailwind-inspired gray-700 */
+  font-weight: 500;
+}
+
+.accent-text {
+  font-size: 13px;
+  color: #808080; /* Tailwind blue-500 */
+  opacity: 0.8;
+  font-weight: 400;
+}
+
+.last-update-wrapper .header-text {
+  font-weight: 600;
+}
+
+.transaction-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 10px 0 50px 0;
+}
+
+.transaction-container {
+  border-radius: 10px;
+  background: #fff;
+  padding: 10px 10px;
+  gap: 0;
+  margin-bottom: 7px;
+
+  border: 1px solid gainsboro;
+}
+
+.transaction-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  margin-bottom: 5px;
+  height: 3vh;
+
+  /* border: 1px solid black; */
+}
+
+.transaction-header .header-child {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 5px 20px;
+  height: 100%;
+
+  border-radius: 10px;
+
+  border: 1px solid gainsboro;
+}
+
+.transaction-header h5 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+  padding-bottom: 5px;
+}
+
+.guest-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.guest-card {
+  flex: 0 0 33.3%; /* fixed 30% width for 3 per row */
+  max-width: 30%;
+  height: 14vh;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fafafa;
+  cursor: pointer;
+
+  border: 1px solid gainsboro;
+}
+
+.guest-card:hover {
+  background: #e6f7ee;
+}
+
+.guest-id {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  font-weight: bold;
+  color: #116530;
+  min-width: 60px;
+
+  /* border: 1px solid black; */
+}
+
+.guest-pic-wrapper {
+  display: flex;
+  height: 100%;
+  width: 20%;
+
+  border: 1px solid gainsboro;
+}
+
+.guest-info {
+  line-height: 1.2;
+  width: 80%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.guest-info-name-wrapper {
+  width: 100%;
+  font-weight: 500;
+  font-size: 1.1rem;
+
+  /* border: 1px solid black; */
+}
+
+.guest-info-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  padding-bottom: 5px;
+
+  /* border: 1px solid black; */
+}
+
+.guest-info-details > div {
+  display: flex;
+  align-items: flex-start; /* vertical alignment */
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.guest-info-details > div:last-child {
+  border-bottom: none; /* remove last border */
+}
+
+.guest-info-details span {
+  font-weight: 600; /* label bold */
+  color: #000000; /* your theme color */
+  margin-right: 2px;
+}
+
+/* ======================================= */
+/* Off-Canvas */
+
+/* Offcanvas Main Structure */
+.guest-offcanvas {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  border-left: 1px solid #333;
+  overflow-x: hidden;
+  padding: 0;
+  padding-right: 15px;
+  box-sizing: content-box;
+}
+
+.guest-offcanvas {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Full available height */
+  max-height: 100vh; /* Prevent overflow beyond viewport */
+}
+
+.guest-offcanvas .offcanvas-header {
+  border-bottom: 1px solid #333;
+  background: #2a2a2a;
+  padding: 12px 16px;
+  flex-shrink: 0; /* Keeps header fixed height */
+}
+
+.guest-offcanvas .offcanvas-body {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* =========================== */
+/* Offcanvas-header */
+
+.offcanvas-header .offcanvas-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.offcanvas-header .offcanvas-body {
+  flex: 1; /* Auto expand to take remaining space */
+  overflow-y: auto;
+  padding: 15px;
+}
+
+.guest-offcanvas strong {
+  color: #cfcfcf;
+  font-weight: 600;
+}
+
+/* =========================== */
+/* Offcanvas-body */
+
+
+
+/* Guest Info Section (Main Divs) */
+.guest-info-section {
+  display: flex;
+  height: 15vh;
+  gap: 0.9rem;
+  margin-bottom: 1rem;
+
+  padding: 0.5rem;
+  background: #2a2a2a; /* subtle dark background */
+  border-radius: 8px;
+  border: 1px solid #333;
+}
+
+/* Left Side: Photo */
+.guest-info-section .guest-photo {
+  height: 100%;
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid rgba(220, 220, 220, 0.411);
+}
+
+/* Right Side: Guest Details */
+.guest-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 70%;
+  gap: 0; /* spacing between rows */
+  padding: 0;
+
+  /* border: 1px solid white; */
+}
+
+/* =========================== */
+/* Guest Photo */
+
+/* .guest-info-section .guest-photo img {
+  width: 120px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #1e1e1e;
+} */
+
+/* =========================== */
+/* Guest Details */
+
+.guest-details .detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
+  line-height: 1.5;
+  /* border: 1px solid white; */
+}
+
+.guest-details label {
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: #a3a3a3;
+  flex: 0 0 40%; /* fixed width for labels */
+}
+
+.guest-details span {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-align: right;
+  color: #ffffff;
+}
+
+.files-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* more separation between children */
+}
+
+.files-header {
+  display: flex;
+  align-items: center; /* vertical alignment */
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  padding: 4px 5px 4px 10px;
+  border-radius: 8px;
+  gap: 10px;
+
+  height: 5vh;
+  background-color: rgb(48, 48, 48);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.files-section label {
+  font-size: 0.9rem;
+  color: #666; /* more readable than #b0b0b0 */
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500; /* slight emphasis */
+}
+
+.files-section a.btn {
+  margin: 0 0.4rem 0.3rem 0; /* consistent spacing all around */
+  font-size: 0.85rem; /* slightly smaller for compactness */
+}
+
+.files-section .files-body {
+  border-radius: 8px;
+  gap: 10px;
+}
+
+.files-header .files-header-name h6 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.files-header .files-header-add button {
+  background-color: #116530;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.files-header .files-header-add button:hover {
+  background-color: #0d4a26;
+}
+
+.files-header .files-header-add button i {
+  font-size: 0.7rem;
+}
+
+/* Override Bootstrap buttons for dark mode */
+.btn-info {
+  background-color: #007bff;
+  border: none;
+}
+.btn-info:hover {
+  background-color: #0069d9;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border: none;
+}
+.btn-success:hover {
+  background-color: #218838;
+}
+
+.file-card {
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  color: #e0e0e0;
+}
+
+.file-card-header {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+
+  display: flex;
+  justify-content: flex-start; /* horizontal centering */
+  align-items: center; /* vertical centering */
+  text-align: left;
+
+  padding-bottom: 5px;
+  border-bottom: 1px solid #444;
+}
+
+/* .file-card-header .file-type {
+  padding: 0px 12px;
+
+  /* border: 1px solid white;
+  border-radius: 8px;
+  background-color: #333;
+} */
+
+.file-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1e1e1e;
+  border-radius: 6px;
+  border: 1px solid #333;
+  padding: 15px 10px 10px 10px;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.file-info label {
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.file-date {
+  font-size: 0.7rem;
+  color: #ccc;
+}
+
+.file-actions a.btn {
+  font-size: 0.8rem;
+}
+
+.no-files {
+  display: flex;
+  justify-content: center; /* horizontally center */
+  align-items: center; /* vertically center */
+  height: 100%; /* make it take full container height */
+  color: #808080; /* normal text color */
+  font-style: normal; /* ensure text is normal, not italic */
+  font-size: 1rem; /* optional: adjust size */
+  text-align: center; /* center text in case of multiple lines */
+}
+
+
+
+
+/* For OffCanvas Modal */
+
+/* Modal box */
+.modal-content {
+  background: #fff;
+  border-radius: 0.5rem;
+  width: 500px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
+}
+
+.modal-header {
+  padding: 15px 15px;
+  /* border-bottom: none; */
+}
+
+/* Header */
+.modal-header h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+/* Body */
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.modal-body > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.file-info {
+  display: flex;
+  align-items: left;
+
+  /* border: 1px solid black */
+}
+
+.file-info i {
+  font-size: 16px;
+  color: #116530; /* your theme green */
+}
+
+.file-name {
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; /* adjust */
+}
+
+.file-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-actions button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.file-actions button:hover {
+  color: #116530;
+}
+
+/* Labels & Inputs */
+.modal-label {
+  font-size: 0.8rem;
+  color: #374151;
+  margin-bottom: 0.2rem;
+  display: block;
+}
+
+.modal-select,
+.modal-input {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.4rem;
+  font-size: 0.85rem;
+  outline: none;
+}
+
+.modal-select:focus,
+.modal-input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+}
+
+/* Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.4rem;
+  padding-top: 0.5rem;
+
+  /* border: 1px solid black; */
+}
+
+.btn-cancel,
+.btn-save {
+  padding: 0.7rem 1rem;
+  border-radius: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-cancel {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-cancel:hover {
+  background: #e5e7eb;
+}
+
+.btn-save {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-save:hover {
+  background: #1d4ed8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* File Upload Wrapper - Scoped CSS */
+.file-upload-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.file-upload-wrapper .upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 30px;
+  margin-bottom: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.file-upload-wrapper .upload-box:hover {
+  border-color: #3b82f6;
+  background: #f8faff;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+}
+
+.file-upload-wrapper .upload-box.dragover {
+  border-color: #10b981;
+  background: #ecfdf5;
+  transform: scale(1.02);
+}
+
+.file-upload-wrapper .upload-icon {
+  font-size: 48px;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.file-upload-wrapper .upload-box:hover .upload-icon {
+  color: #3b82f6;
+  transform: scale(1.1);
+}
+
+.file-upload-wrapper .upload-box.dragover .upload-icon {
+  color: #10b981;
+}
+
+.file-upload-wrapper .upload-text {
+  font-size: 16px;
+  color: #475569;
+  text-align: center;
+  line-height: 1.5;
+  font-weight: 500;
+}
+
+.file-upload-wrapper .upload-subtext {
+  font-size: 14px;
+  text-align: center;
+  color: #94a3b8;
+  margin-top: 8px;
+}
+
+.file-upload-wrapper .upload-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  width: 0%;
+  transition: width 0.3s ease;
+  border-radius: 0 0 12px 12px;
+}
+
+.file-upload-wrapper .upload-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #64748b;
+}
+
+.file-upload-wrapper .upload-stats-left {
+  font-weight: 600;
+}
+
+.file-upload-wrapper .upload-stats-right {
+  display: flex;
+  gap: 16px;
+}
+
+.file-upload-wrapper .upload-stats-right button {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  font-size: 12px;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.file-upload-wrapper .upload-stats-right button:hover {
+  color: #dc2626;
+}
+
+.file-upload-wrapper #filePreview {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.file-upload-wrapper #filePreview:has(.file-card:nth-child(odd):last-child) .file-card:last-child {
+  grid-column: 1 / -1;
+}
+
+.file-upload-wrapper .file-card {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 13px;
+  min-height: 65px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.file-upload-wrapper .file-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
+}
+
+.file-upload-wrapper .file-card-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.file-upload-wrapper .file-card-icon {
+  margin-right: 10px;
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.file-upload-wrapper .file-card-icon.image {
+  color: #ffffff;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.file-upload-wrapper .file-card-icon.pdf {
+  color: #ffffff;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+}
+
+.file-upload-wrapper .file-card-icon.word {
+  color: #ffffff;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.file-upload-wrapper .file-card-icon.excel {
+  color: #ffffff;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.file-upload-wrapper .file-card-icon.default {
+  color: #64748b;
+  background: #f1f5f9;
+}
+
+.file-upload-wrapper .file-card-info {
+  flex: 1;
+  overflow: hidden;
+  margin-right: 8px;
+}
+
+.file-upload-wrapper .file-card-name {
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+  font-size: 14px;
+}
+
+.file-upload-wrapper .file-card-details {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.file-upload-wrapper .file-card-size {
+  font-weight: 500;
+}
+
+.file-upload-wrapper .file-card-type {
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.file-upload-wrapper .file-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.file-upload-wrapper .file-card-actions {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.file-upload-wrapper .file-card:hover .file-card-actions {
+  opacity: 1;
+}
+
+.file-upload-wrapper .file-card-actions button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+  color: #64748b;
+}
+
+.file-upload-wrapper .file-card-actions .preview-btn:hover {
+  background: #3b82f6;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.file-upload-wrapper .file-card-actions .delete-btn:hover {
+  background: #ef4444;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.file-upload-wrapper .file-card-actions .download-btn:hover {
+  background: #10b981;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+.file-upload-wrapper .file-card-status {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #ecfdf5;
+  color: #059669;
+}
+
+.file-upload-wrapper .file-card.uploaded {
+  background: linear-gradient(135deg, #f0fdf4 0%, #f7fee7 100%);
+  border-color: #10b981;
+}
+
+.file-upload-wrapper .file-card.new-file {
+  animation: file-upload-slideIn 0.4s ease;
+}
+
+.file-upload-wrapper .empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #94a3b8;
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.file-upload-wrapper .empty-state i {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* Animation keyframes */
+@keyframes file-upload-slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .file-upload-wrapper #filePreview {
+    grid-template-columns: 1fr;
+  }
+
+  .file-upload-wrapper #filePreview:has(.file-card:nth-child(odd):last-child) .file-card:last-child {
+    grid-column: auto;
+  }
+
+  .file-upload-wrapper .upload-stats {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+
+  .file-upload-wrapper .upload-stats-right {
+    gap: 12px;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -96,14 +96,14 @@ if (isset($_POST['itineraryDetails']) && isset($_POST['daysDetails'])) {
         }
 
         // Sheet protection settings
-        $protection = $sheet->getProtection();
-        $protection->setPassword('smtPassword123');
-        $protection->setSheet(true);
-        $protection->setSort(false);
-        $protection->setInsertRows(false);
-        $protection->setFormatCells(false);
-        $protection->setDeleteColumns(false);
-        $protection->setDeleteRows(false);
+        // $protection = $sheet->getProtection();
+        // $protection->setPassword('smtPassword123');
+        // $protection->setSheet(true);
+        // $protection->setSort(false);
+        // $protection->setInsertRows(false);
+        // $protection->setFormatCells(false);
+        // $protection->setDeleteColumns(false);
+        // $protection->setDeleteRows(false);
 
         // Transaction Number
         $transactionNumberRaw = $itineraryDetails['itineraryId'] ?? 0;
