@@ -27,16 +27,20 @@ if (isset($_GET['id'])) {
               <th>VALID ID</th>
               <th>CERTIFICATE</th>
               <th>GUARANTEED LETTER</th>
+              <th>VISA APPLICATION FORM</th>
+              <th>PASSPORT-SIZE PICTURE</th>
+              <th>ITINERARY W/ FLIGHT DETAILS</th>
+              <th>OTHERS</th>
             </tr>
           </thead>
           <tbody>
             <?php
               $sql1 = "SELECT v.requirementId, v.guestId, v.fileType, v.filePath, v.docSubType,
-                      CONCAT(g.fName, ' ', IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')), 
-                      g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName
-                    FROM visarequirements v
-                    INNER JOIN guest g ON v.guestId = g.guestId
-                    WHERE v.transactNo = '$transactionNumber'";
+                        CONCAT(g.fName, ' ', IF(g.mName = 'N/A' OR g.mName IS NULL, '', CONCAT(SUBSTRING(g.mName, 1, 1), '. ')), 
+                        g.lName, IF(g.suffix = 'N/A' OR g.suffix IS NULL, '', CONCAT(' ', g.suffix))) AS guestName
+                      FROM visarequirements v
+                      INNER JOIN guest g ON v.guestId = g.guestId
+                      WHERE v.transactNo = '$transactionNumber'";
 
               $res1 = $conn->query($sql1);
 
@@ -88,7 +92,8 @@ if (isset($_GET['id'])) {
                         <td>{$guestData['guestName']}</td>";
 
                   // Define the expected file types
-                  $fileTypes = ['passport', 'permit', 'validId', 'certificate', 'guaranteedLetter'];
+                  $fileTypes = ['passport', 'permit', 'validId', 'certificate', 'guaranteedLetter', 'visaApplicationForm', 'picture',
+                                'itinerary', 'others'];
 
                   // Generate table columns dynamically based on available/missing files
                   foreach ($fileTypes as $fileType) {
@@ -127,7 +132,7 @@ if (isset($_GET['id'])) {
                   echo "</tr>";
                 }
               } else {
-                echo "<tr><td colspan='7' style='text-align: center;'>No Visa Requirements</td></tr>";
+                echo "<tr><td colspan='11' style='text-align: center;'>No Visa Requirements</td></tr>";
               }
             ?>
           </tbody>

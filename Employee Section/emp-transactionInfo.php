@@ -71,13 +71,13 @@ session_start();
             <?php
             $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
                         COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount
-                        FROM booking b 
-                        JOIN package p ON b.packageId = p.packageId
-                        LEFT JOIN flight f ON b.flightId = f.flightId
-                        LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
-                        LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
-                        WHERE b.transactNo = '$transactionId'
-                        GROUP BY b.transactNo";
+                      FROM booking b 
+                      JOIN package p ON b.packageId = p.packageId
+                      LEFT JOIN flight f ON b.flightId = f.flightId
+                      LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                      LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                      WHERE b.transactNo = '$transactionId'
+                      GROUP BY b.transactNo";
 
             $result1 = $conn->query($query1);
 
@@ -95,6 +95,7 @@ session_start();
                 $packageName = $row1['packageName'];
                 $flightDate = $row1['flightDepartureDate'];
                 $pax = $row1['pax'];
+                $infantPax = $row1['infantPax'];
                 $status = $row1['status'];
                 $price = $row1['totalPrice'] ?? 0;
                 $requestCost = $row1['TotalRequestAmount'] ?? 0;
@@ -147,16 +148,10 @@ session_start();
                   <!-- Left Column -->
                   <div class="col-md-6 transaction-details-left">
                     <p class="mb-2"><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
-
-                    <p class="mb-2"><strong>Total Pax:</strong> <?php echo $pax; ?></p>
+                    <p class="mb-2"><strong>Number of Pax:</strong> <?php echo $pax; ?></p>
+                    <p class="mb-2"><strong>Infant Pax::</strong> <?php echo $infantPax; ?></p>
                     <p class="mb-2"><strong>Package:</strong> <?php echo $packageName; ?></p>
                     <p class="mb-2"><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
-                    <p class="mb-0 d-flex align-items-center">
-                      <strong class="me-2">Status:</strong>
-                      <span class="badge rounded-pill bg-warning text-dark p-2">
-                        <?php echo $status; ?>
-                      </span>
-                    </p>
                   </div>
 
                   <!-- Right Column -->
@@ -165,6 +160,12 @@ session_start();
                     <p class="mb-2"><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
                     <p class="mb-2"><strong>Email:</strong> <?php echo $email; ?></p>
                     <p class="mb-0"><strong>Balance: ₱</strong> <?php echo $formattedBalance; ?></p>
+                    <p class="mb-0 d-flex align-items-center">
+                      <strong class="me-2">Status:</strong>
+                      <span class="badge rounded-pill bg-warning text-dark p-2">
+                        <?php echo $status; ?>
+                      </span>
+                    </p>
                   </div>
 
                 </div>

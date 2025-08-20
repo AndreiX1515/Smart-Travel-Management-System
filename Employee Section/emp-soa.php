@@ -178,9 +178,6 @@
               </div>
             </div>
 
-
-
-
           </div>
 
         </div>
@@ -242,6 +239,35 @@
   </div>
  
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
+
+  <!-- Filter Mode, and User Type -->
+  <script>
+    $(document).ready(function() {
+      $('#flight-filter').select2({
+        placeholder: "Select Flight Date",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#month-filter').select2({
+        placeholder: "Select month",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#year-filter').select2({
+        placeholder: "Select year",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#company-filter').select2({
+        placeholder: "Select a Branch",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+    });
+  </script>
 
   <!-- Filter Script -->
   <script>
@@ -318,39 +344,37 @@
       const filterByFlight = document.getElementById("filterByFlight");
       const filterByMonth = document.getElementById("filterByMonth");
 
-      function logCurrentSelection() {
-        console.clear();
-        const filterMode = document.querySelector('input[name="filterMode"]:checked')?.value;
-        const selectedCompany = companyFilter?.value;
-        const selectedFlight = flightFilter?.value;
-        const selectedMonth = monthFilter?.value;
-        const selectedYear = yearFilter?.value;
+      // Correct container IDs
+      const flightContainer = document.getElementById("flight-container");
+      const monthContainer = document.getElementById("month-container");
+      const yearContainer = document.getElementById("year-container");
 
-        console.log("===== DEBUG LOG =====");
-        console.log("Filter Mode:", filterMode);
-        console.log("Company ID:", selectedCompany);
-        console.log("Flight Date:", selectedFlight);
-        console.log("Month:", selectedMonth);
-        console.log("Year:", selectedYear);
-        console.log("======================");
+      function updateFilterUI() {
+        const filterMode = document.querySelector('input[name="filterMode"]:checked')?.value;
+
+        if (filterMode === "flight") {
+          // Show flight, hide month/year
+          if (flightContainer) flightContainer.style.display = "block";
+          if (monthContainer) monthContainer.style.display = "none";
+          if (yearContainer) yearContainer.style.display = "none";
+        } 
+        else if (filterMode === "month") {
+          // Show month/year, hide flight
+          if (flightContainer) flightContainer.style.display = "none";
+          if (monthContainer) monthContainer.style.display = "block";
+          if (yearContainer) yearContainer.style.display = "block";
+        }
       }
 
-      // Bind change listeners
-      [companyFilter, flightFilter, monthFilter, yearFilter].forEach(el => {
+      // Radio button listeners
+      [filterByFlight, filterByMonth].forEach(el => {
         if (el) {
-          el.addEventListener('change', logCurrentSelection);
+          el.addEventListener("change", updateFilterUI);
         }
       });
 
-      [filterByFlight, filterByMonth].forEach(el => {
-        el.addEventListener('change', () => {
-          console.log("Changed filter mode to:", el.value);
-          logCurrentSelection();
-        });
-      });
-
-      // Trigger log on page load
-      logCurrentSelection();
+      // Run on page load
+      updateFilterUI();
     });
   </script>
 

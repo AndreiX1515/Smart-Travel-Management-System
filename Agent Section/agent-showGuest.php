@@ -84,12 +84,14 @@ error_reporting(E_ALL);
 
       <!-- Transact Number Session Variable -->
       <?php
-        if (isset($_SESSION['transaction_number'])) {
-          $transactionNumber = $_SESSION['transaction_number'];
-        }
-
-        if (isset($_GET['id'])) {
-          $transactionNumber = htmlspecialchars($_GET['id']);
+        // Priority: GET → SESSION
+        if (isset($_GET['transactNo'])) {
+            $transactionNumber = $_GET['transactNo'];
+        } elseif (isset($_SESSION['transaction_number'])) {
+            $transactionNumber = $_SESSION['transaction_number'];
+        } else {
+            echo "No transaction number found.";
+            exit;
         }
       ?>
 
@@ -271,7 +273,7 @@ error_reporting(E_ALL);
 
                 <!-- Add Guest Button -->
                 <button type="button" class="btn btn-primary" <?php echo $disable_button; ?>
-                  onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php'; }">
+                  onclick="if (!this.disabled) { window.location.href = 'agent-addGuest.php?transactNo=<?php echo $transactionNumber; ?>'; }">
                   Add Guest Information
                 </button>
 

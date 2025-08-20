@@ -234,6 +234,41 @@
   <!-- SheetJS XLSX library -->
   <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
+  <!-- Filter Mode, and User Type -->
+  <script>
+    $(document).ready(function() {
+      $('#flight-filter').select2({
+        placeholder: "Select a Flight Date",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#month-filter').select2({
+        placeholder: "Select month",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#year-filter').select2({
+        placeholder: "Select year",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#agent-filter').select2({
+        placeholder: "Select Agent",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#company-filter').select2({
+        placeholder: "Select Travel Agency",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+    });
+  </script>
+
   <!-- JavaScript for Date Filters -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -230,15 +230,38 @@
 
   </div>
 
-
-
-
-
-
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+  <!-- Filter Mode, and User Type -->
+  <script>
+    $(document).ready(function() {
+      $('#').select2({
+        placeholder: "Select a Flight Date",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#month').select2({
+        placeholder: "Select month",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#year').select2({
+        placeholder: "Select year",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#branchSelect').select2({
+        placeholder: "Select Branch",
+        allowClear: false,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+    });
+  </script>
+
   <!-- Script to Toggle Report Type Selectors -->
-   
   <script>
     // Report Type Radio Buttons
     const flightRadio = document.getElementById('flightReport');

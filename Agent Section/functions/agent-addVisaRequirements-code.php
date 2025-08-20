@@ -22,14 +22,23 @@ if (isset($_POST['attachVisaRequirements'])) {
     exit;
   }
 
-  // If no guests provided, abort with message
   if (empty($guestIds) || !is_array($guestIds)) {
     $_SESSION['status'] = "No guests selected for upload.";
     header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));
     exit;
   }
 
-  $documentTypes = ['passport', 'permit', 'validId', 'certificate', 'guaranteedLetter'];
+  $documentTypes = [
+    'passport',
+    'permit',
+    'validId',
+    'certificate',
+    'guaranteedLetter',
+    'visaApplicationForm',
+    'picture',
+    'itinerary',
+    'others' // include others now
+  ];
 
   function sanitizeFileName($fileName) {
     return preg_replace('/[^a-zA-Z0-9_\-.]/', '_', $fileName);
@@ -55,8 +64,8 @@ if (isset($_POST['attachVisaRequirements'])) {
         continue;
       }
 
-      // Handle non-subtype docs (passport, validId, guaranteedLetter)
-      if (!in_array($docType, ['certificate', 'permit'])) {
+      // Handle normal docs (passport, validId, guaranteedLetter, etc.)
+      if (!in_array($docType, ['certificate', 'permit', 'others'])) {
         foreach ($_FILES[$docType]['tmp_name'][$guestId] as $key => $fileTmpPath) {
           if (empty($fileTmpPath)) continue;
 
@@ -70,9 +79,9 @@ if (isset($_POST['attachVisaRequirements'])) {
           $fileSize = filesize($fileTmpPath);
 
           if ($_FILES[$docType]['error'][$guestId][$key] !== UPLOAD_ERR_OK ||
-            !in_array($fileTypeDetected, $allowedTypes) ||
-            $fileSize > $maxFileSize ||
-            !move_uploaded_file($fileTmpPath, $filePath)) {
+              !in_array($fileTypeDetected, $allowedTypes) ||
+              $fileSize > $maxFileSize ||
+              !move_uploaded_file($fileTmpPath, $filePath)) {
             $_SESSION['status'] = "Error uploading $fileName.";
             $allFilesUploaded = false;
             break 2;
@@ -80,8 +89,9 @@ if (isset($_POST['attachVisaRequirements'])) {
 
           $atLeastOneFileUploaded = true;
 
-          $stmt = $conn->prepare("INSERT INTO visarequirements (guestId, transactNo, accId, fileType, filePath, dateSubmitted, docSubType)
-                                  VALUES (?, ?, ?, ?, ?, ?, NULL)");
+          $stmt = $conn->prepare("INSERT INTO visarequirements 
+            (guestId, transactNo, accId, fileType, filePath, dateSubmitted, docSubType)
+            VALUES (?, ?, ?, ?, ?, ?, NULL)");
           if (!$stmt) {
             $_SESSION['status'] = "SQL prepare error: " . $conn->error;
             $allFilesUploaded = false;
@@ -99,9 +109,8 @@ if (isset($_POST['attachVisaRequirements'])) {
         }
       }
 
-      // Handle subtype docs (certificate, permit)
+      // Handle certificate/permit with subtypes
       if (in_array($docType, ['certificate', 'permit'])) {
-        // Expected structure: $_FILES[$docType]['tmp_name'][$guestId][<subtype>][]
         foreach ($_FILES[$docType]['tmp_name'][$guestId] as $subType => $tmpFiles) {
           foreach ($tmpFiles as $key => $fileTmpPath) {
             if (empty($fileTmpPath)) continue;
@@ -116,9 +125,9 @@ if (isset($_POST['attachVisaRequirements'])) {
             $fileSize = filesize($fileTmpPath);
 
             if ($_FILES[$docType]['error'][$guestId][$subType][$key] !== UPLOAD_ERR_OK ||
-              !in_array($fileTypeDetected, $allowedTypes) ||
-              $fileSize > $maxFileSize ||
-              !move_uploaded_file($fileTmpPath, $filePath)) {
+                !in_array($fileTypeDetected, $allowedTypes) ||
+                $fileSize > $maxFileSize ||
+                !move_uploaded_file($fileTmpPath, $filePath)) {
               $_SESSION['status'] = "Error uploading $fileName.";
               $allFilesUploaded = false;
               break 3;
@@ -127,8 +136,9 @@ if (isset($_POST['attachVisaRequirements'])) {
             $atLeastOneFileUploaded = true;
             $subTypeValue = (!empty($subType) && !is_numeric($subType)) ? $subType : null;
 
-            $stmt = $conn->prepare("INSERT INTO visarequirements (guestId, transactNo, accId, fileType, filePath, dateSubmitted, docSubType)
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO visarequirements 
+              (guestId, transactNo, accId, fileType, filePath, dateSubmitted, docSubType)
+              VALUES (?, ?, ?, ?, ?, ?, ?)");
             if (!$stmt) {
               $_SESSION['status'] = "SQL prepare error: " . $conn->error;
               $allFilesUploaded = false;
@@ -146,6 +156,58 @@ if (isset($_POST['attachVisaRequirements'])) {
           }
         }
       }
+
+      // Handle "Others" (Option 1: customName[] + files[])
+      if ($docType === "others") {
+        $customNames = $_POST['others'][$guestId]['customName'] ?? [];
+        $filesTmp    = $_FILES['others']['tmp_name'][$guestId]['files'] ?? [];
+        $filesName   = $_FILES['others']['name'][$guestId]['files'] ?? [];
+        $filesError  = $_FILES['others']['error'][$guestId]['files'] ?? [];
+        $filesSize   = $_FILES['others']['size'][$guestId]['files'] ?? [];
+
+        foreach ($filesTmp as $key => $fileTmpPath) {
+          if (empty($fileTmpPath)) continue;
+
+          $rawFileName = $filesName[$key];
+          $fileName = sanitizeFileName($rawFileName);
+          $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+          $uniqueSuffix = uniqid('', true);
+          $filePath = $uploadDir . DIRECTORY_SEPARATOR . "Others_{$guestidDate}_$uniqueSuffix.$fileExtension";
+
+          $fileTypeDetected = mime_content_type($fileTmpPath);
+          $fileSize = filesize($fileTmpPath);
+
+          if ($filesError[$key] !== UPLOAD_ERR_OK ||
+              !in_array($fileTypeDetected, $allowedTypes) ||
+              $fileSize > $maxFileSize ||
+              !move_uploaded_file($fileTmpPath, $filePath)) {
+            $_SESSION['status'] = "Error uploading $fileName.";
+            $allFilesUploaded = false;
+            break 2;
+          }
+
+          $atLeastOneFileUploaded = true;
+          $description = $customNames[$key] ?? 'Other Document';
+
+          $stmt = $conn->prepare("INSERT INTO visarequirements 
+              (guestId, transactNo, accId, fileType, filePath, dateSubmitted, docSubType)
+              VALUES (?, ?, ?, ?, ?, ?, ?)");
+          if (!$stmt) {
+            $_SESSION['status'] = "SQL prepare error: " . $conn->error;
+            $allFilesUploaded = false;
+            break 2;
+          }
+
+          $stmt->bind_param("issssss", $guestId, $transactNo, $accId, $docType, $filePath, $currentTime, $description);
+          if (!$stmt->execute()) {
+            $_SESSION['status'] = "SQL error: " . $stmt->error;
+            $allFilesUploaded = false;
+            $stmt->close();
+            break 2;
+          }
+          $stmt->close();
+        }
+      }
     }
 
     if (!$atLeastOneFileUploaded) {
@@ -156,13 +218,13 @@ if (isset($_POST['attachVisaRequirements'])) {
   }
 
   if ($allFilesUploaded) {
-      $conn->commit();
-      $_SESSION['status'] = "Visa requirements uploaded successfully.";
+    $conn->commit();
+    $_SESSION['status'] = "Visa requirements uploaded successfully.";
   } else {
-      $conn->rollback();
-      if (!isset($_SESSION['status'])) {
-          $_SESSION['status'] = "Upload failed. Transaction rolled back.";
-      }
+    $conn->rollback();
+    if (!isset($_SESSION['status'])) {
+      $_SESSION['status'] = "Upload failed. Transaction rolled back.";
+    }
   }
 
   header("Location: ../agent-showGuest.php?id=" . htmlspecialchars($transactNo));

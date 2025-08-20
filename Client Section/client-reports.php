@@ -89,25 +89,42 @@ require "../conn.php";
             </select>
           </div>
 
-          <!-- Monthly Selector -->
-          <div id="monthlySelector" class="mb-3" style="display: none;">
-            <label for="month" class="form-label">Select Month:</label>
-            <select class="form-select" name="month" id="month">
-              <option selected disabled>Select Month</option>
-              <option>January</option>
-              <option>February</option>
-              <option>March</option>
-              <option>April</option>
-              <option>May</option>
-              <option>June</option>
-              <option>July</option>
-              <option>August</option>
-              <option>September</option>
-              <option>October</option>
-              <option>November</option>
-              <option>December</option>
-            </select>
-          </div>
+          <div class="row">
+  <!-- Monthly Selector -->
+  <div id="monthlySelector" class="col-md-6 mb-3" style="display: none;">
+    <label for="month" class="form-label">Select Month:</label>
+    <select class="form-select" name="month" id="month">
+      <option selected disabled>Select Month</option>
+      <option>January</option>
+      <option>February</option>
+      <option>March</option>
+      <option>April</option>
+      <option>May</option>
+      <option>June</option>
+      <option>July</option>
+      <option>August</option>
+      <option>September</option>
+      <option>October</option>
+      <option>November</option>
+      <option>December</option>
+    </select>
+  </div>
+
+  <!-- Year Selector -->
+  <div id="yearSelector" class="col-md-6 mb-3" style="display: none;">
+    <label for="year" class="form-label">Select Year:</label>
+    <select class="form-select" name="year" id="year">
+      <option selected disabled>Select Year</option>
+      <?php
+        $currentYear = date("Y");
+        for ($i = $currentYear; $i >= $currentYear - 10; $i--) {
+          echo "<option value=\"$i\">$i</option>";
+        }
+      ?>
+    </select>
+  </div>
+</div>
+
 
           <!-- Weekly Selector -->
           <div id="weeklySelector" class="mb-3" style="display: none;">
@@ -144,6 +161,34 @@ require "../conn.php";
       </div>
     </div>
 
+  <!-- Filter Mode, and User Type -->
+  <script>
+    $(document).ready(function() {
+      $('#flightDate').select2({
+        placeholder: "Select a Flight Date",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#month').select2({
+        placeholder: "Select month",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#year').select2({
+        placeholder: "Select year",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+
+      $('#week').select2({
+        placeholder: "Select Week",
+        allowClear: true,
+        width: '100%' // Makes it match Bootstrap form-control width
+      });
+    });
+  </script>
 
   <!-- Optional Script to Toggle Selectors -->
   <script>
@@ -155,6 +200,7 @@ require "../conn.php";
     // Selectors
     const flightSelector = document.getElementById('flightSelector');
     const monthlySelector = document.getElementById('monthlySelector');
+    const yearSelector = document.getElementById('yearSelector');
     const weeklySelector = document.getElementById('weeklySelector');
 
     // Data Table and Download Report
@@ -168,6 +214,7 @@ require "../conn.php";
       {
         flightSelector.style.display = 'block';
         monthlySelector.style.display = 'none';
+        yearSelector.style.display = 'none';
         weeklySelector.style.display = 'none';
         dataTable.style.display = 'none';
         downloadReport.style.display = 'none';
@@ -179,6 +226,7 @@ require "../conn.php";
       if (monthlyRadio.checked) 
       {
         monthlySelector.style.display = 'block';
+        yearSelector.style.display = 'block';
         flightSelector.style.display = 'none';
         weeklySelector.style.display = 'none';
         dataTable.style.display = 'none';
@@ -193,6 +241,7 @@ require "../conn.php";
         weeklySelector.style.display = 'block';
         flightSelector.style.display = 'none';
         monthlySelector.style.display = 'none';
+        yearSelector.style.display = 'none';
         dataTable.style.display = 'none';
         downloadReport.style.display = 'none';
       }
@@ -208,6 +257,7 @@ require "../conn.php";
       else if (monthlyRadio.checked) 
       {
         monthlySelector.style.display = 'block';
+        yearSelector.style.display = 'block';
       } 
       else if (weeklyRadio.checked) 
       {
