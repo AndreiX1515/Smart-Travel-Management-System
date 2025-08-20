@@ -297,6 +297,10 @@
           <option value="validId">Valid ID</option>
           <option value="certificate">Certificate</option>
           <option value="guaranteedLetter">Guaranteed Letter</option>
+          <option value="visaApplicationForm">Visa Application Form</option>
+          <option value="picture">Passport-size Picture</option>
+          <option value="itinerary"> Itinerary with flight details</option>
+          <option value="others">Others</option>
         </select>
 
         <div id="fileInputs-${guestId}" class="mt-3"></div>
@@ -323,21 +327,42 @@
       return;
     }
 
-    if (selectedValue === "certificate") {
-      fileInputsContainer.insertAdjacentHTML("beforeend", getSubSelectHTML(guestId, "certificate", [
-        {value: "bankCert", label: "Bank Certificate / Statement"},
-        {value: "coe", label: "COE"},
-        {value: "com", label: "COM"},
-        {value: "birthCert", label: "Birth Certificate"}
-      ]));
-    } else if (selectedValue === "permit") {
-      fileInputsContainer.insertAdjacentHTML("beforeend", getSubSelectHTML(guestId, "permit", [
-        {value: "businessPermit", label: "Business Permit / Mayor's Permit"},
-        {value: "secDti", label: "SEC or DTI"},
-        {value: "itr", label: "ITR"}
-      ]));
-    } else {
-      fileInputsContainer.insertAdjacentHTML("beforeend", getDirectFileHTML(selectedValue, guestId, selectElement.options[selectElement.selectedIndex].text));
+    // ✅ For passport, validId, guaranteedLetter → append directly (Client behavior)
+    if (["passport", "validId", "guaranteedLetter", "visaApplicationForm", "picture", "itinerary"].includes(selectedValue)) {
+      fileInputsContainer.insertAdjacentHTML(
+        "beforeend",
+        getDirectFileHTML(selectedValue, guestId, selectElement.options[selectElement.selectedIndex].text)
+      );
+    }
+    // ✅ Certificates have subtypes
+    else if (selectedValue === "certificate") {
+      fileInputsContainer.insertAdjacentHTML(
+        "beforeend",
+        getSubSelectHTML(guestId, "certificate", [
+          { value: "bankCert", label: "Bank Certificate" },
+          { value: "bankStatement", label: "Bank Statement" },
+          { value: "coe", label: "Certificate of Employment(COE)" },
+          { value: "com", label: "Marriage Cert (COM)" },
+          { value: "birthCert", label: "Birth Certificate" }
+        ])
+      );
+    }
+    // ✅ Permits have subtypes
+    else if (selectedValue === "permit") {
+      fileInputsContainer.insertAdjacentHTML(
+        "beforeend",
+        getSubSelectHTML(guestId, "permit", [
+          { value: "businessPermit", label: "Business Permit / Mayor's Permit" },
+          { value: "secDti", label: "SEC or DTI" },
+          { value: "itr", label: "ITR" }
+        ])
+      );
+    }
+    else if (selectedValue === "others") {
+      fileInputsContainer.insertAdjacentHTML(
+        "beforeend",
+        getOthersFileHTML(guestId)
+      );
     }
 
     selectElement.selectedIndex = 0;
@@ -383,6 +408,31 @@
         </div>
         <div class="col-md-2">
           <button type="button" class="btn btn-danger btn-sm w-100" onclick="this.closest('.row').remove()">Remove</button>
+        </div>
+      </div>`;
+  }
+
+  function getOthersFileHTML(guestId) {
+    const inputId = `others-${guestId}`;
+    if (document.getElementById(inputId)) return '';
+
+    return `
+      <div class="row align-items-center mt-2 mb-2" id="${inputId}">
+        <div class="col-md-3">
+          <label class="form-label">Other Document:</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" class="form-control" 
+                name="others[${guestId}][customName][]" 
+                placeholder="Enter document description">
+        </div>
+        <div class="col-md-3">
+          <input type="file" class="form-control" 
+                name="others[${guestId}][files][]" multiple>
+        </div>
+        <div class="col-md-2">
+          <button type="button" class="btn btn-danger btn-sm w-100" 
+                  onclick="this.closest('.row').remove()">Remove</button>
         </div>
       </div>`;
   }

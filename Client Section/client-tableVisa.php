@@ -23,6 +23,10 @@
           <th>VALID ID</th>
           <th>CERTIFICATE</th>
           <th>GUARANTEED LETTER</th>
+          <th>VISA APPLICATION FORM</th>
+        <th>PASSPORT-SIZE PICTURE</th>
+        <th>ITINERARY W/ FLIGHT DETAILS</th>
+        <th>OTHERS</th>
         </tr>
       </thead>
       <tbody>
@@ -89,7 +93,8 @@
                       <td>{$guestData['guestName']}</td>";
 
               // Define the expected file types
-              $fileTypes = ['passport', 'permit', 'validId', 'certificate', 'guaranteedLetter'];
+              $fileTypes = ['passport', 'permit', 'validId', 'certificate', 'guaranteedLetter', 'visaApplicationForm', 'picture',
+                            'itinerary', 'others'];
 
               // Generate table columns dynamically based on available/missing files
               foreach ($fileTypes as $fileType) 
@@ -132,7 +137,7 @@
           } 
           else 
           {
-            echo "<tr><td colspan='7' style='text-align: center;'>No Visa Requirements</td></tr>";
+            echo "<tr><td colspan='11' style='text-align: center;'>No Visa Requirements</td></tr>";
           }
         ?>
       </tbody>
