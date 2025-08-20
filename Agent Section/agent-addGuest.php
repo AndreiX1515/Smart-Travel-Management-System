@@ -29,14 +29,14 @@ error_reporting(E_ALL);
   <div class="main-container">
 
     <?php 
-      // Check if the transaction number is set in the session
-      if (isset($_SESSION['transaction_number'])) 
-      {
-        $transactionNumber = $_SESSION['transaction_number'];
-      } 
-      else 
-      {
-        echo "No transaction number found.";
+      // Priority: GET → SESSION
+      if (isset($_GET['transactNo'])) {
+          $transactionNumber = $_GET['transactNo'];
+      } elseif (isset($_SESSION['transaction_number'])) {
+          $transactionNumber = $_SESSION['transaction_number'];
+      } else {
+          echo "No transaction number found.";
+          exit;
       }
     ?>
 

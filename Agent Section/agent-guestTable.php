@@ -1,3 +1,16 @@
+<!-- Transact Number Session Variable -->
+<?php
+  // Priority: GET → SESSION
+  if (isset($_GET['transactNo'])) {
+    $transactionNumber = $_GET['transactNo'];
+  } elseif (isset($_SESSION['transaction_number'])) {
+    $transactionNumber = $_SESSION['transaction_number'];
+  } else {
+    echo "No transaction number found.";
+    exit;
+  }
+?>
+
 <!-- Guest Table -->
 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
