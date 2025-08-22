@@ -104,10 +104,11 @@
 
 
         <div class="table-container">
+
           <?php
           $sql = "SELECT transactNo, guestId, fName, lName, mName, emailAdd, contactNo, nationality
-                    FROM guest
-                    ORDER BY transactNo DESC, guestId ASC";
+        FROM guest
+        ORDER BY transactNo DESC, guestId ASC";
           $result = $conn->query($sql);
 
           $currentTransact = null;
@@ -115,83 +116,108 @@
 
           echo '<div class="transaction-list">';
 
-          while ($row = $result->fetch_assoc()) {
-            // New transaction header
-            if ($currentTransact !== $row['transactNo']) {
-              // Close previous container if any
-              if ($currentTransact !== null) {
-                echo "</div>"; // close .guest-list
-                echo "</div>"; // close .transaction-container
+          // Check if there are any results
+          if ($result->num_rows === 0) {
+            // No data state
+            echo '<div class="no-data-container">
+            <div class="no-data-content">
+                <div class="no-data-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        <path d="M12 11h4"></path>
+                        <path d="M12 16h4"></path>
+                        <path d="M8 11h.01"></path>
+                        <path d="M8 16h.01"></path>
+                    </svg>
+                </div>
+                <h3>No Guest Records Found</h3>
+                <p>There are currently no guest transactions to display.</p>
+            </div>
+          </div>';
+          } else {
+            // Process results as usual
+            while ($row = $result->fetch_assoc()) {
+              // New transaction header
+              if ($currentTransact !== $row['transactNo']) {
+                // Close previous container if any
+                if ($currentTransact !== null) {
+                  echo "</div>"; // close .guest-list
+                  echo "</div>"; // close .transaction-container
+                }
+
+                $currentTransact = $row['transactNo'];
+                $cardCounter = 0;
+
+                echo "<div class='transaction-container' data-transact='{$row['transactNo']}'>
+                    <div class='transaction-header'>
+                        <div class='header-child bg-primary'>
+                            <h5>{$row['transactNo']}</h5>
+                        </div>
+                    </div>
+                    <div class='guest-list'>";
               }
 
-              $currentTransact = $row['transactNo'];
-              $cardCounter = 0;
+              // Guest card
+              $cardCounter++;
 
-              echo "<div class='transaction-container' data-transact='{$row['transactNo']}'>
-                            <div class='transaction-header'>
-                                <div class='header-child bg-primary'>
-                                    <h5>{$row['transactNo']}</h5>
-                                </div>
-                            </div>
-                            
-                            <div class='guest-list'>";
+              // Handle empty middle name
+              $middleName = !empty($row['mName']) ? " " . $row['mName'] : "";
+              $fullName = trim($row['fName'] . $middleName . " " . $row['lName']);
+
+              // Handle empty fields gracefully
+              $email = !empty($row['emailAdd']) ? $row['emailAdd'] : 'Not provided';
+              $contact = !empty($row['contactNo']) ? $row['contactNo'] : 'Not provided';
+              $nationality = !empty($row['nationality']) ? $row['nationality'] : 'Not provided';
+
+              echo "<div class='guest-card guest-row'
+                data-bs-toggle='offcanvas'
+                data-bs-target='#guestOffcanvas'
+                data-guest-id='{$row['guestId']}'>
+                
+                <div class='guest-pic-wrapper'>
+                    <div class='guest-photo'>
+                        <!-- This is where the passport photo will be displayed -->
+                        <!-- For now, showing initials as default state -->
+                        <div class='guest-avatar-default'>
+                            " . strtoupper(substr($row['fName'], 0, 1)) . strtoupper(substr($row['lName'], 0, 1)) . "
+                        </div>
+                    </div>
+                </div>
+                
+                <div class='guest-info'>
+                    <div class='guest-info-name-wrapper'>
+                        <strong class='guest-info-name'>{$fullName}</strong>
+                    </div>
+                    
+                    <div class='guest-info-details'>
+                        <div class='guest-info-email'>
+                            <span>Email:</span> {$email}
+                        </div>
+                        <div class='guest-info-contact'>
+                            <span>Contact:</span> {$contact}
+                        </div>
+                        <div class='guest-info-nationality'>
+                            <span>Nationality:</span> {$nationality}
+                        </div>
+                    </div>
+                </div>
+              </div>";
             }
 
-            // Guest card
-            $cardCounter++;
-
-            echo "<div class='guest-card guest-row' 
-                      style='flex: 0 0 30%; max-width: 30%;' 
-                      data-bs-toggle='offcanvas' 
-                      data-bs-target='#guestOffcanvas'
-                      data-guest-id='{$row['guestId']}'>
-                      
-                      <div class='guest-pic-wrapper'>
-                      
-                      </div>
-
-                      <div class='guest-info'>
-                          <!-- Name div -->
-                          <div class='guest-info-name-wrapper'>
-                              <strong class='guest-info-name'>"
-                                . $row['fName'] . " " . $row['mName'] . " " . $row['lName'] .
-                              "</strong>
-                          </div>
-
-                          <!-- Other info div -->
-                          <div class='guest-info-details'>
-                            <div class='guest-info-email'>
-                                <span>Email: </span> {$row['emailAdd']}  
-                            </div>
-                            <div class='guest-info-contact'>
-                                <span>Contact No.: </span> {$row['contactNo']} 
-                            </div>
-                            <div class='guest-info-nationality'>
-                                <span>Nationality: </span> {$row['nationality']} 
-                            </div>
-                          </div>
-
-                          <div class='guest-info-footer'>
-                            
-                          </div>
-
-
-                      </div>
-
-                  </div>";
-
-          }
-
-          // Close last container
-          if ($currentTransact !== null) {
-            echo "</div>"; // close .guest-list
-            echo "</div>"; // close .transaction-container
+            // Close last container
+            if ($currentTransact !== null) {
+              echo "</div>"; // close .guest-list
+              echo "</div>"; // close .transaction-container
+            }
           }
 
           echo "</div>"; // close .transaction-list
           ?>
 
+
         </div>
+
 
 
 
@@ -201,78 +227,279 @@
   </div>
 
 
-  <div class="offcanvas offcanvas-end guest-offcanvas" tabindex="-1" id="guestOffcanvas"
-    aria-labelledby="guestOffcanvasLabel">
+  <div class="offcanvas offcanvas-end guest-offcanvas" tabindex="-1" id="guestOffcanvas" aria-labelledby="guestOffcanvasLabel">
 
-    <div class="offcanvas-header">
-
-      <h5 class="offcanvas-title" id="guestOffcanvasLabel">
-        <span id="offcanvasGuestName"></span>
-      </h5>
-
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-
-      <!-- Hidden Guest ID -->
-      <p style="display: none;">
-        <strong>Guest ID:</strong> <span id="offcanvasGuestId"></span>
-      </p>
-
-    </div>
-
-    <div class="offcanvas-body">
-
-      <div class="guest-info-section">
-
-        <!-- Left: Passport Picture -->
-        <div class="guest-photo">
-          <img id="offcanvasGuestPhoto" src="https://via.placeholder.com/120x150?text=Passport">
-        </div>
-
-        <!-- Right: Guest Info -->
-        <div class="guest-details">
-          <div class="detail-row">
-            <label>Email:</label>
-            <span id="offcanvasGuestEmail"></span>
-          </div>
-
-          <div class="detail-row">
-            <label>Contact:</label>
-            <span id="offcanvasGuestContact"></span>
-          </div>
-
-          <div class="detail-row">
-            <label>Departure Date:</label>
-            <span id="offcanvasDeparture"></span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- <hr> -->
-
-      <div class="files-section">
-
-        <div class="files-header">
-          <div class="files-header-name">
-            <h6>Requirements Attached</h6>
-          </div>
-
-          <!-- Inside Offcanvas -->
-          <div class="files-header-add">
-            <button type="button" data-bs-toggle="modal" data-bs-target="#addAttachmentModal">
-              <i class="fas fa-plus"></i> Add Attachment
-            </button>
-          </div>
-
-        </div>
-
-        <div class="files-body" id="offcanvasFiles"><!-- dynamically filled --></div>
-
-      </div>
-
-    </div>
-
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="guestOffcanvasLabel">
+      <span id="offcanvasGuestName">Guest Details</span>
+    </h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    
+    <!-- Hidden Guest ID -->
+    <p style="display: none;">
+      <strong>Guest ID:</strong> <span id="offcanvasGuestId"></span>
+    </p>
   </div>
+  
+  <div class="offcanvas-body">
+    <div class="guest-info-section">
+      <!-- Left: Passport Picture -->
+      <div class="guest-photo">
+        <img id="offcanvasGuestPhoto" src="" alt="Guest Photo" style="display: none;">
+        <div class="guest-photo-placeholder" id="offcanvasPhotoPlaceholder">
+          <span id="offcanvasGuestInitials"></span>
+        </div>
+      </div>
+      
+      <!-- Right: Guest Info -->
+      <div class="guest-details">
+        <div class="detail-row">
+          <label>Email Address:</label>
+          <span id="offcanvasGuestEmail">Not provided</span>
+        </div>
+        
+        <div class="detail-row">
+          <label>Contact Number:</label>
+          <span id="offcanvasGuestContact">Not provided</span>
+        </div>
+        
+        <!-- <div class="detail-row">
+          <label>Nationality</label>
+          <span id="offcanvasGuestNationality">Not provided</span>
+        </div> -->
+        
+        <div class="detail-row">
+          <label>Departure Date:</label>
+          <span id="offcanvasDeparture">Not provided</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="files-section">
+      <div class="files-header">
+        <div class="files-header-name">
+          <h6>Documents</h6>
+        </div>
+        
+        <div class="files-header-add">
+          <button type="button" data-bs-toggle="modal" data-bs-target="#addAttachmentModal">
+            <i class="fas fa-plus"></i>
+            Add Document
+          </button>
+        </div>
+      </div>
+      
+      <div class="files-body" id="offcanvasFiles">
+        <!-- Default no files state -->
+        <div class="no-files" id="noFilesState">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+          <p>No documents uploaded yet</p>
+        </div>
+        
+        <!-- Files will be dynamically populated here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript for handling photo display -->
+<script>
+// Function to handle guest photo display
+function updateGuestPhoto(photoSrc, guestName) {
+  const photoImg = document.getElementById('offcanvasGuestPhoto');
+  const placeholder = document.getElementById('offcanvasPhotoPlaceholder');
+  const initials = document.getElementById('offcanvasGuestInitials');
+  
+  if (photoSrc && photoSrc.trim() !== '') {
+    // Show actual photo
+    photoImg.src = photoSrc;
+    photoImg.style.display = 'block';
+    placeholder.style.display = 'none';
+    
+    // Handle image load error
+    photoImg.onerror = function() {
+      photoImg.style.display = 'none';
+      placeholder.style.display = 'flex';
+      // Set initials from guest name
+      const names = guestName.split(' ');
+      const guestInitials = names.length >= 2 
+        ? names[0].charAt(0) + names[names.length - 1].charAt(0) 
+        : names[0].charAt(0) + names[0].charAt(1);
+      initials.textContent = guestInitials.toUpperCase();
+    };
+  } else {
+    // Show placeholder with initials
+    photoImg.style.display = 'none';
+    placeholder.style.display = 'flex';
+    const names = guestName.split(' ');
+    const guestInitials = names.length >= 2 
+      ? names[0].charAt(0) + names[names.length - 1].charAt(0) 
+      : names[0].charAt(0) + names[0].charAt(1);
+    initials.textContent = guestInitials.toUpperCase();
+  }
+}
+
+// Function to populate guest details (call this when opening offcanvas)
+function populateGuestDetails(guestData) {
+  // Update name and title
+  document.getElementById('offcanvasGuestName').textContent = guestData.fullName;
+  document.getElementById('offcanvasGuestId').textContent = guestData.guestId;
+  
+  // Update details
+  document.getElementById('offcanvasGuestEmail').textContent = guestData.email || 'Not provided';
+  document.getElementById('offcanvasGuestContact').textContent = guestData.contact || 'Not provided';
+  document.getElementById('offcanvasGuestNationality').textContent = guestData.nationality || 'Not provided';
+  document.getElementById('offcanvasDeparture').textContent = guestData.departure || 'Not provided';
+  
+  // Update photo
+  updateGuestPhoto(guestData.photoSrc, guestData.fullName);
+}
+
+// Function to handle files display
+function updateFilesSection(files) {
+  const filesBody = document.getElementById('offcanvasFiles');
+  const noFilesState = document.getElementById('noFilesState');
+  
+  if (!files || files.length === 0) {
+    noFilesState.style.display = 'flex';
+    // Clear any existing file cards
+    const existingCards = filesBody.querySelectorAll('.file-card');
+    existingCards.forEach(card => card.remove());
+  } else {
+    noFilesState.style.display = 'none';
+    // Populate with files (implement based on your file structure)
+    // This is where you'd create file-card elements
+  }
+}
+</script>
+
+<!-- Guest ID to Offcanvas Data Fetch -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const guestOffcanvasEl = document.getElementById('guestOffcanvas');
+      const guestOffcanvas = new bootstrap.Offcanvas(guestOffcanvasEl);
+
+      // Async function to load guest info
+      async function loadGuestInfo(guestId) {
+        // Reset guest info
+        document.getElementById("offcanvasGuestId").textContent = "Loading...";
+        document.getElementById("offcanvasGuestName").textContent = "";
+        document.getElementById("offcanvasGuestEmail").textContent = "";
+        document.getElementById("offcanvasGuestContact").textContent = "";
+        document.getElementById("offcanvasDeparture").textContent = "";
+        document.getElementById("offcanvasFiles").innerHTML = "<em>Loading files...</em>";
+
+        try {
+          let res = await fetch("../Employee Section/functions/fetchScripts/getGuestInfo.php?id=" + guestId);
+          if (!res.ok) throw new Error("Network response was not ok");
+
+          let data = await res.json();
+
+          // Populate guest info
+          document.getElementById("offcanvasGuestId").textContent = data.guestId || guestId;
+          document.getElementById("offcanvasGuestName").textContent = data.guestName || "";
+          document.getElementById("offcanvasGuestEmail").textContent = data.emailAdd || "";
+          document.getElementById("offcanvasGuestContact").textContent = data.contactNo || "";
+          document.getElementById("offcanvasDeparture").textContent = data.departureDate || "";
+
+          // Build file sections dynamically
+          let filesContainer = document.getElementById("offcanvasFiles");
+          filesContainer.innerHTML = ""; // clear old
+
+          if (data.files) {
+
+            // Loop through each file type
+            Object.keys(data.files).forEach(fileType => {
+              // Skip if this file type has no files
+              if (!data.files[fileType] || data.files[fileType].length === 0) return;
+
+              // Create wrapper for the whole file type card
+              let section = document.createElement("div");
+              section.classList.add("file-card");
+
+              // Card header (file type name)
+              let header = document.createElement("div");
+              header.classList.add("file-card-header");
+              header.innerHTML = `<span class="file-type">${fileType.charAt(0).toUpperCase() + fileType.slice(1)}</span>`;
+              section.appendChild(header);
+
+              // Card body (list of files)
+              let body = document.createElement("div");
+              body.classList.add("file-card-body");
+              section.appendChild(body);
+
+              // Counter for unnamed files
+              let unnamedCounter = 0;
+
+              // Populate files for this type
+              data.files[fileType].forEach(file => {
+                let fileItem = document.createElement("div");
+                fileItem.classList.add("file-item");
+
+                // Handle docSubType naming
+                let labelName = file.docSubType && file.docSubType.trim() !== ""
+                  ? file.docSubType
+                  : (() => {
+                    unnamedCounter++;
+                    return unnamedCounter === 1 ? "File" : `File (${unnamedCounter})`;
+                  })();
+
+                // Format dateSubmitted if exists
+                let dateText = file.dateSubmitted && file.dateSubmitted.trim() !== ""
+                  ? `<div class="file-date">Uploaded: ${file.dateSubmitted}</div>`
+                  : "";
+
+                fileItem.innerHTML = `
+                      <div class="file-info">
+                          <label class="fw-semibold">${labelName}</label>
+                          ${dateText}
+                      </div>
+
+                      <div class="file-actions">
+                          <a class="btn btn-info btn-sm text-white" href="../Agent Section/functions/view-file.php?file=${encodeURIComponent(file.filePath)}" target="_blank">View</a>
+                          <a class="btn btn-success btn-sm" href="../Employee Section/functions/download.php?file=${encodeURIComponent(file.filePath)}" target="_blank">Download</a>
+                      </div>
+                  `;
+
+                body.appendChild(fileItem);
+              });
+
+
+              // Append the section to the main container
+              filesContainer.appendChild(section);
+            });
+
+
+          }
+
+          // If no files at all
+          if (filesContainer.innerHTML.trim() === "") {
+            const noFilesDiv = document.createElement("div");
+            noFilesDiv.classList.add("no-files"); // optional for styling
+            noFilesDiv.textContent = "No files uploaded";
+            filesContainer.appendChild(noFilesDiv);
+          }
+
+
+        } catch (err) {
+          console.error("Error fetching guest:", err);
+          document.getElementById("offcanvasGuestId").textContent = "Error loading guest";
+          document.getElementById("offcanvasFiles").innerHTML = "<em>Error loading files</em>";
+        }
+      }
+
+      // Attach click event to all elements with data-guest-id
+      document.querySelectorAll("[data-guest-id]").forEach(el => {
+        el.addEventListener("click", function () {
+          let guestId = this.getAttribute("data-guest-id");
+          loadGuestInfo(guestId);   // load guest data
+          guestOffcanvas.show();    // show offcanvas
+        });
+      });
+    });
+  </script>
 
 
   <!-- Add Attachment Modal in OffCanvas -->
@@ -293,27 +520,27 @@
 
           <!-- Select Section -->
           <div class="file-type-wrapper">
-              <label class="form-label">Document Type</label>
-              <select class="form-select form-select-sm">
-                  <option value="">Choose...</option>
-                  <?php
-                 
-                  // Fetch distinct fileType
-                  $sql = "SELECT DISTINCT fileType FROM visarequirements ORDER BY fileType ASC";
-                  $result = $conn->query($sql);
+            <label class="form-label">Document Type</label>
+            <select class="form-select form-select-sm">
+              <option value="">Choose...</option>
+              <?php
 
-                  if ($result->num_rows > 0) {
-                      while ($row = $result->fetch_assoc()) {
-                          $fileType = htmlspecialchars($row['fileType']);
-                          echo "<option value='$fileType'>" . ucfirst($fileType) . "</option>";
-                      }
-                  } else {
-                      echo "<option value=''>No types found</option>";
-                  }
+              // Fetch distinct fileType
+              $sql = "SELECT DISTINCT fileType FROM visarequirements ORDER BY fileType ASC";
+              $result = $conn->query($sql);
 
-                  $conn->close();
-                  ?>
-              </select>
+              if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                  $fileType = htmlspecialchars($row['fileType']);
+                  echo "<option value='$fileType'>" . ucfirst($fileType) . "</option>";
+                }
+              } else {
+                echo "<option value=''>No types found</option>";
+              }
+
+              $conn->close();
+              ?>
+            </select>
           </div>
 
 
@@ -581,8 +808,8 @@
 
 
 
-    
-    
+
+
     // Upload single file
     function uploadSingleFile(file, index) {
       const formData = new FormData();
@@ -839,131 +1066,7 @@
 
 
 
-  <!-- Guest ID to Offcanvas Data Fetch -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const guestOffcanvasEl = document.getElementById('guestOffcanvas');
-      const guestOffcanvas = new bootstrap.Offcanvas(guestOffcanvasEl);
-
-      // Async function to load guest info
-      async function loadGuestInfo(guestId) {
-        // Reset guest info
-        document.getElementById("offcanvasGuestId").textContent = "Loading...";
-        document.getElementById("offcanvasGuestName").textContent = "";
-        document.getElementById("offcanvasGuestEmail").textContent = "";
-        document.getElementById("offcanvasGuestContact").textContent = "";
-        document.getElementById("offcanvasDeparture").textContent = "";
-        document.getElementById("offcanvasFiles").innerHTML = "<em>Loading files...</em>";
-
-        try {
-          let res = await fetch("../Employee Section/functions/fetchScripts/getGuestInfo.php?id=" + guestId);
-          if (!res.ok) throw new Error("Network response was not ok");
-
-          let data = await res.json();
-
-          // Populate guest info
-          document.getElementById("offcanvasGuestId").textContent = data.guestId || guestId;
-          document.getElementById("offcanvasGuestName").textContent = data.guestName || "";
-          document.getElementById("offcanvasGuestEmail").textContent = data.emailAdd || "";
-          document.getElementById("offcanvasGuestContact").textContent = data.contactNo || "";
-          document.getElementById("offcanvasDeparture").textContent = data.departureDate || "";
-
-          // Build file sections dynamically
-          let filesContainer = document.getElementById("offcanvasFiles");
-          filesContainer.innerHTML = ""; // clear old
-
-          if (data.files) {
-
-            // Loop through each file type
-            Object.keys(data.files).forEach(fileType => {
-              // Skip if this file type has no files
-              if (!data.files[fileType] || data.files[fileType].length === 0) return;
-
-              // Create wrapper for the whole file type card
-              let section = document.createElement("div");
-              section.classList.add("file-card");
-
-              // Card header (file type name)
-              let header = document.createElement("div");
-              header.classList.add("file-card-header");
-              header.innerHTML = `<span class="file-type">${fileType.charAt(0).toUpperCase() + fileType.slice(1)}</span>`;
-              section.appendChild(header);
-
-              // Card body (list of files)
-              let body = document.createElement("div");
-              body.classList.add("file-card-body");
-              section.appendChild(body);
-
-              // Counter for unnamed files
-              let unnamedCounter = 0;
-
-              // Populate files for this type
-              data.files[fileType].forEach(file => {
-                let fileItem = document.createElement("div");
-                fileItem.classList.add("file-item");
-
-                // Handle docSubType naming
-                let labelName = file.docSubType && file.docSubType.trim() !== ""
-                  ? file.docSubType
-                  : (() => {
-                    unnamedCounter++;
-                    return unnamedCounter === 1 ? "File" : `File (${unnamedCounter})`;
-                  })();
-
-                // Format dateSubmitted if exists
-                let dateText = file.dateSubmitted && file.dateSubmitted.trim() !== ""
-                  ? `<div class="file-date">Uploaded: ${file.dateSubmitted}</div>`
-                  : "";
-
-                fileItem.innerHTML = `
-                      <div class="file-info">
-                          <label class="fw-semibold">${labelName}</label>
-                          ${dateText}
-                      </div>
-
-                      <div class="file-actions">
-                          <a class="btn btn-info btn-sm text-white" href="../Agent Section/functions/view-file.php?file=${encodeURIComponent(file.filePath)}" target="_blank">View</a>
-                          <a class="btn btn-success btn-sm" href="../Employee Section/functions/download.php?file=${encodeURIComponent(file.filePath)}" target="_blank">Download</a>
-                      </div>
-                  `;
-
-                body.appendChild(fileItem);
-              });
-
-
-              // Append the section to the main container
-              filesContainer.appendChild(section);
-            });
-
-
-          }
-
-          // If no files at all
-          if (filesContainer.innerHTML.trim() === "") {
-            const noFilesDiv = document.createElement("div");
-            noFilesDiv.classList.add("no-files"); // optional for styling
-            noFilesDiv.textContent = "No files uploaded";
-            filesContainer.appendChild(noFilesDiv);
-          }
-
-
-        } catch (err) {
-          console.error("Error fetching guest:", err);
-          document.getElementById("offcanvasGuestId").textContent = "Error loading guest";
-          document.getElementById("offcanvasFiles").innerHTML = "<em>Error loading files</em>";
-        }
-      }
-
-      // Attach click event to all elements with data-guest-id
-      document.querySelectorAll("[data-guest-id]").forEach(el => {
-        el.addEventListener("click", function () {
-          let guestId = this.getAttribute("data-guest-id");
-          loadGuestInfo(guestId);   // load guest data
-          guestOffcanvas.show();    // show offcanvas
-        });
-      });
-    });
-  </script>
+  
 
 
 
