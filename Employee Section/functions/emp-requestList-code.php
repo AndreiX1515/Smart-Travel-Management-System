@@ -3,50 +3,55 @@ session_start();
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require "../../conn.php"; // Move up to the parent directory
+require "../../conn.php";
 
-if (isset($_POST['submit'])) 
-{
-    $requestTitle = $_POST['requestTitle'];
-    $requestDetails = $_POST['requestDetails'];
-    $requestAmount = $_POST['requestAmount'];
+if (isset($_POST['submit'])) {
+  $requestTitle   = $_POST['requestTitle'] ?? null;  // existing concernId
+  $newRequestTitle = trim($_POST['newRequestTitle'] ?? ""); // new concern name
+  $requestDetails = $_POST['requestDetails'] ?? "";
+  $requestAmount  = $_POST['requestAmount'] ?? 0;
 
-    // Start a transaction
+  try {
     $conn->begin_transaction();
 
-    // Prepare the SQL statement for inserting into concerndetails
-    $sql1 = "INSERT INTO concerndetails (concernId, details, price) VALUES (?, ?, ?)";
-    $stmt1 = $conn->prepare($sql1);
+    // Step 1: If user entered new request title, insert into concern
+    if (!empty($newRequestTitle)) {
+      $sqlConcern = "INSERT INTO concern (concernTitle) VALUES (?)";
+      $stmtConcern = $conn->prepare($sqlConcern);
+      $stmtConcern->bind_param("s", $newRequestTitle);
 
-    if (!$stmt1) 
-    {
-      $_SESSION['status'] = "SQL preparation failed: " . $conn->error;
-      $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
-      $conn->rollback();  // Rollback transaction if preparation fails
-      header("Location: ../emp-requestList.php");
-      exit(0);
+      if (!$stmtConcern->execute()) {
+        throw new Exception("Failed to insert new request title: " . $stmtConcern->error);
+      }
+
+      // Use the new concernId
+      $concernId = $stmtConcern->insert_id;
+    } else {
+      // Use existing concernId from dropdown
+      $concernId = $requestTitle;
     }
 
-    // Bind parameters correctly (concernId is expected to be an integer)
-    $stmt1->bind_param('isd', $requestTitle, $requestDetails, $requestAmount);
-    
-    // Execute the query
-    if (!$stmt1->execute()) 
-    {
-      $_SESSION['status'] = "Database error: " . $stmt1->error;
-      $_SESSION['toastColor'] = 'text-bg-danger'; // Red color for error
-      $conn->rollback();  // Rollback the transaction on failure
-      header("Location: ../emp-requestList.php");
-      exit(0);
+    // Step 2: Insert into concerndetails
+    $sqlDetails = "INSERT INTO concerndetails (concernId, details, price) VALUES (?, ?, ?)";
+    $stmtDetails = $conn->prepare($sqlDetails);
+    $stmtDetails->bind_param("isd", $concernId, $requestDetails, $requestAmount);
+
+    if (!$stmtDetails->execute()) {
+      throw new Exception("Failed to insert concern details: " . $stmtDetails->error);
     }
 
-    // Commit the transaction if no errors
     $conn->commit();
 
-    $_SESSION['status'] = "New Request Item has been added";
-    $_SESSION['toastColor'] = 'text-bg-secondary'; // Blue color for Submitted status
+    $_SESSION['status'] = "Request has been added successfully.";
+    $_SESSION['toastColor'] = 'text-bg-secondary';
 
-    header("Location: ../emp-requestList.php");
-    exit(0);
+  } catch (Exception $e) {
+    $conn->rollback();
+    $_SESSION['status'] = "Error: " . $e->getMessage();
+    $_SESSION['toastColor'] = 'text-bg-danger';
+  }
+
+  header("Location: ../emp-requestList.php");
+  exit(0);
 }
 ?>
