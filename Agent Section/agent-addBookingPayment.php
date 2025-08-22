@@ -48,9 +48,9 @@ session_start();
       // Check if 'id' is passed in the URL
       if (isset($_GET['id'])) {
         $transactionNumber = htmlspecialchars($_GET['id']);
+        $_SESSION['transaction_number'] = $transactionNumber; // Store in session for later use
       }
     ?>
-
 
     <div class="main-content">
 
@@ -201,11 +201,11 @@ session_start();
             $formattedPrice = "0.00";
 
             $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice, b.infantPax, p.packageName ,
-                                            IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') AS onboardFlightSched
-                                          FROM booking b 
-                                          JOIN flight f ON b.flightId = f.flightId 
-                                          JOIN package p ON b.packageId = p.packageId 
-                                          WHERE b.transactNo = '$transactionNumber'");
+                                          IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') AS onboardFlightSched
+                                        FROM booking b 
+                                        JOIN flight f ON b.flightId = f.flightId 
+                                        JOIN package p ON b.packageId = p.packageId 
+                                        WHERE b.transactNo = '$transactionNumber'");
 
             if ($sql1 && mysqli_num_rows($sql1) > 0) {
               while ($res1 = mysqli_fetch_array($sql1)) {
@@ -220,7 +220,6 @@ session_start();
                 $pax = $res1['pax'];
                 $infantPax = $res1['infantPax'];
               }
-
             } else {
               echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
             }
