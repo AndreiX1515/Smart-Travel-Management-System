@@ -129,10 +129,11 @@
 
               echo "<div class='transaction-container' data-transact='{$row['transactNo']}'>
                             <div class='transaction-header'>
-                                <div class='header-child'>
+                                <div class='header-child bg-primary'>
                                     <h5>{$row['transactNo']}</h5>
                                 </div>
                             </div>
+                            
                             <div class='guest-list'>";
             }
 
@@ -145,14 +146,16 @@
                       data-bs-target='#guestOffcanvas'
                       data-guest-id='{$row['guestId']}'>
                       
-                      <div class='guest-pic-wrapper'></div>
+                      <div class='guest-pic-wrapper'>
+                      
+                      </div>
 
                       <div class='guest-info'>
                           <!-- Name div -->
                           <div class='guest-info-name-wrapper'>
                               <strong class='guest-info-name'>"
-              . $row['fName'] . " " . $row['mName'] . " " . $row['lName'] .
-              "</strong>
+                                . $row['fName'] . " " . $row['mName'] . " " . $row['lName'] .
+                              "</strong>
                           </div>
 
                           <!-- Other info div -->
@@ -166,7 +169,11 @@
                             <div class='guest-info-nationality'>
                                 <span>Nationality: </span> {$row['nationality']} 
                             </div>
-                        </div>
+                          </div>
+
+                          <div class='guest-info-footer'>
+                            
+                          </div>
 
 
                       </div>
@@ -198,16 +205,18 @@
     aria-labelledby="guestOffcanvasLabel">
 
     <div class="offcanvas-header">
+
       <h5 class="offcanvas-title" id="guestOffcanvasLabel">
         <span id="offcanvasGuestName"></span>
       </h5>
-      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 
       <!-- Hidden Guest ID -->
       <p style="display: none;">
         <strong>Guest ID:</strong> <span id="offcanvasGuestId"></span>
       </p>
+
     </div>
 
     <div class="offcanvas-body">
@@ -349,8 +358,6 @@
 
           </div>
 
-
-
         </div>
 
         <div class="modal-footer">
@@ -364,7 +371,7 @@
 
 
   <!-- Page Load Modal Open -->
-  <script>
+  <!-- <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Get modal element
       var modalEl = document.getElementById("addAttachmentModal");
@@ -375,7 +382,7 @@
       // Show on page load
       modal.show();
     });
-  </script>
+  </script> -->
 
 
   <!-- Modal for Offcanvas Script -->
