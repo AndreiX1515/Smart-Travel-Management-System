@@ -25,6 +25,7 @@ session_start();
   <div class="main-container">  
 
     <div class="navbar">
+
       <div class="page-header-wrapper">
 
         <!-- <div class="page-header-top">
@@ -42,8 +43,11 @@ session_start();
         </div>
 
       </div>
+
     </div>
 
+
+    
     <?php
       // Check if 'id' is passed in the URL
       if (isset($_GET['id'])) {

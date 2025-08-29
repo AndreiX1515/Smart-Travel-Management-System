@@ -899,7 +899,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                               echo '<td class="fw-bolder">' . $row['AdditionalSeats'] . '</td>';
                               echo '<td>₱ ' . number_format($row['RetailPrice'], 2) . '</td>';
                               echo '<td>
-                                    <a href="../Agent Section/agent-revisedAddBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn-bookNow">Book Now</a></td>';
+                                    <a href="../Agent Section/addBooking-flight.php?flightid=' . urlencode($row['flightId']) . '" class="btn-bookNow">Book Now</a></td>';
                               echo '</tr>';
                             }
                           } else {

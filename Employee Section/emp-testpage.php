@@ -20,6 +20,8 @@ error_reporting(E_ALL);
   <?php include '../Employee Section/includes/emp-head.php' ?>
 
   <!-- <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard.css?v=<?php echo time(); ?>"> -->
+
+
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar copy.css?v=<?php echo time(); ?>">
 </head>
 
@@ -41,38 +43,49 @@ error_reporting(E_ALL);
 
         <!-- Language Dropdown -->
         <div class="nav-language-dropdown">
-          <button class="nav-language-btn">
-            <i class="fas fa-globe"></i> EN ▾
-          </button>
+
+          <div class="nav-language-btn">
+            <div class="icon"><i class="fas fa-globe"></i></div>
+            <div class="label">EN</div>
+            <div class="dropdown-icon">▾</div>
+          </div>
+
           <ul class="nav-language-menu">
             <li><a href="#">English</a></li>
             <li><a href="#">한국어 (KR)</a></li>
             <li><a href="#">日本語</a></li>
             <li><a href="#">中文</a></li>
           </ul>
+
         </div>
+
 
 
         <div class="seperator"></div>
 
         <!-- User Dropdown -->
         <div class="nav-user-dropdown">
-          <button class="nav-user-btn">
-            <i class="fas fa-user-circle"></i> 
+          <div class="nav-user-btn">
+            <div class="icon">
+              <i class="fas fa-user-circle"></i>
+            </div>
             <div class="user-info">
               <span class="user-name">Elaine Santoyo</span>
               <span class="user-id">E001</span>
             </div>
             <div class="dropdown-icon">
-                <span>▾</span>
+              <span>▾</span>
             </div>
-          </button>
+          </div>
+
           <ul class="nav-user-menu">
             <li><a href="#">Profile</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Logout</a></li>
           </ul>
         </div>
+
+
 
       </div>
     </div>
@@ -213,7 +226,6 @@ error_reporting(E_ALL);
             </li>
           </ul>
 
-
         </div>
 
         <div class="tab-content content-grid" id="myTabContent">
@@ -223,9 +235,9 @@ error_reporting(E_ALL);
             <div class="panel flight-seat-panel">
 
               <div class="panel-header flight-tabs-header">
-  
-                <!-- Left side (Tabs) -->
+
                 <div class="tabs-wrapper">
+
                   <ul class="nav nav-pills" id="segmentedTab" role="tablist">
                     <li class="nav-item" role="presentation">
                       <button class="nav-link active" id="preview-tab" data-bs-toggle="tab" data-bs-target="#preview" type="button" role="tab">
@@ -238,29 +250,32 @@ error_reporting(E_ALL);
                       </button>
                     </li>
                   </ul>
+
                 </div>
 
-                <!-- Right side (Extra content) -->
                 <div class="actions-wrapper">
-                  <button class="btn btn-sm btn-outline-secondary">Save</button>
+                  <button class="btn btn-sm btn-primary" hidden>Save</button>
                 </div>
 
               </div>
 
               <div class="panel-body flight-tabs-body">
-                <div class="tab-content" id="segmentedTabContent">
+
+                <div class="tab-content tab-content-2" id="segmentedTabContent">
+
                   <div class="tab-pane fade show active" id="preview" role="tabpanel">
                     <p>Preview content goes here...</p>
                   </div>
+
                   <div class="tab-pane fade" id="code" role="tabpanel">
                     <p>Code content goes here...</p>
                   </div>
+
                 </div>
+
               </div>
 
             </div>
-
-
           </div>
 
           <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel">
@@ -290,7 +305,6 @@ error_reporting(E_ALL);
         </div>
 
       </div>
-
 
     </div>
   </div>

@@ -17,17 +17,7 @@ body {
   width: 100%;
 }
 
-/* Main Container */
-.main-container {
-  flex: 1;
-  padding: 0 15px 0 25px;
-  background-color: rgba(245, 246, 248, 0.137);
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
 
-
-}
 
 /* Sidebar Styling */
 .sidebar {
@@ -41,20 +31,48 @@ body {
   padding: 0px 0px;
 }
 
-/* Main Content */
+
+/* Main Container */
+.main-container {
+  flex: 1;
+  background-color: rgba(245, 246, 248, 0.137);
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  height: 100vh; /* Ensure full viewport height */
+}
+
+.navbar {
+  display: flex;
+  align-items: stretch;
+  height: 6vh;
+  width: 100%;
+  padding: 0px 25px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  box-sizing: border-box;
+
+  /* border: 1px solid black; */
+}
+
+/* Main Content - Takes remaining height */
 .main-content {
   margin-top: 6vh;
   width: 100%;
-  height: calc(98vh - 6vh); /* Ensure it has a height to stretch into */
-  padding: 0;
+  height: calc(100vh - 6vh); /* Full height minus navbar */
+  padding: 0px 20px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  gap: 0;
+  overflow: hidden; /* Prevent main-content from scrolling */
 
-  
+  box-sizing: border-box;
+
   /* border: 1px solid black; */
 }
+
+
+
 
 .content-container {
   display: flex;
@@ -64,19 +82,6 @@ body {
   /* border: 1px solid black; */
 }
 
-.navbar {
-  display: flex;
-  align-items: stretch; /* Stretch children vertically */
-  height: 6vh;
-  width: 86.5%;
-  padding: 0px 0px; /* Remove excess padding for more precise layout */
-  position: fixed;
-  top: 0;
-  z-index: 1000;
-  box-sizing: border-box;
-
-  /* border: 1px solid black; */
-}
 
 
 /* ===================== */
@@ -1280,27 +1285,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width: 1736px) {
-
-}
-
 @media (max-width: 1580px) {
   /* Sidebar */
   .sidebar {
@@ -1350,22 +1334,9 @@ body {
     overflow-y: auto; /* Enables scrolling when content exceeds height */
   }
 
-
-
-
-
-
-
-
-
-
-
-
 }
 
 
-@media (max-width: 768px) {
-}
 
 
 

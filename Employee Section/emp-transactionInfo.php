@@ -51,7 +51,7 @@ session_start();
 
     <script>
       document.getElementById('redirect-btn').addEventListener('click', function () {
-        window.location.href = '../Employee Section/emp-transaction.php'; // Replace with your actual URL
+        window.location.href = '../Employee Section/emp-transaction.php'; 
       });
     </script>
 

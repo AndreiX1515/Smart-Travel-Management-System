@@ -246,9 +246,11 @@
       <!-- Left: Passport Picture -->
       <div class="guest-photo">
         <img id="offcanvasGuestPhoto" src="" alt="Guest Photo" style="display: none;">
+
         <div class="guest-photo-placeholder" id="offcanvasPhotoPlaceholder">
           <span id="offcanvasGuestInitials"></span>
         </div>
+        
       </div>
       
       <!-- Right: Guest Info -->
