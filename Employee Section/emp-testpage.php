@@ -176,6 +176,7 @@ error_reporting(E_ALL);
                     <div class="tab-name">Messages</div>
                   </div>
                 </div>
+                
                 <div class="tab">
                   <div class="tab-icon"><i class="fas fa-envelope"></i></div>
                   <div class="tab-info">
