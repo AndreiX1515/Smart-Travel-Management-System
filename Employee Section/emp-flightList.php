@@ -26,26 +26,24 @@
     <div class="table-container">
 
     <!-- Nav pills -->
-<ul class="nav nav-pills mb-3" id="flightTab" role="tablist">
-  <li class="nav-item" role="presentation">
-    <button class="nav-link active" id="list-tab" data-bs-toggle="pill" data-bs-target="#list" type="button" role="tab">Flight List</button>
-  </li>
-  <li class="nav-item" role="presentation">
-    <button class="nav-link" id="entry-tab" data-bs-toggle="pill" data-bs-target="#entry" type="button" role="tab">Add Flight Date</button>
-  </li>
-</ul>
+    <ul class="nav nav-pills mb-3" id="flightTab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="list-tab" data-bs-toggle="pill" data-bs-target="#list" type="button" role="tab">Flight List</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="entry-tab" data-bs-toggle="pill" data-bs-target="#entry" type="button" role="tab">Add Flight Date</button>
+      </li>
+    </ul>
 
-<!-- Tab content -->
-<div class="tab-content" id="flightTabContent">
-  <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
-    <?php include 'emp-flightSeatHistory.php'; ?>
-  </div>
-  <div class="tab-pane fade" id="entry" role="tabpanel" aria-labelledby="entry-tab">
-    <?php include 'emp-flightDataEntry.php'; ?>
-  </div>
-</div>
-
-      
+    <!-- Tab content -->
+    <div class="tab-content" id="flightTabContent">
+      <div class="tab-pane fade show active" id="list" role="tabpanel" aria-labelledby="list-tab">
+        <?php include 'emp-flightSeatHistory.php'; ?>
+      </div>
+      <div class="tab-pane fade" id="entry" role="tabpanel" aria-labelledby="entry-tab">
+        <?php include 'emp-flightDataEntry.php'; ?>
+      </div>
+    </div>
 
     </div>
   </div>
