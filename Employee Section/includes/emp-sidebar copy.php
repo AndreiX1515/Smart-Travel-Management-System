@@ -29,6 +29,7 @@ $position = htmlspecialchars(strtoupper($empId));
 <div class="sidebar" id="sidebar">
 
 	<ul class="nav flex-column">
+
 		<li class="nav-item">
 			<a class="nav-link page-button" href="../Employee Section/emp-dashboard.php" data-page-name="Dashboard">
 				<div class="icon-wrapper">
@@ -238,34 +239,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		</li> -->
 
-		<!-- Data Entry -->
-		<li class="nav-item dropdown">
-
-			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#dataEntry"
-				aria-expanded="false" aria-controls="dataEntry" data-page-name="Operationals">
-				<div class="icon-wrapper">
-					<div class="icon"><i class="fa-solid fa-file-import"></i></div>
-				</div>
-				<div class="label-wrapper">
-					<span class="label">Set up</span>
-				</div>
-			</a>
-
-			<div class="collapse" id="dataEntry">
-				<ul class="nav flex-column dataEntry-menu-wrapper">
-					<li class="nav-item transaction mb-0">
-						<a class="nav-link page-button" href="../Employee Section/emp-requestList.php"
-							data-page-name="Request List">Request</a>
-					</li>
-					<li class="nav-item mb-0">
-						<a class="nav-link  page-button" href="../Employee Section/emp-flightList.php"
-							data-page-name="Flight List">Flight</a>
-					</li>
-
-				</ul>
-			</div>
-		</li>
-
+		
 		<!-- For Approvals -->
 		<li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu"
@@ -358,6 +332,35 @@ $position = htmlspecialchars(strtoupper($empId));
 				</div>
 			</a>
 		</li>
+
+		<!-- Data Entry -->
+		<li class="nav-item dropdown">
+
+			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#dataEntry"
+				aria-expanded="false" aria-controls="dataEntry" data-page-name="Operationals">
+				<div class="icon-wrapper">
+					<div class="icon"><i class="fa-solid fa-file-import"></i></div>
+				</div>
+				<div class="label-wrapper">
+					<span class="label">Set up</span>
+				</div>
+			</a>
+
+			<div class="collapse" id="dataEntry">
+				<ul class="nav flex-column dataEntry-menu-wrapper">
+					<li class="nav-item transaction mb-0">
+						<a class="nav-link page-button" href="../Employee Section/emp-requestList.php"
+							data-page-name="Request List">Request</a>
+					</li>
+					<li class="nav-item mb-0">
+						<a class="nav-link  page-button" href="../Employee Section/emp-flightList.php"
+							data-page-name="Flight List">Flight</a>
+					</li>
+
+				</ul>
+			</div>
+		</li>
+
 
 		<!-- Reports -->
 		<!-- <li class="nav-item dropdown">

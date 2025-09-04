@@ -9,7 +9,7 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transactions</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionInfo copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionInfo.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
 
 </head>
@@ -40,52 +40,33 @@ session_start();
         }
         ?>
 
+        <div class="page-header-content">
+          <div class="page-header-text">
+            <h5 class="header-title">Transaction ID: <span class="fw-normal"><?php echo $transactionId; ?></span></h5>
+          </div>
+        </div>
+
       </div>
     </div>
 
     <script>
       document.getElementById('redirect-btn').addEventListener('click', function () {
-        window.location.href = '../Employee Section/emp-transaction.php';
+        window.location.href = '../Employee Section/emp-transaction.php'; 
       });
     </script>
 
     <div class="main-content">
       <div class="content-container">
 
-        <div class="transaction-wrapper">
-
-          <div class="page-header-content">
-            <div class="page-header-text">
-              <h5 class="header-title fw-bold">Transaction ID: <span
-                  class="fw-normal"><?php echo $transactionId; ?></span></h5>
-            </div>
-          </div>
-
-          <div class="transaction-btn-wrapper">
-            <div class="btn-container">
-              <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>"
-                data-bs-toggle="modal" data-bs-target="#cancelModal">
-                Cancel Transaction
-              </button>
-            </div>
-          </div>
-
-        </div>
-
-
-
         <div class="first-part-wrapper">
 
           <div class="transaction-info-wrapper">
-
             <div class="card-header">
               <div class="card-title-wrapper">
-                <h6 class="card-title">
-                  <span class="badge bg-secondary">Transaction Information</span>
-                </h6>
+                <h6 class="card-title">Transaction Information</h6>
               </div>
-
             </div>
+
 
             <?php
             $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -163,34 +144,44 @@ session_start();
             <div class="card-body booking-transaction-body">
               <div class="transaction-details-container">
                 <div class="row guest-info-row">
+
                   <!-- Left Column -->
                   <div class="col-md-6 transaction-details-left">
-                    <p class="mb-2"><strong>Transaction No:</strong> <span><?php echo $transactNum; ?></span></p>
-                    <p class="mb-2"><strong>Number of Pax:</strong> <span><?php echo $pax; ?></span></p>
-                    <p class="mb-2"><strong>Infant Pax:</strong> <span><?php echo $infantPax; ?></span></p>
-                    <p class="mb-2"><strong>Package:</strong> <span><?php echo $packageName; ?></span></p>
-                    <p class="mb-2"><strong>Flight Date:</strong> <span><?php echo $flightDate; ?></span></p>
+                    <p class="mb-2"><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
+                    <p class="mb-2"><strong>Number of Pax:</strong> <?php echo $pax; ?></p>
+                    <p class="mb-2"><strong>Infant Pax::</strong> <?php echo $infantPax; ?></p>
+                    <p class="mb-2"><strong>Package:</strong> <?php echo $packageName; ?></p>
+                    <p class="mb-2"><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
                   </div>
+
                   <!-- Right Column -->
                   <div class="col-md-6 transaction-details-right">
-                    <p class="mb-2"><strong>Contact Person:</strong> <span><?php echo $fullName; ?></span></p>
-                    <p class="mb-2"><strong>Contact No:</strong> <span><?php echo $contactNo; ?></span></p>
-                    <p class="mb-2"><strong>Email:</strong> <span><?php echo $email; ?></span></p>
-                    <p class="mb-0 balance-row"><strong>Balance: ₱</strong>
-                      <span><?php echo $formattedBalance; ?></span></p>
-                    <p class="mb-0 d-flex align-items-center status-row">
+                    <p class="mb-2"><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
+                    <p class="mb-2"><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
+                    <p class="mb-2"><strong>Email:</strong> <?php echo $email; ?></p>
+                    <p class="mb-0"><strong>Balance: ₱</strong> <?php echo $formattedBalance; ?></p>
+                    <p class="mb-0 d-flex align-items-center">
                       <strong class="me-2">Status:</strong>
-                      <span class="badge rounded-pill bg-warning text-dark p-2 status-badge">
+                      <span class="badge rounded-pill bg-warning text-dark p-2">
                         <?php echo $status; ?>
                       </span>
                     </p>
                   </div>
+
                 </div>
               </div>
             </div>
 
-          </div>
+            <div class="card-footer">
+              <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                Cancel Transaction
+              </button>
 
+
+
+            </div>
+
+          </div>
 
           <div class="guest-info-table-wrapper">
 
@@ -201,25 +192,25 @@ session_start();
         <div class="nav-pills-wrapper">
           <ul class="nav nav-pills " id="pills-tab" role="tablist">
             <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
-                type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
+              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
-                type="button" role="tab" aria-controls="pills-contact" aria-selected="true">Request History</button>
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="true">Request History</button>
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
-                type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
+              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
             </li>
+
+
             <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-        </li> -->
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+            </li> -->
+
             <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
-        </li> -->
+                <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
+              </li> -->
           </ul>
         </div>
 
@@ -265,8 +256,7 @@ session_start();
   </div>
 
   <!-- Visa Status Modal -->
-  <div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -298,8 +288,7 @@ session_start();
               <label for="cancellationReason" class="form-label">
                 Reason for Denied <span class="text-danger fw-bold"></span>
               </label>
-              <input id="cancellationReason" name="reason" class="form-control"
-                placeholder="Enter the remarks for Denied Visa">
+              <input id="cancellationReason" name="reason" class="form-control" placeholder="Enter the remarks for Denied Visa">
             </div>
           </div>
           <div class="modal-footer">
@@ -316,7 +305,7 @@ session_start();
   <script>
     // Select all table rows with the class 'table-row'
     document.querySelectorAll('.table-row').forEach(row => {
-      row.addEventListener('click', function () {
+      row.addEventListener('click', function() {
         // Get the data from the clicked row
         const guestId = this.getAttribute('data-guest-id');
 

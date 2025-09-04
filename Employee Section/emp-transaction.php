@@ -39,6 +39,7 @@
   <div class="main-container">
 
     <div class="navbar">
+
       <div class="page-header-wrapper">
 
         <div class="page-header-top">
@@ -56,6 +57,7 @@
         </div>
 
       </div>
+      
     </div>
 
     <script>

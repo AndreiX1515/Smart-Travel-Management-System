@@ -9,8 +9,9 @@ session_start();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Transactions</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionInfo.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-transactionInfo copy.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet"
+    href="../Employee Section/assets/css/emp-sidebar-navbar transactionInfo.css?v=<?php echo time(); ?>">
 
 </head>
 
@@ -23,6 +24,7 @@ session_start();
   <div class="main-container">
 
     <div class="navbar">
+
       <div class="page-header-wrapper">
 
         <div class="page-header-top">
@@ -33,40 +35,85 @@ session_start();
           </div>
         </div>
 
-        <?php
-        if (isset($_GET['id'])) {
-          // Sanitize the input to prevent XSS attacks
-          $transactionId = htmlspecialchars($_GET['id']);
-        }
-        ?>
-
         <div class="page-header-content">
           <div class="page-header-text">
-            <h5 class="header-title">Transaction ID: <span class="fw-normal"><?php echo $transactionId; ?></span></h5>
+            <h5 class="header-title">Transactions</h5>
           </div>
         </div>
 
       </div>
     </div>
 
+    <?php
+    if (isset($_GET['id'])) {
+      // Sanitize the input to prevent XSS attacks
+      $transactionId = htmlspecialchars($_GET['id']);
+    }
+    ?>
+
     <script>
       document.getElementById('redirect-btn').addEventListener('click', function () {
-        window.location.href = '../Employee Section/emp-transaction.php'; 
+        window.location.href = '../Employee Section/emp-transaction.php';
       });
     </script>
 
     <div class="main-content">
+
       <div class="content-container">
+
+        <div class="transaction-wrapper">
+
+          <div class="page-header-content">
+            <div class="page-header-text">
+              <h5 class="header-title fw-bold">Transaction ID: <span
+                  class="fw-normal"><?php echo $transactionId; ?></span></h5>
+            </div>
+          </div>
+
+          <div class="transaction-btn-wrapper">
+
+            <!-- <div class="btn-container">
+
+              <!-- Add Guest 
+              <button class="btn btn-success btn-sm add-btn" data-transact="<?php echo $transactNo; ?>"
+                data-bs-toggle="modal" data-bs-target="#addGuestModal">
+                Add Guest
+              </button>
+
+              <span class="btn-separator"></span>
+
+              <!-- Attach Requirements 
+              <button class="btn btn-primary btn-sm attach-btn" data-transact="<?php echo $transactNo; ?>"
+                data-bs-toggle="modal" data-bs-target="#attachModal">
+                Attach Requirements
+              </button>
+
+              <span class="btn-separator"></span>
+
+              <!-- Cancel Transaction 
+              <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>"
+                data-bs-toggle="modal" data-bs-target="#cancelModal">
+                Cancel Transaction
+              </button>
+            </div> -->
+
+          </div>
+
+        </div>
 
         <div class="first-part-wrapper">
 
           <div class="transaction-info-wrapper">
-            <div class="card-header">
-              <div class="card-title-wrapper">
-                <h6 class="card-title">Transaction Information</h6>
-              </div>
-            </div>
 
+            <div class="card-header">
+
+              <div class="card-title-wrapper">
+                <h6 class="card-title">
+                  <span class="badge bg-secondary">Transaction Information</span>
+                </h6>
+              </div>
+
+            </div>
 
             <?php
             $query1 = "SELECT b.*, p.packageName, f.flightDepartureDate, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -142,40 +189,53 @@ session_start();
             ?>
 
             <div class="card-body booking-transaction-body">
+
               <div class="transaction-details-container">
-                <div class="row guest-info-row">
 
-                  <!-- Left Column -->
-                  <div class="col-md-6 transaction-details-left">
-                    <p class="mb-2"><strong>Transaction No:</strong> <?php echo $transactNum; ?></p>
-                    <p class="mb-2"><strong>Number of Pax:</strong> <?php echo $pax; ?></p>
-                    <p class="mb-2"><strong>Infant Pax::</strong> <?php echo $infantPax; ?></p>
-                    <p class="mb-2"><strong>Package:</strong> <?php echo $packageName; ?></p>
-                    <p class="mb-2"><strong>Flight Date:</strong> <?php echo $flightDate; ?></p>
+                <div class="transaction-details-grid">
+                  <div class="detail-item">
+                    <span class="detail-label">Number of Pax:</span>
+                    <span class="detail-value"><?php echo $pax; ?></span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Contact Person:</span>
+                    <span class="detail-value"><?php echo $fullName; ?></span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Infant Pax:</span>
+                    <span class="detail-value"><?php echo $infantPax; ?></span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Contact No:</span>
+                    <span class="detail-value"><?php echo $contactNo; ?></span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Package:</span>
+                    <span class="detail-value"><?php echo $packageName; ?></span>
+                  </div>
+                  <div class="detail-item">
+                    <span class="detail-label">Email:</span>
+                    <span class="detail-value"><?php echo $email; ?></span>
                   </div>
 
-                  <!-- Right Column -->
-                  <div class="col-md-6 transaction-details-right">
-                    <p class="mb-2"><strong>Contact Person:</strong> <?php echo $fullName; ?></p>
-                    <p class="mb-2"><strong>Contact No:</strong> <?php echo $contactNo; ?></p>
-                    <p class="mb-2"><strong>Email:</strong> <?php echo $email; ?></p>
-                    <p class="mb-0"><strong>Balance: ₱</strong> <?php echo $formattedBalance; ?></p>
-                    <p class="mb-0 d-flex align-items-center">
-                      <strong class="me-2">Status:</strong>
-                      <span class="badge rounded-pill bg-warning text-dark p-2">
-                        <?php echo $status; ?>
-                      </span>
-                    </p>
+                  <div class="detail-item">
+                    <span class="detail-label">Flight Date:</span>
+                    <span class="detail-value"><?php echo $flightDate; ?></span>
                   </div>
 
+                  <div class="detail-item balance-item">
+                    <span class="detail-label">Balance:</span>
+                    <span class="detail-value balance-value">₱ <?= $formattedBalance ?></span>
+                  </div>
                 </div>
-              </div>
-            </div>
 
-            <div class="card-footer">
-              <button class="btn btn-danger btn-sm cancel-btn" data-transact="<?php echo $transactNo; ?>" data-bs-toggle="modal" data-bs-target="#cancelModal">
-                Cancel Transaction
-              </button>
+              </div>
+
+              <div class="status-item status-item" style="grid-column: 1 / -1;">
+                <span class="detail-label">Status:</span>
+                <span class="status-badge"><?php echo $status; ?></span>
+              </div>
+
             </div>
 
           </div>
@@ -184,31 +244,69 @@ session_start();
 
           </div>
 
-        </div>
+          <div class="transaction-history-wrapper">
 
-        <div class="nav-pills-wrapper">
-          <ul class="nav nav-pills " id="pills-tab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
-            </li>
+            <div class="card-header">
+              <div class="card-title-wrapper">
+                <h6 class="card-title">
+                  <span class="badge bg-secondary">Transaction History</span>
+                </h6>
+              </div>
+            </div>
 
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="true">Request History</button>
-            </li>
+            <div class="card-body transaction-history-body">
+              <div class="transaction-history-card">
+                <div class="transaction-item">
+                  <span class="transaction-text">Agent added guest info</span>
+                  <span class="transaction-date">2025-09-02 10:15 AM</span>
+                </div>
+                <div class="transaction-item">
+                  <span class="transaction-text">Agent edited booking details</span>
+                  <span class="transaction-date">2025-09-02 11:00 AM</span>
+                </div>
+                <div class="transaction-item">
+                  <span class="transaction-text">Agent removed guest info</span>
+                  <span class="transaction-date">2025-09-02 01:30 PM</span>
+                </div>
+                
+              </div>
+            </div>
 
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
-            </li>
-            <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
-        </li> -->
-            <!-- <li class="nav-item" role="presentation">
-          <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
-        </li> -->
-          </ul>
+
+
+          </div>
+
         </div>
 
         <div class="tab-content" id="pills-tabContent">
+
+          <div class="nav-pills-wrapper">
+            <ul class="nav nav-pills " id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
+                  type="button" role="tab" aria-controls="pills-home" aria-selected="true">Guest Information</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact"
+                  type="button" role="tab" aria-controls="pills-contact" aria-selected="true">Request History</button>
+              </li>
+
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
+                  type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Payment History</button>
+              </li>
+              <!-- <li class="nav-item" role="presentation">
+               <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Contact</button>
+              </li> -->
+                  <!-- <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-disabled-tab" data-bs-toggle="pill" data-bs-target="#pills-disabled" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" disabled>Disabled</button>
+              </li> -->
+            </ul>
+        </div>
+
+
+
           <?php include '../Employee Section/emp-transactionGuestInfo.php' ?>
           <?php include '../Employee Section/emp-transactionRequestHistory.php' ?>
           <?php include '../Employee Section/emp-transactionPaymentHistory.php' ?>
@@ -217,16 +315,20 @@ session_start();
       </div>
 
     </div>
+
   </div>
+
 
   <!-- Cancel Transaction Modal -->
   <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="cancelModalLabel">Cancel Transaction</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+
         <form action="../Employee Section/functions/emp-cancelTransact-code.php" method="POST">
           <div class="modal-body">
             <p>Are you sure you want to cancel this transaction?</p>
@@ -236,7 +338,7 @@ session_start();
             <input type="hidden" name="accId" value="<?php echo $accountId; ?>" />
 
             <div class="form-group">
-              <label for="remarks">Remarks</label>
+              <label for="remarks fw-bold">Remarks: </label>
               <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Enter Remarks" />
             </div>
           </div>
@@ -245,28 +347,33 @@ session_start();
             <button type="submit" name="confirmCancel" class="btn btn-danger" id="confirmCancel">Confirm Cancel</button>
           </div>
         </form>
+
       </div>
+
     </div>
   </div>
 
   <!-- Visa Status Modal -->
-  <div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel" aria-hidden="true">
+  <div class="modal fade" id="guestModal" tabindex="-1" role="dialog" aria-labelledby="guestModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
+
         <div class="modal-header">
           <h5 class="modal-title" id="guestModalLabel">Update Visa Status</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+
         <form action="../Employee Section/functions/emp-updateVisaStatus-code.php" method="POST">
           <div class="modal-body">
             <input type="hidden" name="guestId" id="guestIdField">
             <input type="hidden" name="transactNo" placeholder="transactNo" value="<?php echo $transactNum; ?>">
 
             <!-- <p class="mb-3">
-            Are you sure you want to cancel this transaction? This action cannot be undone.
-          </p> -->
+                  Are you sure you want to cancel this transaction? This action cannot be undone.
+                </p> -->
 
             <div class="mb-4">
               <label for="visaStatus" class="form-label fw-bold">Visa Status:</label>
@@ -282,15 +389,19 @@ session_start();
               <label for="cancellationReason" class="form-label">
                 Reason for Denied <span class="text-danger fw-bold"></span>
               </label>
-              <input id="cancellationReason" name="reason" class="form-control" placeholder="Enter the remarks for Denied Visa">
+              <input id="cancellationReason" name="reason" class="form-control"
+                placeholder="Enter the remarks for Denied Visa">
             </div>
+
           </div>
+
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary" name="updateVisaStatus" data-dismiss="modal">Submit</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
           </div>
         </form>
       </div>
+
     </div>
   </div>
 
@@ -299,7 +410,7 @@ session_start();
   <script>
     // Select all table rows with the class 'table-row'
     document.querySelectorAll('.table-row').forEach(row => {
-      row.addEventListener('click', function() {
+      row.addEventListener('click', function () {
         // Get the data from the clicked row
         const guestId = this.getAttribute('data-guest-id');
 

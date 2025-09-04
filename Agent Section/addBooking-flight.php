@@ -293,11 +293,11 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                     <div class="field-wrapper">
                       <div class="label-container-2">
                         <label for="mName">Middle Name </label>
-                        <span class="text-secondary">Type N/A if none</span>
+                        <!-- <span class="text-secondary">Type N/A if none</span> -->
                       </div>
 
                       <input type="text" name="mName" id="mName" class="form-control" placeholder="Enter Middle Name"
-                        tabindex="3" required>
+                        tabindex="3">
 
                       <span id="mNameError" class="text-danger"></span>
                       <!-- Error message for Middle Name -->
@@ -519,9 +519,9 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
 
                   <div class="field-wrapper">
-                    <label for="suffix">Suffix <span class="text-danger"> *</span></label>
-                    <select class="form-control" name="suffix" id="suffix" tabindex="4" required>
-                      <option selected disabled>Select Suffix</option>
+                    <label for="suffix">Suffix </label>
+                    <select class="form-control" name="suffix" id="suffix" tabindex="4">
+                      <option value="" selected disabled>Select Suffix</option>
                       <option value="">None</option>
                       <option value="Jr.">Jr.</option>
                       <option value="Sr.">Sr.</option>
@@ -536,7 +536,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                   </div>
 
                   <div class="field-wrapper">
-                    <label for="email">Email <span class="text-danger">*</span></label>
+                    <label for="email">Email <span class="text-danger"> *</span></label>
                     <input type="email" name="email" id="email" class="form-control" placeholder="Enter Email Address"
                       tabindex="7" required>
                     <span id="emailError" class="text-danger"></span> <!-- Error message for Email -->
@@ -550,7 +550,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
             </div>
           </div>
 
-          <div class="card-container">
+          <div class="card-container total-price-wrapper">
             <div class="card-body-footer">
               <div class="price-display">
                 Total Price: ₱ <span id="totalPriceDisplay">0.00</span>
@@ -561,8 +561,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
                 <button type="button" class="btn btn-primary" id="bookNowButton">Book Now</button>
               </div>
             </div>
-
-
           </div>
 
           <!-- Booking Summary Modal -->
@@ -1436,8 +1434,6 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         flightDate: { selector: '#flightDate', message: 'Please select flight date.' },
         fName: { selector: '#fName', message: 'Please enter first name.' },
         lName: { selector: '#lName', message: 'Please enter last name.' },
-        mName: { selector: '#mName', message: 'Please enter middle name.' },
-        suffix: { selector: '#suffix', message: 'Please select suffix.' },
         countryCode: { selector: '#countryCode', message: 'Please select country code.' },
         contactNo: { selector: '#contactNo', message: 'Please enter contact number.' },
         email: { selector: '#email', message: 'Please enter email address.' },
@@ -1552,6 +1548,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
       return true;
     }
 
+
     // Enhanced AJAX submission function
     function submitFormData() {
       console.log('Starting form submission process...');
@@ -1630,7 +1627,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
     // Enhanced booking summary population
     function populateBookingSummary(formData) {
-      console.log('Populating booking summary modal with data:', formData);
+      // console.log('Populating booking summary modal with data:', formData);
 
       try {
         // Format full name properly
@@ -1659,6 +1656,7 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
         }
 
         console.log('Booking summary populated successfully');
+        
       } catch (error) {
         console.error('Error populating booking summary:', error);
       }
@@ -1719,14 +1717,12 @@ echo "<script>console.log('Session Data:', " . json_encode($_SESSION, JSON_PRETT
 
         // Collect and log form data
         const formData = collectFormData();
-        console.log('=== FORM DATA FOR MODAL ===');
-        console.table(formData); // Nice table format in console
+        console.log(JSON.stringify(formData, null, 2));
+
 
         // Populate modal and show
         populateBookingSummary(formData);
         $('#BookingSummaryModal').modal('show');
-
-        console.log('=== MODAL DISPLAYED ===');
       });
 
       // "Proceed to Payment" button - Submit form via AJAX

@@ -14,7 +14,7 @@ session_start();
 
 
   <link rel="stylesheet" href="../Agent Section/assets/css/agent-transaction.css?v=<?php echo time(); ?>">
-  <link rel="stylesheet" href="../Agent Section/assets/css/agent-payment.css?v=<?php echo time(); ?>">
+  <link rel="stylesheet" href="../Agent Section/assets/css/agent-payment copy.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Agent Section/assets/css/navbar-sidebar.css?v=<?php echo time(); ?>">
 </head>
 
@@ -22,19 +22,19 @@ session_start();
 
   <?php include "../Agent Section/includes/sidebar.php"; ?>
 
-  <div class="main-container">  
+  <div class="main-container">
 
     <div class="navbar">
 
       <div class="page-header-wrapper">
 
-        <!-- <div class="page-header-top">
+        <div class="page-header-top">
           <div class="back-btn-wrapper">
             <button class="back-btn" id="logout-btn">
               <i class="fas fa-chevron-left"></i>
             </button>
           </div>
-        </div> -->
+        </div>
 
         <div class="page-header-content">
           <div class="page-header-text">
@@ -46,14 +46,12 @@ session_start();
 
     </div>
 
-
-    
     <?php
-      // Check if 'id' is passed in the URL
-      if (isset($_GET['id'])) {
-        $transactionNumber = htmlspecialchars($_GET['id']);
-        $_SESSION['transaction_number'] = $transactionNumber; // Store in session for later use
-      }
+    // Check if 'id' is passed in the URL
+    if (isset($_GET['id'])) {
+      $transactionNumber = htmlspecialchars($_GET['id']);
+      $_SESSION['transaction_number'] = $transactionNumber; // Store in session for later use
+    }
     ?>
 
     <div class="main-content">
@@ -61,9 +59,11 @@ session_start();
       <div class="container-body">
 
         <div class="info-wrapper">
+
           <div class="payment-method">
 
             <div class="section section-1">
+
               <div class="header-container">
                 <h4>Payment Method</h4>
                 <p>Please select your preferred payment method to complete the booking process.</p>
@@ -75,9 +75,8 @@ session_start();
                 <div class="section-content">
                   <div class="row-content">
 
-                    <!-- Bank Transfer -->
                     <div class="card-wrapper">
-                      <div class="billing-card">
+                      <div class="billing-card" data-payment="bank-transfer">
                         <div class="payment-content">
                           <div class="payment-logo">
                             <i class="fas fa-university fa-2x"></i>
@@ -90,25 +89,28 @@ session_start();
                     </div>
 
                     <div class="card-wrapper">
-                      <div class="billing-card">
+                      <div class="billing-card disabled not-clickable" data-payment="other-digitalwallet">
                         <div class="payment-content">
                           <div class="payment-logo">
-                            <!-- <i class="fas fa-mobile-alt fa-2x"></i>  -->
+                            <i class="fas fa-mobile-alt fa-2x"></i>
                           </div>
                           <div class="payment-name">
-                            <span></span>
+                            <span>Other Digital Wallet</span>
                           </div>
                         </div>
+                        <div class="coming-soon-badge">Coming Soon</div>
                       </div>
                     </div>
+
                   </div>
                 </div>
 
                 <div class="section-content">
                   <div class="row-content">
-                    <!-- Bank Transfer -->
+
+
                     <div class="card-wrapper">
-                      <div class="billing-card disabled">
+                      <div class="billing-card" data-payment="gcash">
                         <div class="payment-content">
                           <div class="payment-logo">
                             <i class="fas fa-mobile-alt fa-2x"></i>
@@ -120,9 +122,8 @@ session_start();
                       </div>
                     </div>
 
-                    <!-- Smart/Sun -->
                     <div class="card-wrapper">
-                      <div class="billing-card disabled">
+                      <div class="billing-card" data-payment="paymaya">
                         <div class="payment-content">
                           <div class="payment-logo">
                             <i class="fas fa-mobile-alt fa-2x"></i>
@@ -133,70 +134,114 @@ session_start();
                         </div>
                       </div>
                     </div>
+
+
                   </div>
                 </div>
               </div>
 
             </div>
+
           </div>
 
+          <!-- Payment Details Section -->
           <div class="subscription">
 
-            <script>
-              document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll('.billing-card').forEach(card => {
-                  card.addEventListener('click', function() {
-                    // Remove active state from all cards
-                    document.querySelectorAll('.billing-card').forEach(c => {
-                      c.classList.remove('active');
-                      c.querySelector('.hidden-radio').checked = false;
-                    });
+            <div class="tab-content" id="payment-details-content">
 
-                    // Add active state to the clicked card
-                    this.classList.add('active');
-                    this.querySelector('.hidden-radio').checked = true;
-                  });
-                });
-              });
-            </script>
+              <!-- Bank Transfer Tab Pane -->
+              <div class="tab-pane active show" id="bank-transfer-details">
 
-            <div class="section section-1">
-              <div class="header-container">
-                <h4>Bank Details</h4>
-                <p>Please ensure that the payment details are correct before proceeding with the transaction.</p>
+                <div class="header-container">
+                  <h4 id="payment-details-title">Bank Details</h4>
+                  <p id="payment-details-description">Please ensure that the payment details are correct before
+                    proceeding with the transaction.</p>
+                </div>
+
+                <div class="bank-detail-row">
+                  <div class="bank-detail-col">
+                    <label>Bank Name:</label>
+                    <p>Banco De Oro (BDO)</p>
+                  </div>
+                  <div class="bank-detail-col">
+                    <label>Account Name:</label>
+                    <p>Hyung Sub Kim (Nickname: Jed Kim)</p>
+                  </div>
+                </div>
+
+                <div class="bank-detail-row">
+                  <div class="bank-detail-col">
+                    <label>Account Number (PH - Peso):</label>
+                    <p>00780020352</p>
+                  </div>
+                  <div class="bank-detail-col">
+                    <label>Account Number (US - Dollar):</label>
+                    <p>10780018789</p>
+                  </div>
+                </div>
+
               </div>
 
-              <div class="bank-detail-row">
-                <div class="bank-detail-col">
-                  <label for="bank-name">Bank Name:</label>
-                  <p id="bank-name">Banco De Oro (BDO)</p>
+
+              <!-- Credit Card Tab Pane -->
+              <div class="tab-pane" id="credit-card-details">
+
+                <div class="bank-detail-row">
+                  <div class="bank-detail-col">
+                    <label>Card Number:</label>
+                    <p>**** **** **** 1234</p>
+                  </div>
+                  <div class="bank-detail-col">
+                    <label>Cardholder Name:</label>
+                    <p>John Doe</p>
+                  </div>
                 </div>
-                <div class="bank-detail-col">
-                  <label for="account-name">Account Name:</label>
-                  <p id="account-name">Hyung Sub Kim (Nickname: Jed Kim)</p>
+
+                <div class="bank-detail-row">
+                  <div class="bank-detail-col">
+                    <label>Expiry Date:</label>
+                    <p>12/25</p>
+                  </div>
+                  <div class="bank-detail-col">
+                    <label>CVV:</label>
+                    <p>***</p>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <!-- PayPal Tab Pane -->
+              <div class="tab-pane" id="paypal-details">
+                <div class="bank-detail-row">
+                  <div class="bank-detail-col">
+                    <label>PayPal Email:</label>
+                    <p>payment@example.com</p>
+                  </div>
+                  <div class="bank-detail-col">
+                    <label>Redirect URL:</label>
+                    <p>https://paypal.com/checkout</p>
+                  </div>
                 </div>
               </div>
 
-              <div class="bank-detail-row">
-                <div class="bank-detail-col">
-                  <label for="account-number">Account Number (PH - Peso):</label>
-                  <p id="account-number">00780020352</p>
-                </div>
-              </div>
 
-              <div class="bank-detail-row">
-                <div class="bank-detail-col">
-                  <label for="account-number">Account Number (US - Dollar):</label>
-                  <p id="account-number">10780018789</p>
-                </div>
-              </div>
             </div>
           </div>
 
         </div>
 
         <div class="order-summary">
-          <?php
+
+          <div class="summary-data">
+
+            <div class="order-summary-wrapper">
+
+            <div class="summary-header">
+              <h4>Order Summary</h4>
+            </div>
+
+            <?php
             $packageName = "N/A";
             $pax = 0;
             $infantPax = 0;
@@ -205,20 +250,19 @@ session_start();
             $formattedPrice = "0.00";
 
             $sql1 = mysqli_query($conn, "SELECT b.pax, b.totalPrice, b.infantPax, p.packageName ,
-                                          IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') AS onboardFlightSched
-                                        FROM booking b 
-                                        JOIN flight f ON b.flightId = f.flightId 
-                                        JOIN package p ON b.packageId = p.packageId 
-                                        WHERE b.transactNo = '$transactionNumber'");
+                                  IF(f.flightId != 0, DATE_FORMAT(f.flightDepartureDate, '%M %d, %Y'), 'Custom Scheduled Flight') AS onboardFlightSched
+                                FROM booking b 
+                                JOIN flight f ON b.flightId = f.flightId 
+                                JOIN package p ON b.packageId = p.packageId 
+                                WHERE b.transactNo = '$transactionNumber'");
 
             if ($sql1 && mysqli_num_rows($sql1) > 0) {
               while ($res1 = mysqli_fetch_array($sql1)) {
                 $totalPrice = $res1['totalPrice'];
-                $formattedPrice = number_format($totalPrice, 2); // Format to 2 decimal places
+                $formattedPrice = number_format($totalPrice, 2);
                 $downpayment = $res1['pax'] * 3000;
-                $formattedDP = number_format($downpayment, 2); // Format to 2 decimal places
-            
-                // Get additional fields
+                $formattedDP = number_format($downpayment, 2);
+
                 $flightDate = $res1['onboardFlightSched'];
                 $packageName = $res1['packageName'];
                 $pax = $res1['pax'];
@@ -227,108 +271,139 @@ session_start();
             } else {
               echo "<p class='text-danger'>No booking details found for TransactNo: $transactionNumber.</p>";
             }
-          ?>
+            ?>
 
-          <div class="row">
-            <div class="col-sm">
-              <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0"><strong>Package Name:</strong></p>
-                <p class="mb-0"><?php echo $packageName; ?></p> <!-- Added commas for better readability -->
-              </div>
-            </div>
-          </div>
+            <div class="summary-body">
 
-          <div class="row">
-            <div class="col-sm">
-              <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0"><strong>Number of Guest:</strong></p>
-                <p class="mb-0"><?php echo $pax; ?></p> <!-- Added commas for better readability -->
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm">
-              <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0"><strong>Number of Infant:</strong></p>
-                <p class="mb-0"><?php echo $infantPax; ?></p> <!-- Added commas for better readability -->
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm">
-              <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0"><strong>Flight Date:</strong></p>
-                <p class="mb-0"><?php echo $flightDate; ?></p> <!-- Added commas for better readability -->
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm">
-              <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0"><strong>Downpayment:</strong></p>
-                <p class="mb-0">Minimum ₱ <?php echo $formattedDP; ?></p> <!-- Added commas for better readability -->
-              </div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-sm">
-              <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0">₱ 3,000 per Guest.</p> <!-- Added space for better readability -->
-              </div>
-            </div>
-          </div>
-
-          <hr>
-
-          <div class="row">
-            <div class="col-sm">
-              <div class="d-flex justify-content-between mb-1">
-                <p class="mb-0"><strong>Total:</strong></p>
-                <p class="mb-0">₱ <?php echo $formattedPrice; ?></p> <!-- Added commas for better readability -->
-              </div>
-            </div>
-          </div>
-
-          <!--  -->
-
-          <form id="paymentForm" enctype="multipart/form-data">
-            <hr>
-            <input type="hidden" value="<?php echo $_SESSION['agent_accountId']; ?>" name="agentAccountId">
-            <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
-            <input type="number" class="form-control" name="downpayment" step="0.01" min="<?php echo $downpayment; ?>"
-              max="<?php echo $totalPrice; ?>" placeholder="Enter Downpayment Amount" required>
-
-            <h6 class="mt-4">Attach Proof/Screenshot of transaction:</h6>
-            <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
-            <hr>
-
-            <div class="row mt-4">
-              <div class="col-sm">
-                <div class="d-flex align-items-left mb-3">
-                  <input type="checkbox" id="termsCheckbox" class="ms-1 me-3" required>
-                  <div class="checkbox-text">
-                    <span>
-                      By clicking this, I agree to Smart Travel <a href="#" class="terms-link">Terms & Conditions</a>
-                      and
-                      <a href="#" class="privacy-link">Privacy Policy</a>
-                    </span>
-                  </div>
+              <!-- Booking Details -->
+              <div class="summary-item">
+                <div class="first">
+                  <span><strong>Package Name:</strong></span>
                 </div>
 
-                <button type="submit" class="pay-button btn btn-success">
-                  Pay Now
-                </button>
+                <div class="second">
+                  <span><?php echo $packageName; ?></span>
+                </div>
+              </div>
+
+              <div class="summary-item">
+                <div class="first">
+                  <span><strong>Flight Date:</strong></span>
+                </div>
+
+                <div class="second">
+                  <span><?php echo $flightDate; ?></span>
+                </div>
+              </div>
+
+              <div class="summary-item">
+                <div class="first">
+                  <span><strong>Number of Guest:</strong></span>
+                </div>
+
+                <div class="second">
+                  <span><?php echo $pax; ?></span>
+                </div>
+              </div>
+
+              <div class="summary-item">
+                <div class="first">
+                  <span><strong>Number of Infant:</strong></span>
+                </div>
+
+                <div class="second">
+                  <span><?php echo $infantPax; ?></span>
+                </div>
+              </div>
+
+              <div class="summary-item">
+                <div class="first">
+                  <span><strong>Downpayment:</strong></span>
+                </div>
+
+                <div class="second minimum">
+                  <span>₱ <?php echo $formattedDP; ?></span>
+                  <span> <small>₱ 3,000 per Guest</small></span>
+                </div>
+              </div>
+
+            </div>
+
+            <form id="paymentForm" enctype="multipart/form-data">
+              <input type="hidden" value="<?php echo $_SESSION['agent_accountId']; ?>" name="agentAccountId">
+
+              <input type="hidden" value="<?php echo $transactionNumber; ?>" name="transactNo">
+            </div>
+
+            <div class="summary-item-total total">
+              <div class="summary-label">
+                <span>Total:</span>
+              </div>
+
+              <div class="summary-total-price">
+                <span>₱ <?php echo $formattedPrice; ?></span>
+              </div>
+            </div>
+            
+          </div>
+
+          <div class="secondary-wrapper">
+              <div class="downpayment-wrapper">
+                <h6>Downpayment:</h6>
+                <input type="number" class="form-control mb-3" name="downpayment" step="0.01"
+                  min="<?php echo $downpayment; ?>" max="<?php echo $totalPrice; ?>"
+                  placeholder="Enter Downpayment Amount" required>
+              </div>
+
+              <div class="file-attach-wrapper">
+                <h6>Attach Proof/Screenshot of Payment:</h6>
+
+                <div class="file-input-container">
+                  <input type="file" id="attachment" class="attachment" name="proofs[]" accept="image/*" required>
+                  <label for="attachment" class="file-input-label">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span class="file-text">Choose file or drag here</span>
+                    <span class="file-subtext">PNG, JPG up to 10MB</span>
+                  </label>
+                </div>
+              </div>
+          </div>
+
+
+
+          <!-- Buttons Wrapper -->
+          <div class="pay-btn-wrapper">
+
+            <div class="terms-wrapper">
+              <div class="check-box-wrapper">
+                <input type="checkbox" id="termsCheckbox" class="form-check-input" required>
+              </div>
+
+              <div class="terms-info-wrapper">
+                <label class="form-check-label" for="termsCheckbox">
+                  By clicking this, I agree to Smart Travel
+                  <a href="#" class="terms-link">Terms & Conditions</a> and
+                  <a href="#" class="privacy-link">Privacy Policy</a>.
+                </label>
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button type="button" class="reserve-button btn btn-secondary flex-fill" data-bs-toggle="modal"
+                data-bs-target="#payLaterModal">
+                Reserve Booking
+              </button>
+
+              <button type="submit" class="pay-button btn btn-success flex-fill">
+                Pay Now
+              </button>
+            </div>
+
+
+          </div>
 
           </form>
 
-          <button type="button" class="reserve-button btn btn-secondary" data-bs-toggle="modal"
-            data-bs-target="#payLaterModal">
-            Reserve Booking
-          </button>
 
         </div>
 
@@ -336,7 +411,10 @@ session_start();
 
     </div>
 
+
   </div>
+
+
 
   <!-- Pay Now Modal (Centered) -->
   <div class="modal fade" id="payNowModal" tabindex="-1" aria-labelledby="payNowLabel" aria-hidden="true">
@@ -465,6 +543,125 @@ session_start();
 
 
   <?php require "../Agent Section/includes/scripts.php"; ?>
+
+
+  <!-- Payment - Container Change -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const paymentCards = document.querySelectorAll('.billing-card');
+
+      // Function to show specific tab content
+      function showTabContent(targetPayment) {
+        // Hide all tab content panels
+        const allTabPanes = document.querySelectorAll('.tab-pane');
+        allTabPanes.forEach(pane => {
+          pane.classList.remove('active', 'show');
+        });
+
+        // Show selected tab content
+        const targetPane = document.querySelector(`#${targetPayment}-details`);
+        if (targetPane) {
+          targetPane.classList.add('active', 'show');
+        }
+      }
+
+      // Function to set active payment card
+      function setActiveCard(selectedCard) {
+        // Remove active state from all cards
+        paymentCards.forEach(card => {
+          card.classList.remove('active');
+        });
+
+        // Add active state to selected card
+        selectedCard.classList.add('active');
+      }
+
+      paymentCards.forEach(card => {
+        card.addEventListener('click', function () {
+          // Skip if card is disabled or not clickable
+          if (this.classList.contains('disabled') || this.classList.contains('not-clickable')) {
+            return;
+          }
+
+          // Get selected payment method
+          const selectedPayment = this.getAttribute('data-payment');
+
+          // Set active card
+          setActiveCard(this);
+
+          // Show corresponding tab content
+          showTabContent(selectedPayment);
+        });
+      });
+
+
+
+      // AUTO-ACTIVATE BANK TRANSFER ON PAGE LOAD
+      const bankTransferCard = document.querySelector('.billing-card[data-payment="bank-transfer"]');
+      if (bankTransferCard) {
+        setActiveCard(bankTransferCard);
+        showTabContent('bank-transfer');
+      }
+    });
+  </script>
+
+  <!-- File-Attach Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const fileInput = document.getElementById('attachment');
+      const fileLabel = document.querySelector('.file-input-label');
+      const fileText = document.querySelector('.file-text');
+      const container = document.querySelector('.file-input-container');
+
+      // Handle file selection
+      fileInput.addEventListener('change', function () {
+        if (this.files.length > 0) {
+          fileText.textContent = this.files[0].name;
+          container.classList.add('has-file');
+        } else {
+          fileText.textContent = 'Choose file or drag here';
+          container.classList.remove('has-file');
+        }
+      });
+
+      // Handle drag and drop
+      ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        fileLabel.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        a
+        fileLabel.addEventListener(eventName, highlight, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        fileLabel.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight() {
+        fileLabel.classList.add('dragover');
+      }
+
+      function unhighlight() {
+        fileLabel.classList.remove('dragover');
+      }
+    });
+  </script>
+
+
+
+
+
+
+
+
+
+
 
   <!-- Script for Pay Later Modal -->
   <script>

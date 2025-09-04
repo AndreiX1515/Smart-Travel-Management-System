@@ -4,7 +4,14 @@ body {
   font-family: "Poppins", sans-serif;
   background-color: #f9f9f9;
   color: #333;
+  user-select: none; /* disables text selection */
 }
+
+
+
+
+
+
 
 html,
 body {
@@ -182,6 +189,7 @@ body {
     flex-direction: column;
     gap: 15px;
     padding: 15px 0 50px 0;
+    user-select: none; /* disables text selection */
 }
 
 .transaction-container {
@@ -460,6 +468,8 @@ body {
 
 /* Offcanvas Main Structure */
 .guest-offcanvas {
+  --bs-offcanvas-width: 750px; /* overrides Bootstrap default width */
+
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -469,9 +479,22 @@ body {
   padding: 0;
   box-sizing: border-box;
   height: 100%;
-  max-height: 100vh;
-  width: 400px;
+  max-height: 98vh;
+
+  border-radius: 12px;
+  margin: 10px;
 }
+
+
+/* Optional: responsive adjustment */
+@media (max-width: 992px) {
+  .guest-offcanvas {
+    width: 100%; /* full width on smaller screens */
+    margin: 0;
+    border-radius: 0;
+  }
+}
+
 
 /* Header */
 .guest-offcanvas .offcanvas-header {

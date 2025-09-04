@@ -8,7 +8,9 @@
   overflow: auto;
   /* max-width: 1400px;  */
   width: 100%;
-  padding: 0.3rem 1rem 0 0.3rem; /* Add some padding for better spacing */
+  padding: 0.3rem 1rem 0 0.3rem; 
+
+
 }
 
 .booking-wrapper form {
@@ -35,6 +37,7 @@
   border-bottom: none;
   background-color: whitesmoke;
   border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .section-header h2 {
@@ -535,9 +538,9 @@
   border-color: #e74c3c;
 }
 
-.form-control:valid:not(:placeholder-shown) {
+/* .form-control:valid:not(:placeholder-shown) {
   border-color: #27ae60;
-}
+} */
 
 /* Loading State */
 .loading {
@@ -720,6 +723,34 @@
 .field-wrapper.contact-number {
   margin-top: 7px;
 }
+
+.total-price-wrapper {
+  padding: .5rem .5rem .5rem .5rem;
+  border: 1px solid gainsboro;
+  margin-bottom: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* Modal Dialog */
 #BookingSummaryModal .modal-dialog {

@@ -227,157 +227,160 @@
   </div>
 
 
-  <div class="offcanvas offcanvas-end guest-offcanvas" tabindex="-1" id="guestOffcanvas" aria-labelledby="guestOffcanvasLabel">
+  <div class="offcanvas offcanvas-end guest-offcanvas" tabindex="-1" id="guestOffcanvas"
+    aria-labelledby="guestOffcanvasLabel">
 
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="guestOffcanvasLabel">
-      <span id="offcanvasGuestName">Guest Details</span>
-    </h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    
-    <!-- Hidden Guest ID -->
-    <p style="display: none;">
-      <strong>Guest ID:</strong> <span id="offcanvasGuestId"></span>
-    </p>
-  </div>
-  
-  <div class="offcanvas-body">
-    <div class="guest-info-section">
-      <!-- Left: Passport Picture -->
-      <div class="guest-photo">
-        <img id="offcanvasGuestPhoto" src="" alt="Guest Photo" style="display: none;">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="guestOffcanvasLabel">
+        <span id="offcanvasGuestName">Guest Details</span>
+      </h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 
-        <div class="guest-photo-placeholder" id="offcanvasPhotoPlaceholder">
-          <span id="offcanvasGuestInitials"></span>
+      <!-- Hidden Guest ID -->
+      <p style="display: none;">
+        <strong>Guest ID:</strong> <span id="offcanvasGuestId"></span>
+      </p>
+    </div>
+
+    <div class="offcanvas-body">
+      <div class="guest-info-section">
+        <!-- Left: Passport Picture -->
+        <div class="guest-photo">
+          <img id="offcanvasGuestPhoto" src="" alt="Guest Photo" style="display: none;">
+
+          <div class="guest-photo-placeholder" id="offcanvasPhotoPlaceholder">
+            <span id="offcanvasGuestInitials"></span>
+          </div>
+
         </div>
-        
-      </div>
-      
-      <!-- Right: Guest Info -->
-      <div class="guest-details">
-        <div class="detail-row">
-          <label>Email Address:</label>
-          <span id="offcanvasGuestEmail">Not provided</span>
-        </div>
-        
-        <div class="detail-row">
-          <label>Contact Number:</label>
-          <span id="offcanvasGuestContact">Not provided</span>
-        </div>
-        
-        <!-- <div class="detail-row">
+
+        <!-- Right: Guest Info -->
+        <div class="guest-details">
+          <div class="detail-row">
+            <label>Email Address:</label>
+            <span id="offcanvasGuestEmail">Not provided</span>
+          </div>
+
+          <div class="detail-row">
+            <label>Contact Number:</label>
+            <span id="offcanvasGuestContact">Not provided</span>
+          </div>
+
+          <!-- <div class="detail-row">
           <label>Nationality</label>
           <span id="offcanvasGuestNationality">Not provided</span>
         </div> -->
-        
-        <div class="detail-row">
-          <label>Departure Date:</label>
-          <span id="offcanvasDeparture">Not provided</span>
+
+          <div class="detail-row">
+            <label>Departure Date:</label>
+            <span id="offcanvasDeparture">Not provided</span>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <div class="files-section">
-      <div class="files-header">
-        <div class="files-header-name">
-          <h6>Documents</h6>
+
+      <div class="files-section">
+        <div class="files-header">
+          <div class="files-header-name">
+            <h6>Documents</h6>
+          </div>
+
+          <div class="files-header-add">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#addAttachmentModal">
+              <i class="fas fa-plus"></i>
+              Add Document
+            </button>
+          </div>
         </div>
-        
-        <div class="files-header-add">
-          <button type="button" data-bs-toggle="modal" data-bs-target="#addAttachmentModal">
-            <i class="fas fa-plus"></i>
-            Add Document
-          </button>
+
+        <div class="files-body" id="offcanvasFiles">
+          <!-- Default no files state -->
+          <div class="no-files" id="noFilesState">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+              </path>
+            </svg>
+            <p>No documents uploaded yet</p>
+          </div>
+
+          <!-- Files will be dynamically populated here -->
         </div>
-      </div>
-      
-      <div class="files-body" id="offcanvasFiles">
-        <!-- Default no files state -->
-        <div class="no-files" id="noFilesState">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-          </svg>
-          <p>No documents uploaded yet</p>
-        </div>
-        
-        <!-- Files will be dynamically populated here -->
       </div>
     </div>
   </div>
-</div>
 
-<!-- JavaScript for handling photo display -->
-<script>
-// Function to handle guest photo display
-function updateGuestPhoto(photoSrc, guestName) {
-  const photoImg = document.getElementById('offcanvasGuestPhoto');
-  const placeholder = document.getElementById('offcanvasPhotoPlaceholder');
-  const initials = document.getElementById('offcanvasGuestInitials');
-  
-  if (photoSrc && photoSrc.trim() !== '') {
-    // Show actual photo
-    photoImg.src = photoSrc;
-    photoImg.style.display = 'block';
-    placeholder.style.display = 'none';
-    
-    // Handle image load error
-    photoImg.onerror = function() {
-      photoImg.style.display = 'none';
-      placeholder.style.display = 'flex';
-      // Set initials from guest name
-      const names = guestName.split(' ');
-      const guestInitials = names.length >= 2 
-        ? names[0].charAt(0) + names[names.length - 1].charAt(0) 
-        : names[0].charAt(0) + names[0].charAt(1);
-      initials.textContent = guestInitials.toUpperCase();
-    };
-  } else {
-    // Show placeholder with initials
-    photoImg.style.display = 'none';
-    placeholder.style.display = 'flex';
-    const names = guestName.split(' ');
-    const guestInitials = names.length >= 2 
-      ? names[0].charAt(0) + names[names.length - 1].charAt(0) 
-      : names[0].charAt(0) + names[0].charAt(1);
-    initials.textContent = guestInitials.toUpperCase();
-  }
-}
+  <!-- JavaScript for handling photo display -->
+  <script>
+    // Function to handle guest photo display
+    function updateGuestPhoto(photoSrc, guestName) {
+      const photoImg = document.getElementById('offcanvasGuestPhoto');
+      const placeholder = document.getElementById('offcanvasPhotoPlaceholder');
+      const initials = document.getElementById('offcanvasGuestInitials');
 
-// Function to populate guest details (call this when opening offcanvas)
-function populateGuestDetails(guestData) {
-  // Update name and title
-  document.getElementById('offcanvasGuestName').textContent = guestData.fullName;
-  document.getElementById('offcanvasGuestId').textContent = guestData.guestId;
-  
-  // Update details
-  document.getElementById('offcanvasGuestEmail').textContent = guestData.email || 'Not provided';
-  document.getElementById('offcanvasGuestContact').textContent = guestData.contact || 'Not provided';
-  document.getElementById('offcanvasGuestNationality').textContent = guestData.nationality || 'Not provided';
-  document.getElementById('offcanvasDeparture').textContent = guestData.departure || 'Not provided';
-  
-  // Update photo
-  updateGuestPhoto(guestData.photoSrc, guestData.fullName);
-}
+      if (photoSrc && photoSrc.trim() !== '') {
+        // Show actual photo
+        photoImg.src = photoSrc;
+        photoImg.style.display = 'block';
+        placeholder.style.display = 'none';
 
-// Function to handle files display
-function updateFilesSection(files) {
-  const filesBody = document.getElementById('offcanvasFiles');
-  const noFilesState = document.getElementById('noFilesState');
-  
-  if (!files || files.length === 0) {
-    noFilesState.style.display = 'flex';
-    // Clear any existing file cards
-    const existingCards = filesBody.querySelectorAll('.file-card');
-    existingCards.forEach(card => card.remove());
-  } else {
-    noFilesState.style.display = 'none';
-    // Populate with files (implement based on your file structure)
-    // This is where you'd create file-card elements
-  }
-}
-</script>
+        // Handle image load error
+        photoImg.onerror = function () {
+          photoImg.style.display = 'none';
+          placeholder.style.display = 'flex';
+          // Set initials from guest name
+          const names = guestName.split(' ');
+          const guestInitials = names.length >= 2
+            ? names[0].charAt(0) + names[names.length - 1].charAt(0)
+            : names[0].charAt(0) + names[0].charAt(1);
+          initials.textContent = guestInitials.toUpperCase();
+        };
+      } else {
+        // Show placeholder with initials
+        photoImg.style.display = 'none';
+        placeholder.style.display = 'flex';
+        const names = guestName.split(' ');
+        const guestInitials = names.length >= 2
+          ? names[0].charAt(0) + names[names.length - 1].charAt(0)
+          : names[0].charAt(0) + names[0].charAt(1);
+        initials.textContent = guestInitials.toUpperCase();
+      }
+    }
 
-<!-- Guest ID to Offcanvas Data Fetch -->
+    // Function to populate guest details (call this when opening offcanvas)
+    function populateGuestDetails(guestData) {
+      // Update name and title
+      document.getElementById('offcanvasGuestName').textContent = guestData.fullName;
+      document.getElementById('offcanvasGuestId').textContent = guestData.guestId;
+
+      // Update details
+      document.getElementById('offcanvasGuestEmail').textContent = guestData.email || 'Not provided';
+      document.getElementById('offcanvasGuestContact').textContent = guestData.contact || 'Not provided';
+      document.getElementById('offcanvasGuestNationality').textContent = guestData.nationality || 'Not provided';
+      document.getElementById('offcanvasDeparture').textContent = guestData.departure || 'Not provided';
+
+      // Update photo
+      updateGuestPhoto(guestData.photoSrc, guestData.fullName);
+    }
+
+    // Function to handle files display
+    function updateFilesSection(files) {
+      const filesBody = document.getElementById('offcanvasFiles');
+      const noFilesState = document.getElementById('noFilesState');
+
+      if (!files || files.length === 0) {
+        noFilesState.style.display = 'flex';
+        // Clear any existing file cards
+        const existingCards = filesBody.querySelectorAll('.file-card');
+        existingCards.forEach(card => card.remove());
+      } else {
+        noFilesState.style.display = 'none';
+        // Populate with files (implement based on your file structure)
+        // This is where you'd create file-card elements
+      }
+    }
+  </script>
+
+  <!-- Guest ID to Offcanvas Data Fetch -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const guestOffcanvasEl = document.getElementById('guestOffcanvas');
@@ -1068,7 +1071,7 @@ function updateFilesSection(files) {
 
 
 
-  
+
 
 
 

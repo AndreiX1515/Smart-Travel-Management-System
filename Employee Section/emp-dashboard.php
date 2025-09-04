@@ -756,6 +756,7 @@ error_reporting(E_ALL);
                         ?>
                       </tbody>
                     </table>
+                    
                   </div>
 
                   <!-- <div class="info-footer">
