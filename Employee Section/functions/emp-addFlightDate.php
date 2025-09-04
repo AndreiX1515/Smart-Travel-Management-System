@@ -1,124 +1,113 @@
 <?php
-require "../../conn.php"; // DB connection
+require "../../conn.php";
 session_start();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') 
-{
-  // Get all input arrays from POST
-  $employeeIds = $_POST['employeeId'] ?? [];
-  $packageIds = $_POST['packageId'] ?? [];
-  $origins = $_POST['origin'] ?? [];
-  $departureCodes = $_POST['departureFlightCode'] ?? [];
-  $departureDates = $_POST['departureDate'] ?? [];
-  $returnCodes = $_POST['returnFlightCode'] ?? [];
-  $returnDates = $_POST['returnDate'] ?? [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  $employeeIds     = $_POST['employeeId'] ?? [];
+  $packageIds      = $_POST['packageId'] ?? [];
   $wholesalePrices = $_POST['wholesalePrice'] ?? [];
-  $flightPrices = $_POST['flightPrice'] ?? [];
-  $landPrices = $_POST['landPrice'] ?? [];
-  $availSeats  = $_POST['availSeats'] ?? [];
+  $retailPrices    = $_POST['retailPrice'] ?? [];
+  $landPrices      = $_POST['landPrice'] ?? [];
+  $availableSeats  = $_POST['availableSeats'] ?? [];
 
-  $rowCount = count($employeeIds);
-  $errors = [];
-  $inserted = 0;
-  $insertedIds = [];
-  $hasError = false;
+  $legTypes        = $_POST['legType'] ?? [];
+  $origins         = $_POST['origin'] ?? [];
+  $airlineIds      = $_POST['airlineId'] ?? [];
+  $flightNames     = $_POST['flightName'] ?? [];
+  $flightNumbers   = $_POST['flightNumber'] ?? [];
+  $departureDates  = $_POST['departureDate'] ?? [];
+  $departureTimes  = $_POST['departureTime'] ?? [];
+  $arrivalDates    = $_POST['arrivalDate'] ?? [];
+  $arrivalTimes    = $_POST['arrivalTime'] ?? [];
 
-  // Begin transaction
   $conn->begin_transaction();
+  $insertedTrips = [];
 
-  // Prepare statement
-  $stmt = $conn->prepare("INSERT INTO flight (
-      packageId, employeeId, origin, flightName, flightCode, flightDepartureDate, flightDepartureTime,
-      flightArrivalDate, flightArrivalTime, returnFlightName, returnFlightCode, returnDepartureDate, 
-      returnDepartureTime, returnArrivalDate, returnArrivalTime, wholesalePrice, flightPrice, landPrice, availSeats
-    ) VALUES (
-      ?, ?, ?, ?, ?, ?, '05:45:00', ?, '10:45:00', ?, ?, ?, '12:45:00', ?, '04:00:00', ?, ?, ?, ?
-    )");
+  try {
+    foreach ($employeeIds as $tripIndex => $employeeId) {
+      $packageId      = $packageIds[$tripIndex];
+      $wholesalePrice = floatval($wholesalePrices[$tripIndex]);
+      $retailPrice    = floatval($retailPrices[$tripIndex]);
+      $landPrice      = floatval($landPrices[$tripIndex]);
+      $seats          = intval($availableSeats[$tripIndex]);
 
-  if (!$stmt) {
-    $conn->rollback();
-    http_response_code(500);
-    echo json_encode([
-      'status' => 'error',
-      'message' => 'Failed to prepare SQL statement.',
-      'details' => $conn->error
-    ]);
-    exit;
-  }
+      // Normalize employeeId: if "0" or empty → NULL
+      $employeeIdRaw = $employeeIds[$tripIndex] ?? null;
+      $employeeId    = ($employeeIdRaw && $employeeIdRaw !== "0") ? intval($employeeIdRaw) : null;
 
-  for ($i = 0; $i < $rowCount; $i++) 
-  {
-    // Validate required fields
-    if (
-      empty($employeeIds[$i]) || empty($packageIds[$i]) || empty($origins[$i]) ||
-      empty($departureCodes[$i]) || empty($departureDates[$i]) || empty($returnCodes[$i]) ||
-      empty($returnDates[$i]) || $wholesalePrices[$i] === '' || $flightPrices[$i] === '' || $availSeats[$i] === ''
-    ) {
-      $errors[] = "Missing required fields on row $i.";
-      $hasError = true;
-      break;
+      if ($employeeId === null) {
+        // Insert with NULL for employeeId
+        $stmtTrip = $conn->prepare("INSERT INTO trip (packageId, employeeId, wholesalePrice, retailPrice, landPrice, availableSeats)
+                                    VALUES (?, NULL, ?, ?, ?, ?)");
+        $stmtTrip->bind_param("diii", $wholesalePrice, $retailPrice, $landPrice, $seats);
+        $stmtTrip->bind_param("i", $packageId); // bind separately
+      } else {
+        // Insert with actual employeeId
+        $stmtTrip = $conn->prepare("INSERT INTO trip (packageId, employeeId, wholesalePrice, retailPrice, landPrice, availableSeats)
+                                    VALUES (?, ?, ?, ?, ?, ?)");
+        $stmtTrip->bind_param("iiddii", $packageId, $employeeId, $wholesalePrice, $retailPrice, $landPrice, $seats);
+      }
+
+      if (!$stmtTrip->execute()) {
+        throw new Exception("Trip insert failed: " . $stmtTrip->error);
+      }
+      $tripId = $stmtTrip->insert_id;
+      $insertedTrips[] = $tripId;
+      $stmtTrip->close();
+
+      // Insert legs
+      if (!empty($legTypes[$tripIndex])) {
+        foreach ($legTypes[$tripIndex] as $legIdx => $legType) {
+          $origin      = $origins[$tripIndex][$legIdx];
+          $airlineId   = $airlineIds[$tripIndex][$legIdx];
+          $flightName  = $flightNames[$tripIndex][$legIdx];
+          $flightNo    = $flightNumbers[$tripIndex][$legIdx];
+          $depDate     = $departureDates[$tripIndex][$legIdx];
+          $depTime     = $departureTimes[$tripIndex][$legIdx];
+          $arrDate     = $arrivalDates[$tripIndex][$legIdx];
+          $arrTime     = $arrivalTimes[$tripIndex][$legIdx];
+
+          // Insert flight
+          $stmtF = $conn->prepare("INSERT INTO flight (airlineId, flightNumber, origin, flightName, departureDate, 
+                                  departureTime, arrivalDate, arrivalTime) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+          $stmtF->bind_param("isssssss", $airlineId, $flightNo, $origin, $flightName, $depDate, $depTime, $arrDate, $arrTime);
+
+          if (!$stmtF->execute()) {
+            throw new Exception("Flight insert failed: " . $stmtF->error);
+          }
+          $flightId = $stmtF->insert_id;
+          $stmtF->close();
+
+          // Link flight to trip
+          $stmtTF = $conn->prepare("INSERT INTO tripflight (tripId, flightId, legOrder, legType)
+                                    VALUES (?, ?, ?, ?)");
+          $legOrder = $legIdx + 1;
+          $stmtTF->bind_param("iiis", $tripId, $flightId, $legOrder, $legType);
+
+          if (!$stmtTF->execute()) {
+            throw new Exception("TripFlight insert failed: " . $stmtTF->error);
+          }
+          $stmtTF->close();
+        }
+      }
     }
 
-    // Assign and sanitize values
-    $employeeId = $employeeIds[$i];
-    $packageId = $packageIds[$i];
-    $origin = $origins[$i];
-    $departureCode = $departureCodes[$i];
-    $departureDate = $departureDates[$i];
-    $returnCode = $returnCodes[$i];
-    $returnDate = $returnDates[$i];
-    $wholesalePrice = floatval($wholesalePrices[$i]);
-    $flightPrice = floatval($flightPrices[$i]);
-    $landPrice = floatval($landPrices[$i]);
-    $seats = intval($availSeats[$i]);
-
-    // Derived names
-    $flightName = "$origin - DEST";
-    $returnName = "DEST - $origin";
-
-    // Bind and execute
-    $stmt->bind_param('sssssssssssdddi',
-      $packageId, $employeeId, $origin, $flightName, $departureCode, $departureDate,
-      $departureDate, $returnName, $returnCode, $returnDate, $returnDate,
-      $wholesalePrice, $flightPrice, $landPrice, $seats
-    );
-
-    if ($stmt->execute()) {
-      $inserted++;
-      $insertedIds[] = $conn->insert_id;
-    } else {
-      $errors[] = "Error on row $i: " . $stmt->error;
-      $hasError = true;
-      break;
-    }
-  }
-
-  $stmt->close();
-
-  if ($hasError) 
-  {
-    $conn->rollback();
-    http_response_code(500);
-    echo json_encode([
-      'status' => 'error',
-      'message' => 'Transaction failed. No flights were saved.',
-      'details' => $errors
-    ]);
-  } 
-  else 
-  {
     $conn->commit();
-    http_response_code(200);
     echo json_encode([
-      'status' => 'success',
-      'message' => "$inserted flight(s) saved successfully.",
-      'insertedIds' => $insertedIds
+      "status" => "success",
+      "message" => count($insertedTrips) . " trip(s) saved successfully.",
+      "tripIds" => $insertedTrips
+    ]);
+  } catch (Exception $e) {
+    $conn->rollback();
+    http_response_code(500);
+    echo json_encode([
+      "status" => "error",
+      "message" => "Transaction failed. Nothing was saved.",
+      "details" => $e->getMessage()
     ]);
   }
-} 
-else 
-{
+} else {
   http_response_code(405);
-  echo json_encode(['status' => 'error', 'message' => 'Invalid request.']);
+  echo json_encode(["status" => "error", "message" => "Invalid request"]);
 }
-?>
