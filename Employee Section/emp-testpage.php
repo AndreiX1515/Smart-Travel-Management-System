@@ -104,27 +104,326 @@ error_reporting(E_ALL);
       <!-- Page Header -->
       <div class="page-header">
 
-        <div class="page-actions">
-          <div class="page-header-wrapper">
+        <!-- Left Section: Title and Breadcrumb -->
+        <div class="header-left">
+          <h1 class="page-title">Dashboard</h1>
+          <nav class="breadcrumb">
 
-            <div class="page-header-top">
-              <div class="back-btn-wrapper">
-                <button class="back-btn" id="redirect-btn">
-                  <i class="fas fa-chevron-left"></i>
-                </button>
-              </div>
+            <div class="breadcrumb-item-1">
+              <a href="#" class="breadcrumb-link">Main Dashboard</a>
             </div>
 
-            <div class="page-header-content">
-              <div class="page-header-text">
-                <h5 class="header-title">Dashboard</h5>
-              </div>
+            <div class="breadcrumb-item-1">
+              <!-- <span class="">Transaction</span> -->
             </div>
-          </div>
+          </nav>
+
         </div>
 
-        <!-- <h2 class="page-title">Page Title</h2> -->
+
+        <!-- Right Section: Export Button -->
+        <div class="header-right">
+
+          <div class="tabs-wrapper">
+
+            <div class="dropdown-tab-casing" id="segmentedDropdown">
+              <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
+                <span class="selected-text">Cebu Pacific</span>
+              </button>
+              <ul class="dropdown-menu" role="tablist">
+                <li class="dropdown-item">
+                  <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
+                    data-bs-target="#segmented-preview-pane" type="button" role="tab"
+                    aria-controls="segmented-preview-pane" aria-selected="true" data-value="cebu-pacific">
+                    Cebu Pacific
+                  </button>
+                </li>
+                <li class="dropdown-item">
+                  <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
+                    data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
+                    aria-selected="false" data-value="air-asia">
+                    Air Asia
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Dropdown Script -->
+        <script>
+  // Dropdown Tabs Functionality with Persistence
+  class DropdownTabs {
+    constructor(containerId, storageKey = 'selectedDropdownTab') {
+      this.container = document.getElementById(containerId);
+      this.storageKey = storageKey;
+      this.dropdownButton = this.container.querySelector('.dropdown-toggle');
+      this.dropdownMenu = this.container.querySelector('.dropdown-menu');
+      this.dropdownLinks = this.container.querySelectorAll('.dropdown-link');
+      this.selectedText = this.container.querySelector('.selected-text');
+      this.dropdownIcon = this.container.querySelector('.dropdown-icon');
+
+      this.init();
+    }
+
+    init() {
+      // Load saved selection on page load
+      this.loadSavedSelection();
+
+      // Add event listeners
+      this.addEventListeners();
+    }
+
+    addEventListeners() {
+      // Toggle dropdown on button click
+      this.dropdownButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.toggleDropdown();
+      });
+
+      // Handle dropdown item selection
+      this.dropdownLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.selectItem(link);
+        });
+      });
+
+      // Close dropdown when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!this.container.contains(e.target)) {
+          this.closeDropdown();
+        }
+      });
+
+      // Keyboard navigation
+      this.dropdownButton.addEventListener('keydown', (e) => {
+        this.handleKeyboardNavigation(e);
+      });
+      this.dropdownLinks.forEach(link => {
+        link.addEventListener('keydown', (e) => {
+          this.handleKeyboardNavigation(e);
+        });
+      });
+    }
+
+    toggleDropdown() {
+      const isOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        this.closeDropdown();
+      } else {
+        this.openDropdown();
+      }
+    }
+
+    openDropdown() {
+      this.dropdownButton.setAttribute('aria-expanded', 'true');
+      this.dropdownMenu.classList.add('show');
+    }
+
+    closeDropdown() {
+      this.dropdownButton.setAttribute('aria-expanded', 'false');
+      this.dropdownMenu.classList.remove('show');
+    }
+
+    selectItem(selectedLink) {
+      this.dropdownLinks.forEach(link => {
+        link.classList.remove('active');
+        link.setAttribute('aria-selected', 'false');
+      });
+
+      selectedLink.classList.add('active');
+      selectedLink.setAttribute('aria-selected', 'true');
+
+      this.selectedText.textContent = selectedLink.textContent;
+
+      this.saveSelection({
+        value: selectedLink.dataset.value,
+        text: selectedLink.textContent,
+        tabId: selectedLink.id,
+        target: selectedLink.dataset.bsTarget
+      });
+
+      if (selectedLink.dataset.bsToggle === 'tab') {
+        this.switchTabContent(selectedLink.dataset.bsTarget);
+      }
+
+      this.closeDropdown();
+      this.triggerSelectionEvent(selectedLink);
+    }
+
+    switchTabContent(targetSelector) {
+      if (!targetSelector) return;
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('show', 'active');
+      });
+      const targetPane = document.querySelector(targetSelector);
+      if (targetPane) {
+        targetPane.classList.add('show', 'active');
+      }
+    }
+
+    handleKeyboardNavigation(e) {
+      const isDropdownOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
+      switch (e.key) {
+        case 'Enter':
+        case ' ':
+          e.preventDefault();
+          if (e.target === this.dropdownButton) {
+            this.toggleDropdown();
+          } else if (e.target.classList.contains('dropdown-link')) {
+            this.selectItem(e.target);
+          }
+          break;
+        case 'Escape':
+          if (isDropdownOpen) {
+            e.preventDefault();
+            this.closeDropdown();
+            this.dropdownButton.focus();
+          }
+          break;
+        case 'ArrowDown':
+          if (isDropdownOpen) {
+            e.preventDefault();
+            this.focusNextItem(e.target);
+          } else if (e.target === this.dropdownButton) {
+            e.preventDefault();
+            this.openDropdown();
+          }
+          break;
+        case 'ArrowUp':
+          if (isDropdownOpen) {
+            e.preventDefault();
+            this.focusPreviousItem(e.target);
+          }
+          break;
+      }
+    }
+
+    focusNextItem(currentElement) {
+      const items = Array.from(this.dropdownLinks);
+      const currentIndex = items.indexOf(currentElement);
+      const nextIndex = (currentIndex + 1) % items.length;
+      items[nextIndex].focus();
+    }
+
+    focusPreviousItem(currentElement) {
+      const items = Array.from(this.dropdownLinks);
+      const currentIndex = items.indexOf(currentElement);
+      const previousIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+      items[previousIndex].focus();
+    }
+
+    saveSelection(selection) {
+      try {
+        localStorage.setItem(this.storageKey, JSON.stringify(selection));
+      } catch (error) {
+        console.warn('Could not save dropdown selection:', error);
+      }
+    }
+
+    loadSavedSelection() {
+      try {
+        const savedSelection = localStorage.getItem(this.storageKey);
+        if (savedSelection) {
+          const selection = JSON.parse(savedSelection);
+          const savedLink = this.container.querySelector(`[data-value="${selection.value}"]`);
+          if (savedLink) {
+            this.selectItem(savedLink);
+          }
+        }
+      } catch (error) {
+        console.warn('Could not load saved dropdown selection:', error);
+      }
+    }
+
+    triggerSelectionEvent(selectedLink) {
+      const customEvent = new CustomEvent('dropdownTabChanged', {
+        detail: {
+          selectedValue: selectedLink.dataset.value,
+          selectedText: selectedLink.textContent,
+          selectedElement: selectedLink,
+          target: selectedLink.dataset.bsTarget
+        }
+      });
+      this.container.dispatchEvent(customEvent);
+    }
+
+    // Public API
+    selectByValue(value) {
+      const link = this.container.querySelector(`[data-value="${value}"]`);
+      if (link) {
+        this.selectItem(link);
+      }
+    }
+
+    selectByIndex(index) {
+      if (index >= 0 && index < this.dropdownLinks.length) {
+        this.selectItem(this.dropdownLinks[index]);
+      }
+    }
+
+    getCurrentSelection() {
+      const activeLink = this.container.querySelector('.dropdown-link.active');
+      if (activeLink) {
+        return {
+          value: activeLink.dataset.value,
+          text: activeLink.textContent,
+          element: activeLink
+        };
+      }
+      return null;
+    }
+
+    clearSavedSelection() {
+      try {
+        localStorage.removeItem(this.storageKey);
+      } catch (error) {
+        console.warn('Could not clear saved dropdown selection:', error);
+      }
+    }
+  }
+
+  // Single initialization
+  let dropdownTabsInstance;
+  document.addEventListener('DOMContentLoaded', function () {
+    dropdownTabsInstance = new DropdownTabs('segmentedDropdown', 'airlineSelection');
+  });
+</script>
+
       </div>
+
+      <script>
+        // Add click event for export button
+        document.getElementById('export-btn').addEventListener('click', function () {
+          console.log('Export All Transaction clicked');
+          // Add your export functionality here
+
+          // Example: Show loading state
+          this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exporting...';
+          this.disabled = true;
+
+          // Simulate export process
+          setTimeout(() => {
+            this.innerHTML = '<i class="fas fa-download"></i> Export All Transaction';
+            this.disabled = false;
+            alert('Export completed!');
+          }, 2000);
+        });
+
+        // Add click event for breadcrumb navigation
+        document.querySelector('.breadcrumb-link').addEventListener('click', function (e) {
+          e.preventDefault();
+          console.log('Navigate to Dashboard');
+          // Add your navigation functionality here
+          // Example: window.location.href = '/dashboard';
+        });
+      </script>
 
       <!-- Page Body -->
       <div class="page-body">
@@ -143,137 +442,184 @@ error_reporting(E_ALL);
               </div>
 
               <div class="header-right">
-
+                <div class="header-title-wrapper ">
+                  <span>View All</span>
+                </div>
               </div>
 
             </div>
 
             <div class="header-card-body">
 
-              <div class="tab-container">
+              <div class="tab-subcontainer">
 
-                <!-- Top Row -->
-                <div class="tab">
-                  <div class="tab-icon"><i class="fas fa-users"></i></div>
-                  <div class="tab-info">
-                    <div class="tab-count">120</div>
-                    <div class="tab-name">Users</div>
+                <!-- First Row -->
+                <div class="row w-100">
+                  <div class="col-6">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">120</div>
+                        <div class="tab-name total-transactions">Total Transactions</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">75</div>
+                        <div class="tab-name">Confirmed</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="tab">
-                  <div class="tab-icon"><i class="fas fa-chart-line"></i></div>
-                  <div class="tab-info">
-                    <div class="tab-count">75</div>
-                    <div class="tab-name">Sales</div>
+
+                <!-- Custom Three-Card Row -->
+                <div class="tab-row-3 w-100">
+                  <div class="tab-col-3">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">45</div>
+                        <div class="tab-name">Pending</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-col-3">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-credit-card"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">60</div>
+                        <div class="tab-name">Reserved</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="tab-col-3">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-receipt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">32</div>
+                        <div class="tab-name">Cancelled</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <!-- Bottom Row -->
-                <div class="tab">
-                  <div class="tab-icon"><i class="fas fa-comments"></i></div>
-                  <div class="tab-info">
-                    <div class="tab-count">45</div>
-                    <div class="tab-name">Messages</div>
-                  </div>
-                </div>
 
-                <div class="tab">
-                  <div class="tab-icon"><i class="fas fa-envelope"></i></div>
-                  <div class="tab-info">
-                    <div class="tab-count">60</div>
-                    <div class="tab-name">Emails</div>
-                  </div>
-                </div>
-
-                <!-- Optional 5th tab -->
-                <!-- <div class="tab">
-                  <div class="tab-icon"><i class="fas fa-tasks"></i></div>
-                  <div class="tab-info">
-                    <div class="tab-count">30</div>
-                    <div class="tab-name">Tasks</div>
-                  </div>
-                </div> -->
               </div>
+
+            </div>
+
+          </div>
+
+          <div class="header-card">
+
+            <div class="header-card-header">
+
+              <div class="header-left">
+                <div class="header-title-wrapper">
+                  <span>On Due</span>
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="header-title-wrapper">
+                  <span>View All</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="header-card-body">
+
+              <div class="tab-subcontainer">
+
+                <!-- First Row -->
+                <div class="row w-100">
+                  <div class="col-6">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">120</div>
+                        <div class="tab-name total-transactions">Total Transactions</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">75</div>
+                        <div class="tab-name">Confirmed</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Second Row -->
+                <div class="row w-100">
+                  <div class="col-6">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">120</div>
+                        <div class="tab-name total-transactions">Total Transactions</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="tab">
+                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <div class="tab-info">
+                        <div class="tab-count">75</div>
+                        <div class="tab-name">Confirmed</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
             </div>
 
           </div>
 
           <div class="header-card"></div>
-
-          <div class="header-card"></div>
-
           <div class="header-card"></div>
 
         </div>
 
         <div class="page-tabs">
 
-          <ul class="nav custom-tabs" id="myTab" role="tablist">
-            <li class="nav-item">
-              <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
-                type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
-                Flight Seat Tracker
-              </button>
-            </li>
-            <li class="nav-item">
-              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
-                type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
-                Booking and Requests
-              </button>
-            </li>
+          <div class="tab-section">
+            <ul class="nav custom-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                  type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+                  Flight Seat Tracker
+                </button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                  type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                  Booking and Requests
+                </button>
+              </li>
+            </ul>
+          </div>
 
-            <!-- Uncomment if needed -->
-            <!--
-          <li class="nav-item">
-            <button class="nav-link" id="settings-tab"
-                    data-bs-toggle="tab" data-bs-target="#settings-tab-pane"
-                    type="button" role="tab"
-                    aria-controls="settings-tab-pane"
-                    aria-selected="false">
-              F.I.T
-            </button>
-          </li>
-          -->
-          </ul>
         </div>
 
         <div class="tab-content content-grid" id="myTabContent">
 
           <!-- First Layer Pane: Flight Seat Tracker -->
-          <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab">
+          <div class="tab-pane fade show active content-grid-pane" id="home-tab-pane" role="tabpanel"
+            aria-labelledby="home-tab">
 
             <div class="panel flight-seat-panel">
-
-              <!-- Panel Header -->
-              <div class="panel-header flight-tabs-header">
-
-                <!-- Second Layer nav-tabs -->
-                <div class="tabs-wrapper">
-
-                  <ul class="nav nav-pills" id="segmentedTab" role="tablist">
-                    <li class="nav-item">
-                      <button class="nav-link active" id="segmented-preview-tab" data-bs-toggle="tab"
-                        data-bs-target="#segmented-preview-pane" type="button" role="tab"
-                        aria-controls="segmented-preview-pane" aria-selected="true">
-                        Cebu Pacific
-                      </button>
-                    </li>
-                    <li class="nav-item">
-                      <button class="nav-link" id="segmented-code-tab" data-bs-toggle="tab"
-                        data-bs-target="#segmented-code-pane" type="button" role="tab"
-                        aria-controls="segmented-code-pane" aria-selected="false">
-                        Air Asia
-                      </button>
-                    </li>
-                  </ul>
-                  
-                </div>
-
-                <div class="actions-wrapper">
-                  <button class="btn btn-sm btn-primary" hidden>Save</button>
-                </div>
-              </div>
 
               <!-- Panel Body -->
               <div class="panel-body flight-tabs-body">
@@ -285,9 +631,8 @@ error_reporting(E_ALL);
                   <div class="tab-pane fade show active" id="segmented-preview-pane" role="tabpanel"
                     aria-labelledby="segmented-preview-tab">
                     <div class="table-container">
-                      <!-- <div id="error-container"></div>
-                      <div id="loading" class="loading">Loading flight data...</div> -->
-
+                      <div id="error-container"></div>
+                      <div id="loading" class="loading">Loading flight data...</div>
                       <div id="flight-table"></div>
                     </div>
                   </div>
@@ -297,11 +642,14 @@ error_reporting(E_ALL);
                     aria-labelledby="segmented-code-tab">
                     <p>Code content goes here...</p>
                   </div>
+
                 </div>
               </div>
             </div>
+
           </div>
 
+          <!-- First Layer Pane: Booking and Requests -->
           <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel">
             <div class="panel">
               <div class="panel-header">
