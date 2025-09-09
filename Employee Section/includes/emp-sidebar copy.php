@@ -490,13 +490,13 @@ $position = htmlspecialchars(strtoupper($empId));
 	</div>
 </div>
 
-<script>
+<!-- <script>
 	document.getElementById('raiseTicket').addEventListener('click', function (e) {
 		e.preventDefault();
 		const raiseModal = new bootstrap.Modal(document.getElementById('raiseTicketModal'));
 		raiseModal.show();
 	});
-</script>
+</script> -->
 
 
 <!-- Change Password Modal -->
@@ -1010,22 +1010,6 @@ $position = htmlspecialchars(strtoupper($empId));
 </script>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- Logout Modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -1044,7 +1028,6 @@ $position = htmlspecialchars(strtoupper($empId));
 		</div>
 	</div>
 </div>
-
 
 <!-- jQuery Script for Logout -->
 <script>

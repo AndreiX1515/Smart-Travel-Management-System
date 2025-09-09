@@ -16,9 +16,9 @@ error_reporting(E_ALL);
 <html lang="en">
 
 <head>
+
   <title>Employee - Dashboard</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
-
 
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar copy.css?v=<?php echo time(); ?>">
   <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator.min.css" rel="stylesheet">
@@ -120,17 +120,20 @@ error_reporting(E_ALL);
 
         </div>
 
-
         <!-- Right Section: Export Button -->
         <div class="header-right">
 
           <div class="tabs-wrapper">
 
             <div class="dropdown-tab-casing" id="segmentedDropdown">
+
               <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
                 <span class="selected-text">Cebu Pacific</span>
               </button>
+
+
               <ul class="dropdown-menu" role="tablist">
+
                 <li class="dropdown-item">
                   <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
                     data-bs-target="#segmented-preview-pane" type="button" role="tab"
@@ -138,6 +141,7 @@ error_reporting(E_ALL);
                     Cebu Pacific
                   </button>
                 </li>
+
                 <li class="dropdown-item">
                   <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
                     data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
@@ -146,284 +150,261 @@ error_reporting(E_ALL);
                   </button>
                 </li>
               </ul>
+              
             </div>
-
+            
           </div>
 
         </div>
 
-
         <!-- Dropdown Script -->
         <script>
-  // Dropdown Tabs Functionality with Persistence
-  class DropdownTabs {
-    constructor(containerId, storageKey = 'selectedDropdownTab') {
-      this.container = document.getElementById(containerId);
-      this.storageKey = storageKey;
-      this.dropdownButton = this.container.querySelector('.dropdown-toggle');
-      this.dropdownMenu = this.container.querySelector('.dropdown-menu');
-      this.dropdownLinks = this.container.querySelectorAll('.dropdown-link');
-      this.selectedText = this.container.querySelector('.selected-text');
-      this.dropdownIcon = this.container.querySelector('.dropdown-icon');
 
-      this.init();
-    }
+          let selectedAirline = 'cebu-pacific';
 
-    init() {
-      // Load saved selection on page load
-      this.loadSavedSelection();
+          class DropdownTabs {
+            constructor(containerId, storageKey = 'airlineSelection') {
+              this.container = document.getElementById(containerId);
+              this.storageKey = storageKey;
+              this.dropdownButton = this.container.querySelector('.dropdown-toggle');
+              this.dropdownMenu = this.container.querySelector('.dropdown-menu');
+              this.dropdownLinks = this.container.querySelectorAll('.dropdown-link');
+              this.selectedText = this.container.querySelector('.selected-text');
+              this.dropdownIcon = this.container.querySelector('.dropdown-icon'); // This might be null if not in HTML
 
-      // Add event listeners
-      this.addEventListeners();
-    }
+              this.init();
+            }
 
-    addEventListeners() {
-      // Toggle dropdown on button click
-      this.dropdownButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.toggleDropdown();
-      });
+            init() {
+              this.loadInitialState();
+              this.addEventListeners();
+            }
 
-      // Handle dropdown item selection
-      this.dropdownLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          this.selectItem(link);
-        });
-      });
+            addEventListeners() {
+              this.dropdownButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleDropdown();
+              });
 
-      // Close dropdown when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!this.container.contains(e.target)) {
-          this.closeDropdown();
-        }
-      });
+              this.dropdownLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  this.selectItem(link);
+                });
+              });
 
-      // Keyboard navigation
-      this.dropdownButton.addEventListener('keydown', (e) => {
-        this.handleKeyboardNavigation(e);
-      });
-      this.dropdownLinks.forEach(link => {
-        link.addEventListener('keydown', (e) => {
-          this.handleKeyboardNavigation(e);
-        });
-      });
-    }
+              document.addEventListener('click', (e) => {
+                if (!this.container.contains(e.target)) {
+                  this.closeDropdown();
+                }
+              });
 
-    toggleDropdown() {
-      const isOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
-      if (isOpen) {
-        this.closeDropdown();
-      } else {
-        this.openDropdown();
-      }
-    }
+              this.dropdownButton.addEventListener('keydown', (e) => {
+                this.handleKeyboardNavigation(e);
+              });
 
-    openDropdown() {
-      this.dropdownButton.setAttribute('aria-expanded', 'true');
-      this.dropdownMenu.classList.add('show');
-    }
+              this.dropdownLinks.forEach(link => {
+                link.addEventListener('keydown', (e) => {
+                  this.handleKeyboardNavigation(e);
+                });
+              });
+            }
 
-    closeDropdown() {
-      this.dropdownButton.setAttribute('aria-expanded', 'false');
-      this.dropdownMenu.classList.remove('show');
-    }
+            toggleDropdown() {
+              const isOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
+              if (isOpen) {
+                this.closeDropdown();
+              } else {
+                this.openDropdown();
+              }
+            }
 
-    selectItem(selectedLink) {
-      this.dropdownLinks.forEach(link => {
-        link.classList.remove('active');
-        link.setAttribute('aria-selected', 'false');
-      });
+            openDropdown() {
+              this.dropdownButton.setAttribute('aria-expanded', 'true');
+              this.dropdownMenu.classList.add('show');
+            }
 
-      selectedLink.classList.add('active');
-      selectedLink.setAttribute('aria-selected', 'true');
+            closeDropdown() {
+              this.dropdownButton.setAttribute('aria-expanded', 'false');
+              this.dropdownMenu.classList.remove('show');
+            }
 
-      this.selectedText.textContent = selectedLink.textContent;
+            selectItem(selectedLink) {
+              // Remove active state from all links
+              this.dropdownLinks.forEach(link => {
+                link.classList.remove('active');
+                link.setAttribute('aria-selected', 'false');
+              });
 
-      this.saveSelection({
-        value: selectedLink.dataset.value,
-        text: selectedLink.textContent,
-        tabId: selectedLink.id,
-        target: selectedLink.dataset.bsTarget
-      });
+              // Add active state to selected link
+              selectedLink.classList.add('active');
+              selectedLink.setAttribute('aria-selected', 'true');
 
-      if (selectedLink.dataset.bsToggle === 'tab') {
-        this.switchTabContent(selectedLink.dataset.bsTarget);
-      }
+              // Update the dropdown display text
+              this.selectedText.textContent = selectedLink.textContent;
 
-      this.closeDropdown();
-      this.triggerSelectionEvent(selectedLink);
-    }
+              // Save selection to localStorage
+              this.saveSelection(selectedLink.dataset.value);
 
-    switchTabContent(targetSelector) {
-      if (!targetSelector) return;
-      document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('show', 'active');
-      });
-      const targetPane = document.querySelector(targetSelector);
-      if (targetPane) {
-        targetPane.classList.add('show', 'active');
-      }
-    }
+              // Update the global variable
+              selectedAirline = selectedLink.dataset.value;
+              console.log(`Global variable 'selectedAirline' updated to: ${selectedAirline}`);
 
-    handleKeyboardNavigation(e) {
-      const isDropdownOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
-      switch (e.key) {
-        case 'Enter':
-        case ' ':
-          e.preventDefault();
-          if (e.target === this.dropdownButton) {
-            this.toggleDropdown();
-          } else if (e.target.classList.contains('dropdown-link')) {
-            this.selectItem(e.target);
+              // Switch tab content - IMPROVED VERSION
+              this.switchTabContent(selectedLink.dataset.bsTarget);
+
+              // Close dropdown
+              this.closeDropdown();
+
+              // Trigger custom event - MOVED TO AFTER TAB SWITCH
+              this.triggerSelectionEvent(selectedLink);
+            }
+
+            switchTabContent(targetSelector) {
+              if (!targetSelector) {
+                console.warn('No target selector provided for tab switching');
+                return;
+              }
+
+              // Hide all tab panes in the same tab content container
+              const tabContentContainer = document.querySelector('#segmentedTabContent');
+              if (tabContentContainer) {
+                const allPanes = tabContentContainer.querySelectorAll('.tab-pane');
+                allPanes.forEach(pane => {
+                  pane.classList.remove('show', 'active');
+                });
+
+                // Show the target pane
+                const targetPane = tabContentContainer.querySelector(targetSelector);
+                if (targetPane) {
+                  // Add a small delay to ensure smooth transition
+                  setTimeout(() => {
+                    targetPane.classList.add('show', 'active');
+                    console.log(`Switched to tab: ${targetSelector}`);
+                  }, 10);
+                } else {
+                  console.error(`Target pane not found: ${targetSelector}`);
+                }
+              } else {
+                console.error('Tab content container #segmentedTabContent not found');
+              }
+            }
+
+            handleKeyboardNavigation(e) {
+              const isDropdownOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
+
+              switch (e.key) {
+                case 'Enter':
+                case ' ':
+                  e.preventDefault();
+                  if (e.target === this.dropdownButton) {
+                    this.toggleDropdown();
+                  } else if (e.target.classList.contains('dropdown-link')) {
+                    this.selectItem(e.target);
+                  }
+                  break;
+                case 'Escape':
+                  if (isDropdownOpen) {
+                    e.preventDefault();
+                    this.closeDropdown();
+                    this.dropdownButton.focus();
+                  }
+                  break;
+                case 'ArrowDown':
+                  if (isDropdownOpen) {
+                    e.preventDefault();
+                    this.focusNextItem(e.target);
+                  } else if (e.target === this.dropdownButton) {
+                    e.preventDefault();
+                    this.openDropdown();
+                  }
+                  break;
+                case 'ArrowUp':
+                  if (isDropdownOpen) {
+                    e.preventDefault();
+                    this.focusPreviousItem(e.target);
+                  }
+                  break;
+              }
+            }
+
+            focusNextItem(currentElement) {
+              const items = Array.from(this.dropdownLinks);
+              const currentIndex = items.indexOf(currentElement);
+              const nextIndex = (currentIndex + 1) % items.length;
+              items[nextIndex].focus();
+            }
+
+            focusPreviousItem(currentElement) {
+              const items = Array.from(this.dropdownLinks);
+              const currentIndex = items.indexOf(currentElement);
+              const previousIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+              items[previousIndex].focus();
+            }
+
+            saveSelection(value) {
+              try {
+                localStorage.setItem(this.storageKey, value);
+              } catch (error) {
+                console.warn('Could not save dropdown selection:', error);
+              }
+            }
+
+            triggerSelectionEvent(selectedLink) {
+              if (!selectedLink) return;
+
+              const customEvent = new CustomEvent('dropdownTabChanged', {
+                detail: {
+                  selectedValue: selectedLink.dataset.value,
+                  selectedText: selectedLink.textContent,
+                  selectedElement: selectedLink,
+                  target: selectedLink.dataset.bsTarget
+                },
+                bubbles: true // Allow event to bubble up
+              });
+
+              // Dispatch on both the container and document for broader reach
+              this.container.dispatchEvent(customEvent);
+              document.dispatchEvent(customEvent);
+
+              console.log('Custom event dispatched:', customEvent.detail);
+            }
+
+            loadInitialState() {
+              const savedValue = localStorage.getItem(this.storageKey);
+              const defaultLink = this.container.querySelector('.dropdown-link.active');
+
+              if (savedValue) {
+                const savedLink = this.container.querySelector(`[data-value="${savedValue}"]`);
+                if (savedLink) {
+                  this.selectItem(savedLink);
+                } else if (defaultLink) {
+                  // If saved value doesn't match an existing link, default to the active one
+                  this.selectItem(defaultLink);
+                }
+              } else if (defaultLink) {
+                // If no saved value, use the default link from the HTML
+                this.selectItem(defaultLink);
+              }
+            }
           }
-          break;
-        case 'Escape':
-          if (isDropdownOpen) {
-            e.preventDefault();
-            this.closeDropdown();
-            this.dropdownButton.focus();
-          }
-          break;
-        case 'ArrowDown':
-          if (isDropdownOpen) {
-            e.preventDefault();
-            this.focusNextItem(e.target);
-          } else if (e.target === this.dropdownButton) {
-            e.preventDefault();
-            this.openDropdown();
-          }
-          break;
-        case 'ArrowUp':
-          if (isDropdownOpen) {
-            e.preventDefault();
-            this.focusPreviousItem(e.target);
-          }
-          break;
-      }
-    }
 
-    focusNextItem(currentElement) {
-      const items = Array.from(this.dropdownLinks);
-      const currentIndex = items.indexOf(currentElement);
-      const nextIndex = (currentIndex + 1) % items.length;
-      items[nextIndex].focus();
-    }
+          // Initialize when DOM is ready
+          document.addEventListener('DOMContentLoaded', function () {
+            console.log('Initializing DropdownTabs...');
+            const dropdownTabs = new DropdownTabs('segmentedDropdown');
 
-    focusPreviousItem(currentElement) {
-      const items = Array.from(this.dropdownLinks);
-      const currentIndex = items.indexOf(currentElement);
-      const previousIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
-      items[previousIndex].focus();
-    }
-
-    saveSelection(selection) {
-      try {
-        localStorage.setItem(this.storageKey, JSON.stringify(selection));
-      } catch (error) {
-        console.warn('Could not save dropdown selection:', error);
-      }
-    }
-
-    loadSavedSelection() {
-      try {
-        const savedSelection = localStorage.getItem(this.storageKey);
-        if (savedSelection) {
-          const selection = JSON.parse(savedSelection);
-          const savedLink = this.container.querySelector(`[data-value="${selection.value}"]`);
-          if (savedLink) {
-            this.selectItem(savedLink);
-          }
-        }
-      } catch (error) {
-        console.warn('Could not load saved dropdown selection:', error);
-      }
-    }
-
-    triggerSelectionEvent(selectedLink) {
-      const customEvent = new CustomEvent('dropdownTabChanged', {
-        detail: {
-          selectedValue: selectedLink.dataset.value,
-          selectedText: selectedLink.textContent,
-          selectedElement: selectedLink,
-          target: selectedLink.dataset.bsTarget
-        }
-      });
-      this.container.dispatchEvent(customEvent);
-    }
-
-    // Public API
-    selectByValue(value) {
-      const link = this.container.querySelector(`[data-value="${value}"]`);
-      if (link) {
-        this.selectItem(link);
-      }
-    }
-
-    selectByIndex(index) {
-      if (index >= 0 && index < this.dropdownLinks.length) {
-        this.selectItem(this.dropdownLinks[index]);
-      }
-    }
-
-    getCurrentSelection() {
-      const activeLink = this.container.querySelector('.dropdown-link.active');
-      if (activeLink) {
-        return {
-          value: activeLink.dataset.value,
-          text: activeLink.textContent,
-          element: activeLink
-        };
-      }
-      return null;
-    }
-
-    clearSavedSelection() {
-      try {
-        localStorage.removeItem(this.storageKey);
-      } catch (error) {
-        console.warn('Could not clear saved dropdown selection:', error);
-      }
-    }
-  }
-
-  // Single initialization
-  let dropdownTabsInstance;
-  document.addEventListener('DOMContentLoaded', function () {
-    dropdownTabsInstance = new DropdownTabs('segmentedDropdown', 'airlineSelection');
-  });
-</script>
+            // Example of how to listen for the custom event
+            document.addEventListener('dropdownTabChanged', function (e) {
+              console.log('Dropdown selection changed:', e.detail);
+              // Add your custom logic here
+            });
+          });
+        </script>
 
       </div>
-
-      <script>
-        // Add click event for export button
-        document.getElementById('export-btn').addEventListener('click', function () {
-          console.log('Export All Transaction clicked');
-          // Add your export functionality here
-
-          // Example: Show loading state
-          this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Exporting...';
-          this.disabled = true;
-
-          // Simulate export process
-          setTimeout(() => {
-            this.innerHTML = '<i class="fas fa-download"></i> Export All Transaction';
-            this.disabled = false;
-            alert('Export completed!');
-          }, 2000);
-        });
-
-        // Add click event for breadcrumb navigation
-        document.querySelector('.breadcrumb-link').addEventListener('click', function (e) {
-          e.preventDefault();
-          console.log('Navigate to Dashboard');
-          // Add your navigation functionality here
-          // Example: window.location.href = '/dashboard';
-        });
-      </script>
 
       <!-- Page Body -->
       <div class="page-body">
@@ -431,6 +412,7 @@ error_reporting(E_ALL);
         <!-- Page-body (Header) -->
         <div class="page-body-header">
 
+          <!-- Card 1 -->
           <div class="header-card">
 
             <div class="header-card-header">
@@ -443,7 +425,7 @@ error_reporting(E_ALL);
 
               <div class="header-right">
                 <div class="header-title-wrapper ">
-                  <span>View All</span>
+                  <span class="span-link">View All</span>
                 </div>
               </div>
 
@@ -454,59 +436,58 @@ error_reporting(E_ALL);
               <div class="tab-subcontainer">
 
                 <!-- First Row -->
-                <div class="row w-100">
-                  <div class="col-6">
-                    <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
-                      <div class="tab-info">
-                        <div class="tab-count">120</div>
-                        <div class="tab-name total-transactions">Total Transactions</div>
-                      </div>
+                <div class="tab-row">
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">120</div>
+                      <div class="tab-name total-transactions">Total Transactions</div>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
-                      <div class="tab-info">
-                        <div class="tab-count">75</div>
-                        <div class="tab-name">Confirmed</div>
-                      </div>
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">75</div>
+                      <div class="tab-name">Confirmed</div>
                     </div>
                   </div>
                 </div>
 
 
                 <!-- Custom Three-Card Row -->
-                <div class="tab-row-3 w-100">
+                <div class="tab-row-3">
+
                   <div class="tab-col-3">
                     <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
+                      <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
                       <div class="tab-info">
                         <div class="tab-count">45</div>
                         <div class="tab-name">Pending</div>
                       </div>
                     </div>
                   </div>
+
                   <div class="tab-col-3">
                     <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-credit-card"></i></div>
+                      <!-- <div class="tab-icon"><i class="fas fa-credit-card"></i></div> -->
                       <div class="tab-info">
                         <div class="tab-count">60</div>
                         <div class="tab-name">Reserved</div>
                       </div>
                     </div>
                   </div>
+
                   <div class="tab-col-3">
                     <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-receipt"></i></div>
+                      <!-- <div class="tab-icon"><i class="fas fa-receipt"></i></div> -->
                       <div class="tab-info">
                         <div class="tab-count">32</div>
                         <div class="tab-name">Cancelled</div>
                       </div>
                     </div>
                   </div>
-                </div>
 
+                </div>
 
               </div>
 
@@ -514,6 +495,7 @@ error_reporting(E_ALL);
 
           </div>
 
+          <!-- Card 2 -->
           <div class="header-card">
 
             <div class="header-card-header">
@@ -526,7 +508,7 @@ error_reporting(E_ALL);
 
               <div class="header-right">
                 <div class="header-title-wrapper">
-                  <span>View All</span>
+                  <span class="span-link">View All</span>
                 </div>
               </div>
 
@@ -537,45 +519,37 @@ error_reporting(E_ALL);
               <div class="tab-subcontainer">
 
                 <!-- First Row -->
-                <div class="row w-100">
-                  <div class="col-6">
-                    <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
-                      <div class="tab-info">
-                        <div class="tab-count">120</div>
-                        <div class="tab-name total-transactions">Total Transactions</div>
-                      </div>
+                <div class="tab-row">
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">120</div>
+                      <div class="tab-name total-transactions">5 Days Before Flight</div>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
-                      <div class="tab-info">
-                        <div class="tab-count">75</div>
-                        <div class="tab-name">Confirmed</div>
-                      </div>
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">75</div>
+                      <div class="tab-name">15 Days Before Flight</div>
                     </div>
                   </div>
                 </div>
 
                 <!-- Second Row -->
-                <div class="row w-100">
-                  <div class="col-6">
-                    <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
-                      <div class="tab-info">
-                        <div class="tab-count">120</div>
-                        <div class="tab-name total-transactions">Total Transactions</div>
-                      </div>
+                <div class="tab-row">
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">120</div>
+                      <div class="tab-name total-transactions">30 Days Before Flight</div>
                     </div>
                   </div>
-                  <div class="col-6">
-                    <div class="tab">
-                      <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div>
-                      <div class="tab-info">
-                        <div class="tab-count">75</div>
-                        <div class="tab-name">Confirmed</div>
-                      </div>
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">75</div>
+                      <div class="tab-name">> 30 Days Before Flight</div>
                     </div>
                   </div>
                 </div>
@@ -587,31 +561,361 @@ error_reporting(E_ALL);
 
           </div>
 
-          <div class="header-card"></div>
-          <div class="header-card"></div>
+          <!-- Card 3 -->
+          <div class="header-card">
+
+            <div class="header-card-header">
+
+              <div class="header-left">
+                <div class="header-title-wrapper">
+                  <span>Total Sales</span>
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="header-title-wrapper">
+
+                  <!-- Replaced toggle with grouped buttons -->
+                  <div class="mini-toggle-group" id="theme-toggle-group">
+                    <button type="button" class="toggle-btn active" data-mode="current">Current</button>
+                    <button type="button" class="toggle-btn" data-mode="past">Past</button>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="header-card-body" id="headerBody">
+
+              <div class="tab-subcontainer-sales">
+
+                <div class="sales-tab current-tab active">
+
+                  <div class="sales-card">
+
+                    <div class="sales-left">
+
+                      <div class="sales-left-info">
+                        <!-- Top Section -->
+                        <div class="sales-top">
+                          <div class="sales-label">Current Month - September</div>
+
+                          <div class="left-info">
+                            <div class="sales-value">
+                              <span>₱ 486,659,155</span>
+                            </div>
+
+                            <div class="sales-convert">
+                              <i class="fas fa-exchange-alt convert-icon"></i>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <!-- Bottom Section -->
+                        <div class="sales-bottom">
+                          <div class="sales-label-accent">
+                            As of Sept. 08, 2025 – Currency Rates
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                       <!-- Change to KRW (Def. PHP) -->
+                        <script>
+                          const phpToKrwRate = 25; // 1 PHP = 25 KRW (example rate)
+
+                          const convertIcon = document.querySelector('.convert-icon');
+                          const salesValue = document.querySelector('.sales-value span');
+
+                          let isPhp = true; // track current currency
+
+                          convertIcon.addEventListener('click', () => {
+                            // remove non-numeric characters and commas
+                            let numericValue = parseFloat(salesValue.textContent.replace(/[^0-9.-]+/g, ""));
+
+                            if (isPhp) {
+                              // Convert PHP to KRW
+                              let krwValue = numericValue * phpToKrwRate;
+                              salesValue.textContent = `₩ ${krwValue.toLocaleString()}`;
+                              isPhp = false;
+                            } else {
+                              // Convert KRW back to PHP
+                              let phpValue = numericValue / phpToKrwRate;
+                              salesValue.textContent = `₱ ${phpValue.toLocaleString()}`;
+                              isPhp = true;
+                            }
+                          });
+                        </script>
+
+                    </div>
+
+                    <div class="sales-right">
+                      <!-- Left: Percentage (1/4) -->
+                      <div class="sales-percentage-wrapper">
+                        <span class="sales-percentage-plus">+ 20.76% ▲</span>
+                      </div>
+
+                      <!-- Right: Additional content (3/4) -->
+                      <div class="sales-extra-info">
+                        <!-- Add details here later -->
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+                <div class="sales-tab past-tab">
+                  <div class="sales-card">
+
+                    <div class="sales-left">
+                      <div class="sales-left-info">
+                        <!-- Top Section -->
+                        <div class="sales-top" id="sales-tab-2">
+                          <div class="sales-label">Current Month - September</div>
+
+                          <div class="left-info">
+                            <div class="sales-value">
+                              <span>₱ 486,659,155</span>
+                            </div>
+                            <div class="sales-convert">
+                              <i class="fas fa-exchange-alt convert-icon"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Bottom Section -->
+                        <div class="sales-bottom">
+                          <div class="sales-label-accent">
+                            As of Sept. 08, 2025 – Currency Rates
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Currency Conversion Script -->
+                    <script>
+                      (function () {
+                        const phpToKrwRate = 25; // Example: 1 PHP = 25 KRW
+
+                        // Scope inside tab 2
+                        const tab2 = document.getElementById("sales-tab-2");
+                        const convertIcon = tab2.querySelector(".convert-icon");
+                        const salesValue = tab2.querySelector(".sales-value span");
+
+                        let isPhp = true; // track current currency
+
+                        convertIcon.addEventListener("click", () => {
+                          let numericValue = parseFloat(
+                            salesValue.textContent.replace(/[^0-9.-]+/g, "")
+                          );
+
+                          if (isPhp) {
+                            let krwValue = numericValue * phpToKrwRate;
+                            salesValue.textContent = `₩ ${krwValue.toLocaleString()}`;
+                            isPhp = false;
+                          } else {
+                            let phpValue = numericValue / phpToKrwRate;
+                            salesValue.textContent = `₱ ${phpValue.toLocaleString()}`;
+                            isPhp = true;
+                          }
+                        });
+                      })();
+                    </script>
+
+                    <div class="sales-right">
+                      <!-- Left: Percentage (1/4) -->
+                      <div class="sales-percentage-wrapper">
+                        <span class="sales-percentage-negative">- 20.76% ▲</span>
+                      </div>
+
+                      <!-- Right: Additional content (3/4) -->
+                      <div class="sales-extra-info">
+                        <!-- Add details here later -->
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                  const headerBody = document.getElementById('headerBody');
+                  // const headerTitle = document.getElementById('headerTitle');
+                  const currentTab = document.querySelector('.current-tab');
+                  const pastTab = document.querySelector('.past-tab');
+                  const buttons = document.querySelectorAll('.mini-toggle-group .toggle-btn');
+
+                  buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                      // Reset active button
+                      buttons.forEach(b => b.classList.remove('active'));
+                      btn.classList.add('active');
+
+                      if (btn.dataset.mode === "past") {
+                        headerBody.classList.add('toggled');
+                        // headerTitle.textContent = 'Past Sales';
+                        currentTab.classList.remove('active');
+                        pastTab.classList.add('active');
+                      } else {
+                        headerBody.classList.remove('toggled');
+                        // headerTitle.textContent = 'Current';
+                        pastTab.classList.remove('active');
+                        currentTab.classList.add('active');
+                      }
+                    });
+                  });
+                });
+
+              </script>
+
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="header-card">
+
+            <div class="header-card-header">
+
+              <div class="header-left">
+                <div class="header-title-wrapper">
+                  <span>Currency Rates <span class="sub-text">(as of Sept. 8, 2025)</span></span>
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="header-title-wrapper">
+                  <span class="span-link">View All</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="header-card-body">
+
+              <div class="tab-subcontainer-currency">
+
+                <!-- Left card -->
+                <div class="left-currency-card">
+
+                  <div class="left-main-card">
+                    <div class="currency-flag-wrapper">
+                      <img src="us-flag.png" alt="" class="currency-flag">
+                    </div>
+
+                    <div class="currency-info">
+                      <h3>$ 1</h3>
+                      <span>US DOLLAR</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Exchange icon -->
+                <div class="currency-exchange-icon">
+                  <i class="fas fa-exchange-alt"></i>
+                </div>
+
+                <!-- Right side stacked currencies -->
+                <div class="right-currency-cards">
+
+                  <div class="currency-sub-card">
+                    <div class="currency-flag-wrapper">
+                      <img src="kr-flag.png" alt="" class="currency-flag">
+                    </div>
+
+                    <div class="currency-info-sub">
+                      <h3>₩ 1,388</h3>
+                      <span>KOREAN WON</span>
+                    </div>
+
+                  </div>
+
+
+                  <div class="currency-sub-card">
+                    <div class="currency-flag-wrapper">
+                      <img src="kr-flag.png" alt="" class="currency-flag">
+                    </div>
+
+                    <div class="currency-info-sub">
+                      <h3>₩ 1,388</h3>
+                      <span>PHILIPPINE PESO</span>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+
+          </div>
 
         </div>
 
         <div class="page-tabs">
-
           <div class="tab-section">
             <ul class="nav custom-tabs" id="myTab" role="tablist">
+
               <li class="nav-item">
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
                   type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
                   Flight Seat Tracker
                 </button>
               </li>
+
               <li class="nav-item">
                 <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
                   type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
                   Booking and Requests
                 </button>
               </li>
+
+              <li class="nav-item">
+                <button class="nav-link" id="fit-tab" data-bs-toggle="tab" data-bs-target="#fit-tab-pane" type="button"
+                  role="tab" aria-controls="#fit-tab-pane" aria-selected="false">
+                  F.I.T
+                </button>
+              </li>
+
+
             </ul>
           </div>
-
         </div>
+
+
+        <!-- Record Tab State -->
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            // Check if a tab is saved
+            const activeTab = localStorage.getItem("activeTab");
+            if (activeTab) {
+              const someTabTriggerEl = document.querySelector(`[data-bs-target="${activeTab}"]`);
+              if (someTabTriggerEl) {
+                const tab = new bootstrap.Tab(someTabTriggerEl);
+                tab.show();
+              }
+            }
+
+            // Save tab on click
+            const tabButtons = document.querySelectorAll('#myTab button[data-bs-toggle="tab"]');
+            tabButtons.forEach((button) => {
+              button.addEventListener("shown.bs.tab", function (event) {
+                const target = event.target.getAttribute("data-bs-target");
+                localStorage.setItem("activeTab", target);
+              });
+            });
+          });
+        </script>
+
 
         <div class="tab-content content-grid" id="myTabContent">
 
@@ -624,10 +928,11 @@ error_reporting(E_ALL);
               <!-- Panel Body -->
               <div class="panel-body flight-tabs-body">
 
+
                 <!-- Second Layer Tab-content -->
                 <div class="tab-content tab-content-2" id="segmentedTabContent">
 
-                  <!-- Cebu Pacific Tab -->
+                  <!-- Cebu Pacific Tab Page-->
                   <div class="tab-pane fade show active" id="segmented-preview-pane" role="tabpanel"
                     aria-labelledby="segmented-preview-tab">
                     <div class="table-container">
@@ -637,33 +942,113 @@ error_reporting(E_ALL);
                     </div>
                   </div>
 
-                  <!-- Air Asia Tab -->
+                  <!-- Air Asia Tab Page-->
                   <div class="tab-pane fade" id="segmented-code-pane" role="tabpanel"
                     aria-labelledby="segmented-code-tab">
                     <p>Code content goes here...</p>
                   </div>
 
                 </div>
-              </div>
-            </div>
 
+              </div>
+
+            </div>
           </div>
 
           <!-- First Layer Pane: Booking and Requests -->
-          <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel">
+          <div class="tab-pane fade booking-request-wrapper" id="profile-tab-pane" role="tabpanel">
+
             <div class="panel">
-              <div class="panel-header">
+
+              <!-- <div class="panel-header">
                 Recent Activity
-              </div>
+              </div> -->
 
               <div class="panel-body">
-                <!-- Content grows/shrinks here -->
+
+                <div class="first-part-wrapper">
+
+                  <div class="request-wrapper">
+
+                    <div class="wrapper-header">
+                      <div class="header-left">
+                        <div class="header-title-wrapper">
+                          <span>Request</span>
+                        </div>
+                      </div>
+
+                      <div class="header-right">
+                        <div class="header-title-wrapper ">
+                          <span class="span-link">View All</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="request-wrapper-body">
+
+                    </div>
+                  </div>
+
+                  <div class="booking-wrapper">
+
+                    <div class="wrapper-header">
+                      <div class="header-left">
+                        <div class="header-title-wrapper">
+                          <span>Booking</span>
+                        </div>
+                      </div>
+
+                      <div class="header-right">
+                        <div class="header-title-wrapper ">
+                          <span class="span-link">View All</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="booking-wrapper-body">
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <div class="second-part-wrapper">
+                  <div class="confirmed-wrapper">
+
+                    <div class="wrapper-header">
+                      <div class="header-left">
+                        <div class="header-title-wrapper">
+                          <span>Confirmed Transaction</span>
+                        </div>
+                      </div>
+
+                      <div class="header-right">
+                        <div class="header-title-wrapper ">
+                          <span class="span-link">View All</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="request-wrapper-body">
+
+                    </div>
+                  </div>
+
+                </div>
+
               </div>
+
+
             </div>
+
           </div>
 
-          <div class="tab-pane fade" id="settings-tab-pane" role="tabpanel">
+          <!-- First Layer Pane: F.I.T -->
+          <div class="tab-pane fade" id="fit-tab-pane" role="tabpanel">
             <div class="panel">
+
               <div class="panel-header">
                 Recent Activity
               </div>
@@ -682,13 +1067,31 @@ error_reporting(E_ALL);
   </div>
 
 
+  <!-- For Page Back Navigation -->
   <script>
     document.getElementById('redirect-btn').addEventListener('click', function () {
       window.location.href = '../Employee Section/emp-dashboard.php';
     });
   </script>
 
+
+  <!-- For Breadcrumbs -->
+
+  <script>
+    // Add click event for breadcrumb navigation
+    document.querySelector('.breadcrumb-link').addEventListener('click', function (e) {
+      e.preventDefault();
+      console.log('Navigate to Dashboard');
+      // Add your navigation functionality here
+      // Example: window.location.href = '/dashboard';
+    });
+  </script>
+
+
+
+
   <script src="https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator.min.js"></script>
+
   <script>
     class FlightTableManager {
       constructor() {
