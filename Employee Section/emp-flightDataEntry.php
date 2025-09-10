@@ -16,20 +16,33 @@
       <form id="manualFlightForm" method="POST" action="../Employee Section/functions/emp-addFlightDate.php">
         <div class="table-responsive">
           <table class="table table-bordered table-centered mb-0" id="manualEntryTable">
-            <thead>
+            <thead class="table-light">
               <tr>
-                <th style="width: 13%;">Team OP</th>
-                <th style="width: 10%;">Package</th>
-                <th style="width: 10%;">Origin</th>
-                <th style="width: 10%;">Flight Code</th>
-                <th style="width: 10%;">Departure Date</th>
-                <th style="width: 10%;">Flight Code</th>
-                <th style="width: 10%;">Return Date</th>
-                <th style="width: 8%;">Wholesale Price</th>
-                <th style="width: 8%;">Flight Price</th>
-                <th style="width: 8%;">Land Price</th>
-                <th style="width: 8%;">Available Seats</th>
-                <th>Actions</th>
+                <th>Team OP</th>
+                <th>Package</th>
+                <th colspan="5" class="text-center">Departure</th>
+                <th colspan="5" class="text-center">Return</th>
+                <th colspan="4" class="text-center">Pricing & Seats</th>
+              </tr>
+              <tr>
+                <th colspan="2"></th>
+                <!-- Departure -->
+                <th>Airline</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Flight No.</th>
+                <th>Date & Time</th>
+                <!-- Return -->
+                <th>Airline</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Flight No.</th>
+                <th>Date & Time</th>
+                <!-- Pricing -->
+                <th>Wholesale</th>
+                <th>Flight</th>
+                <th>Land</th>
+                <th>Seats</th>
               </tr>
             </thead>
             <tbody id="manualFlightBody">
@@ -38,128 +51,111 @@
                 <td>
                   <select name="employeeId[]" class="form-control">
                     <option selected disabled>Select Team OP</option>
+                    <option value="">No Team OP</option>
                     <?php
                       $sql1 = "SELECT * FROM employee";
                       $res1 = $conn->query($sql1);
-                      
-                      if ($res1 -> num_rows > 0)
-                      {
-                        while($row = $res1->fetch_assoc())
-                        {
+                      if ($res1 && $res1->num_rows > 0) {
+                        while($row = $res1->fetch_assoc()) {
                           $fName = $row['fName'] ?? null;
                           $mName = $row['mName'] ?? null;
                           $lName = $row['lName'] ?? null;
-                          if (empty($fName) && empty($lName)) 
-                          {
-                            $fullName = "No Team OP";
-                          } else {
-                            $middleInitial = $mName ? strtoupper(substr($mName, 0, 1)) . '.' : '';
-                            $fullName = $lName . ", " . $fName . " " . $middleInitial;
-                          }
+                          $middleInitial = $mName ? strtoupper(substr($mName, 0, 1)) . '.' : '';
+                          $fullName = $lName . ", " . $fName . " " . $middleInitial;
                           echo "<option value='".$row['employeeId']."'>".$fullName."</option>";
                         }
-                      }
-                      else
-                      {
-                        echo "No Package Found";
                       }
                     ?>
                   </select>
                 </td>
+
                 <!-- Package -->
                 <td>
                   <select name="packageId[]" class="form-control" required>
                     <option selected disabled>Select Package</option>
                     <?php
-                      $sql1 = "SELECT * FROM package ORDER BY packageName";
-                      $res1 = $conn->query($sql1);
-                      
-                      if ($res1 -> num_rows > 0)
-                      {
-                        while($row = $res1->fetch_assoc())
-                        {
+                      $sql2 = "SELECT * FROM package ORDER BY packageName";
+                      $res2 = $conn->query($sql2);
+                      if ($res2 && $res2->num_rows > 0) {
+                        while($row = $res2->fetch_assoc()) {
                           echo "<option value='".$row['packageId']."'>".$row['packageName']."</option>";
                         }
                       }
-                      else
-                      {
-                        echo "No Package Found";
-                      }
                     ?>
                   </select>
                 </td>
-                <!-- Origin -->
+
+                <!-- Departure -->
                 <td>
-                  <select name="origin[]" class="form-control" required>
-                    <option selected disabled>Select Origin</option>
+                  <select name="airlineId[]" class="form-control" required>
+                    <option selected disabled>Select Airline</option>
                     <?php
-                      $sql1 = "SELECT DISTINCT origin FROM flight ORDER BY origin";
-                      $res1 = $conn->query($sql1);
-                      
-                      if ($res1 -> num_rows > 0)
-                      {
-                        while($row = $res1->fetch_assoc())
-                        {
-                          echo "<option value='".$row['origin']."'>".$row['origin']."</option>";
+                      $sqlAir = "SELECT airlineId, airlineName, IATA FROM airline ORDER BY airlineName";
+                      $resAir = $conn->query($sqlAir);
+                      if ($resAir && $resAir->num_rows > 0) {
+                        while ($row = $resAir->fetch_assoc()) {
+                          echo "<option value='".$row['airlineId']."'>".$row['airlineName']." (".$row['IATA'].")</option>";
                         }
                       }
-                      else
-                      {
-                        echo "No Origin Found";
-                      }
                     ?>
                   </select>
                 </td>
-                <!-- Departure Flight Code -->
+                <td><input type="text" name="origin[]" class="form-control" required></td>
+                <td><input type="text" name="destination[]" class="form-control" required></td>
+                <td><input type="text" name="flightCode[]" class="form-control" required></td>
                 <td>
-                  <select name="departureFlightCode[]" class="form-control" required>
-                    <option selected disabled>Select Flight Code</option>
+                  <!-- Departure -->
+                  <label class="small fw-bold d-block">Departure</label>
+                  <input type="date" name="departureDate[]" class="form-control form-control-sm mb-1" required>
+                  <input type="time" name="departureTime[]" class="form-control form-control-sm mb-2" required>
+
+                  <hr class="my-1">
+
+                  <!-- Arrival -->
+                  <label class="small fw-bold d-block">Arrival</label>
+                  <input type="date" name="arrivalDate[]" class="form-control form-control-sm mb-1" required>
+                  <input type="time" name="arrivalTime[]" class="form-control form-control-sm" required>
+                </td>
+
+                <!-- Return -->
+                <td>
+                  <select name="returnAirlineId[]" class="form-control" required>
+                    <option selected disabled>Select Airline</option>
                     <?php
-                      $sql1 = "SELECT DISTINCT flightCode FROM flight ORDER BY flightCode";
-                      $res1 = $conn->query($sql1);
-                      
-                      if ($res1 -> num_rows > 0)
-                      {
-                        while($row = $res1->fetch_assoc())
-                        {
-                          echo "<option value='".$row['flightCode']."'>".$row['flightCode']."</option>";
+                      $sqlAir = "SELECT airlineId, airlineName, IATA FROM airline ORDER BY airlineName";
+                      $resAir = $conn->query($sqlAir);
+                      if ($resAir && $resAir->num_rows > 0) {
+                        while ($row = $resAir->fetch_assoc()) {
+                          echo "<option value='".$row['airlineId']."'>".$row['airlineName']." (".$row['IATA'].")</option>";
                         }
                       }
-                      else
-                      {
-                        echo "No Flight Code Found";
-                      }
                     ?>
                   </select>
                 </td>
-                <td><input type="date" name="departureDate[]" class="form-control departure-date" required></td>
-                <!-- Return Flight Code -->
+                <td><input type="text" name="returnOrigin[]" class="form-control" required></td>
+                <td><input type="text" name="returnDestination[]" class="form-control" required></td>
+                <td><input type="text" name="returnFlightCode[]" class="form-control" required></td>
                 <td>
-                  <select name="returnFlightCode[]" class="form-control" required>
-                    <option selected disabled>Select Flight Code</option>
-                    <?php
-                      $sql1 = "SELECT DISTINCT returnFlightCode FROM flight ORDER BY returnFlightCode";
-                      $res1 = $conn->query($sql1);
-                      
-                      if ($res1 -> num_rows > 0)
-                      {
-                        while($row = $res1->fetch_assoc())
-                        {
-                          echo "<option value='".$row['returnFlightCode']."'>".$row['returnFlightCode']."</option>";
-                        }
-                      }
-                      else
-                      {
-                        echo "No Flight Code Found";
-                      }
-                    ?>
-                  </select>
+                  <!-- Departure -->
+                  <label class="small fw-bold d-block">Departure</label>
+                  <input type="date" name="returnDate[]" class="form-control mb-1" required>
+                  <input type="time" name="returnDepartureTime[]" class="form-control" required>
+
+                  <hr class="my-1">
+
+                  <!-- Arrival -->
+                  <label class="small fw-bold d-block">Arrival</label>
+                  <input type="date" name="returnArrivalDate[]" class="form-control mb-1" required>
+                  <input type="time" name="returnArrivalTime[]" class="form-control" required>
                 </td>
-                <td><input type="date" name="returnDate[]" class="form-control return-date" required readonly></td>
+
+                <!-- Prices & Seats -->
                 <td><input type="number" name="wholesalePrice[]" step="0.01" class="form-control" min="1" required></td>
                 <td><input type="number" name="flightPrice[]" step="0.01" class="form-control" min="1" required></td>
                 <td><input type="number" name="landPrice[]" step="0.01" class="form-control" min="1" required></td>
                 <td><input type="number" name="availSeats[]" class="form-control" min="1" required></td>
+
+                <!-- Actions -->
                 <td>
                   <button type="button" class="btn btn-success btn-sm addRow">+</button>
                   <button type="button" class="btn btn-danger btn-sm removeRow">-</button>
@@ -168,6 +164,7 @@
             </tbody>
           </table>
         </div>
+
         <div class="mt-3 text-end">
           <button type="submit" class="btn btn-primary">Save Flights</button>
         </div>
@@ -192,65 +189,41 @@
 
 <!-- Dynamic Row for Data Entry -->
 <script>
-  document.addEventListener('DOMContentLoaded', function () 
-  {
+  document.addEventListener('DOMContentLoaded', function () {
     const tableBody = document.querySelector('#manualFlightBody');
 
-    // Handle Add Row
-    tableBody.addEventListener('click', function (e) 
-    {
-      if (e.target.classList.contains('addRow')) 
-      {
+    // Handle Add / Remove Row
+    tableBody.addEventListener('click', function (e) {
+      // ➕ Add Row
+      if (e.target.classList.contains('addRow')) {
         const currentRow = e.target.closest('tr');
         const newRow = currentRow.cloneNode(true);
 
-        // Clear all input and select values in the cloned row
-        newRow.querySelectorAll('input, select').forEach(el => 
-        {
-          if (el.tagName === 'SELECT') 
-          {
+        // Clear all values
+        newRow.querySelectorAll('input, select').forEach(el => {
+          if (el.tagName === 'SELECT') {
             el.selectedIndex = 0;
-          } 
-          else if (el.type === 'date' || el.type === 'number' || el.type === 'text') 
-          {
+          } else if (['date', 'number', 'text'].includes(el.type)) {
             el.value = '';
           }
         });
 
-        tableBody.appendChild(newRow);
+        // Append right after the current row
+        currentRow.after(newRow);
       }
 
-      // Handle Remove Row
-      if (e.target.classList.contains('removeRow')) 
-      {
+      // ❌ Remove Row
+      if (e.target.classList.contains('removeRow')) {
         const rows = tableBody.querySelectorAll('tr');
-        if (rows.length > 1) 
-        {
+        if (rows.length > 1) {
           e.target.closest('tr').remove();
-        }
-      }
-    });
-
-    // Optional: Auto-set return date to 5 days after departure date
-    tableBody.addEventListener('change', function (e) 
-    {
-      if (e.target.classList.contains('departure-date')) 
-      {
-        const depDateInput = e.target;
-        const retDateInput = depDateInput.closest('tr').querySelector('.return-date');
-
-        if (depDateInput.value) 
-        {
-          const depDate = new Date(depDateInput.value);
-          depDate.setDate(depDate.getDate() + 5);
-          retDateInput.valueAsDate = depDate;
         }
       }
     });
   });
 </script>
 
-<!-- Auto compute the return date based on departure date -->
+<!-- Auto compute the return date based on departure date (+6 days) -->
 <script>
   $(document).on('change', '.departure-date', function () {
     const departureInput = $(this);
@@ -271,7 +244,7 @@
   });
 </script>
 
-<!-- AJAX for flight Submition manual -->
+<!-- AJAX for flight Submission -->
 <script>
   $(document).ready(function () {
     $('#manualFlightForm').on('submit', function (e) {
@@ -280,25 +253,21 @@
       const form = $(this);
       const serializedData = form.serialize();
 
-      // 🔍 Show serialized data
-      console.log('📦 Serialized Data (query string):', serializedData);
+      console.log('📦 Serialized Data:', serializedData);
 
-      // 🔍 Convert to key-value pairs for easier reading
+      // Expanded object for debugging
       const formDataObj = {};
       form.serializeArray().forEach(function (item) {
         if (!formDataObj[item.name]) {
           formDataObj[item.name] = item.value;
         } else {
-          // If it's already an array, push
           if (!Array.isArray(formDataObj[item.name])) {
             formDataObj[item.name] = [formDataObj[item.name]];
           }
           formDataObj[item.name].push(item.value);
         }
       });
-
-      // 📝 Log expanded key-value data
-      console.log('📤 Data to be sent (expanded):', formDataObj);
+      console.log('📤 Data (expanded):', formDataObj);
 
       $.ajax({
         url: form.attr('action'),
@@ -310,21 +279,31 @@
         success: function (response) {
           console.log('✅ Server responded with:', response);
 
-          let json;
+          let json = null;
           try {
             json = typeof response === 'string' ? JSON.parse(response) : response;
           } catch (e) {
-            console.warn('⚠️ Could not parse JSON response:', response);
-            alert('Unexpected server response.');
-            return;
+            console.warn('⚠️ Could not parse JSON response.');
           }
 
-          if (json.status === 'success') {
+          if (json && json.status === 'success') {
             alert(json.message);
-            console.log('🟢 Success:', json.message);
-          } else {
-            alert('⚠️ Server error: ' + json.message);
-            console.warn('🔍 Details:', json.details);
+
+            // Reset form values
+            form[0].reset();
+
+            // Reset form values
+            form[0].reset();
+
+            // Keep only the first row as a template
+            const firstRowHtml = $('#manualFlightBody tr').first().prop('outerHTML');
+            $('#manualFlightBody').html(firstRowHtml);
+
+            // Clear any values inside the new row (to be safe)
+            $('#manualFlightBody tr')
+              .find('input, select')
+              .val('')
+              .prop('selectedIndex', 0);
           }
         },
         error: function (xhr, status, error) {
@@ -338,6 +317,7 @@
     });
   });
 </script>
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
