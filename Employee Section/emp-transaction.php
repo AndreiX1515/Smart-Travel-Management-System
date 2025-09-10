@@ -23,7 +23,7 @@
   <link rel="stylesheet" href="../Employee Section/assets/css/components/table-header.css?v=<?php echo time(); ?>">
   <link rel="stylesheet" href="../Employee Section/assets/css/components/table-clean.css?v=<?php echo time(); ?>">
 
-  
+
 
   <!-- Page Specifics CSS -->
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-transaction.css?v=<?php echo time(); ?>">
@@ -39,6 +39,7 @@
   <div class="main-container">
 
     <div class="navbar">
+
       <div class="page-header-wrapper">
 
         <div class="page-header-top">
@@ -56,6 +57,7 @@
         </div>
 
       </div>
+      
     </div>
 
     <script>
@@ -134,10 +136,10 @@
             </li>
 
             <!-- On Due Balance Tab -->
-            <li class="nav-item" role="presentation">
+            <!-- <li class="nav-item" role="presentation">
               <button class="nav-link" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home"
                 type="button" role="tab" aria-controls="pills-home" aria-selected="true">ON DUE</button>
-            </li>
+            </li> -->
 
             <!-- View All Tab -->
             <!-- <li class="nav-item" role="presentation">
@@ -158,18 +160,18 @@
         <div class="tab-pane fade show active" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
           tabindex="0">
 
-        <?php
-        include '../Employee Section/transactionTable/transactionTable-Status.php';
-        ?>
+          <?php
+          include '../Employee Section/transactionTable/transactionTable-Status.php';
+          ?>
 
         </div>
 
         <!-- On Due Table -->
         <div class="tab-pane fade" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-        <?php
-        include '../Employee Section/transactionTable/transactionTable-OnDue.php';
-        ?>
+          <?php
+          include '../Employee Section/transactionTable/transactionTable-OnDue.php';
+          ?>
 
         </div>
 
@@ -185,7 +187,7 @@
       </div>
 
     </div>
-    
+
   </div>
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
@@ -202,80 +204,80 @@
 
   <!-- Page All Status Default -->
   <script>
-   document.addEventListener("DOMContentLoaded", function () {
-    // Map each tab ID to its "All" filter button ID
-    const defaultFilters = {
+    document.addEventListener("DOMContentLoaded", function () {
+      // Map each tab ID to its "All" filter button ID
+      const defaultFilters = {
         "pills-profile": "status-all-filter",           // Status tab
         "pills-home": "onDue-all-filter",               // On Due tab
         "pills-remaining-balance": "viewAll-all-filter" // View All tab
-    };
+      };
 
-    // When a tab becomes active
-    document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(tabBtn => {
+      // When a tab becomes active
+      document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(tabBtn => {
         tabBtn.addEventListener('shown.bs.tab', function (event) {
-            // Use 'this' to reliably refer to the button that triggered the event
-            const btn = this;
+          // Use 'this' to reliably refer to the button that triggered the event
+          const btn = this;
 
-            // Get data-bs-target safely
-            const target = btn.getAttribute("data-bs-target");
+          // Get data-bs-target safely
+          const target = btn.getAttribute("data-bs-target");
 
-            if (!target) {
-                console.warn("No data-bs-target attribute found on tab button", btn);
-                return;
-            }
+          if (!target) {
+            console.warn("No data-bs-target attribute found on tab button", btn);
+            return;
+          }
 
-            const targetPaneId = target.replace("#", "");
-            const filterBtnId = defaultFilters[targetPaneId];
+          const targetPaneId = target.replace("#", "");
+          const filterBtnId = defaultFilters[targetPaneId];
 
-            if (filterBtnId) {
-                const filterBtn = document.getElementById(filterBtnId);
-                if (filterBtn) {
-                    filterBtn.classList.add("active");
-                    filterBtn.click();
-                }
-            }
-        });
-    });
-
-    // Run once for the initially active tab on page load
-    const activePane = document.querySelector(".tab-pane.show.active");
-    if (activePane) {
-        const filterBtnId = defaultFilters[activePane.id];
-        if (filterBtnId) {
+          if (filterBtnId) {
             const filterBtn = document.getElementById(filterBtnId);
             if (filterBtn) {
-                filterBtn.classList.add("active");
-                filterBtn.click();
+              filterBtn.classList.add("active");
+              filterBtn.click();
             }
+          }
+        });
+      });
+
+      // Run once for the initially active tab on page load
+      const activePane = document.querySelector(".tab-pane.show.active");
+      if (activePane) {
+        const filterBtnId = defaultFilters[activePane.id];
+        if (filterBtnId) {
+          const filterBtn = document.getElementById(filterBtnId);
+          if (filterBtn) {
+            filterBtn.classList.add("active");
+            filterBtn.click();
+          }
         }
-    }
-  });
+      }
+    });
 
   </script>
 
 
   <!-- Record Last Tab -->
-   <script>
+  <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const tabKey = "activeTab"; // storage key
+      const tabKey = "activeTab"; // storage key
 
-        // Restore the active tab on page load
-        const lastTab = localStorage.getItem(tabKey);
-        if (lastTab) {
-            const tabTriggerEl = document.querySelector(`[data-bs-target="${lastTab}"]`);
-            if (tabTriggerEl) {
-                const tab = new bootstrap.Tab(tabTriggerEl);
-                tab.show();
-            }
+      // Restore the active tab on page load
+      const lastTab = localStorage.getItem(tabKey);
+      if (lastTab) {
+        const tabTriggerEl = document.querySelector(`[data-bs-target="${lastTab}"]`);
+        if (tabTriggerEl) {
+          const tab = new bootstrap.Tab(tabTriggerEl);
+          tab.show();
         }
+      }
 
-        // Listen for tab changes and store the active tab
-        const tabButtons = document.querySelectorAll('#pills-tab button[data-bs-toggle="pill"]');
-        tabButtons.forEach((tabBtn) => {
-            tabBtn.addEventListener("shown.bs.tab", function (event) {
-                localStorage.setItem(tabKey, event.target.getAttribute("data-bs-target"));
-            });
+      // Listen for tab changes and store the active tab
+      const tabButtons = document.querySelectorAll('#pills-tab button[data-bs-toggle="pill"]');
+      tabButtons.forEach((tabBtn) => {
+        tabBtn.addEventListener("shown.bs.tab", function (event) {
+          localStorage.setItem(tabKey, event.target.getAttribute("data-bs-target"));
         });
+      });
     });
   </script>
 

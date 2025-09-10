@@ -520,6 +520,7 @@ select::-ms-expand {
 
 .nav-pills .nav-item {
   margin-bottom: 0; /* ensure no negative margin */
+  flex: 0 0 auto; /* Prevent flex growing/shrinking */
 }
 
 .nav-pills .nav-link {
@@ -533,9 +534,16 @@ select::-ms-expand {
   border: 1px solid transparent;
   display: flex;
   align-items: center;
+  justify-content: center; /* Center content */
   gap: 0.25rem;
   border-bottom: none !important; /* 🚫 prevent border-bottom */
   box-shadow: none !important;    /* 🚫 prevent bottom shadow underline */
+  
+  /* Fixed width solution */
+  min-width: 110px; /* Adjust based on your content - you may need 120px or 130px */
+  text-align: center;
+  white-space: nowrap; /* Prevent text wrapping */
+  box-sizing: border-box;
 }
 
 .nav-pills .nav-link:hover,
@@ -555,7 +563,7 @@ select::-ms-expand {
   box-shadow: none !important;
 }
 
-/* Badge Style */
+/* Badge Style - Fixed width to prevent layout shifts */
 .nav-pills .badge {
   background-color: rgba(255, 255, 255, 0.2);
   color: white;
@@ -564,8 +572,14 @@ select::-ms-expand {
   border-radius: 9999px;
   line-height: 1;
   font-weight: 600;
-
   margin-left: 0.5rem; /* space between badge and text */
+  
+  /* Fixed badge dimensions */
+  min-width: 24px; /* Minimum width for badge */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px; /* Fixed height */
 }
 
 .nav-pills .nav-link:not(.active) .badge {
@@ -573,6 +587,33 @@ select::-ms-expand {
   color: #374151;
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-pills .nav-link {
+    min-width: 90px; /* Smaller on mobile */
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+  
+  .nav-pills .badge {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+    min-width: 20px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-pills {
+    flex-wrap: wrap; /* Allow wrapping on very small screens */
+    gap: 0.25rem;
+  }
+  
+  .nav-pills .nav-link {
+    min-width: 80px;
+    flex: 1 1 calc(50% - 0.125rem); /* Two per row on very small screens */
+  }
+}
 
 
 

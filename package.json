@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^4.1.12"
+  },
+  "name": "smart-travel-management-system",
+  "version": "1.0.0",
+  "main": "heartbeat.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndreiX1515/Smart-Travel-Management-System.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndreiX1515/Smart-Travel-Management-System/issues"
+  },
+  "homepage": "https://github.com/AndreiX1515/Smart-Travel-Management-System#readme",
+  "description": ""
+}

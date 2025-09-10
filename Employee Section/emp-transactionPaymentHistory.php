@@ -1,91 +1,79 @@
 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
 
-  <!-- <div class="card-header px-3 py-1">
-    <h6>Payment History</h6>
-  </div> -->
-
-  <div class="request-table-wrapper">
-    <table class="request-table">
+  <div class="payment-card-wrapper">
       <?php
-        $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%m-%d-%Y') AS paymentDate 
-                    FROM payment 
-                    WHERE transactNo = '$transactNum'";
+      $sql1 = "SELECT *, FORMAT(amount, 2) AS amount, DATE_FORMAT(paymentDate, '%m-%d-%Y') AS paymentDate FROM payment WHERE transactNo = '$transactNum'";
 
-        $res1 = $conn->query($sql1);
+      $res1 = $conn->query($sql1);
 
-        if ($res1->num_rows > 0) 
-        {
-          // Table header is displayed only if there are results
-          echo "
-          <thead>
-              <tr>
-                  <th>PAYMENT ID</th>
-                  <th>PAYMENT TITLE</th>
-                  <th>PAYMENT TYPE</th>
-                  <th>AMOUNT</th>
-                  <th>PROOF OF PAYMENT</th>
-                  <th>PAYMENT DATE</th>
-                  <th>PAYMENT STATUS</th>
-              </tr>
-          </thead>
-          <tbody>";
-
+      if ($res1->num_rows > 0) {
           while ($row = $res1->fetch_assoc()) {
-            // Fetch the payment status from the database
-            $status = $row['paymentStatus'];
+              $status = $row['paymentStatus'];
 
-            // Assign a corresponding Bootstrap badge class based on the status
-            $badgeClass = '';
+              // Badge color
+              $badgeClass = '';
+              switch ($status) {
+                  case 'Submitted':
+                      $badgeClass = 'bg-primary';
+                      break;
+                  case 'Approved':
+                      $badgeClass = 'bg-success';
+                      break;
+                  default:
+                      $badgeClass = 'bg-secondary';
+                      break;
+              }
 
-            switch($status) {
-              case 'Submitted':
-                $badgeClass = 'bg-primary'; // Blue for Submitted
-                break;
-              case 'Approved':
-                $badgeClass = 'bg-success'; // Green for Approved
-                break;
-              default:
-                $badgeClass = 'bg-secondary'; // Gray for unknown statuses
-                break;
-            }
+              // File handling
+              $fileActions = "<span class='text-muted'>No File Uploaded</span>";
+              if (!empty($row['filePath'])) {
+                  $encodedFile = urlencode($row['filePath']);
+                  $fileActions = "
+                      <a href='../Agent Section/functions/view-file.php?file={$encodedFile}' target='_blank' class='action-link'>View</a>
+                      <a href='../Agent Section/functions/download.php?file={$encodedFile}' target='_blank' class='action-link'>Download</a>
+                  ";
+              }
 
-            echo "<tr>
-                    <td>{$row['paymentId']}</td>
-                    <td>{$row['paymentTitle']}</td>
-                    <td>{$row['paymentType']}</td>
-                    <td>₱ {$row['amount']}</td>
-                    <td>";
+              echo "
+              <div class='payment-card'>
 
-                      if (!empty($row['filePath'])) {
-                          $encodedFile = urlencode($row['filePath']);
-                          echo "<a href='../Agent Section/functions/view-file.php?file={$encodedFile}' target='_blank'>View File</a> 
-                                <a href='../Agent Section/functions/download.php?file={$encodedFile}' target='_blank'>Download File</a>";
-                      } else {
-                          echo "<span class='text-muted'>No File Uploaded</span>";
-                      }
+                <div class='payment-card-header'>
+                    <input type='hidden' class='payment-id' value='{$row['paymentId']}'>
+                    <h5 class='payment-title'>{$row['paymentTitle']}</h5>
+                    <span class='badge rounded-pill {$badgeClass} py-2 payment-status'>{$status}</span>
+                </div>
 
-            echo "  </td>
-                    <td>{$row['paymentDate']}</td>
-                    <td>
-                        <span class='badge rounded-pill {$badgeClass} py-2'>{$status}</span>
-                    </td>
-                  </tr>";
+                <div class='payment-card-body'>
+                    
+                    <p class='payment-type'>Type: {$row['paymentType']}</p>
+                    <p class='payment-amount'>₱ {$row['amount']}</p>
+                    <div class='payment-meta'>
+                        <p class='payment-date'>{$row['paymentDate']}</p>
+                        <div class='payment-actions'>
+                            " . (!empty($row['filePath']) ? "
+                                <a href='../Agent Section/functions/view-file.php?file={$encodedFile}' target='_blank'><i class='fas fa-eye'></i></a>
+                                <a href='../Agent Section/functions/download.php?file={$encodedFile}' target='_blank'><i class='fas fa-download'></i></a>
+                            " : "<span class='text-muted'>No File</span>") . "
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+            ";
           }
-          echo "</tbody>";
-        } else {
-          // Display a "No Payment Found" message and hide the table
+      } else {
           echo "
-          <thead style='display: none;'></thead>
-          <tbody>
-            <tr style='display: none;'></tr> <!-- Ensures no empty table rows -->
-          </tbody>
-          <div class='no-requests-container'>
-            <span>No Payment Found</span>
-          </div>";
-        }
+            <div class='no-requests-container' onclick='redirectWithId(123)'>
+              <div class='drag-drop-content'>
+                <i class='fas fa-user-slash upload-icon'></i>
+                <span class='main-text'>No Request as of the Moment</span>
+                <span class='accent-text'>Currently no payment inserted.</span>
+              </div>
+            </div>
+          ";
+      }
       ?>
-    </table>
-
   </div>
+
+
 </div>

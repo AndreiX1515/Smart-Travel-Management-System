@@ -13375,14 +13375,9 @@ CT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate
                  p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
         ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)
 [2025-08-15 08:48:27] Total records fetched: 126
-<<<<<<< HEAD
 [2025-08-18 10:48:19] WHERE clause: 
 [2025-08-18 10:48:19] WHERE clause: 
 [2025-08-18 10:48:19] SQL Query: SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
-=======
-[2025-08-19 07:13:12] WHERE clause: 
-[2025-08-19 07:13:12] SQL Query: SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
->>>>>>> f339be9bf9db553bd87917c2acec08ecc4c6207c
         b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
         p.packageName AS PackageName, b.bookingDate, b.pax AS TotalPax,  
         b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -13402,13 +13397,7 @@ CT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate
         GROUP BY b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
                  p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
         ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)
-<<<<<<< HEAD
 [2025-08-18 10:48:19] SQL Query: SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
-=======
-[2025-08-19 07:13:12] Total records fetched: 8
-[2025-08-19 07:13:12] WHERE clause: 
-[2025-08-19 07:13:12] SQL Query: SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
->>>>>>> f339be9bf9db553bd87917c2acec08ecc4c6207c
         b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
         p.packageName AS PackageName, b.bookingDate, b.pax AS TotalPax,  
         b.totalPrice AS PackagePrice, br.branchName as branchName, COALESCE(SUM(pa.amount), 0) AS TotalAmountPaid,
@@ -13428,7 +13417,6 @@ CT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate
         GROUP BY b.transactNo, f.flightDepartureDate, f.returnDepartureDate, b.status, 
                  p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
         ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)
-<<<<<<< HEAD
 [2025-08-18 10:48:19] Total records fetched: 126
 [2025-08-18 10:48:19] Total records fetched: 126
 [2025-08-18 10:48:29] WHERE clause: 
@@ -13955,9 +13943,6 @@ CT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate
                  p.packageName, b.bookingDate, b.pax, b.totalPrice, a.lName, a.fName, a.mName, br.branchName
         ORDER BY CAST(SUBSTRING_INDEX(b.transactNo, '-', -1) AS UNSIGNED)
 [2025-08-20 03:09:48] Total records fetched: 126
-=======
-[2025-08-19 07:13:12] Total records fetched: 8
->>>>>>> f339be9bf9db553bd87917c2acec08ecc4c6207c
 [2025-09-05 09:53:14] WHERE clause: 
 [2025-09-05 09:53:14] SQL Query: SELECT b.transactNo, DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS departureDate, f.returnDepartureDate AS returnDate, 
         b.status AS bookingStatus, CONCAT(f.flightDepartureDate, ' | ', f.returnDepartureDate) AS FlightDate, 
