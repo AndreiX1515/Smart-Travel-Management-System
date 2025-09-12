@@ -20,7 +20,7 @@ body {
   flex: 1;
   height: 100vh;
   padding: 0;
-  background-color: #dfdfdf;
+  background-color: #F4F7FD;
   display: flex;
   flex-direction: row;
   overflow: hidden;
@@ -29,7 +29,7 @@ body {
 
 /* Main Content */
 .main-content {
-  margin-top: 5.5vh;
+  margin-top: 6vh;
   height: 100%;
   width: 100%;
   display: flex;
