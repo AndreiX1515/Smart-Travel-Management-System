@@ -65,11 +65,6 @@ session_start();
           </button>
 
           <div class="second-header-wrapper">
-            <!-- <div class="date-range-wrapper sorting-wrapper">
-            <div class="select-wrapper">
-              <input type="text" id="search" placeholder="Search Requests...">
-            </div>
-          </div> -->
             <div class="buttons-wrapper">
               <button id="clearSorting" class="btn btn-secondary">Clear Filters</button>
             </div>
@@ -126,15 +121,6 @@ session_start();
 
     </div>
 
-
-
-
-
-
-
-
-
-    
   </div>
 
   <!-- Add New Request Item Modal -->
@@ -154,20 +140,27 @@ session_start();
 
             <div class="mb-3">
               <label for="requestTitle" class="form-label">Request Title</label>
-              <select class="form-control" name="requestTitle" id="requestTitle" required>
+              
+              <!-- Select existing concern -->
+              <select class="form-control mb-2" name="requestTitle" id="requestTitle">
                 <option selected disabled>Select Request Title</option>
                 <?php
-                $sql1 = "SELECT * FROM concern";
-                $result = $conn->query($sql1);
-                if ($result->num_rows > 0) {
-                  while ($row = $result->fetch_assoc()) {
-                    echo "<option value='" . htmlspecialchars($row['concernId']) . "'>" . htmlspecialchars($row['concernTitle']) . "</option>";
+                  $sql1 = "SELECT * FROM concern";
+                  $result = $conn->query($sql1);
+                  if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                      echo "<option value='" . htmlspecialchars($row['concernId']) . "'>" . htmlspecialchars($row['concernTitle']) . "</option>";
+                    }
+                  } else {
+                    echo "<option disabled>No concerns available</option>";
                   }
-                } else {
-                  echo "<option disabled>No concerns available</option>";
-                }
                 ?>
+                <option value="new">Other (Add New)</option>
               </select>
+
+              <!-- Input for new concern -->
+              <input type="text" class="form-control mt-2 d-none" name="newRequestTitle" id="newRequestTitle" 
+                placeholder="Enter new request title">
             </div>
 
             <div class="mb-3">
@@ -192,6 +185,26 @@ session_start();
 
   <?php include '../Employee Section/includes/emp-scripts.php' ?>
 
+  <!-- New field for New Request -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const select = document.getElementById("requestTitle");
+      const input = document.getElementById("newRequestTitle");
+
+      select.addEventListener("change", function () {
+        if (this.value === "new") {
+          input.classList.remove("d-none");
+          input.required = true;
+        } else {
+          input.classList.add("d-none");
+          input.required = false;
+          input.value = ""; // clear old text if switching back
+        }
+      });
+    });
+  </script>
+  
+  <!-- Product Table -->
   <script>
     $(document).ready(function () {
       const table = $('#product-table').DataTable({
