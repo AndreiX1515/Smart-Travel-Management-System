@@ -1638,7 +1638,6 @@ error_reporting(E_ALL);
                                 <h3 class="bottom-two-title">Transaction Status History</h3>
                               </div>
 
-
                               <div class="bottom-two-body">
 
 

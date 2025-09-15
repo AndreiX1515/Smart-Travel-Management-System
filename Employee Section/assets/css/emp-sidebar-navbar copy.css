@@ -1168,6 +1168,7 @@ body {
 /* ======================== */
 /* For Offcanvas */
 
+
 /* ================================== */
 .confirmed-wrapper-body .offcanvas {
   width: 900px !important;
@@ -1182,20 +1183,6 @@ body {
   
   overflow: hidden;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1287,23 +1274,26 @@ body {
 /* ====================== */
 /* Profile Header */
 
-.bottom-one  .bottom-one-header {
+.bottom-one .bottom-one-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 5%;
+
+  width: 100%;
+  min-height: 40px;   /* stable height */
+  padding: 0rem 0.6rem;
+
   border: 1px solid black;
- 
+  /* border-bottom: 1px solid #e5e7eb; */
 }
 
-/* Offcanvas Tabs Wrapper */
+/* Tabs wrapper */
 .profile-tabs-wrapper {
   display: flex;
-  align-items: stretch;
-
+  align-items: center;
   gap: 15px;
-  
-  border: 1px solid black;
+
+  border: 0;
 }
 
 
@@ -1340,8 +1330,13 @@ body {
 
 
 
+
+
+
+
+
+
 /* Tab content scoped */
-/* Bottom section adapts fully */
 .bottom-one .bottom-one-body {
   flex: 1;              
   min-height: 0;        
@@ -1418,12 +1413,6 @@ body {
 
 /* Bottom-one-body */
 
-
-
-
-
-
-
 /* Card */
 .remark-card {
   border: 1px solid #e5e7eb;
@@ -1485,23 +1474,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Bottom Two */
 .bottom-wrapper .bottom-two {
   display: flex;
@@ -1509,9 +1481,7 @@ body {
   gap: 5px;
   width: 30%;
   height: 100%;
-  
   padding: 0rem;
-
   border-left: 1px solid gainsboro;
 
   /* border: 1px solid black; */
@@ -1524,16 +1494,12 @@ body {
   justify-content: space-between;
 
   width: 100%;
-  height: 5%;
+  min-height: 40px;   /* stable height */
+  padding: 0.5rem 0.8rem;
 
-  padding: 0.6rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
-  background-color: #f9f9f9;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-
-  box-shadow: 0 2px 4px rgba(0,0,0,0.08); /* subtle bottom shadow */
   border: 1px solid black;
+  /* border-bottom: 1px solid #e5e7eb; */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08); /* subtle bottom shadow */
 }
 
 .bottom-two-header .bottom-two-title {
@@ -1552,26 +1518,6 @@ body {
 
   border: 1px solid black;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1739,10 +1685,6 @@ body {
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* Hover effect */
-.profile-info-one .info-col:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.07);
-}
 
 /* Label */
 .profile-info-one .info-col .info-label {
@@ -1751,7 +1693,7 @@ body {
   color: #666;
   margin-bottom: 2px;
 
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 /* Value */
@@ -1807,6 +1749,7 @@ body {
   color: #116530; /* your preferred green */
   cursor: pointer; /* shows hand cursor */
   transition: color 0.2s ease, text-decoration 0.2s ease;
+  
 }
 
 .info-col.agent-column .agent-info .info-value:hover {
@@ -1825,10 +1768,10 @@ body {
   /* border: 1px solid #e0e0e0; */
 }
 
-.info-col .balance-wrapper:hover {
+/* .info-col .balance-wrapper:hover {
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12);
-  /* transform: translateY(-1px); */
-}
+  /* transform: translateY(-1px); 
+} */
 
 /* Balance Column (with View All link) */
 .profile-info-one .balance-col .balance-content {
@@ -1847,10 +1790,10 @@ body {
   transition: color 0.2s ease, text-decoration 0.2s ease;
 }
 
-.profile-info-one .balance-col .view-all-link:hover {
+/* .profile-info-one .balance-col .view-all-link:hover {
   text-decoration: underline;
   color: #0d4a26;
-}
+} */
 
 /* Info value styling (both balance & agent) */
 .info-col .info-value {
