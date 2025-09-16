@@ -25,6 +25,7 @@ try {
 
     // Build dynamic agent columns for the main query
     $agentColumnsSQL = '';
+    
     foreach ($agentColumns as $agent) {
         $agentCode = $agent['branchAgentCode'];
         $agentColumnsSQL .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 

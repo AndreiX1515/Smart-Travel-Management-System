@@ -901,7 +901,7 @@ error_reporting(E_ALL);
 
                   <div class="left-main-card">
                     <div class="currency-flag-wrapper">
-                      <img src="us-flag.png" alt="" class="currency-flag">
+                      <img src="" alt="" class="currency-flag">
                     </div>
 
                     <div class="currency-info">
@@ -922,7 +922,7 @@ error_reporting(E_ALL);
 
                   <div class="currency-sub-card">
                     <div class="currency-flag-wrapper">
-                      <img src="kr-flag.png" alt="" class="currency-flag">
+                      <img src="" alt="" class="currency-flag">
                     </div>
 
                     <div class="currency-info-sub">
@@ -935,7 +935,7 @@ error_reporting(E_ALL);
 
                   <div class="currency-sub-card">
                     <div class="currency-flag-wrapper">
-                      <img src="kr-flag.png" alt="" class="currency-flag">
+                      <img src="" alt="" class="currency-flag">
                     </div>
 
                     <div class="currency-info-sub">
@@ -1048,6 +1048,7 @@ error_reporting(E_ALL);
               </div>
 
             </div>
+
           </div>
 
           <!-- First Layer Pane: Booking and Requests -->
@@ -1337,6 +1338,8 @@ error_reporting(E_ALL);
                                     <th>Package Price</th>
                                     <th>Amount Info.</th>
                                     <th>Balance</th>
+                                    <th>Last Remarks</th>
+
                                   </tr>
                                 </thead>
                                 <tbody>';
@@ -1370,6 +1373,13 @@ error_reporting(E_ALL);
                                   </td>
                                   <td>
                                     {$formattedBal}
+                                  </td>
+                                  <td>
+                                    <div class='remark-summary'>
+                                      <p class='summary-main'>Client requested urgent processing.</p>
+                                      <p class='summary-sub'>Latest reply: Confirmed urgency and forwarded to finance head.</p>
+                                      <span class='summary-date'>17th Feb 2024 • 10:15 AM</span>
+                                    </div>
                                   </td>
                                 </tr>";
                           }
@@ -1442,15 +1452,16 @@ error_reporting(E_ALL);
                                     </div>
                                   </div>
 
-
                                   <div class="info-col">
                                     <span class="info-label">Flight Date</span>
                                     <span class="info-value">13 Oct 2023</span>
                                   </div>
+
                                   <div class="info-col">
                                     <span class="info-label">Total Pax.</span>
                                     <span class="info-value">4</span>
                                   </div>
+
                                 </div>
 
                                 <div class="info-row">
@@ -1465,16 +1476,15 @@ error_reporting(E_ALL);
                                   </div>
 
                                   <div class="info-col balance-col">
-                                    <div class="balance-wrapper">
 
-                                      <div class="balance-content">
-                                        <span class="info-label">Total Balance</span>
-                                        <a href="#" class="view-all-link">View all</a>
-                                      </div>
-
-                                      <span class="info-value">$1,250</span>
-
+                                    <div class="balance-content">
+                                      <span class="info-label">Total Balance</span>
+                                      <a href="#" class="view-all-link">View all</a>
                                     </div>
+
+                                    <span class="info-value">$1,250</span>
+
+
                                   </div>
 
 
@@ -1527,91 +1537,106 @@ error_reporting(E_ALL);
 
                                 </div>
 
+                                <div class="addcomment-btn-wrapper">
+
+                                </div>
+
                               </div>
 
                               <div class="bottom-one-body">
                                 <div class="tab-content offcanvas-tab-content" id="profileTabsContent">
                                   <div class="tab-pane fade show active" id="overview-pane">
+
                                     <div class="remarks-card-wrapper">
 
                                       <!-- Example Remark Card -->
                                       <div class="remark-card">
-                                        <div class="remark-header">
-                                          <span class="remark-author">John Doe (Support Agent)</span>
-                                          <span class="remark-date">17th Feb 2024 • 10:15 AM</span>
+                                        <div class="main-remark-wrapper">
+                                          <div class="remark-header">
+                                            <span class="remark-author">John Doe</span>
+                                            <span class="remark-date">17th Feb 2024 • 10:15 AM</span>
+                                          </div>
+                                          <div class="remark-content">
+                                            <p class="primary-comment">Client requested urgent processing.</p>
+                                            <p class="secondary-comment">This needs to be prioritized before the weekend
+                                              deadline.</p>
+                                          </div>
                                         </div>
-                                        <div class="remark-content">
-                                          <p class="primary-comment">Client requested urgent processing.</p>
-                                          <p class="secondary-comment">This needs to be prioritized before the weekend
-                                            deadline.</p>
+
+                                        <!-- Sub-comments -->
+                                        <div class="remark-subcomments">
+                                          <!-- Latest reply (always visible) -->
+                                          <div class="remark-subcomment latest">
+                                            <span class="sub-author">Jane Smith (Finance)</span>
+                                            <p class="sub-text">Confirmed urgency and forwarded to finance head.</p>
+                                          </div>
+
+                                          <!-- Older replies (hidden by default) -->
+                                          <div class="remark-subcomment older" style="display: none;">
+                                            <span class="sub-author">Admin</span>
+                                            <p class="sub-text">Acknowledged and assigned to the support queue.</p>
+                                          </div>
+                                        </div>
+
+                                        <!-- Toggle button -->
+                                        <div class="toggle-subcomment-wrapper">
+                                          <button class="toggle-subcomments-btn" onclick="toggleSubComments(this)">
+                                            Show all replies
+                                          </button>
+                                        </div>
+
+                                        <!-- Add Reply Section -->
+                                        <div class="add-reply-wrapper">
+                                          <textarea class="add-reply-input" placeholder="Write a reply..."></textarea>
+                                          <button class="add-reply-btn" onclick="submitReply(this)">Submit</button>
                                         </div>
                                       </div>
 
-                                      <div class="remark-card">
-                                        <div class="remark-header">
-                                          <span class="remark-author">Jane Smith (Finance)</span>
-                                          <span class="remark-date">12th Sept 2025 • 03:45 PM</span>
-                                        </div>
-                                        <div class="remark-content">
-                                          <p class="primary-comment">Payment confirmed.</p>
-                                          <p class="secondary-comment">Verified via bank transfer on 12 Sept 2025.</p>
-                                        </div>
-                                      </div>
+                                      <script>
+                                        function toggleSubComments(button) {
+                                          const card = button.closest(".remark-card");
+                                          const olderReplies = card.querySelectorAll(".remark-subcomment.older");
+                                          const isHidden = olderReplies[0]?.style.display === "none";
 
-                                      <div class="remark-card">
-                                        <div class="remark-header">
-                                          <span class="remark-author">Jane Smith (Finance)</span>
-                                          <span class="remark-date">12th Sept 2025 • 03:45 PM</span>
-                                        </div>
-                                        <div class="remark-content">
-                                          <p class="primary-comment">Payment confirmed.</p>
-                                          <p class="secondary-comment">Verified via bank transfer on 12 Sept 2025.</p>
-                                        </div>
-                                      </div>
+                                          olderReplies.forEach(reply => {
+                                            reply.style.display = isHidden ? "block" : "none";
+                                          });
 
-                                      <div class="remark-card">
-                                        <div class="remark-header">
-                                          <span class="remark-author">Jane Smith (Finance)</span>
-                                          <span class="remark-date">12th Sept 2025 • 03:45 PM</span>
-                                        </div>
-                                        <div class="remark-content">
-                                          <p class="primary-comment">Payment confirmed.</p>
-                                          <p class="secondary-comment">Verified via bank transfer on 12 Sept 2025.</p>
-                                        </div>
-                                      </div>
+                                          button.textContent = isHidden ? "Hide replies" : "Show all replies";
+                                        }
 
-                                      <div class="remark-card">
-                                        <div class="remark-header">
-                                          <span class="remark-author">Jane Smith (Finance)</span>
-                                          <span class="remark-date">12th Sept 2025 • 03:45 PM</span>
-                                        </div>
-                                        <div class="remark-content">
-                                          <p class="primary-comment">Payment confirmed.</p>
-                                          <p class="secondary-comment">Verified via bank transfer on 12 Sept 2025.</p>
-                                        </div>
-                                      </div>
+                                        function submitReply(button) {
+                                          const card = button.closest(".remark-card");
+                                          const textarea = card.querySelector(".add-reply-input");
+                                          const replyText = textarea.value.trim();
 
-                                      <div class="remark-card">
-                                        <div class="remark-header">
-                                          <span class="remark-author">Jane Smith (Finance)</span>
-                                          <span class="remark-date">12th Sept 2025 • 03:45 PM</span>
-                                        </div>
-                                        <div class="remark-content">
-                                          <p class="primary-comment">Payment confirmed.</p>
-                                          <p class="secondary-comment">Verified via bank transfer on 12 Sept 2025.</p>
-                                        </div>
-                                      </div>
+                                          if (!replyText) return;
 
-                                      <div class="remark-card">
-                                        <div class="remark-header">
-                                          <span class="remark-author">Jane Smith (Finance)</span>
-                                          <span class="remark-date">12th Sept 2025 • 03:45 PM</span>
-                                        </div>
-                                        <div class="remark-content">
-                                          <p class="primary-comment">Payment confirmed.</p>
-                                          <p class="secondary-comment">Verified via bank transfer on 12 Sept 2025.</p>
-                                        </div>
-                                      </div>
+                                          // Create a new sub-comment
+                                          const newReply = document.createElement("div");
+                                          newReply.classList.add("remark-subcomment", "latest");
+                                          newReply.innerHTML = `
+    <span class="sub-author">You</span>
+                                        <p class="sub-text">${replyText}</p>
+                                      `;
+
+                                          // Move old latest reply into "older"
+                                          const latest = card.querySelector(".remark-subcomment.latest");
+                                          if (latest) {
+                                            latest.classList.remove("latest");
+                                            latest.classList.add("older");
+                                          }
+
+                                          // Insert new reply as the latest
+                                          const subcomments = card.querySelector(".remark-subcomments");
+                                          subcomments.prepend(newReply);
+
+                                          textarea.value = "";
+                                        }
+                                      </script>
+
+
+
 
                                     </div>
                                   </div>
@@ -1647,12 +1672,11 @@ error_reporting(E_ALL);
 
                           </div>
 
-
                         </div>
                       </div>
 
+                      <!-- JS to handle row click -->
                       <script>
-                        // JS to handle row click
                         document.addEventListener('DOMContentLoaded', function () {
                           document.querySelectorAll('.transaction-row').forEach(row => {
                             row.addEventListener('click', function () {
@@ -1731,7 +1755,7 @@ error_reporting(E_ALL);
 
   <!-- For Breadcrumbs -->
 
-  <script>
+  <!-- <script>
     // Add click event for breadcrumb navigation
     document.querySelector('.breadcrumb-link').addEventListener('click', function (e) {
       e.preventDefault();
@@ -1739,7 +1763,7 @@ error_reporting(E_ALL);
       // Add your navigation functionality here
       // Example: window.location.href = '/dashboard';
     });
-  </script>
+  </script> -->
 
 
 
@@ -1896,22 +1920,32 @@ error_reporting(E_ALL);
 
 
           {
-            title: "TEAM INFO",
+            title: "",
             columns: [
               {
                 title: "TEAM OP",
                 field: "TeamOP",
-                width: 100,
-                hozAlign: "left",
+                width: 125,
+                hozAlign: "middle",
                 vertAlign: "middle",
                 frozen: true,
                 formatter: (cell) => {
                   const rowData = cell.getRow().getData();
                   const colorCode = rowData.colorCode || "transparent";
                   const teamOp = cell.getValue() || "";
-                  return `<div class="team-op-cell" style="background-color: ${colorCode}; padding: 2px 4px; font-weight: bold; border-radius: 2px; text-align: center; width: 100%; box-sizing: border-box;">${teamOp}</div>`;
+                  return `<div class="team-op-cell" style="background-color: ${colorCode};">
+                            <div class="profile-avatar">${teamOp.charAt(0)}</div>
+                            <span class="profile-name">Juan</span>
+                          </div>
+                    `;
                 }
-              },
+              }
+              
+            ]
+          },
+          {
+            title: "FLIGHT INFO",
+            columns: [
               {
                 title: "ORIGIN",
                 field: "origin",
@@ -1923,12 +1957,8 @@ error_reporting(E_ALL);
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-weight: 500; font-size: 12px">${cell.getValue()}</div>`;
                 }
-              }
-            ]
-          },
-          {
-            title: "FLIGHT DATE",
-            columns: [
+              },
+
               {
                 title: "START",
                 field: "Start",
@@ -1942,6 +1972,8 @@ error_reporting(E_ALL);
                   return `<div style="text-align: center; font-size: 12px;">${formatted}</div>`;
                 }
               },
+
+
               {
                 title: "END",
                 field: "End",
