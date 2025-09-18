@@ -864,147 +864,7 @@ body {
   /* border: 1px solid black; */
 }
 
-/* ================================
-   DROPDOWN TAB CASING (Blue Theme)
-   ================================ */
-.dropdown-tab-casing {
-  position: relative;
-  display: inline-block;
 
-  padding: 0rem;
-  background-color: #ffffff;
-  border-radius: 8px;
-  border: 1px solid #d0d7e6; /* softer blue-gray border */
-
-  /* subtle shadow for depth */
-  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.08),
-    0 1px 2px rgba(0, 123, 255, 0.05);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.dropdown-tab-casing:hover {
-  border-color: #007bff;
-  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.12),
-    0 2px 4px rgba(0, 123, 255, 0.08);
-}
-
-/* ================================
-   TOGGLE BUTTON
-   ================================ */
-.dropdown-tab-casing .dropdown-toggle {
-  background-color: #f1f6ff; /* soft blue background */
-  border: 1px solid #c7d9f7;
-  border-radius: 8px;
-  padding: 0.4rem 0.8rem;
-  color: #0d3b66; /* deep navy text */
-  font-size: 0.875rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-width: 140px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.dropdown-tab-casing .dropdown-toggle:hover {
-  background-color: #e2ecfb;
-  border-color: #97b5f5;
-  color: #0056b3;
-}
-
-.dropdown-tab-casing .dropdown-toggle:focus {
-  outline: 2px solid #007bff;
-  outline-offset: 2px;
-}
-
-/* ================================
-   TEXT + ICON
-   ================================ */
-.dropdown-tab-casing .selected-text {
-  flex: 1;
-  text-align: left;
-}
-
-.dropdown-tab-casing .dropdown-icon {
-  margin-left: 0.5rem;
-  font-size: 0.75rem;
-  transition: transform 0.2s ease, color 0.2s ease;
-  color: #0d3b66;
-}
-
-.dropdown-tab-casing .dropdown-toggle:hover .dropdown-icon {
-  color: #0056b3;
-}
-
-.dropdown-tab-casing .dropdown-toggle[aria-expanded="true"] .dropdown-icon {
-  transform: rotate(180deg);
-}
-
-/* ================================
-   MENU PANEL
-   ================================ */
-.dropdown-tab-casing .dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #ffffff;
-  border: 1px solid #c7d9f7;
-  z-index: 1000;
-  margin: 0;
-  padding: 0rem 0;
-  list-style: none;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-8px);
-  transition: all 0.25s ease;
-  min-width: 140px;
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.dropdown-tab-casing .dropdown-menu.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-/* ================================
-   MENU ITEMS
-   ================================ */
-.dropdown-tab-casing .dropdown-item {
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  padding: 0;
-
-  border-radius: 6px;
-  /* border: 1px solid black; */
-}
-
-.dropdown-tab-casing .dropdown-item:first-child {
-  margin-bottom: 0.2rem;
-}
-
-.dropdown-tab-casing .dropdown-link {
-  width: 100%;
-  background: transparent;
-  border: none;
-  padding: 0.45rem 0.75rem;
-  color: #0d3b66;
-  font-size: 0.85rem;
-  font-weight: 500;
-  cursor: pointer;
-  text-align: left;
-  border-radius: 4px;
-  display: block;
-  /* transition: background-color 0.2s ease, color 0.2s ease; */
-}
-
-.dropdown-tab-casing .dropdown-link:hover {
-  background-color: #e6f0ff; /* softer blue background */
-}
 
 /* ============================== */
 /* Table Styles */
@@ -2339,53 +2199,21 @@ body {
 /* Page Tabs Container */
 .page-tabs {
   display: flex;
+  justify-content: space-between; /* space between left & right */
+  align-items: center;            /* vertical center */
   background-color: transparent;
-  padding: 0;
-  height: auto;
-  gap: 0.5rem;
+  padding: 0.5rem 0;
+  gap: 1rem;
+  border-top: 1px solid gainsboro;
 }
 
-/* Left Tab Section with Rounded Style */
+/* Left Tab Section */
 .page-tabs .tab-section {
   flex: 1;
-  max-width: 100%;
-
-  border-top: 1px solid gainsboro;
-
-  padding: 0.5rem 0rem 0.2rem 0rem;
-}
-
-/* .page-tabs .tab-section {
-  flex: 1;
-  max-width: 100%;
-  box-sizing: border-box;
-  background-color: #FFFFFF;
-  border: 1px solid gainsboro;
-  border-radius: 12px;
-  padding: 0.5rem 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-} */
-
-/* Right Tab Section with Adaptive Width and Rounded Style */
-.page-tabs .tab-section-right {
-  flex: 0 0 auto; /* Changed from flex: 1 to auto-sizing */
-  max-width: none; /* Remove max-width constraint */
-  min-width: fit-content; /* Ensure it fits content */
-  box-sizing: border-box;
-  background-color: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-
-/* Flight Seat Tabs Alignment */
-.page-tabs .flight-seat-tabs {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 0.75rem;
 }
+
 
 /* Tabs Wrapper */
 .tabs-wrapper {
@@ -2393,19 +2221,12 @@ body {
   align-items: center;
 }
 
-/* Actions Wrapper (if needed) */
-.actions-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 /* Custom Tabs Styling */
 .custom-tabs {
-  border: none;
-  margin-bottom: 0;
   display: flex;
   gap: 0.5rem;
+  border: none;
+  margin-bottom: 0;
 }
 
 .custom-tabs .nav-item {
@@ -2417,28 +2238,20 @@ body {
   border: 1px solid #e9ecef;
   border-radius: 8px;
   padding: 0.5rem 1rem;
-  color: #6c757d;
-  transition: all 0.2s ease;
-  margin-right: 0;
   font-size: 14px;
   font-weight: 500;
-  height: auto;
+  color: #6c757d;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
-
-  /* Subtle shadow */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-}
-
-.custom-tabs .nav-link:hover {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-  color: #495057;
 }
 
 .custom-tabs .nav-link:hover {
   background-color: #e9ecef;
   color: #495057;
   border-color: #dee2e6;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 .custom-tabs .nav-link.active {
@@ -2458,43 +2271,211 @@ body {
   color: #ffffff;
 }
 
-/* Segmented Tab Casing */
-.tab-casing {
-  background-color: #e9ecef;
-  border-radius: 8px;
-  padding: 0.25rem;
-  margin-bottom: 0;
-  display: flex;
+/* Segmented Dropdown Styling */
+.dropdown-tab-casing {
+  position: relative;
+}
+
+.dropdown-toggle {
+  background: none;
   border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
 }
 
-.tab-casing .nav-item {
-  margin-bottom: 0;
+.dropdown-toggle:focus {
+  outline: none;
 }
 
-.tab-casing .nav-link {
+.dropdown-menu {
+  margin-top: 0.25rem;
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown-item {
+  margin: 0;
+}
+
+.dropdown-link {
   background: transparent;
   border: none;
-  border-radius: 6px;
   padding: 0.4rem 0.8rem;
-  color: #6c757d;
-  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  color: #495057;
+  cursor: pointer;
+}
+
+.dropdown-link:hover {
+  background-color: #f1f3f5;
+}
+
+.dropdown-link.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
+
+
+
+
+/* Right Tab Section */
+.page-tabs .tab-section-right {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  min-width: fit-content;
+
+  /* border: 1px solid black; */
+}
+
+
+/* ================================
+   DROPDOWN TAB CASING (Blue Theme)
+   ================================ */
+.dropdown-tab-casing {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  border: 1px solid #d0d7e6; /* softer blue-gray border */
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.dropdown-tab-casing:hover {
+  border-color: #007bff;
+  box-shadow: 0 3px 8px rgba(0, 123, 255, 0.12),
+    0 2px 4px rgba(0, 123, 255, 0.08);
+}
+
+/* ================================
+   TOGGLE BUTTON
+   ================================ */
+.dropdown-tab-casing .dropdown-toggle {
+  background-color: #f1f6ff; /* soft blue background */
+  border: 1px solid #c7d9f7;
+  border-radius: 8px;
+  padding: 0.4rem 0.8rem;
+  color: #0d3b66; /* deep navy text */
   font-size: 0.875rem;
-  font-weight: 500;
-  margin: 0;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 140px;
+  transition: all 0.2s ease;
   white-space: nowrap;
 }
 
-.tab-casing .nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.5);
-  color: #495057;
+.dropdown-tab-casing .dropdown-toggle:hover {
+  background-color: #e2ecfb;
+  border-color: #97b5f5;
+  color: #0056b3;
 }
 
-.tab-casing .nav-link.active {
-  background-color: #ffffff;
-  color: #495057;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+/* ================================
+   TEXT + ICON
+   ================================ */
+.dropdown-tab-casing .selected-text {
+  flex: 1;
+  text-align: left;
 }
+
+.dropdown-tab-casing .dropdown-icon {
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  transition: transform 0.2s ease, color 0.2s ease;
+  color: #0d3b66;
+}
+
+.dropdown-tab-casing .dropdown-toggle:hover .dropdown-icon {
+  color: #0056b3;
+}
+
+.dropdown-tab-casing .dropdown-toggle[aria-expanded="true"] .dropdown-icon {
+  transform: rotate(180deg);
+}
+
+/* ================================
+   MENU PANEL
+   ================================ */
+.dropdown-tab-casing .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #c7d9f7;
+  z-index: 1000;
+  margin: 0;
+  padding: 0rem 0;
+  list-style: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: all 0.25s ease;
+  min-width: 140px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.dropdown-tab-casing .dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ================================
+   MENU ITEMS
+   ================================ */
+.dropdown-tab-casing .dropdown-item {
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  padding: 0;
+
+  border-radius: 6px;
+  /* border: 1px solid black; */
+}
+
+.dropdown-tab-casing .dropdown-item:first-child {
+  margin-bottom: 0.2rem;
+}
+
+.dropdown-tab-casing .dropdown-link {
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0.45rem 0.75rem;
+  color: #0d3b66;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  border-radius: 4px;
+  display: block;
+  /* transition: background-color 0.2s ease, color 0.2s ease; */
+}
+
+.dropdown-tab-casing .dropdown-link:hover {
+  background-color: #e6f0ff; /* softer blue background */
+}
+
+
+
+
+
+
+
 
 /* Responsive Design */
 @media (max-width: 768px) {

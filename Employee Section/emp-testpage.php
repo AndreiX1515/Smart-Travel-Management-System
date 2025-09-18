@@ -218,286 +218,7 @@ error_reporting(E_ALL);
         <!-- Right Section: Export Button -->
         <div class="header-right">
 
-          <div class="tabs-wrapper">
-
-            <div class="dropdown-tab-casing" id="segmentedDropdown">
-
-              <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
-                <span class="selected-text">Cebu Pacific</span>
-              </button>
-
-
-              <ul class="dropdown-menu" role="tablist">
-
-                <li class="dropdown-item">
-                  <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
-                    data-bs-target="#segmented-preview-pane" type="button" role="tab"
-                    aria-controls="segmented-preview-pane" aria-selected="true" data-value="cebu-pacific">
-                    Cebu Pacific
-                  </button>
-                </li>
-
-                <li class="dropdown-item">
-                  <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
-                    data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
-                    aria-selected="false" data-value="air-asia">
-                    Air Asia
-                  </button>
-                </li>
-              </ul>
-
-            </div>
-
-          </div>
-
         </div>
-
-        <!-- Dropdown Script -->
-        <script>
-
-          let selectedAirline = 'cebu-pacific';
-
-          class DropdownTabs {
-            constructor(containerId, storageKey = 'airlineSelection') {
-              this.container = document.getElementById(containerId);
-              this.storageKey = storageKey;
-              this.dropdownButton = this.container.querySelector('.dropdown-toggle');
-              this.dropdownMenu = this.container.querySelector('.dropdown-menu');
-              this.dropdownLinks = this.container.querySelectorAll('.dropdown-link');
-              this.selectedText = this.container.querySelector('.selected-text');
-              this.dropdownIcon = this.container.querySelector('.dropdown-icon'); // This might be null if not in HTML
-
-              this.init();
-            }
-
-            init() {
-              this.loadInitialState();
-              this.addEventListeners();
-            }
-
-            addEventListeners() {
-              this.dropdownButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                this.toggleDropdown();
-              });
-
-              this.dropdownLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  this.selectItem(link);
-                });
-              });
-
-              document.addEventListener('click', (e) => {
-                if (!this.container.contains(e.target)) {
-                  this.closeDropdown();
-                }
-              });
-
-              this.dropdownButton.addEventListener('keydown', (e) => {
-                this.handleKeyboardNavigation(e);
-              });
-
-              this.dropdownLinks.forEach(link => {
-                link.addEventListener('keydown', (e) => {
-                  this.handleKeyboardNavigation(e);
-                });
-              });
-            }
-
-            toggleDropdown() {
-              const isOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
-              if (isOpen) {
-                this.closeDropdown();
-              } else {
-                this.openDropdown();
-              }
-            }
-
-            openDropdown() {
-              this.dropdownButton.setAttribute('aria-expanded', 'true');
-              this.dropdownMenu.classList.add('show');
-            }
-
-            closeDropdown() {
-              this.dropdownButton.setAttribute('aria-expanded', 'false');
-              this.dropdownMenu.classList.remove('show');
-            }
-
-            selectItem(selectedLink) {
-              // Remove active state from all links
-              this.dropdownLinks.forEach(link => {
-                link.classList.remove('active');
-                link.setAttribute('aria-selected', 'false');
-              });
-
-              // Add active state to selected link
-              selectedLink.classList.add('active');
-              selectedLink.setAttribute('aria-selected', 'true');
-
-              // Update the dropdown display text
-              this.selectedText.textContent = selectedLink.textContent;
-
-              // Save selection to localStorage
-              this.saveSelection(selectedLink.dataset.value);
-
-              // Update the global variable
-              selectedAirline = selectedLink.dataset.value;
-              console.log(`Global variable 'selectedAirline' updated to: ${selectedAirline}`);
-
-              // Switch tab content - IMPROVED VERSION
-              this.switchTabContent(selectedLink.dataset.bsTarget);
-
-              // Close dropdown
-              this.closeDropdown();
-
-              // Trigger custom event - MOVED TO AFTER TAB SWITCH
-              this.triggerSelectionEvent(selectedLink);
-            }
-
-            switchTabContent(targetSelector) {
-              if (!targetSelector) {
-                console.warn('No target selector provided for tab switching');
-                return;
-              }
-
-              // Hide all tab panes in the same tab content container
-              const tabContentContainer = document.querySelector('#segmentedTabContent');
-              if (tabContentContainer) {
-                const allPanes = tabContentContainer.querySelectorAll('.tab-pane');
-                allPanes.forEach(pane => {
-                  pane.classList.remove('show', 'active');
-                });
-
-                // Show the target pane
-                const targetPane = tabContentContainer.querySelector(targetSelector);
-                if (targetPane) {
-                  // Add a small delay to ensure smooth transition
-                  setTimeout(() => {
-                    targetPane.classList.add('show', 'active');
-                    console.log(`Switched to tab: ${targetSelector}`);
-                  }, 10);
-                } else {
-                  console.error(`Target pane not found: ${targetSelector}`);
-                }
-              } else {
-                console.error('Tab content container #segmentedTabContent not found');
-              }
-            }
-
-            handleKeyboardNavigation(e) {
-              const isDropdownOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
-
-              switch (e.key) {
-                case 'Enter':
-                case ' ':
-                  e.preventDefault();
-                  if (e.target === this.dropdownButton) {
-                    this.toggleDropdown();
-                  } else if (e.target.classList.contains('dropdown-link')) {
-                    this.selectItem(e.target);
-                  }
-                  break;
-                case 'Escape':
-                  if (isDropdownOpen) {
-                    e.preventDefault();
-                    this.closeDropdown();
-                    this.dropdownButton.focus();
-                  }
-                  break;
-                case 'ArrowDown':
-                  if (isDropdownOpen) {
-                    e.preventDefault();
-                    this.focusNextItem(e.target);
-                  } else if (e.target === this.dropdownButton) {
-                    e.preventDefault();
-                    this.openDropdown();
-                  }
-                  break;
-                case 'ArrowUp':
-                  if (isDropdownOpen) {
-                    e.preventDefault();
-                    this.focusPreviousItem(e.target);
-                  }
-                  break;
-              }
-            }
-
-            focusNextItem(currentElement) {
-              const items = Array.from(this.dropdownLinks);
-              const currentIndex = items.indexOf(currentElement);
-              const nextIndex = (currentIndex + 1) % items.length;
-              items[nextIndex].focus();
-            }
-
-            focusPreviousItem(currentElement) {
-              const items = Array.from(this.dropdownLinks);
-              const currentIndex = items.indexOf(currentElement);
-              const previousIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
-              items[previousIndex].focus();
-            }
-
-            saveSelection(value) {
-              try {
-                localStorage.setItem(this.storageKey, value);
-              } catch (error) {
-                console.warn('Could not save dropdown selection:', error);
-              }
-            }
-
-            triggerSelectionEvent(selectedLink) {
-              if (!selectedLink) return;
-
-              const customEvent = new CustomEvent('dropdownTabChanged', {
-                detail: {
-                  selectedValue: selectedLink.dataset.value,
-                  selectedText: selectedLink.textContent,
-                  selectedElement: selectedLink,
-                  target: selectedLink.dataset.bsTarget
-                },
-                bubbles: true // Allow event to bubble up
-              });
-
-              // Dispatch on both the container and document for broader reach
-              this.container.dispatchEvent(customEvent);
-              document.dispatchEvent(customEvent);
-
-              console.log('Custom event dispatched:', customEvent.detail);
-            }
-
-            loadInitialState() {
-              const savedValue = localStorage.getItem(this.storageKey);
-              const defaultLink = this.container.querySelector('.dropdown-link.active');
-
-              if (savedValue) {
-                const savedLink = this.container.querySelector(`[data-value="${savedValue}"]`);
-                if (savedLink) {
-                  this.selectItem(savedLink);
-                } else if (defaultLink) {
-                  // If saved value doesn't match an existing link, default to the active one
-                  this.selectItem(defaultLink);
-                }
-              } else if (defaultLink) {
-                // If no saved value, use the default link from the HTML
-                this.selectItem(defaultLink);
-              }
-            }
-          }
-
-          // Initialize when DOM is ready
-          document.addEventListener('DOMContentLoaded', function () {
-            console.log('Initializing DropdownTabs...');
-            const dropdownTabs = new DropdownTabs('segmentedDropdown');
-
-            // Example of how to listen for the custom event
-            document.addEventListener('dropdownTabChanged', function (e) {
-              console.log('Dropdown selection changed:', e.detail);
-              // Add your custom logic here
-            });
-          });
-        </script>
 
       </div>
 
@@ -959,8 +680,8 @@ error_reporting(E_ALL);
         <div class="page-tabs">
 
           <div class="tab-section">
-            <ul class="nav custom-tabs" id="myTab" role="tablist">
 
+            <ul class="nav custom-tabs" id="myTab" role="tablist">
               <li class="nav-item">
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
                   type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
@@ -981,12 +702,290 @@ error_reporting(E_ALL);
                   F.I.T
                 </button>
               </li>
-
-
             </ul>
+
+          </div>
+
+          <div class="tab-section-right">
+            
+              <div class="dropdown-tab-casing" id="segmentedDropdown">
+
+                <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
+                  <span class="selected-text">Cebu Pacific</span>
+                </button>
+
+
+                <ul class="dropdown-menu" role="tablist">
+
+                  <li class="dropdown-item">
+                    <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
+                      data-bs-target="#segmented-preview-pane" type="button" role="tab"
+                      aria-controls="segmented-preview-pane" aria-selected="true" data-value="cebu-pacific">
+                      Cebu Pacific
+                    </button>
+                  </li>
+
+                  <li class="dropdown-item">
+                    <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
+                      data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
+                      aria-selected="false" data-value="air-asia">
+                      Air Asia
+                    </button>
+                  </li>
+                </ul>
+
+              </div>
+          
           </div>
 
         </div>
+
+        <!-- Dropdown Script -->
+        <script>
+
+          let selectedAirline = 'cebu-pacific';
+
+          class DropdownTabs {
+            constructor(containerId, storageKey = 'airlineSelection') {
+              this.container = document.getElementById(containerId);
+              this.storageKey = storageKey;
+              this.dropdownButton = this.container.querySelector('.dropdown-toggle');
+              this.dropdownMenu = this.container.querySelector('.dropdown-menu');
+              this.dropdownLinks = this.container.querySelectorAll('.dropdown-link');
+              this.selectedText = this.container.querySelector('.selected-text');
+              this.dropdownIcon = this.container.querySelector('.dropdown-icon'); // This might be null if not in HTML
+
+              this.init();
+            }
+
+            init() {
+              this.loadInitialState();
+              this.addEventListeners();
+            }
+
+            addEventListeners() {
+              this.dropdownButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.toggleDropdown();
+              });
+
+              this.dropdownLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  this.selectItem(link);
+                });
+              });
+
+              document.addEventListener('click', (e) => {
+                if (!this.container.contains(e.target)) {
+                  this.closeDropdown();
+                }
+              });
+
+              this.dropdownButton.addEventListener('keydown', (e) => {
+                this.handleKeyboardNavigation(e);
+              });
+
+              this.dropdownLinks.forEach(link => {
+                link.addEventListener('keydown', (e) => {
+                  this.handleKeyboardNavigation(e);
+                });
+              });
+            }
+
+            toggleDropdown() {
+              const isOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
+              if (isOpen) {
+                this.closeDropdown();
+              } else {
+                this.openDropdown();
+              }
+            }
+
+            openDropdown() {
+              this.dropdownButton.setAttribute('aria-expanded', 'true');
+              this.dropdownMenu.classList.add('show');
+            }
+
+            closeDropdown() {
+              this.dropdownButton.setAttribute('aria-expanded', 'false');
+              this.dropdownMenu.classList.remove('show');
+            }
+
+            selectItem(selectedLink) {
+              // Remove active state from all links
+              this.dropdownLinks.forEach(link => {
+                link.classList.remove('active');
+                link.setAttribute('aria-selected', 'false');
+              });
+
+              // Add active state to selected link
+              selectedLink.classList.add('active');
+              selectedLink.setAttribute('aria-selected', 'true');
+
+              // Update the dropdown display text
+              this.selectedText.textContent = selectedLink.textContent;
+
+              // Save selection to localStorage
+              this.saveSelection(selectedLink.dataset.value);
+
+              // Update the global variable
+              selectedAirline = selectedLink.dataset.value;
+              console.log(`Global variable 'selectedAirline' updated to: ${selectedAirline}`);
+
+              // Switch tab content - IMPROVED VERSION
+              this.switchTabContent(selectedLink.dataset.bsTarget);
+
+              // Close dropdown
+              this.closeDropdown();
+
+              // Trigger custom event - MOVED TO AFTER TAB SWITCH
+              this.triggerSelectionEvent(selectedLink);
+            }
+
+            switchTabContent(targetSelector) {
+              if (!targetSelector) {
+                console.warn('No target selector provided for tab switching');
+                return;
+              }
+
+              // Hide all tab panes in the same tab content container
+              const tabContentContainer = document.querySelector('#segmentedTabContent');
+              if (tabContentContainer) {
+                const allPanes = tabContentContainer.querySelectorAll('.tab-pane');
+                allPanes.forEach(pane => {
+                  pane.classList.remove('show', 'active');
+                });
+
+                // Show the target pane
+                const targetPane = tabContentContainer.querySelector(targetSelector);
+                if (targetPane) {
+                  // Add a small delay to ensure smooth transition
+                  setTimeout(() => {
+                    targetPane.classList.add('show', 'active');
+                    console.log(`Switched to tab: ${targetSelector}`);
+                  }, 10);
+                } else {
+                  console.error(`Target pane not found: ${targetSelector}`);
+                }
+              } else {
+                console.error('Tab content container #segmentedTabContent not found');
+              }
+            }
+
+            handleKeyboardNavigation(e) {
+              const isDropdownOpen = this.dropdownButton.getAttribute('aria-expanded') === 'true';
+
+              switch (e.key) {
+                case 'Enter':
+                case ' ':
+                  e.preventDefault();
+                  if (e.target === this.dropdownButton) {
+                    this.toggleDropdown();
+                  } else if (e.target.classList.contains('dropdown-link')) {
+                    this.selectItem(e.target);
+                  }
+                  break;
+                case 'Escape':
+                  if (isDropdownOpen) {
+                    e.preventDefault();
+                    this.closeDropdown();
+                    this.dropdownButton.focus();
+                  }
+                  break;
+                case 'ArrowDown':
+                  if (isDropdownOpen) {
+                    e.preventDefault();
+                    this.focusNextItem(e.target);
+                  } else if (e.target === this.dropdownButton) {
+                    e.preventDefault();
+                    this.openDropdown();
+                  }
+                  break;
+                case 'ArrowUp':
+                  if (isDropdownOpen) {
+                    e.preventDefault();
+                    this.focusPreviousItem(e.target);
+                  }
+                  break;
+              }
+            }
+
+            focusNextItem(currentElement) {
+              const items = Array.from(this.dropdownLinks);
+              const currentIndex = items.indexOf(currentElement);
+              const nextIndex = (currentIndex + 1) % items.length;
+              items[nextIndex].focus();
+            }
+
+            focusPreviousItem(currentElement) {
+              const items = Array.from(this.dropdownLinks);
+              const currentIndex = items.indexOf(currentElement);
+              const previousIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+              items[previousIndex].focus();
+            }
+
+            saveSelection(value) {
+              try {
+                localStorage.setItem(this.storageKey, value);
+              } catch (error) {
+                console.warn('Could not save dropdown selection:', error);
+              }
+            }
+
+            triggerSelectionEvent(selectedLink) {
+              if (!selectedLink) return;
+
+              const customEvent = new CustomEvent('dropdownTabChanged', {
+                detail: {
+                  selectedValue: selectedLink.dataset.value,
+                  selectedText: selectedLink.textContent,
+                  selectedElement: selectedLink,
+                  target: selectedLink.dataset.bsTarget
+                },
+                bubbles: true // Allow event to bubble up
+              });
+
+              // Dispatch on both the container and document for broader reach
+              this.container.dispatchEvent(customEvent);
+              document.dispatchEvent(customEvent);
+
+              console.log('Custom event dispatched:', customEvent.detail);
+            }
+
+            loadInitialState() {
+              const savedValue = localStorage.getItem(this.storageKey);
+              const defaultLink = this.container.querySelector('.dropdown-link.active');
+
+              if (savedValue) {
+                const savedLink = this.container.querySelector(`[data-value="${savedValue}"]`);
+                if (savedLink) {
+                  this.selectItem(savedLink);
+                } else if (defaultLink) {
+                  // If saved value doesn't match an existing link, default to the active one
+                  this.selectItem(defaultLink);
+                }
+              } else if (defaultLink) {
+                // If no saved value, use the default link from the HTML
+                this.selectItem(defaultLink);
+              }
+            }
+          }
+
+          // Initialize when DOM is ready
+          document.addEventListener('DOMContentLoaded', function () {
+            console.log('Initializing DropdownTabs...');
+            const dropdownTabs = new DropdownTabs('segmentedDropdown');
+
+            // Example of how to listen for the custom event
+            document.addEventListener('dropdownTabChanged', function (e) {
+              console.log('Dropdown selection changed:', e.detail);
+              // Add your custom logic here
+            });
+          });
+        </script>
 
         <!-- Record Tab State -->
         <script>
@@ -1807,14 +1806,14 @@ error_reporting(E_ALL);
           });
 
           const responseText = await response.text();
-          console.log('Test endpoint response:', responseText);
+          // console.log('Test endpoint response:', responseText);
 
           if (!response.ok) {
             throw new Error(`Test endpoint failed: ${response.status}`);
           }
 
           const testData = JSON.parse(responseText);
-          console.log('Test endpoint parsed data:', testData);
+          // console.log('Test endpoint parsed data:', testData);
 
           if (!testData.success) {
             throw new Error('Test endpoint reports failure: ' + testData.error);
@@ -1847,14 +1846,18 @@ error_reporting(E_ALL);
 
           // Log the fetched data
           console.log('Fetched flight data:', data);
-          console.log('Number of records:', data.flights?.length || 0);
-          console.log('Agent columns:', data.agentColumns || []);
+          // console.log('Number of records:', data.flights?.length || 0);
+          // console.log('Agent columns:', data.agentColumns || []);
 
           return data;
-        } catch (error) {
+
+        }
+
+        catch (error) {
           console.error('Error fetching flight data:', error);
           throw error;
         }
+
       }
 
       setupTable(data) {
@@ -1913,36 +1916,72 @@ error_reporting(E_ALL);
               return `<input type="checkbox" class="status-checkbox" 
                       data-id="${flightId}" 
                       data-status="${value}" 
-                      ${value == 1 ? 'checked' : ''}>`;
+                      ${value == 1 ? 'checked' : ''} disabled>`;
             }
           },
 
-
-
           {
-            title: "",
-            columns: [
-              {
-                title: "TEAM OP",
-                field: "TeamOP",
-                width: 125,
-                hozAlign: "middle",
-                vertAlign: "middle",
-                frozen: true,
-                formatter: (cell) => {
-                  const rowData = cell.getRow().getData();
-                  const colorCode = rowData.colorCode || "transparent";
-                  const teamOp = cell.getValue() || "";
-                  return `<div class="team-op-cell" style="background-color: ${colorCode};">
-                            <div class="profile-avatar">${teamOp.charAt(0)}</div>
-                            <span class="profile-name">Juan</span>
-                          </div>
-                    `;
-                }
-              }
+            title: "TEAM OP",
+            field: "TeamOP",
+            width: 130,
+            hozAlign: "middle",
+            vertAlign: "middle",
+            // frozen: true,
+            formatter: (cell) => {
+              const rowData = cell.getRow().getData();
+              const colorCode = rowData.colorCode || "#f0f0f0";
+
+              // ✅ Correct way: TeamOP value comes directly from cell.getValue()
+              const teamOp = cell.getValue() || "N/A";
+
+              // Get first letter for avatar (fallback: N)
+              const avatarLetter = teamOp === "N/A" ? "N" : teamOp.charAt(0).toUpperCase();
+
+              return `
+              <div class="team-op-cell" style="
+                border-left: 6px solid ${colorCode};
+                background-color: ${colorCode}70; /* Softer, visible background */
+                padding: 4px 8px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                height: 100%;
+              ">
               
-            ]
-          },
+                <div class="profile-avatar" style="
+                  width: 24px;
+                  height: 24px;
+                  border-radius: 50%;
+                  background-color: rgba(255, 255, 255, 0.3);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: bold;
+                  font-size: 12px;
+                  color: #333;
+                ">
+                  ${avatarLetter}
+                </div>
+                <span class="profile-name" style="
+                  font-size: 12px;
+                  font-weight: 500;
+                  color: #333;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  flex: 1;
+                ">
+                  ${teamOp}
+                </span>
+              </div>
+            `;
+
+
+
+            }
+          }
+          ,
           {
             title: "FLIGHT INFO",
             columns: [
@@ -1952,7 +1991,7 @@ error_reporting(E_ALL);
                 width: 80,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 headerWordWrap: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-weight: 500; font-size: 12px">${cell.getValue()}</div>`;
@@ -1965,7 +2004,7 @@ error_reporting(E_ALL);
                 width: 85,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const date = new Date(cell.getValue());
                   const formatted = date.toLocaleDateString("en-CA").replace(/-/g, ".");
@@ -1980,7 +2019,7 @@ error_reporting(E_ALL);
                 width: 85,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const date = new Date(cell.getValue());
                   const formatted = date.toLocaleDateString("en-CA").replace(/-/g, ".");
@@ -1998,7 +2037,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-size: 12px; font-weight: normal;">${cell.getValue()}</div>`;
                 }
@@ -2009,7 +2048,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-size: 12px; font-weight: normal;">${cell.getValue()}</div>`;
                 }
@@ -2025,7 +2064,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-weight: normal; font-size: 12px;">${cell.getValue()}</div>`;
                 }
@@ -2036,7 +2075,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-weight: normal; font-size: 12px;">${cell.getValue()}</div>`;
                 }
@@ -2052,7 +2091,7 @@ error_reporting(E_ALL);
                 width: 110,
                 hozAlign: "right",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const value = parseFloat(cell.getValue());
                   const formatted = value.toLocaleString("en-US", {
@@ -2068,7 +2107,7 @@ error_reporting(E_ALL);
                 width: 110,
                 hozAlign: "right",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const value = parseFloat(cell.getValue());
                   const formatted = value.toLocaleString("en-US", {
@@ -2084,7 +2123,7 @@ error_reporting(E_ALL);
                 width: 110,
                 hozAlign: "right",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const value = parseFloat(cell.getValue());
                   const formatted = value.toLocaleString("en-US", {
@@ -2099,7 +2138,6 @@ error_reporting(E_ALL);
           ...dynamicColumns
         ];
 
-        // Initialize Tabulator with optimized settings
         // Initialize Tabulator with optimized settings
         this.table = new Tabulator("#flight-table", {
           data: data.flights || [],
