@@ -1,31 +1,3 @@
-<?php
-require "../conn.php";
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// Initialize variables
-$accountId = $_SESSION['employee_accountId'] ?? '';
-$empId = $_SESSION['employee_employeeId'] ?? '';
-$firstName = $_SESSION['employee_fName'] ?? '';
-$lastName = $_SESSION['employee_lName'] ?? '';
-$middleName = $_SESSION['employee_mName'] ?? '';  // Middle name is optional
-$email = $_SESSION['email'] ?? '';
-$emailAddress = $_SESSION['employee_emailAddress'] ?? '';
-$password = $_SESSION['password'] ?? '';
-$userType = $_SESSION['employee_userType'] ?? '';
-
-
-// Format the full name: Get the first letter of the middle name and place it at the end
-$middleNameInitial = $middleName ? substr($middleName, 0, 1) . '.' : '';
-$fullName = htmlspecialchars($firstName . ' ' . $middleNameInitial . ' ' . $lastName);
-
-// Position or role (assuming userType and accountType are available)
-$position = htmlspecialchars(strtoupper($empId));
-?>
-
-
 <div class="sidebar" id="sidebar">
 
 	<ul class="nav flex-column">
@@ -239,7 +211,7 @@ $position = htmlspecialchars(strtoupper($empId));
 
 		</li> -->
 
-		
+
 		<!-- For Approvals -->
 		<li class="nav-item dropdown">
 			<a class="nav-link page-button" href="#" data-bs-toggle="collapse" data-bs-target="#manageBookingMenu"
@@ -251,7 +223,7 @@ $position = htmlspecialchars(strtoupper($empId));
 					<span class="label">For Approvals</span>
 				</div>
 			</a>
-			
+
 			<div class="collapse" id="manageBookingMenu">
 				<ul class="nav flex-column managebooking-menu-wrapper">
 					<li class="nav-item transaction mb-0">
@@ -397,11 +369,9 @@ $position = htmlspecialchars(strtoupper($empId));
 
 	</ul>
 
-	
+
 
 </div>
-
-
 
 <!-- Raise Ticket -->
 
@@ -411,99 +381,121 @@ $position = htmlspecialchars(strtoupper($empId));
 		<div class="modal-content">
 
 			<div class="modal-header">
-				<h5 class="modal-title" id="raiseTicketModalLabel"> Raise a Ticket</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<h5 class="modal-title" id="raiseTicketModalLabel">Raise a Ticket</h5>
+				<button type="button" class="modal-close" data-bs-dismiss="modal" aria-label="Close">X</button>
 			</div>
 
 			<div class="modal-body">
 				<form id="ticketForm">
-					<div class="mb-3">
-						<label for="concernType" class="form-label">Concern</label>
-						<select class="form-select" id="concernType" required>
-							<option value="" selected disabled>Select Concern</option>
-							<option value="Request for Additional User">Request for Additional User</option>
-						</select>
 
-						<!-- Hidden input field for Number of Users -->
-						<div id="userCountContainer" style="display: none; margin-top: 10px;">
-							<label for="numUsers" class="form-label">Number of Users</label>
-							<input type="number" class="form-control" id="numUsers" min="1"
-								placeholder="Enter number of users">
+					<div class="field-group">
+						<div class="field-wrapper">
+							<label for="concernType">Concern</label>
+							<select id="concernType" required>
+								<option value="" selected disabled>Select Concern</option>
+								<option value="Request for Additional User">Request for Additional User</option>
+							</select>
+						</div>
 
+						<div id="userCountContainer">
+							<label for="numUsers">Number of Users</label>
+							<input type="number" id="numUsers" min="1" placeholder="Enter number of users">
 						</div>
 					</div>
 
-					<div class="alert alert-info mt-3" id="userCountContainer-note"
-						style="display: none; font-size: 14px;">
-						<p class="mb-1"><strong>Please provide user credentials using the template below:</strong></p>
-						<p class="mb-1"><strong>- Full Name <span style="font-weight: 400;">(First Name, Last Name,
-									Middle Name,
-									Suffix)</span>:</strong> </p>
-						<p class="mb-1"><strong>- Company Name:</strong></p>
-						<p class="mb-1"><strong>- Contact Number:</strong></p>
-						<p class="mb-3"><strong>- Email:</strong></p>
-						<p class="mb-0"><strong>Note:</strong> A default password will be assigned initially.</p>
+					<div id="userCountContainer-note">
+						<p class="note-title">Please provide user credentials using the template below:</p>
+						<ul class="note-list">
+							<li>Full Name (First, Last, Middle, Suffix)</li>
+							<li>Company Name</li>
+							<li>Contact Number</li>
+							<li>Email</li>
+						</ul>
+						<p class="note-warning"><strong>Note:</strong> A default password will be assigned initially.
+						</p>
 					</div>
 
 
 
-					<!-- JS for Number of Users -->
-					<script>
-						document.getElementById("concernType").addEventListener("change", function () {
-							var userCountContainer = document.getElementById("userCountContainer");
-							var userCountContainerNote = document.getElementById("userCountContainer-note");
-							var ticketPriority = document.getElementById("ticketPriority");
-							if (this.value === "Request for Additional User") {
-								userCountContainer.style.display = "block";
-								userCountContainerNote.style.display = "block";
-								ticketPriority.style.display = "hidden";
-							} else {
-								userCountContainer.style.display = "none";
-								userCountContainerNote.style.display = "none";
-								ticketPriority.style.display = "block";
-							}
-						});
-					</script>
+					<div class="field-group">
+						<div class="field-wrapper">
+							<label for="ticketDescription">Description</label>
+							<textarea id="ticketDescription" rows="4" required></textarea>
+						</div>
+					</div>
 
 
-					<div class="mb-3">
-						<label for="ticketDescription" class="form-label">Description</label>
-						<textarea class="form-control" id="ticketDescription" rows="4" required></textarea>
-					</div>
-					<div class="mb-3" id="ticketPriority" style="display: hidden;">
-						<label for="ticketPriority" class="form-label">Priority</label>
-						<select class="form-select" id="ticketPriority">
-							<option value="" disabled selected>Select Severity</option>
-							<option value="low">Low</option>
-							<option value="medium" selected>Medium</option>
-							<option value="high">High</option>
-						</select>
-					</div>
-					<!-- <div class="mb-3">
-							<label for="ticketAttachment" class="form-label">Attachment (Optional)</label>
-							<input type="file" class="form-control" id="ticketAttachment">
-						</div> -->
-					<button type="submit" class="btn btn-success w-100"> Submit Ticket</button>
+					<!-- <div class="field-group" id="ticketPriority">
+			<label for="ticketPrioritySelect">Priority</label>
+			<select id="ticketPrioritySelect">
+			  <option value="" disabled selected>Select Severity</option>
+			  <option value="low">Low</option>
+			  <option value="medium" selected>Medium</option>
+			  <option value="high">High</option>
+			</select>
+		  </div> -->
+
+					<button type="submit" id="submitTicketBtn">Submit Ticket</button>
 				</form>
 			</div>
+
 		</div>
 	</div>
 </div>
 
+
 <!-- <script>
-	document.getElementById('raiseTicket').addEventListener('click', function (e) {
-		e.preventDefault();
-		const raiseModal = new bootstrap.Modal(document.getElementById('raiseTicketModal'));
-		raiseModal.show();
+
+	document.addEventListener("DOMContentLoaded", function () {
+
+	var raiseTicketModal = document.getElementById("raiseTicketModal");
+
+	var modal = new bootstrap.Modal(raiseTicketModal);
+
+	modal.show();
 	});
-</script> -->
+</script>
+ -->
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+
+		// Toggle user count fields based on concern type
+		const concernType = document.getElementById("concernType");
+		const userCountContainer = document.getElementById("userCountContainer");
+		const userCountContainerNote = document.getElementById("userCountContainer-note");
+		const ticketPriority = document.getElementById("ticketPriority");
+
+		concernType.addEventListener("change", function () {
+			if (this.value === "Request for Additional User") {
+				userCountContainer.style.display = "block";
+				userCountContainerNote.style.display = "block";
+				ticketPriority.style.display = "none";
+			} else {
+				userCountContainer.style.display = "none";
+				userCountContainerNote.style.display = "none";
+				ticketPriority.style.display = "block";
+			}
+		});
+
+		// Cleanup any stuck modal backdrops
+		const modalEl = document.getElementById('raiseTicketModal');
+		modalEl.addEventListener('hidden.bs.modal', function () {
+			document.querySelectorAll('.modal-backdrop').forEach(function (backdrop) {
+				backdrop.remove();
+			});
+		});
+
+	});
+</script>
+
 
 
 <!-- Change Password Modal -->
-<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
-	aria-hidden="true">
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
+			<!-- Modal Header -->
 			<div class="modal-header">
 				<div class="modal-title-wrapper">
 					<h5 class="modal-title" id="changePasswordLabel">Change Password</h5>
@@ -511,39 +503,57 @@ $position = htmlspecialchars(strtoupper($empId));
 						ones.</small>
 				</div>
 				<div class="modal-close-wrapper">
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					<button type="button" class="modal-close" data-bs-dismiss="modal" aria-label="Close">X</button>
 				</div>
 			</div>
 
+			<!-- Modal Form -->
 			<form id="changePasswordForm">
 				<div class="modal-body">
-					<div class="mb-3">
-						<label for="currentPassword" class="form-label">Current Password</label>
-						<input type="password" class="form-control" id="currentPassword" name="currentPassword"
-							placeholder="Enter current password">
-						<small id="currentPasswordError" class="error-label text-danger"></small>
+					<!-- Alert Message -->
+					<div id="messageAlert" class="alert"
+						style="display: none; padding: 10px; margin-bottom: 15px; border-radius: 4px;"></div>
+
+					<div class="field-group">
+						<label for="currentPassword">Current Password</label>
+						<div class="password-wrapper">
+							<input type="password" id="currentPassword" name="currentPassword"
+								placeholder="Enter current password" required>
+							<button type="button" class="toggle-password" data-target="currentPassword">
+								<i class="fas fa-eye"></i>
+							</button>
+						</div>
+						<small id="currentPasswordError" class="error-label" style="color: red; display: none;"></small>
 					</div>
 
-					<div class="mb-3">
-						<label for="newPassword" class="form-label">New Password</label>
-						<input type="password" class="form-control" id="newPassword" name="newPassword"
-							placeholder="Enter new password" required>
-						<small id="newPasswordError" class="error-label text-danger"></small>
+					<div class="field-group">
+						<label for="newPassword">New Password</label>
+						<div class="password-wrapper">
+							<input type="password" id="newPassword" name="newPassword" placeholder="Enter new password"
+								required>
+							<button type="button" class="toggle-password" data-target="newPassword">
+								<i class="fas fa-eye"></i>
+							</button>
+						</div>
+						<small id="newPasswordError" class="error-label" style="color: red; display: none;"></small>
 					</div>
 
-					<div class="mb-3">
-						<label for="confirmNewPassword" class="form-label">Confirm New Password</label>
-						<input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword"
-							placeholder="Re-enter new password" required>
-						<small id="confirmPasswordError" class="error-label text-danger"></small>
+					<div class="field-group">
+						<label for="confirmNewPassword">Confirm New Password</label>
+						<div class="password-wrapper">
+							<input type="password" id="confirmNewPassword" name="confirmNewPassword"
+								placeholder="Re-enter new password" required>
+							<button type="button" class="toggle-password" data-target="confirmNewPassword">
+								<i class="fas fa-eye"></i>
+							</button>
+						</div>
+						<small id="confirmPasswordError" class="error-label" style="color: red; display: none;"></small>
 					</div>
-
-					<div id="messageAlert"> </div>
 				</div>
 
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Change Password</button>
+					<button type="button" class="btn-cancel" data-bs-dismiss="modal">Close</button>
+					<button type="submit" class="btn-primary" id="changePasswordBtn">Change Password</button>
 				</div>
 			</form>
 		</div>
@@ -553,39 +563,36 @@ $position = htmlspecialchars(strtoupper($empId));
 <!-- OTP Verification Modal -->
 <div class="modal fade" id="otpVerificationModal" tabindex="-1" aria-labelledby="otpVerificationModalLabel"
 	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered ">
+	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content otp-modal-content">
 
 			<div class="modal-body">
+
 				<div class="header-body-wrapper">
 					<div class="otp-header">
-						<div class="otp-icon-wrapper">
-							<div class="otp-icon">
-								<i class="fa-solid fa-lock"></i>
-							</div>
-						</div>
 
 						<div class="header-body-content">
 							<h5 class="modal-title">Verify OTP</h5>
-							<p class="otp-subtext">To proceed with resetting your password, we’ve sent a verification
-								code to your email address. <br> <span class="otp-email-mask">is****a8@gmail.com</span>
+							<p class="otp-subtext">
+								To proceed with changing your password, we've sent a verification
+								code to your email address <span class="otp-email-mask">Loading...</span>.
 							</p>
 						</div>
+
 					</div>
 				</div>
 
 				<form id="otpVerificationForm">
 					<div id="otpFieldContainer" class="otp-field-container">
 						<div class="otp-modal-container">
-							<input type="text" class="otp-modal-input" maxlength="1" id="otp1">
-							<input type="text" class="otp-modal-input" maxlength="1" id="otp2">
-							<input type="text" class="otp-modal-input" maxlength="1" id="otp3">
-							<input type="text" class="otp-modal-input" maxlength="1" id="otp4">
-							<input type="text" class="otp-modal-input" maxlength="1" id="otp5">
-							<input type="text" class="otp-modal-input" maxlength="1" id="otp6">
+							<input type="text" class="otp-modal-input" maxlength="1" id="otp1" pattern="[0-9]">
+							<input type="text" class="otp-modal-input" maxlength="1" id="otp2" pattern="[0-9]">
+							<input type="text" class="otp-modal-input" maxlength="1" id="otp3" pattern="[0-9]">
+							<input type="text" class="otp-modal-input" maxlength="1" id="otp4" pattern="[0-9]">
+							<input type="text" class="otp-modal-input" maxlength="1" id="otp5" pattern="[0-9]">
+							<input type="text" class="otp-modal-input" maxlength="1" id="otp6" pattern="[0-9]">
 						</div>
-
-						<small id="otpError" class="error-label text-danger"></small>
+						<small id="otpError" class="error-label text-danger" style="display: none;"></small>
 					</div>
 
 					<div class="verify-button-wrapper">
@@ -593,33 +600,207 @@ $position = htmlspecialchars(strtoupper($empId));
 					</div>
 
 					<div class="otpResent-button-wrapper">
-						<p class="otp-resend-text">Didn’t receive code? </p> <a href="#" id="sendOtpBtn"
-							class="otp-resend-link">Resend</a>
+						<p class="otp-resend-text">Didn't receive code? </p>
+						<a href="#" id="sendOtpBtn" class="otp-resend-link">Resend</a>
 					</div>
 
-					<div id="otpAlert"></div>
+					<div id="otpAlert" class="alert"
+						style="display: none; padding: 10px; margin-top: 15px; border-radius: 4px;"></div>
 				</form>
+
 			</div>
 		</div>
 	</div>
 </div>
 
-<!-- Change Password Modal Open Script -->
-<script>
-	document.getElementById('changePasswordLink').addEventListener('click', function (e) {
-		e.preventDefault(); // Prevent default link behavior
-		var myModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
-		myModal.show();
-	});
-</script>
 
-<!-- OTP Input Focus Script -->
-<script>
+<!-- <script>
 	document.addEventListener("DOMContentLoaded", function () {
-		const otpInputs = document.querySelectorAll("#otpVerificationModal .otp-modal-input");
+		// Ensure no stuck backdrop before showing
+		document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+		document.body.classList.remove('modal-open');
+
+		// Open the OTP modal
+		var otpModal = new bootstrap.Modal(document.getElementById("otpVerificationModal"), {
+			backdrop: 'static', // prevents clicking outside
+			keyboard: false     // disables ESC close
+		});
+		otpModal.show();
+	});
+</script> -->
+
+
+
+<script>
+	// ===========================================
+	// UTILITY FUNCTIONS
+	// ===========================================
+
+	// Password toggle functionality
+	function initializePasswordToggle() {
+		document.querySelectorAll(".toggle-password").forEach(button => {
+			button.addEventListener("click", function () {
+				const targetId = this.getAttribute("data-target");
+				const input = document.getElementById(targetId);
+				const icon = this.querySelector("i");
+
+				if (input.type === "password") {
+					input.type = "text";
+					icon.classList.remove("fa-eye");
+					icon.classList.add("fa-eye-slash");
+				} else {
+					input.type = "password";
+					icon.classList.remove("fa-eye-slash");
+					icon.classList.add("fa-eye");
+				}
+			});
+		});
+	}
+
+	// Email masking function
+	function maskEmail(email) {
+		if (!email || !email.includes('@')) return email;
+		const parts = email.split('@');
+		const username = parts[0];
+		const domain = parts[1];
+		if (username.length <= 2) return email;
+		const maskedUsername = username.charAt(0) + '******' + username.charAt(username.length - 1);
+		return maskedUsername + '@' + domain;
+	}
+
+	// Alert functions
+	function showAlert(elementId, message, status) {
+		const alertElement = document.getElementById(elementId);
+		if (!alertElement) return;
+
+		let backgroundColor, textColor, borderColor;
+
+		switch (status) {
+			case 'success':
+				backgroundColor = '#d4edda';
+				textColor = '#155724';
+				borderColor = '#c3e6cb';
+				break;
+			case 'error':
+				backgroundColor = '#f8d7da';
+				textColor = '#721c24';
+				borderColor = '#f5c6cb';
+				break;
+			default:
+				backgroundColor = '#fff3cd';
+				textColor = '#856404';
+				borderColor = '#ffeeba';
+		}
+
+		alertElement.textContent = message;
+		alertElement.style.backgroundColor = backgroundColor;
+		alertElement.style.color = textColor;
+		alertElement.style.border = `1px solid ${borderColor}`;
+		alertElement.style.display = 'block';
+
+		setTimeout(() => {
+			alertElement.style.display = 'none';
+		}, 3500);
+	}
+
+	function clearErrorMessages() {
+		const errorElements = ['currentPasswordError', 'newPasswordError', 'confirmPasswordError', 'otpError'];
+		errorElements.forEach(id => {
+			const element = document.getElementById(id);
+			if (element) {
+				element.textContent = '';
+				element.style.display = 'none';
+			}
+		});
+
+		const messageAlert = document.getElementById('messageAlert');
+		if (messageAlert) {
+			messageAlert.style.display = 'none';
+		}
+	}
+
+	function showFieldError(fieldId, message) {
+		const errorElement = document.getElementById(fieldId + 'Error');
+		if (errorElement) {
+			errorElement.textContent = message;
+			errorElement.style.display = 'block';
+		}
+	}
+
+	// ===========================================
+	// MODAL MANAGEMENT
+	// ===========================================
+
+	function initializeModals() {
+		const changePasswordModal = document.getElementById("changePasswordModal");
+		const otpModal = document.getElementById("otpVerificationModal");
+
+		// Initialize Bootstrap modals
+		if (typeof bootstrap !== 'undefined') {
+			const bsChangePasswordModal = new bootstrap.Modal(changePasswordModal, {
+				backdrop: 'static',
+				keyboard: true
+			});
+
+			const bsOtpModal = new bootstrap.Modal(otpModal, {
+				backdrop: 'static',
+				keyboard: true
+			});
+
+			// Clean up backdrop on modal hide
+			changePasswordModal.addEventListener('hidden.bs.modal', function () {
+				const backdrops = document.querySelectorAll('.modal-backdrop');
+				backdrops.forEach(backdrop => backdrop.remove());
+			});
+
+			// Auto-focus first input when modal opens
+			changePasswordModal.addEventListener('shown.bs.modal', function () {
+				const firstInput = changePasswordModal.querySelector('input');
+				if (firstInput) firstInput.focus();
+			});
+		}
+
+		// Handle change password trigger
+		const trigger = document.getElementById("changePasswordTrigger") || document.getElementById("changePasswordLink");
+		if (trigger) {
+			trigger.addEventListener("click", function (e) {
+				e.preventDefault();
+				clearErrorMessages();
+				clearPasswordFields();
+				if (typeof bootstrap !== 'undefined') {
+					const modal = new bootstrap.Modal(changePasswordModal);
+					modal.show();
+				}
+			});
+		}
+	}
+
+	function clearPasswordFields() {
+		const fields = ['currentPassword', 'newPassword', 'confirmNewPassword'];
+		fields.forEach(fieldId => {
+			const field = document.getElementById(fieldId);
+			if (field) field.value = '';
+		});
+	}
+
+	function clearOtpFields() {
+		const otpInputs = document.querySelectorAll('.otp-modal-input');
+		otpInputs.forEach(input => input.value = '');
+		if (otpInputs.length > 0) otpInputs[0].focus();
+	}
+
+	// ===========================================
+	// OTP INPUT HANDLING
+	// ===========================================
+
+	function initializeOtpInputs() {
+		const otpInputs = document.querySelectorAll(".otp-modal-input");
 
 		otpInputs.forEach((input, index) => {
+			// Only allow numbers
 			input.addEventListener("input", (e) => {
+				e.target.value = e.target.value.replace(/[^0-9]/g, '');
+
 				if (e.target.value && index < otpInputs.length - 1) {
 					otpInputs[index + 1].focus();
 				}
@@ -630,384 +811,291 @@ $position = htmlspecialchars(strtoupper($empId));
 					otpInputs[index - 1].focus();
 				}
 			});
+
+			// Prevent non-numeric input
+			input.addEventListener("keypress", (e) => {
+				if (!/[0-9]/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab') {
+					e.preventDefault();
+				}
+			});
 		});
-	});
-</script>
+	}
 
-<!-- jQuery Script for Change Password Modal -->
-<script>
-	$(document).ready(function () {
+	// ===========================================
+	// API FUNCTIONS
+	// ===========================================
 
-		let currentPassword, newPassword, confirmNewPassword;
-
-		// Function for OTP Modal Alert
-		function showOtpAlert(message, status) {
-
-			// Set the color and background based on the status
-			let backgroundColor, textColor, borderColor;
-
-			// Determine the color scheme based on the provided status
-			if (status === 'success') {
-				backgroundColor = '#d4edda'; // Green background
-				textColor = '#155724'; // Dark green text
-				borderColor = '#c3e6cb'; // Green border
-			} else if (status === 'error') {
-				backgroundColor = '#f8d7da'; // Red background
-				textColor = '#721c24'; // Dark red text
-				borderColor = '#f5c6cb'; // Red border
-			} else {
-				backgroundColor = '#fff3cd'; // Yellow background (default for warnings)
-				textColor = '#856404'; // Dark yellow text
-				borderColor = '#ffeeba'; // Yellow border
-			}
-
-			// Apply the styles and show the alert
-			$('#otpAlert').text(message).css({
-				'background-color': backgroundColor,
-				'color': textColor,
-				'border': `1px solid ${borderColor}`
-			}).show();
-
-			// Hide the alert after 3.5 seconds (3500 milliseconds)
-			setTimeout(function () {
-				$('#otpAlert').fadeOut();
-			}, 3500);
-		}
-
-		// Function for CP Alert
-		function showCPAlert(message, status) {
-
-			// Set the color and background based on the status
-			let backgroundColor, textColor, borderColor;
-
-			// Determine the color scheme based on the provided status
-			if (status === 'success') {
-				backgroundColor = '#d4edda'; // Green background
-				textColor = '#155724'; // Dark green text
-				borderColor = '#c3e6cb'; // Green border
-			} else if (status === 'error') {
-				backgroundColor = '#f8d7da'; // Red background
-				textColor = '#721c24'; // Dark red text
-				borderColor = '#f5c6cb'; // Red border
-			} else {
-				backgroundColor = '#fff3cd'; // Yellow background (default for warnings)
-				textColor = '#856404'; // Dark yellow text
-				borderColor = '#ffeeba'; // Yellow border
-			}
-
-			// Apply the styles and show the alert
-			$('#messageAlert').text(message).css({
-				'background-color': backgroundColor,
-				'color': textColor,
-				'border': `1px solid ${borderColor}`
-			}).show();
-
-			// Hide the alert after 3.5 seconds (3500 milliseconds)
-			setTimeout(function () {
-				$('#otpAlert').fadeOut();
-			}, 3500);
-		}
-
-		// Function to send OTP
-		function sendOtp(currentPassword, emailAddress) {
-
+	function sendOtp(currentPassword, emailAddress) {
+		return new Promise((resolve, reject) => {
 			if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
-				showOtpAlert('Email address is missing. Please update your profile to receive OTP.', 'error');
-				console.warn('Attempted to send OTP without a valid email address.');
+				reject(new Error('Email address is missing. Please update your profile to receive OTP.'));
 				return;
 			}
 
 			sessionStorage.setItem('emailAddress', emailAddress);
 
-			$.ajax({
-				url: '../Employee Section/functions/General/emp-sendOtpCPassword.php',
-				type: 'POST',
-				data: {
-					currentPassword: currentPassword,
-					emailAddress: emailAddress
+			fetch('../Employee Section/functions/General/emp-sendOtpCPassword.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
 				},
-
-				dataType: 'json',
-				success: function (response) {
-					if (response.status === 'success') {
-						console.log('OTP Sent:', response.otp);
-
-						// Mask the email for display
-						function maskEmail(email) {
-							const parts = email.split('@');
-							const username = parts[0];
-							const domain = parts[1];
-							const maskedUsername = username.charAt(0) + '******' + username.charAt(username.length - 1);
-							return maskedUsername + '@' + domain;
-						}
-
-						showOtpAlert('OTP has been sent to your email address.', 'success');
-
-						setTimeout(function () {
-							$('#changePasswordModal').modal('hide');
-							$('#otpVerificationModal').modal('show');
-
-							// Append accountId to form if provided
-							if (response.accountId) {
-								$('#otpVerificationForm').append('<input type="hidden" name="accountId" value="' + response.accountId + '">');
-							}
-
-							// Mask and display the email address
-							const maskedEmail = maskEmail(emailAddress);
-							$('#otpVerificationModal .otp-email-mask').text(maskedEmail);
-
-							console.log('Masked Email:', maskedEmail);
-						}, 500);
-
+				body: `currentPassword=${encodeURIComponent(currentPassword)}&emailAddress=${encodeURIComponent(emailAddress)}`
+			})
+				.then(response => response.json())
+				.then(data => {
+					if (data.status === 'success') {
+						resolve(data);
 					} else {
-						// Handle specific error message from backend
-						console.log('Error Sending OTP:', response.message);
-						showOtpAlert(response.message || 'Failed to send OTP. Please try again.', 'error');
+						reject(new Error(data.message || 'Failed to send OTP'));
 					}
-				},
-
-				error: function (xhr, status, error) {
-					console.log('AJAX Error:', error);
-					showOtpAlert('An error occurred while sending OTP. Please try again later.', 'error');
-				}
-			});
-		}
-
-		// Handle form submission for change password
-		$('#changePasswordForm').on('submit', function (e) {
-			e.preventDefault(); // Prevent default form submission
-
-			// Clear previous error messages and hide error labels
-			document.getElementById('currentPasswordError').textContent = '';
-			document.getElementById('newPasswordError').textContent = '';
-			document.getElementById('confirmPasswordError').textContent = '';
-			document.getElementById('messageAlert').style.display = 'none';
-
-			currentPassword = document.getElementById('currentPassword').value;
-			newPassword = document.getElementById('newPassword').value;
-			confirmNewPassword = document.getElementById('confirmNewPassword').value;
-
-			// You can now use these variables elsewhere in your code
-			console.log(currentPassword, newPassword, confirmNewPassword);
-
-			// Validate New Password
-			if (newPassword.length < 8) {
-				document.getElementById('newPasswordError').textContent = 'Password must be at least 8 characters long.';
-				document.getElementById('newPasswordError').style.display = 'block';
-				return;
-			}
-
-			// Validate New Password and Confirm Password
-			if (newPassword !== confirmNewPassword) {
-				document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
-				document.getElementById('confirmPasswordError').style.display = 'block';
-				return;
-			}
-
-			$.ajax({
-				url: '../Employee Section/functions/General/emp-changePassword.php',
-				type: 'POST',
-				data: {
-					currentPassword: currentPassword,
-					newPassword: newPassword
-				},
-
-				success: function (response) {
-					response = JSON.parse(response);
-
-					if (response.status === 'error') {
-						document.getElementById('currentPasswordError').textContent = response.message;
-						document.getElementById('currentPasswordError').style.display = 'block';
-					}
-
-					else if (response.status === 'success') {
-						const accountId = response.accountId;
-						const emailAddress = response.emailAddress;
-
-						// Store in sessionStorage
-						sessionStorage.setItem('emailAddress', emailAddress);
-
-
-						console.log('Email Address:', emailAddress); // Debugging log
-						showCPAlert(response.message, 'success');
-
-						if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
-							showCPAlert('Unable to send OTP. Email address is missing.', 'error');
-							return;
-						}
-
-						// Proceed to send OTP
-						setTimeout(function () {
-							sendOtp(currentPassword, emailAddress); // Reusable OTP function
-						}, 500);
-					}
-
-				},
-
-				error: function (xhr, status, error) {
-					console.log('AJAX Error:', error);
-					showCPAlert('An error occurred while validating the password.', 'error');
-				}
-			});
+				})
+				.catch(error => {
+					reject(new Error('Network error occurred while sending OTP'));
+				});
 		});
+	}
 
-		// OTP verification form submission
-		$('#otpVerificationForm').on('submit', function (e) {
-			e.preventDefault(); // Prevent normal form submission
-
-			let otp = '';
-			let newPassword = document.getElementById('newPassword').value;
-			let accountIdVerify = <?= isset($accountId) ? json_encode($accountId) : 'null'; ?>;
-			console.log("Account ID:", accountIdVerify);
-
-
-			$('.otp-modal-input').each(function () {
-				otp += $(this).val();
-			});
-
-			console.log('OTP entered:', otp); // Debugging log
-
-			if (otp.length !== 6) {
-				$('#otpError').text('Please enter all 6 digits of the OTP.');
-				console.warn('Invalid OTP length. OTP must be 6 digits.');
-				return;
-			}
-
-			console.log('Sending OTP verification request...'); // Debugging log
-
-			$.ajax({
-				url: '../Employee Section/functions/General/emp-newPasswordChange.php',
-				type: 'POST',
-				data: {
-					otp: otp,
-					newPassword: newPassword,
-					accountId: accountIdVerify
+	function validatePassword(currentPassword, newPassword) {
+		return new Promise((resolve, reject) => {
+			fetch('../Employee Section/functions/General/emp-changePassword.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
 				},
-				dataType: 'json',
-				success: function (response) {
-					console.log('OTP verification response:', response); // Debugging log
-					if (response.status === 'success') {
-						console.log('OTP Verified Successfully'); // Debugging log
-
-						let newPassword = $('#newPassword').val();
-						let accountId = <?= isset($accountId) ? json_encode($accountId) : 'null'; ?>;
-
-						// Optional: Validate or use the ID
-						if (accountId !== null) {
-							console.log("Account ID:", accountId);
+				body: `currentPassword=${encodeURIComponent(currentPassword)}&newPassword=${encodeURIComponent(newPassword)}`
+			})
+				.then(response => response.text())
+				.then(text => {
+					try {
+						const data = JSON.parse(text);
+						if (data.status === 'success') {
+							resolve(data);
 						} else {
-							console.warn("Account ID is not set.");
+							reject(new Error(data.message || 'Password validation failed'));
 						}
-
-						if (!newPassword || newPassword.trim() === '') {
-							console.warn('New password is empty or invalid.');
-							showOtpAlert(response.message, 'error');
-							return;
-						}
-
-						// Password Change AJAX Request
-						console.log('Sending password change request...'); // Debugging log
-						$.ajax({
-							url: '../Employee Section/functions/General/emp-newPasswordChange.php',
-							method: 'POST',
-							data: {
-								newPassword: newPassword,
-								accountId: accountId
-							},
-							dataType: 'json',
-							success: function (res) {
-								console.log('Password change response:', res); // Debugging log
-								if (res.status === 'success') {
-									console.log('Password changed successfully'); // Debugging log
-
-									showOtpAlert(response.message, response.status);
-
-									setTimeout(function () {
-										console.log('Reloading the page...');
-										location.reload(); // Reload the page after 3 seconds
-									}, 3000);
-
-								} else {
-									console.warn('Password change failed:', res.message);
-									$('#messageAlert').show().text(res.message).css({
-										'background-color': '#f8d7da',
-										'color': '#721c24',
-										'border': '1px solid #f5c6cb'
-									});
-								}
-							},
-							error: function (xhr, status, error) {
-								console.error("AJAX Error (Password Change):", error);
-								console.log("Response Text (Password Change):", xhr.responseText);
-
-								$('#messageAlert').show().text('An error occurred while updating the password. Please try again.').css({
-									'background-color': '#f8d7da',
-									'color': '#721c24',
-									'border': '1px solid #f5c6cb'
-								});
-							}
-						});
-
-					} else if (response.status === 'error') {
-						console.error('OTP Verification Failed:', response.message); // Error logging
-						showOtpAlert(response.message, response.status);
-					} else {
-						console.warn('Unexpected response status:', response.status); // Warn for unexpected status
-						showOtpAlert(response.message, response.status);
+					} catch (e) {
+						reject(new Error('Invalid response from server'));
 					}
-
-				},
-				error: function (xhr, status, error) {
-					console.error("AJAX Error (OTP Verification):", error);
-					console.log("Response Text (OTP Verification):", xhr.responseText);
-					$('#otpError').text('An error occurred during OTP verification. Please try again.');
-				}
-			});
+				})
+				.catch(error => {
+					reject(new Error('Network error occurred during validation'));
+				});
 		});
+	}
 
+	function verifyOtpAndChangePassword(otp, newPassword, accountId) {
+		return new Promise((resolve, reject) => {
+			fetch('../Employee Section/functions/General/emp-newPasswordChange.php', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+				body: `otp=${encodeURIComponent(otp)}&newPassword=${encodeURIComponent(newPassword)}&accountId=${encodeURIComponent(accountId)}`
+			})
+				.then(response => response.json())
+				.then(data => {
+					if (data.status === 'success') {
+						resolve(data);
+					} else {
+						reject(new Error(data.message || 'OTP verification failed'));
+					}
+				})
+				.catch(error => {
+					reject(new Error('Network error occurred during OTP verification'));
+				});
+		});
+	}
 
-		// Resend OTP functionality
-		$('#sendOtpBtn').click(function (e) {
+	// ===========================================
+	// FORM HANDLERS
+	// ===========================================
+
+	function handleChangePasswordForm() {
+		const form = document.getElementById('changePasswordForm');
+		const submitBtn = document.getElementById('changePasswordBtn');
+
+		form.addEventListener('submit', async function (e) {
 			e.preventDefault();
 
-			const currentPassword = document.getElementById('currentPassword').value;
+			// Disable submit button
+			submitBtn.disabled = true;
+			submitBtn.textContent = 'Processing...';
 
-			// Safe email assignment from PHP
-			let emailAddress = <?= isset($emailAddress) ? json_encode($emailAddress) : 'null'; ?>;
+			try {
+				clearErrorMessages();
 
+				const currentPassword = document.getElementById('currentPassword').value;
+				const newPassword = document.getElementById('newPassword').value;
+				const confirmNewPassword = document.getElementById('confirmNewPassword').value;
 
-			// Early layer: if PHP email is already empty/null
-			if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
-				console.warn('Email from PHP session is missing. Checking sessionStorage as fallback.');
-				emailAddress = sessionStorage.getItem('emailAddress');
-
-				// If still not found, alert the user
-				if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
-					console.warn('Email address not found in PHP session or sessionStorage.');
-					showOtpAlert('Unable to send OTP. No email address found. Please update your profile.', 'error');
+				// Client-side validation
+				if (!currentPassword.trim()) {
+					showFieldError('currentPassword', 'Current password is required.');
 					return;
 				}
-			}
 
-			// Check if current password is empty
-			if (!currentPassword || currentPassword.trim() === '') {
-				showOtpAlert('Please enter your current password to resend OTP.', 'error');
-				return;
-			}
+				if (newPassword.length < 8) {
+					showFieldError('newPassword', 'Password must be at least 8 characters long.');
+					return;
+				}
 
-			// Final fallback: double-check before sending
-			if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
-				showOtpAlert('Email address is still invalid. Cannot send OTP.', 'error');
-				return;
-			}
+				if (newPassword !== confirmNewPassword) {
+					showFieldError('confirmPassword', 'Passwords do not match.');
+					return;
+				}
 
-			// Proceed to send OTP
-			sendOtp(currentPassword, emailAddress); // Reuse existing OTP sending function
-			showOtpAlert('Resending OTP. Please wait...', 'success');
+				// Validate password with server
+				const validationResult = await validatePassword(currentPassword, newPassword);
+
+				showAlert('messageAlert', 'Password validated successfully!', 'success');
+
+				// Send OTP
+				setTimeout(async () => {
+					try {
+						const emailAddress = validationResult.emailAddress;
+
+						if (!emailAddress || emailAddress === 'null' || emailAddress.trim() === '') {
+							showAlert('messageAlert', 'Unable to send OTP. Email address is missing.', 'error');
+							return;
+						}
+
+						await sendOtp(currentPassword, emailAddress);
+
+						// Store data for OTP verification
+						sessionStorage.setItem('pendingPasswordData', JSON.stringify({
+							newPassword: newPassword,
+							accountId: validationResult.accountId,
+							emailAddress: emailAddress
+						}));
+
+						// Switch to OTP modal
+						document.getElementById('changePasswordModal').querySelector('[data-bs-dismiss="modal"]').click();
+
+						setTimeout(() => {
+							const otpModal = new bootstrap.Modal(document.getElementById('otpVerificationModal'));
+							otpModal.show();
+
+							// Display masked email
+							const maskedEmail = maskEmail(emailAddress);
+							document.querySelector('.otp-email-mask').textContent = maskedEmail;
+
+							clearOtpFields();
+							showAlert('otpAlert', 'OTP has been sent to your email address.', 'success');
+						}, 500);
+
+					} catch (error) {
+						console.error('OTP Error:', error);
+						showAlert('messageAlert', error.message, 'error');
+					}
+				}, 500);
+
+			} catch (error) {
+				console.error('Validation Error:', error);
+				if (error.message.includes('current password')) {
+					showFieldError('currentPassword', error.message);
+				} else {
+					showAlert('messageAlert', error.message, 'error');
+				}
+			} finally {
+				// Re-enable submit button
+				submitBtn.disabled = false;
+				submitBtn.textContent = 'Change Password';
+			}
 		});
+	}
 
+	function handleOtpVerificationForm() {
+		const form = document.getElementById('otpVerificationForm');
+
+		form.addEventListener('submit', async function (e) {
+			e.preventDefault();
+
+			try {
+				// Get OTP value
+				let otp = '';
+				document.querySelectorAll('.otp-modal-input').forEach(input => {
+					otp += input.value;
+				});
+
+				if (otp.length !== 6) {
+					showAlert('otpAlert', 'Please enter all 6 digits of the OTP.', 'error');
+					return;
+				}
+
+				// Get stored password data
+				const pendingData = JSON.parse(sessionStorage.getItem('pendingPasswordData') || '{}');
+
+				if (!pendingData.newPassword || !pendingData.accountId) {
+					showAlert('otpAlert', 'Session expired. Please try again.', 'error');
+					return;
+				}
+
+				// Verify OTP and change password
+				const result = await verifyOtpAndChangePassword(otp, pendingData.newPassword, pendingData.accountId);
+
+				showAlert('otpAlert', 'Password changed successfully!', 'success');
+
+				// Clear stored data
+				sessionStorage.removeItem('pendingPasswordData');
+				sessionStorage.removeItem('emailAddress');
+
+				// Reload page after success
+				setTimeout(() => {
+					location.reload();
+				}, 2000);
+
+			} catch (error) {
+				console.error('OTP Verification Error:', error);
+				showAlert('otpAlert', error.message, 'error');
+			}
+		});
+	}
+
+	function handleOtpResend() {
+		const resendBtn = document.getElementById('sendOtpBtn');
+
+		resendBtn.addEventListener('click', async function (e) {
+			e.preventDefault();
+
+			try {
+				const pendingData = JSON.parse(sessionStorage.getItem('pendingPasswordData') || '{}');
+				const currentPassword = document.getElementById('currentPassword').value;
+
+				if (!currentPassword || !pendingData.emailAddress) {
+					showAlert('otpAlert', 'Unable to resend OTP. Please start over.', 'error');
+					return;
+				}
+
+				await sendOtp(currentPassword, pendingData.emailAddress);
+				showAlert('otpAlert', 'OTP has been resent to your email.', 'success');
+				clearOtpFields();
+
+			} catch (error) {
+				console.error('Resend OTP Error:', error);
+				showAlert('otpAlert', error.message, 'error');
+			}
+		});
+	}
+
+	// ===========================================
+	// INITIALIZATION
+	// ===========================================
+
+	document.addEventListener("DOMContentLoaded", function () {
+		initializePasswordToggle();
+		initializeModals();
+		initializeOtpInputs();
+		handleChangePasswordForm();
+		handleOtpVerificationForm();
+		handleOtpResend();
 	});
 </script>
+
+
+
+
+
+
 
 
 <!-- Logout Modal -->
@@ -1016,7 +1104,7 @@ $position = htmlspecialchars(strtoupper($empId));
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
 			</div>
 			<div class="modal-body">
 				Are you sure you want to logout?
@@ -1028,6 +1116,44 @@ $position = htmlspecialchars(strtoupper($empId));
 		</div>
 	</div>
 </div>
+
+
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const logoutBtn = document.getElementById("menu-item-2"); // Sign out link
+		const logoutModalEl = document.getElementById("logoutModal");
+
+		// Initialize Bootstrap modal
+		const logoutModal = new bootstrap.Modal(logoutModalEl, {
+			backdrop: 'static', // prevents closing by clicking outside
+			keyboard: false     // optional: prevents closing with ESC
+		});
+
+		// Open modal on click
+		logoutBtn.addEventListener("click", function (e) {
+			e.preventDefault();
+			logoutModal.show();
+		});
+
+		// Optional: handle confirm logout action
+		document.getElementById("confirmLogout").addEventListener("click", function () {
+			// Add your logout logic here (AJAX or redirect)
+			console.log("User confirmed logout");
+			logoutModal.hide();
+		});
+
+		// Fix stuck backdrop: ensure removal when modal is hidden
+		logoutModalEl.addEventListener('hidden.bs.modal', function () {
+			document.body.classList.remove('modal-open');
+			const backdrops = document.querySelectorAll('.modal-backdrop');
+			backdrops.forEach(b => b.remove());
+		});
+	});
+</script>
+
+
+
 
 <!-- jQuery Script for Logout -->
 <script>

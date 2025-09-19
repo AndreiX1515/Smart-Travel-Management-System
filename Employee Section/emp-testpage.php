@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "../conn.php"; // Move up to the parent directory
+require_once "../conn.php"; // Move up to the parent directory
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -21,11 +21,15 @@ error_reporting(E_ALL);
   <?php include '../Employee Section/includes/emp-head.php' ?>
 
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar copy.css?v=<?php echo time(); ?>">
+
   <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator.min.js"></script>
 
 </head>
 
 <body>
+
+  <?php include_once '../Employee Section/includes/emp-sessionVariables.php' ?>
 
   <!-- Navbar (Always on top) -->
   <div class="navbar">
@@ -115,22 +119,34 @@ error_reporting(E_ALL);
                   <i class="fas fa-user-circle"></i>
                 </div>
                 <div class="profile-info">
-                  <span class="profile-name">John Doe</span>
-                  <span class="profile-email">john.doe@example.com</span>
+                  <span class="profile-name"><?= htmlspecialchars($fullName) ?></span>
+                  <span class="profile-email"><?= htmlspecialchars($position) ?></span>
                 </div>
               </div>
 
               <!-- Menu items -->
               <div class="profile-dropdown-links">
-                <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1" id="menu-item-0">
-                  <i class="fas fa-user"></i> Your Profile
+
+                <!-- Link to open modal -->
+                <a href="#" class="main-nav-dropdown-item" id="changePasswordTrigger">
+                  <i class="fas fa-user"></i> Change Password
                 </a>
-                <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1" id="menu-item-1">
-                  <i class="fas fa-cog"></i> Settings
+
+
+                <a href="#" 
+                  id="raiseTicket" 
+                  class="main-nav-dropdown-item" 
+                  role="menuitem" 
+                  tabindex="-1" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#raiseTicketModal">
+                  <i class="fas fa-cog"></i> Raise a Ticket
                 </a>
+
                 <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1" id="menu-item-2">
                   <i class="fas fa-sign-out-alt"></i> Sign out
                 </a>
+                
               </div>
 
             </div>
@@ -144,6 +160,7 @@ error_reporting(E_ALL);
 
     </div>
 
+    <!-- Alert and Message Script -->
     <script>
       const alertBtn = document.getElementById('alert-btn');
       const messageBtn = document.getElementById('message-btn');
@@ -187,6 +204,7 @@ error_reporting(E_ALL);
     </script>
 
   </div>
+
 
   <!-- Body Content Wrapper -->
   <div class="body-container">
@@ -253,13 +271,15 @@ error_reporting(E_ALL);
 
                 <!-- First Row -->
                 <div class="tab-row">
-                  <div class="tab">
+
+                  <div class="tab active-status">
                     <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
                     <div class="tab-info">
                       <div class="tab-count">120</div>
                       <div class="tab-name total-transactions">Total Transactions</div>
                     </div>
                   </div>
+
                   <div class="tab">
                     <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
                     <div class="tab-info">
@@ -267,6 +287,7 @@ error_reporting(E_ALL);
                       <div class="tab-name">Confirmed</div>
                     </div>
                   </div>
+
                 </div>
 
 
@@ -707,35 +728,35 @@ error_reporting(E_ALL);
           </div>
 
           <div class="tab-section-right">
-            
-              <div class="dropdown-tab-casing" id="segmentedDropdown">
 
-                <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
-                  <span class="selected-text">Cebu Pacific</span>
-                </button>
+            <div class="dropdown-tab-casing" id="segmentedDropdown">
+
+              <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
+                <span class="selected-text">Cebu Pacific</span>
+              </button>
 
 
-                <ul class="dropdown-menu" role="tablist">
+              <ul class="dropdown-menu" role="tablist">
 
-                  <li class="dropdown-item">
-                    <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
-                      data-bs-target="#segmented-preview-pane" type="button" role="tab"
-                      aria-controls="segmented-preview-pane" aria-selected="true" data-value="cebu-pacific">
-                      Cebu Pacific
-                    </button>
-                  </li>
+                <li class="dropdown-item">
+                  <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
+                    data-bs-target="#segmented-preview-pane" type="button" role="tab"
+                    aria-controls="segmented-preview-pane" aria-selected="true" data-value="cebu-pacific">
+                    Cebu Pacific
+                  </button>
+                </li>
 
-                  <li class="dropdown-item">
-                    <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
-                      data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
-                      aria-selected="false" data-value="air-asia">
-                      Air Asia
-                    </button>
-                  </li>
-                </ul>
+                <li class="dropdown-item">
+                  <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
+                    data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
+                    aria-selected="false" data-value="air-asia">
+                    Air Asia
+                  </button>
+                </li>
+              </ul>
 
-              </div>
-          
+            </div>
+
           </div>
 
         </div>
@@ -1374,11 +1395,12 @@ error_reporting(E_ALL);
                                     {$formattedBal}
                                   </td>
                                   <td>
-                                    <div class='remark-summary'>
+                                    <div class='remark-summary status-pending'>
                                       <p class='summary-main'>Client requested urgent processing.</p>
                                       <p class='summary-sub'>Latest reply: Confirmed urgency and forwarded to finance head.</p>
                                       <span class='summary-date'>17th Feb 2024 • 10:15 AM</span>
                                     </div>
+
                                   </td>
                                 </tr>";
                           }
@@ -1615,7 +1637,7 @@ error_reporting(E_ALL);
                                           const newReply = document.createElement("div");
                                           newReply.classList.add("remark-subcomment", "latest");
                                           newReply.innerHTML = `
-    <span class="sub-author">You</span>
+                                            <span class="sub-author">You</span>
                                         <p class="sub-text">${replyText}</p>
                                       `;
 
@@ -1633,8 +1655,6 @@ error_reporting(E_ALL);
                                           textarea.value = "";
                                         }
                                       </script>
-
-
 
 
                                     </div>
@@ -1725,7 +1745,48 @@ error_reporting(E_ALL);
                   </div>
 
                   <div class="FIT-wrapper-body">
+                    <div class="table-wrapper">
 
+                      <table class="table fit-table" id="fit-table">
+                        <thead>
+                          <tr>
+                            <th>Transact No.</th>
+                            <th>Hotel Name</th>
+                            <th>Room Type</th>
+                            <th>No. of Rooms</th>
+                            <th>No. of Rooms</th>
+                            <th>Trip Duration</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          <?php
+                          $sql1 = "SELECT f.transactionNo AS transactNo, f.nights AS noOfNights, h.hotelName AS hotelName,
+                                    r.rooms AS roomName, f.rooms AS noOfRooms, f.pax AS pax
+                                    FROM fit f
+                                    JOIN fithotel h ON f.hotelId = h.hotelId
+                                    JOIN fitrooms r ON f.roomId = r.roomId";
+                          $res1 = $conn->query($sql1);
+
+                          if ($res1->num_rows > 0) {
+                            while ($row = $res1->fetch_assoc()) {
+                              echo "<tr>";
+                              echo "<td>" . htmlspecialchars($row['transactNo']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['hotelName']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['roomName']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['noOfRooms']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['pax']) . "</td>";
+                              echo "<td>" . htmlspecialchars($row['noOfNights']) . " Night(s)</td>";
+                              echo "</tr>";
+                            }
+                          } else {
+                            echo "<tr><td colspan='6' class='text-center text-muted'>No Records Found</td></tr>";
+                          }
+                          ?>
+                        </tbody>
+                      </table>
+
+                    </div>
                   </div>
 
                 </div>
@@ -1743,7 +1804,6 @@ error_reporting(E_ALL);
     </div>
   </div>
 
-
   <!-- For Page Back Navigation -->
   <script>
     document.getElementById('redirect-btn').addEventListener('click', function () {
@@ -1751,9 +1811,7 @@ error_reporting(E_ALL);
     });
   </script>
 
-
   <!-- For Breadcrumbs -->
-
   <!-- <script>
     // Add click event for breadcrumb navigation
     document.querySelector('.breadcrumb-link').addEventListener('click', function (e) {
@@ -1763,11 +1821,6 @@ error_reporting(E_ALL);
       // Example: window.location.href = '/dashboard';
     });
   </script> -->
-
-
-
-
-  <script src="https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator.min.js"></script>
 
   <script>
     class FlightTableManager {
