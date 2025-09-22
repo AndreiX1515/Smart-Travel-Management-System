@@ -17,10 +17,15 @@ error_reporting(E_ALL);
 
 <head>
 
-  <title>Employee - Dashboard</title>
+  <title>Employee - Transaction</title>
   <?php include '../Employee Section/includes/emp-head.php' ?>
 
   <link rel="stylesheet" href="../Employee Section/assets/css/emp-sidebar-navbar copy.css?v=<?php echo time(); ?>">
+
+  <link rel="stylesheet" href="../Employee Section/assets/css/emp-dashboard-test.css?v=<?php echo time(); ?>">
+
+
+
 
   <link href="https://unpkg.com/tabulator-tables@6.2.1/dist/css/tabulator.min.css" rel="stylesheet">
   <script src="https://unpkg.com/tabulator-tables@6.2.1/dist/js/tabulator.min.js"></script>

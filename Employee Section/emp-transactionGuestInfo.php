@@ -2,7 +2,7 @@
 
   <div class="card-body">
     <div class="guest-table-wrapper">
-      <table class="table-stripped">
+      <table class="">
         <?php
         $sql1 = "SELECT *, DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate, CONCAT(countryCode, ' ', contactNo) AS contactNo,
                           CASE 

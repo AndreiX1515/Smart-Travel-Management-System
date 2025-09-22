@@ -376,7 +376,7 @@
 <!-- Raise Ticket -->
 
 <!-- Raise Ticket Modal -->
-<div class="modal fade" id="raiseTicketModal" tabindex="-1" aria-labelledby="raiseTicketModalLabel" aria-hidden="true">
+<div class="modal fade raiseTicket-modal" id="raiseTicketModal" tabindex="-1" aria-labelledby="raiseTicketModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 
@@ -415,8 +415,6 @@
 						</p>
 					</div>
 
-
-
 					<div class="field-group">
 						<div class="field-wrapper">
 							<label for="ticketDescription">Description</label>
@@ -426,17 +424,20 @@
 
 
 					<!-- <div class="field-group" id="ticketPriority">
-			<label for="ticketPrioritySelect">Priority</label>
-			<select id="ticketPrioritySelect">
-			  <option value="" disabled selected>Select Severity</option>
-			  <option value="low">Low</option>
-			  <option value="medium" selected>Medium</option>
-			  <option value="high">High</option>
-			</select>
-		  </div> -->
-
-					<button type="submit" id="submitTicketBtn">Submit Ticket</button>
+						<label for="ticketPrioritySelect">Priority</label>
+						<select id="ticketPrioritySelect">
+							<option value="" disabled selected>Select Severity</option>
+							<option value="low">Low</option>
+							<option value="medium" selected>Medium</option>
+							<option value="high">High</option>
+						</select>
+					</div> -->
 				</form>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn-cancel" data-bs-dismiss="modal">Close</button>
+				<button type="submit" id="submitTicketBtn">Submit Ticket</button>
 			</div>
 
 		</div>
@@ -445,17 +446,13 @@
 
 
 <!-- <script>
-
 	document.addEventListener("DOMContentLoaded", function () {
+		var raiseTicketModal = document.getElementById("raiseTicketModal");
+		var modal = new bootstrap.Modal(raiseTicketModal);
+		modal.show();
+		});
+</script>  -->
 
-	var raiseTicketModal = document.getElementById("raiseTicketModal");
-
-	var modal = new bootstrap.Modal(raiseTicketModal);
-
-	modal.show();
-	});
-</script>
- -->
 
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
@@ -488,7 +485,6 @@
 
 	});
 </script>
-
 
 
 <!-- Change Password Modal -->
@@ -629,12 +625,9 @@
 	});
 </script> -->
 
-
-
 <script>
 	// ===========================================
 	// UTILITY FUNCTIONS
-	// ===========================================
 
 	// Password toggle functionality
 	function initializePasswordToggle() {
@@ -1092,18 +1085,13 @@
 </script>
 
 
-
-
-
-
-
-
 <!-- Logout Modal -->
-<div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+<div class="modal fade logout-modal" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
+
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" id="logoutModalLabel">Logout Confirmation</h5>
+				<h6 class="modal-title" id="logoutModalLabel">Logout Confirmation</h6>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
 			</div>
 			<div class="modal-body">
@@ -1114,10 +1102,9 @@
 				<button type="button" class="btn btn-danger" id="confirmLogout">Yes, Logout</button>
 			</div>
 		</div>
+
 	</div>
 </div>
-
-
 
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
@@ -1151,9 +1138,6 @@
 		});
 	});
 </script>
-
-
-
 
 <!-- jQuery Script for Logout -->
 <script>
