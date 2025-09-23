@@ -1,205 +1,236 @@
+<div class="tab-pane fade show active guestinfo-tab" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"
+    tabindex="0">
+    <div class="card-body">
+
+        <div class="guest-cards-container">
+
+            <?php
+                try {
+
+                    // Simplified query using CONCAT_WS for cleaner concatenation
+                    $sql = "SELECT 
+                                guestId, fName, mName, lName, suffix,
+                                DATE_FORMAT(birthdate, '%M %d, %Y') AS birthdate,
+                                age, nationality,
+                                CASE 
+                                    WHEN countryCode IS NOT NULL AND contactNo IS NOT NULL 
+                                    THEN CONCAT(TRIM(countryCode), ' ', TRIM(contactNo))
+                                    ELSE NULL 
+                                END AS contactNo,
+                                emailAdd, passportNo, visaStatus
+                            FROM guest 
+                            WHERE transactNo = ?";
+
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("s", $transactNum);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            // Process guest data
+                            $guest = processGuestData($row);
+                            displayGuestCard($guest);
+                        }
+                    } else {
+                        displayNoGuestCard();
+                    }
+
+                } catch (Exception $e) {
+                    error_log("Guest fetch error: " . $e->getMessage());
+                    echo "<div class='error-card'>Unable to load guest information.</div>";
+                } finally {
+                    if (isset($stmt)) $stmt->close();
+                }
+
+                /** Process and clean guest data */
+                function processGuestData($row) {
+                    // Build full name
+                    $nameComponents = array_filter([
+                        trim($row['fName'] ?? ''),
+                        trim($row['mName'] ?? ''),
+                        trim($row['lName'] ?? '')
+                    ]);
+                    $fullName = implode(' ', $nameComponents);
+                    
+                    if (!empty($row['suffix']) && $row['suffix'] !== 'N/A') {
+                        $fullName .= ' ' . trim($row['suffix']);
+                    }
+
+                    // Generate initials
+                    $firstName = trim($row['fName'] ?? '');
+                    $lastName = trim($row['lName'] ?? '');
+                    $initials = substr($firstName, 0, 1) . substr($lastName, 0, 1);
+                    $initials = strtoupper($initials) ?: '??';
+
+                    // Clean data with helper function
+                    return [
+                        'guestId' => clean($row['guestId']),
+                        'fullName' => clean($fullName),
+                        'initials' => $initials,
+                        'age' => clean($row['age']),
+                        'birthdate' => clean($row['birthdate']),
+                        'nationality' => clean($row['nationality']),
+                        'contactNo' => clean($row['contactNo']),
+                        'emailAdd' => clean($row['emailAdd']),
+                        'passportNo' => clean($row['passportNo']),
+                        'visaStatus' => clean($row['visaStatus'], 'In Process'),
+                        'statusClass' => getStatusClass($row['visaStatus']),
+                        'statusIcon' => getStatusIcon($row['visaStatus'])
+                    ];
+                }
+
+                /** Clean and sanitize data */
+                function clean($value, $default = 'N/A') {
+                    return empty($value) ? $default : htmlspecialchars(trim($value), ENT_QUOTES, 'UTF-8');
+                }
+
+                /** Get visa status CSS class */
+                function getStatusClass($status) {
+                    return (strtolower(trim($status ?? '')) === 'valid') ? 'valid' : 'in-process';
+                }
+
+                /** Get visa status icon */
+                function getStatusIcon($status) {
+                    return (strtolower(trim($status ?? '')) === 'valid') ? 'fa-check-circle' : 'fa-spinner';
+                }
+
+                /** Display guest card */
+                function displayGuestCard($guest) {
+                    echo "
+                    <div class='guest-card' onclick='showGuestDetails({$guest['guestId']})'>
+                        <div class='card-content'>
+                            
+                            <div class='profile-section'>
+                                <div class='profile-picture'>";
+                                        if (!empty($profileImage)) {
+                                            echo "<img src='{$profileImage}' alt='Profile'>";
+                                        } else {
+                                            echo "<span>{$guest['initials']}</span>";
+                                        }
+                                echo "</div>
 
 
+                                <div class='profile-name'>{$guest['fullName']}</div>
+                            </div>
 
+                            <div class='info-section'>
+                                
+                                <div class='info-row primary'>
+                                    <div class='info-col third'>
+                                        <div class='info-label'>Age</div>
+                                        <div class='info-value primary'>{$guest['age']} years old</div>
+                                    </div>
+                                    <div class='info-col third'>
+                                        <div class='info-label'>Birthdate</div>
+                                        <div class='info-value primary'>{$guest['birthdate']}</div>
+                                    </div>
+                                    <div class='info-col third'>
+                                        <div class='info-label'>Nationality</div>
+                                        <div class='info-value primary'>{$guest['nationality']}</div>
+                                    </div>
+                                </div>
 
+                                <div class='info-row primary'>
+                                    <div class='info-col third'>
+                                        <div class='info-label'>Contact</div>
+                                        <div class='info-value'>{$guest['contactNo']}</div>
+                                    </div>
+                                    <div class='info-col third'>
+                                        <div class='info-label'>Email</div>
+                                        <div class='info-value'>{$guest['emailAdd']}</div>
+                                    </div>
+                                </div>
 
-<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                                <div class='info-row secondary'>
+                                    <div class='info-col third'>
+                                        <div class='info-label'>Passport</div>
+                                        <div class='info-value'>{$guest['passportNo']}</div>
+                                    </div>
+                                    <div class='info-col third'>
+                                        <div class='info-label'>Passport Exp.</div>
+                                        <div class='info-value'>--</div>
+                                    </div>
+                                    <div class='info-col third badge-visa-wrapper'>
+                                        <div class='info-label'>Visa Status</div>
+                                        <div class='status-badge {$guest['statusClass']}'>
+                                            <i class='fas {$guest['statusIcon']}'></i>
+                                            {$guest['visaStatus']}
+                                        </div>
+                                    </div>
+                                </div>
 
-  <div class="card-body">
-    <!-- Guest Cards Container -->
-    <div class="guest-cards-container">
-        <!-- Sample Guest Card - Table Row Style -->
-        <div class="guest-card" onclick="showGuestDetails('G001')">
-            <div class="card-content">
-                <div class="profile-picture">
-                    JM
-                </div>
-                <div class="card-data">
-                    <div class="data-item">
-                        <div class="data-label">Contact Name</div>
-                        <div class="data-value primary">John Michael Smith Jr.</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Birthdate</div>
-                        <div class="data-value">March 15, 1998</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Age</div>
-                        <div class="data-value">25</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Sex</div>
-                        <div class="data-value">Male</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Nationality</div>
-                        <div class="data-value">American</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Contact No</div>
-                        <div class="data-value">+1 555-0123</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Other Contact</div>
-                        <div class="data-value">+1 555-0124</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Email</div>
-                        <div class="data-value">john.smith@email.com</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Address</div>
-                        <div class="data-value">123 Main St, Anytown, NY, 12345, USA</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Passport No.</div>
-                        <div class="data-value">P123456789</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Passport Exp.</div>
-                        <div class="data-value">Dec 31, 2026</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Visa Status</div>
-                        <div class="passport-status">
-                            <i class="fas fa-check-circle"></i>
-                            Valid
+                            </div>
                         </div>
-                    </div>
+                    </div>";
+                }
+
+                /**
+                 * Display no guest found card
+                 */
+                function displayNoGuestCard() {
+                    echo "
+                    <div class='no-guest-card'>
+                        <div class='no-guest-content'>
+                            <i class='fas fa-user-slash no-guest-icon'></i>
+                            <div class='no-guest-title'>No Guest Information Found</div>
+                            <div class='no-guest-subtitle'>Currently no guest info inserted.</div>
+                        </div>
+                    </div>";
+                }
+                ?>
+        </div>
+
+        <script>
+            function showGuestDetails(guestId) {
+                console.log('Show guest details for:', guestId);
+                // Add your guest details logic here
+            }
+
+            function redirectWithId(id) {
+                console.log('Redirect with ID:', id);
+                // Add your redirect logic here
+            }
+        </script>
+
+    </div>
+</div>
+
+<!-- Offcanvas -->
+    <div class="offcanvas-backdrop guestinfo-offcanvas" onclick="hideGuestDetails()">
+
+        <div class="offcanvas" id="guestOffcanvas">
+
+            <div class="offcanvas-header">
+                <div class="guest-id-label">Guest ID </div>
+                <div class="guest-id-value" id="guestIdDisplay">--</div>
+                <button type="button" class="btn-close" onclick="hideGuestDetails()">×</button>
+            </div>
+
+            <div class="offcanvas-body">
+                <div class="guest-id-display">
+                    
+                       
                 </div>
             </div>
         </div>
-
-        <!-- Sample Guest Card 2 -->
-        <div class="guest-card" onclick="showGuestDetails('G002')">
-            <div class="card-content">
-
-                <div class="profile-picture">
-                    ME
-                </div>
-
-                <div class="card-data">
-
-                  <div>
-                    <div class="data-item">
-                        <div class="data-label">Contact Name</div>
-                        <div class="data-value primary">Maria Elena Rodriguez</div>
-                    </div>
-
-                    <div class="data-item">
-                        <div class="data-label">Birthdate</div>
-                        <div class="data-value">July 22, 1991</div>
-                    </div>
-                    
-                    <div class="data-item">
-                        <div class="data-label">Age</div>
-                        <div class="data-value">32</div>
-                    </div>
-
-                    <div class="data-item">
-                        <div class="data-label">Sex</div>
-                        <div class="data-value">Female</div>
-                    </div>
-                    
-                    <div class="data-item">
-                        <div class="data-label">Nationality</div>
-                        <div class="data-value">Spanish</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Contact No</div>
-                        <div class="data-value">+34 666-555-0123</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Other Contact</div>
-                        <div class="data-value">N/A</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Email</div>
-                        <div class="data-value">maria.rodriguez@email.com</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Address</div>
-                        <div class="data-value">456 Barcelona St, Madrid, 28001, Spain</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Passport No.</div>
-                        <div class="data-value">ES987654321</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Passport Exp.</div>
-                        <div class="data-value">Jun 15, 2025</div>
-                    </div>
-                    <div class="data-item">
-                        <div class="data-label">Visa Status</div>
-                        <div class="passport-status">
-                            <i class="fas fa-check-circle"></i>
-                            Valid
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- No Requests Container (when no data) -->
-        <!-- <div class='no-requests-container' onclick='redirectWithId(123)'>
-            <div class='drag-drop-content'>
-                <i class='fas fa-user-slash upload-icon'></i>
-                <span class='main-text'>No Guest Information Found</span>
-                <span class='accent-text'>Currently no guest info inserted.</span>
-            </div>
-        </div> -->
     </div>
 
-
-
-
-
-    <!-- Offcanvas -->
-    <div class="offcanvas-backdrop" onclick="hideGuestDetails()">
-      <div class="offcanvas" id="guestOffcanvas">
-          <div class="offcanvas-header">
-              <h5 class="offcanvas-title">Guest Details</h5>
-              <button type="button" class="btn-close" onclick="hideGuestDetails()">×</button>
-          </div>
-          <div class="offcanvas-body" id="offcanvasContent">
-              <!-- Content will be dynamically inserted here -->
-          </div>
-      </div>
-    </div>
 
     <script>
         function showGuestDetails(guestId) {
             const offcanvas = document.getElementById('guestOffcanvas');
             const backdrop = document.querySelector('.offcanvas-backdrop');
-            const content = document.getElementById('offcanvasContent');
             
-            content.innerHTML = `
-                <div style="text-align: center; margin-bottom: 24px;">
-                    <div class="profile-picture" style="width: 80px; height: 80px; font-size: 32px; margin: 0 auto 12px;">
-                        ${guestId.substring(1)}
-                    </div>
-                    <h3 style="margin: 0; color: #1f2937;">Guest ID: ${guestId}</h3>
-                    <p style="margin: 4px 0 0; color: #6b7280; font-weight: 500;">Loading guest details...</p>
-                </div>
-                
-                <div class="detail-section">
-                    <h4>Loading Information</h4>
-                    <div style="text-align: center; padding: 20px; color: #6b7280;">
-                        <i class="fas fa-spinner fa-spin" style="font-size: 24px; margin-bottom: 8px;"></i>
-                        <p>Fetching guest information...</p>
-                    </div>
-                </div>
-            `;
+            // Update the guest ID display
+            document.getElementById('guestIdDisplay').textContent = guestId;
             
+            // Show offcanvas
             backdrop.classList.add('show');
             offcanvas.classList.add('show');
             document.body.style.overflow = 'hidden';
-            
-            // Here you would make an AJAX call to fetch guest details
-            // fetchGuestDetails(guestId);
         }
-        
+
         function hideGuestDetails() {
             const offcanvas = document.getElementById('guestOffcanvas');
             const backdrop = document.querySelector('.offcanvas-backdrop');
@@ -208,44 +239,19 @@
             offcanvas.classList.remove('show');
             document.body.style.overflow = 'auto';
         }
-        
-        // Function to fetch guest details via AJAX
-        function fetchGuestDetails(guestId) {
-            // Example AJAX call - replace with your actual endpoint
-            /*
-            fetch('fetch_guest_details.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'guestId=' + encodeURIComponent(guestId)
-            })
-            .then(response => response.json())
-            .then(data => {
-                updateOffcanvasContent(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-            */
-        }
-        
+
         // Close offcanvas on Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 hideGuestDetails();
             }
         });
+
+        // Prevent closing when clicking inside offcanvas
+        document.getElementById('guestOffcanvas').addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
     </script>
-
-
-
-
-
-
-  </div>
-</div>
-
 
 <!-- <script>
 function redirectWithId(id) {

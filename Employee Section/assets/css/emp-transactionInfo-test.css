@@ -802,7 +802,7 @@
   width: 100%;
   height: 100%;
   padding: 0;
-  overflow: hidden;
+  overflow: auto;
   display: flex;
 
   /* border: 1px solid black; */
@@ -900,6 +900,8 @@
     box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
 } */
 
+
+
 .drag-drop-content {
   display: flex;
   flex-direction: column;
@@ -944,6 +946,9 @@
   font-size: 0.8rem;
   color: #6b7280b2; /* neutral gray for subtlety */
 }
+
+
+
 
 /* ============================== */
 /* Request Card Wrapper - grid layout */
@@ -1437,46 +1442,105 @@ input[type="hidden"] {
   }
 }
 
+
+
+
+
+
 .guest-cards-container {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 0px 0px 20px 0px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  width: 100%;
+
+  margin: 0 auto;
+  background: #f8fafc;
+  border-radius: 16px;
+  min-height: 400px;
+  align-content: start;
 }
-
-
-
 
 .guest-card {
   background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
-  padding: 16px 20px;
-  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 10px;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+  height: 200px;
+  display: flex;
+  flex-direction: column;
   position: relative;
   overflow: hidden;
 }
 
 .guest-card:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #3b82f6;
+  background: #f8fafc;
+  border-color: #cbd5e1;
 }
 
-.guest-card .card-content {
-  display: grid;
-  grid-template-columns: 60px 1fr;
-  gap: 16px;
-  align-items: center;
+.guest-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
+
+.guest-card:hover::before {
+  opacity: 1;
+}
+
+
+
+
+
+.guest-card .card-content {
+  display: flex;
+  height: 100%;
+  gap: 10px;
+
+  /* border: 1px solid black; */
+}
+
+
+/* Profile Section - 1/4 width */
+.profile-container {
+  display: flex;
+  width: 100%;
+  border: 1px solid #f1f5f9;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex: 0 0 25%; /* 1/4 width */
+  padding: 16px;
+
+  border-right: 1px solid #f1f5f9;
+
+  /* border: 1px solid black; debug */
+}
+
+.profile-content {
+  flex: 0 0 75%; /* 3/4 width */
+  padding: 16px;
+}
+
 
 .profile-picture {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  overflow: hidden; /* make image circular */
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1484,13 +1548,35 @@ input[type="hidden"] {
   font-size: 16px;
   font-weight: 600;
   flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+
+  /* border: 1px solid black; debug */
+  position: relative;
 }
 
-.card-data {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 8px 16px;
-  align-items: center;
+.profile-picture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-picture span {
+  position: absolute;
+  z-index: 1;
+}
+
+.profile-picture img + span {
+  display: none; /* hide initials if image is present */
+}
+
+.profile-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  line-height: 1.2;
+  word-break: break-word;
 }
 
 
@@ -1498,24 +1584,64 @@ input[type="hidden"] {
 
 
 
-.data-item {
+
+
+
+/* Info Section - 3/4 width */
+.info-section {
   display: flex;
   flex-direction: column;
+  flex: 1;
+  gap: 14px;
+  min-width: 0;
+  padding: 0.5rem;
+
+  /* border: 1px solid black; */
+}
+
+/* Row-Column System */
+.info-section .info-row {
+  display: flex;
+  gap: 12px;
+}
+
+.info-section .info-row.primary {
+  flex: 1;
+}
+
+.info-section .info-row.secondary {
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.info-section .info-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
   min-width: 0;
 }
 
-.data-label {
-  font-size: 10px;
-  color: #6b7280;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-bottom: 2px;
-  line-height: 1;
+.info-section .info-col.half {
+  flex: 0 0 48%;
 }
 
-.data-value {
-  font-size: 13px;
-  color: #374151;
+.info-section .info-col.third {
+  flex: 0 0 31%;
+}
+
+.info-section .info-label {
+  font-size: 9px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+  margin-bottom: 1px;
+}
+
+.info-value {
+  font-size: 12px;
+  color: #0f172a;
   font-weight: 500;
   line-height: 1.2;
   white-space: nowrap;
@@ -1523,90 +1649,138 @@ input[type="hidden"] {
   text-overflow: ellipsis;
 }
 
-.data-value.primary {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.passport-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #ecfdf5;
-  color: #065f46;
-  padding: 2px 6px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 500;
-}
-
-.passport-status.expired {
-  background: #fef2f2;
-  color: #991b1b;
-}
-
-.passport-status {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: #ecfdf5;
-  color: #065f46;
-  padding: 4px 8px;
-  border-radius: 20px;
+.info-value.primary {
   font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #1e293b;
+}
+
+
+
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #dcfce7;
+  color: #166534;
+  padding: 1px 4px;
+  border-radius: 8px;
+  font-size: 8px;
   font-weight: 500;
+  width: fit-content;
+  max-width: 100%;
+  line-height: 1;
 }
 
-.passport-status.expired {
-  background: #fef2f2;
-  color: #991b1b;
+.status-badge.expired {
+  background: #fee2e2;
+  color: #dc2626;
 }
 
-.no-requests-container {
+.status-badge i {
+  font-size: 6px;
+  flex-shrink: 0;
+}
+
+
+
+
+
+/* preferred — specific selector, no !important needed if it comes after the original rule */
+.info-col.third.badge-visa-wrapper {
+  gap: 4px;
+}
+
+/* if the original rule is very specific or loaded after this, force it */
+.info-col.third.badge-visa-wrapper {
+  gap: 4px !important;
+}
+
+
+
+
+
+
+/* No Guest Card */
+.no-guest-card {
   grid-column: 1 / -1;
-  text-align: center;
-  padding: 60px 20px;
-  background: #fafafa;
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
   border-radius: 12px;
-  border: 2px dashed #d1d5db;
+  padding: 40px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.drag-drop-content {
+.no-guest-card:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+
+.no-guest-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
 }
 
-.upload-icon {
-  font-size: 48px;
-  color: #9ca3af;
+.no-guest-icon {
+  font-size: 40px;
+  color: #94a3b8;
 }
 
-.main-text {
-  font-size: 18px;
+.no-guest-title {
+  font-size: 16px;
   font-weight: 600;
-  color: #374151;
+  color: #475569;
 }
 
-.accent-text {
+.no-guest-subtitle {
   font-size: 14px;
-  color: #6b7280;
+  color: #64748b;
 }
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .guest-cards-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .card-content {
+    grid-template-columns: 80px 1fr;
+    gap: 16px;
+  }
+
+  .main-info {
+    grid-template-columns: 1fr;
+  }
+
+  .secondary-info {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+
+
 
 /* Offcanvas styles */
 .offcanvas {
   position: fixed;
   top: 0;
   right: -400px;
-  width: 400px;
+  width: 600px;
   height: 100vh;
   background: white;
   box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
   transition: right 0.3s ease;
   z-index: 1050;
-  padding: 24px;
   overflow-y: auto;
 }
 
@@ -1640,6 +1814,8 @@ input[type="hidden"] {
   padding-bottom: 16px;
   border-bottom: 1px solid #e5e7eb;
 }
+
+
 
 .offcanvas-title {
   font-size: 20px;
@@ -1703,4 +1879,48 @@ input[type="hidden"] {
   text-align: right;
   max-width: 200px;
   word-wrap: break-word;
+}
+
+
+
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  width: fit-content;
+}
+
+.status-badge i {
+  font-size: 10px;
+  flex-shrink: 0;
+
+  margin-right: 5px;
+}
+
+/* ✅ Status variations */
+.status-badge.in-process {
+  background: #f3f4f6; 
+  color: #374151;      
+}
+
+
+.status-badge.approved {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.expired {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.status-badge.pending {
+  background: #e0f2fe;
+  color: #0369a1;
 }

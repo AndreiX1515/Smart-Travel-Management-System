@@ -640,7 +640,7 @@ body {
   border-top: 1px solid var(--color-gray-700);
 }
 
-.profile-section {
+/* .profile-section {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -654,7 +654,7 @@ body {
 .profile-section:hover {
   background-color: var(--color-gray-700);
   box-shadow: var(--shadow-sm);
-}
+} */
 
 .profile-left {
   display: flex;

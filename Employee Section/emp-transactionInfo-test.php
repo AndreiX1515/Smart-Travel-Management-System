@@ -214,11 +214,11 @@ error_reporting(E_ALL);
   }
   ?>
 
-  <script>
+  <!-- <script>
     document.getElementById('redirect-btn').addEventListener('click', function () {
       window.location.href = '../Employee Section/emp-transaction.php';
     });
-  </script>
+  </script> -->
 
   <!-- Body Content Wrapper -->
   <div class="body-container">
