@@ -651,11 +651,13 @@ error_reporting(E_ALL);
                   $agentColumns = '';
                   while ($row = $branchResult->fetch_assoc()) {
                     $agentCode = $row['branchAgentCode'];
+                    
                     $agentColumns .= "IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
                                         AND (b.status = 'Confirmed' OR b.status = 'Reserved')
                                         AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode') 
                                         AND (a.agentType = 'Retailer' OR c.clientType = 'Retailer')
                                         THEN b.pax ELSE 0 END), 0) AS `{$agentCode}_AL`,
+
                                       IFNULL(SUM(CASE WHEN b.bookingType = 'Package' 
                                         AND (b.status = 'Confirmed' OR b.status = 'Reserved')
                                         AND (a.agentCode = '$agentCode' OR c.clientCode = '$agentCode')

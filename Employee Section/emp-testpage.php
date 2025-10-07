@@ -41,55 +41,150 @@ error_reporting(E_ALL);
 
     <div class="main-nav-container">
 
-      <!-- <div class="lang-user-wrapper">
+      <div class="main-nav-items">
 
-        <!-- Language Dropdown 
-        <div class="nav-language-dropdown">
+        <!-- Notification Icon with Red Dot and Dropdown -->
+        <div class="main-nav-icon-container">
+          <button id="alert-btn" class="main-nav-icon-btn" aria-expanded="false" aria-haspopup="true">
+            <i class="fa-solid fa-bell main-nav-icon"></i>
+          </button>
+          <span class="main-nav-alert-dot"></span>
 
-          <div class="nav-language-btn">
-            <div class="icon"><i class="fas fa-globe"></i></div>
-            <div class="label">EN</div>
-            <div class="dropdown-icon">▾</div>
+          <!-- Dropdown menu -->
+          <div id="alert-dropdown" class="main-nav-dropdown-menu hidden" role="menu" aria-orientation="vertical"
+            aria-labelledby="alert-btn" tabindex="-1">
+            <div class="py-1" role="none">
+              <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1">
+                <i class="fa-solid fa-triangle-exclamation"></i> You have 2 new alerts.
+              </a>
+              <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1">
+                <i class="fa-solid fa-download"></i> System update is ready.
+              </a>
+              <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1">
+                <i class="fa-solid fa-bell"></i> View all alerts
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Message Icon and Dropdown -->
+        <div class="main-nav-icon-container">
+          <button id="message-btn" class="main-nav-icon-btn" aria-expanded="false" aria-haspopup="true">
+            <i class="fa-solid fa-comment-dots main-nav-icon"></i>
+          </button>
+
+          <!-- Dropdown menu -->
+          <div id="message-dropdown" class="main-nav-dropdown-menu hidden" role="menu" aria-orientation="vertical"
+            aria-labelledby="message-btn" tabindex="-1">
+            <div class="py-1" role="none">
+              <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1">
+                <i class="fa-solid fa-envelope"></i> Jane Doe sent you a message.
+              </a>
+              <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1">
+                <i class="fa-solid fa-user-circle"></i> John Smith is now online.
+              </a>
+              <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1">
+                <i class="fa-solid fa-inbox"></i> View all messages
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vertical Separator -->
+        <div class="main-nav-separator"></div>
+
+        <!-- Profile Icon and Dropdown -->
+        <div class="main-nav-icon-container">
+
+          <button type="button" id="profile-btn" class="main-nav-profile-btn" aria-expanded="false"
+            aria-haspopup="true">
+            <div class="main-nav-profile-circle">
+              <i class="fas fa-user"></i>
+            </div>
+          </button>
+
+          <!-- Dropdown menu -->
+          <div id="profile-dropdown" class="main-nav-dropdown-menu hidden" role="menu" aria-orientation="vertical"
+            aria-labelledby="profile-btn" tabindex="-1">
+
+            <div class="py-1" role="none">
+
+              <!-- Profile header -->
+              <div class="profile-dropdown-header">
+                <div class="profile-avatar">
+                  <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                  <span class="profile-name">John Doe</span>
+                  <span class="profile-email">john.doe@example.com</span>
+                </div>
+              </div>
+
+              <!-- Menu items -->
+              <div class="profile-dropdown-links">
+                <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1" id="menu-item-0">
+                  <i class="fas fa-user"></i> Your Profile
+                </a>
+                <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1" id="menu-item-1">
+                  <i class="fas fa-cog"></i> Settings
+                </a>
+                <a href="#" class="main-nav-dropdown-item" role="menuitem" tabindex="-1" id="menu-item-2">
+                  <i class="fas fa-sign-out-alt"></i> Sign out
+                </a>
+              </div>
+
+            </div>
           </div>
 
-          <ul class="nav-language-menu">
-            <li><a href="#">English</a></li>
-            <li><a href="#">한국어 (KR)</a></li>
-            <li><a href="#">日本語</a></li>
-            <li><a href="#">中文</a></li>
-          </ul>
+
 
         </div>
 
-
-
-        <div class="seperator"></div>
-
-        <!-- User Dropdown 
-        <div class="nav-user-dropdown">
-          <div class="nav-user-btn">
-            <div class="icon">
-              <i class="fas fa-user-circle"></i>
-            </div>
-            <div class="user-info">
-              <span class="user-name">Elaine Santoyo</span>
-              <span class="user-id">E001</span>
-            </div>
-            <div class="dropdown-icon">
-              <span>▾</span>
-            </div>
-          </div>
-
-          <ul class="nav-user-menu">
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Logout</a></li>
-          </ul>
-        </div>
-
-      </div> -->
+      </div>
 
     </div>
+
+    <script>
+      const alertBtn = document.getElementById('alert-btn');
+      const messageBtn = document.getElementById('message-btn');
+      const profileBtn = document.getElementById('profile-btn');
+
+      const alertDropdown = document.getElementById('alert-dropdown');
+      const messageDropdown = document.getElementById('message-dropdown');
+      const profileDropdown = document.getElementById('profile-dropdown');
+
+      // Function to hide all dropdowns
+      function hideAllDropdowns() {
+        alertDropdown.classList.add('hidden');
+        messageDropdown.classList.add('hidden');
+        profileDropdown.classList.add('hidden');
+      }
+
+      // Toggle the dropdown visibility for each button
+      alertBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideAllDropdowns();
+        alertDropdown.classList.toggle('hidden');
+      });
+
+      messageBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideAllDropdowns();
+        messageDropdown.classList.toggle('hidden');
+      });
+
+      profileBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        hideAllDropdowns();
+        profileDropdown.classList.toggle('hidden');
+      });
+
+      // Close the dropdowns if the user clicks outside of them
+      window.addEventListener('click', () => {
+        hideAllDropdowns();
+      });
+
+    </script>
 
   </div>
 
@@ -123,36 +218,524 @@ error_reporting(E_ALL);
         <!-- Right Section: Export Button -->
         <div class="header-right">
 
-          <div class="tabs-wrapper">
+        </div>
 
-            <div class="dropdown-tab-casing" id="segmentedDropdown">
+      </div>
 
-              <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
-                <span class="selected-text">Cebu Pacific</span>
-              </button>
+      <!-- Page Body -->
+      <div class="page-body">
 
+        <!-- Page-body (Header) -->
+        <div class="page-body-header">
 
-              <ul class="dropdown-menu" role="tablist">
+          <!-- Card 1 -->
+          <div class="header-card">
 
-                <li class="dropdown-item">
-                  <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
-                    data-bs-target="#segmented-preview-pane" type="button" role="tab"
-                    aria-controls="segmented-preview-pane" aria-selected="true" data-value="cebu-pacific">
-                    Cebu Pacific
-                  </button>
-                </li>
+            <div class="header-card-header">
 
-                <li class="dropdown-item">
-                  <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
-                    data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
-                    aria-selected="false" data-value="air-asia">
-                    Air Asia
-                  </button>
-                </li>
-              </ul>
-              
+              <div class="header-left">
+                <div class="header-title-wrapper">
+                  <span>Active Transaction</span>
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="header-title-wrapper ">
+                  <span class="span-link">View All</span>
+                </div>
+              </div>
+
             </div>
+
+            <div class="header-card-body">
+
+              <div class="tab-subcontainer">
+
+                <!-- First Row -->
+                <div class="tab-row">
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">120</div>
+                      <div class="tab-name total-transactions">Total Transactions</div>
+                    </div>
+                  </div>
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">75</div>
+                      <div class="tab-name">Confirmed</div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- Custom Three-Card Row -->
+                <div class="tab-row-3">
+
+                  <div class="tab-col-3">
+                    <div class="tab">
+                      <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                      <div class="tab-info">
+                        <div class="tab-count">45</div>
+                        <div class="tab-name">Pending</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-col-3">
+                    <div class="tab">
+                      <!-- <div class="tab-icon"><i class="fas fa-credit-card"></i></div> -->
+                      <div class="tab-info">
+                        <div class="tab-count">60</div>
+                        <div class="tab-name">Reserved</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="tab-col-3">
+                    <div class="tab">
+                      <!-- <div class="tab-icon"><i class="fas fa-receipt"></i></div> -->
+                      <div class="tab-info">
+                        <div class="tab-count">32</div>
+                        <div class="tab-name">Cancelled</div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Card 2 -->
+          <div class="header-card">
+
+            <div class="header-card-header">
+
+              <div class="header-left">
+                <div class="header-title-wrapper">
+                  <span>On Due</span>
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="header-title-wrapper">
+                  <span class="span-link">View All</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="header-card-body">
+
+              <div class="tab-subcontainer">
+
+                <!-- First Row -->
+                <div class="tab-row">
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">120</div>
+                      <div class="tab-name total-transactions">5 Days Before Flight</div>
+                    </div>
+                  </div>
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">75</div>
+                      <div class="tab-name">15 Days Before Flight</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Second Row -->
+                <div class="tab-row">
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">120</div>
+                      <div class="tab-name total-transactions">30 Days Before Flight</div>
+                    </div>
+                  </div>
+                  <div class="tab">
+                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
+                    <div class="tab-info">
+                      <div class="tab-count">75</div>
+                      <div class="tab-name">> 30 Days Before Flight</div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Card 3 -->
+          <div class="header-card">
+
+            <div class="header-card-header">
+
+              <div class="header-left">
+                <div class="header-title-wrapper">
+                  <span>Total Sales</span>
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="header-title-wrapper">
+
+                  <!-- Replaced toggle with grouped buttons -->
+                  <div class="mini-toggle-group" id="theme-toggle-group">
+                    <button type="button" class="toggle-btn active" data-mode="current">Current</button>
+                    <button type="button" class="toggle-btn" data-mode="past">Past</button>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="header-card-body" id="headerBody">
+
+              <div class="tab-subcontainer-sales">
+
+                <div class="sales-tab current-tab active">
+
+                  <div class="sales-card">
+
+                    <div class="sales-left">
+
+                      <div class="sales-left-info">
+                        <!-- Top Section -->
+                        <div class="sales-top">
+                          <div class="sales-label">Current Month - September</div>
+
+                          <div class="left-info">
+                            <div class="sales-value">
+                              <span>₱ 486,659,155</span>
+                            </div>
+
+                            <div class="sales-convert">
+                              <i class="fas fa-exchange-alt convert-icon"></i>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <!-- Bottom Section -->
+                        <div class="sales-bottom">
+                          <div class="sales-label-accent">
+                            As of Sept. 08, 2025 – Currency Rates
+                          </div>
+
+                        </div>
+                      </div>
+
+
+                      <!-- Change to KRW (Def. PHP) -->
+                      <script>
+                        const phpToKrwRate = 25; // 1 PHP = 25 KRW (example rate)
+
+                        const convertIcon = document.querySelector('.convert-icon');
+                        const salesValue = document.querySelector('.sales-value span');
+
+                        let isPhp = true; // track current currency
+
+                        convertIcon.addEventListener('click', () => {
+                          // remove non-numeric characters and commas
+                          let numericValue = parseFloat(salesValue.textContent.replace(/[^0-9.-]+/g, ""));
+
+                          if (isPhp) {
+                            // Convert PHP to KRW
+                            let krwValue = numericValue * phpToKrwRate;
+                            salesValue.textContent = `₩ ${krwValue.toLocaleString()}`;
+                            isPhp = false;
+                          } else {
+                            // Convert KRW back to PHP
+                            let phpValue = numericValue / phpToKrwRate;
+                            salesValue.textContent = `₱ ${phpValue.toLocaleString()}`;
+                            isPhp = true;
+                          }
+                        });
+                      </script>
+
+                    </div>
+
+                    <div class="sales-right">
+                      <!-- Left: Percentage (1/4) -->
+                      <div class="sales-percentage-wrapper">
+                        <span class="sales-percentage-plus">+ 20.76% ▲</span>
+                      </div>
+
+                      <!-- Right: Additional content (3/4) -->
+                      <div class="sales-extra-info">
+                        <!-- Add details here later -->
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                </div>
+
+                <div class="sales-tab past-tab">
+                  <div class="sales-card">
+
+                    <div class="sales-left">
+                      <div class="sales-left-info">
+                        <!-- Top Section -->
+                        <div class="sales-top" id="sales-tab-2">
+                          <div class="sales-label">Current Month - September</div>
+
+                          <div class="left-info">
+                            <div class="sales-value">
+                              <span>₱ 486,659,155</span>
+                            </div>
+                            <div class="sales-convert">
+                              <i class="fas fa-exchange-alt convert-icon"></i>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Bottom Section -->
+                        <div class="sales-bottom">
+                          <div class="sales-label-accent">
+                            As of Sept. 08, 2025 – Currency Rates
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Currency Conversion Script -->
+                    <script>
+                      (function () {
+                        const phpToKrwRate = 25; // Example: 1 PHP = 25 KRW
+
+                        // Scope inside tab 2
+                        const tab2 = document.getElementById("sales-tab-2");
+                        const convertIcon = tab2.querySelector(".convert-icon");
+                        const salesValue = tab2.querySelector(".sales-value span");
+
+                        let isPhp = true; // track current currency
+
+                        convertIcon.addEventListener("click", () => {
+                          let numericValue = parseFloat(
+                            salesValue.textContent.replace(/[^0-9.-]+/g, "")
+                          );
+
+                          if (isPhp) {
+                            let krwValue = numericValue * phpToKrwRate;
+                            salesValue.textContent = `₩ ${krwValue.toLocaleString()}`;
+                            isPhp = false;
+                          } else {
+                            let phpValue = numericValue / phpToKrwRate;
+                            salesValue.textContent = `₱ ${phpValue.toLocaleString()}`;
+                            isPhp = true;
+                          }
+                        });
+                      })();
+                    </script>
+
+                    <div class="sales-right">
+                      <!-- Left: Percentage (1/4) -->
+                      <div class="sales-percentage-wrapper">
+                        <span class="sales-percentage-negative">- 20.76% ▲</span>
+                      </div>
+
+                      <!-- Right: Additional content (3/4) -->
+                      <div class="sales-extra-info">
+                        <!-- Add details here later -->
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+
+              <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                  const headerBody = document.getElementById('headerBody');
+                  // const headerTitle = document.getElementById('headerTitle');
+                  const currentTab = document.querySelector('.current-tab');
+                  const pastTab = document.querySelector('.past-tab');
+                  const buttons = document.querySelectorAll('.mini-toggle-group .toggle-btn');
+
+                  buttons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                      // Reset active button
+                      buttons.forEach(b => b.classList.remove('active'));
+                      btn.classList.add('active');
+
+                      if (btn.dataset.mode === "past") {
+                        headerBody.classList.add('toggled');
+                        // headerTitle.textContent = 'Past Sales';
+                        currentTab.classList.remove('active');
+                        pastTab.classList.add('active');
+                      } else {
+                        headerBody.classList.remove('toggled');
+                        // headerTitle.textContent = 'Current';
+                        pastTab.classList.remove('active');
+                        currentTab.classList.add('active');
+                      }
+                    });
+                  });
+                });
+
+              </script>
+
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="header-card">
+
+            <div class="header-card-header">
+
+              <div class="header-left">
+                <div class="header-title-wrapper">
+                  <span>Currency Rates <span class="sub-text">(as of Sept. 8, 2025)</span></span>
+                </div>
+              </div>
+
+              <div class="header-right">
+                <div class="header-title-wrapper">
+                  <span class="span-link">View All</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="header-card-body">
+
+              <div class="tab-subcontainer-currency">
+
+                <!-- Left card -->
+                <div class="left-currency-card">
+
+                  <div class="left-main-card">
+                    <div class="currency-flag-wrapper">
+                      <img src="" alt="" class="currency-flag">
+                    </div>
+
+                    <div class="currency-info">
+                      <h3>$ 1</h3>
+                      <span>US DOLLAR</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Exchange icon -->
+                <div class="currency-exchange-icon">
+                  <i class="fas fa-exchange-alt"></i>
+                </div>
+
+                <!-- Right side stacked currencies -->
+                <div class="right-currency-cards">
+
+                  <div class="currency-sub-card">
+                    <div class="currency-flag-wrapper">
+                      <img src="" alt="" class="currency-flag">
+                    </div>
+
+                    <div class="currency-info-sub">
+                      <h3>₩ 1,388</h3>
+                      <span>KOREAN WON</span>
+                    </div>
+
+                  </div>
+
+
+                  <div class="currency-sub-card">
+                    <div class="currency-flag-wrapper">
+                      <img src="" alt="" class="currency-flag">
+                    </div>
+
+                    <div class="currency-info-sub">
+                      <h3>₩ 1,388</h3>
+                      <span>PHILIPPINE PESO</span>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="page-tabs">
+
+          <div class="tab-section">
+
+            <ul class="nav custom-tabs" id="myTab" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                  type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+                  Flight Seat Tracker
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                  type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                  Booking and Requests
+                </button>
+              </li>
+
+              <li class="nav-item">
+                <button class="nav-link" id="fit-tab" data-bs-toggle="tab" data-bs-target="#fit-tab-pane" type="button"
+                  role="tab" aria-controls="#fit-tab-pane" aria-selected="false">
+                  F.I.T
+                </button>
+              </li>
+            </ul>
+
+          </div>
+
+          <div class="tab-section-right">
             
+              <div class="dropdown-tab-casing" id="segmentedDropdown">
+
+                <button class="dropdown-toggle" type="button" id="dropdownButton" aria-expanded="false">
+                  <span class="selected-text">Cebu Pacific</span>
+                </button>
+
+
+                <ul class="dropdown-menu" role="tablist">
+
+                  <li class="dropdown-item">
+                    <button class="dropdown-link active" id="segmented-preview-tab" data-bs-toggle="tab"
+                      data-bs-target="#segmented-preview-pane" type="button" role="tab"
+                      aria-controls="segmented-preview-pane" aria-selected="true" data-value="cebu-pacific">
+                      Cebu Pacific
+                    </button>
+                  </li>
+
+                  <li class="dropdown-item">
+                    <button class="dropdown-link" id="segmented-code-tab" data-bs-toggle="tab"
+                      data-bs-target="#segmented-code-pane" type="button" role="tab" aria-controls="segmented-code-pane"
+                      aria-selected="false" data-value="air-asia">
+                      Air Asia
+                    </button>
+                  </li>
+                </ul>
+
+              </div>
+          
           </div>
 
         </div>
@@ -404,494 +987,6 @@ error_reporting(E_ALL);
           });
         </script>
 
-      </div>
-
-      <!-- Page Body -->
-      <div class="page-body">
-
-        <!-- Page-body (Header) -->
-        <div class="page-body-header">
-
-          <!-- Card 1 -->
-          <div class="header-card">
-
-            <div class="header-card-header">
-
-              <div class="header-left">
-                <div class="header-title-wrapper">
-                  <span>Active Transaction</span>
-                </div>
-              </div>
-
-              <div class="header-right">
-                <div class="header-title-wrapper ">
-                  <span class="span-link">View All</span>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="header-card-body">
-
-              <div class="tab-subcontainer">
-
-                <!-- First Row -->
-                <div class="tab-row">
-                  <div class="tab">
-                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
-                    <div class="tab-info">
-                      <div class="tab-count">120</div>
-                      <div class="tab-name total-transactions">Total Transactions</div>
-                    </div>
-                  </div>
-                  <div class="tab">
-                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
-                    <div class="tab-info">
-                      <div class="tab-count">75</div>
-                      <div class="tab-name">Confirmed</div>
-                    </div>
-                  </div>
-                </div>
-
-
-                <!-- Custom Three-Card Row -->
-                <div class="tab-row-3">
-
-                  <div class="tab-col-3">
-                    <div class="tab">
-                      <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
-                      <div class="tab-info">
-                        <div class="tab-count">45</div>
-                        <div class="tab-name">Pending</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="tab-col-3">
-                    <div class="tab">
-                      <!-- <div class="tab-icon"><i class="fas fa-credit-card"></i></div> -->
-                      <div class="tab-info">
-                        <div class="tab-count">60</div>
-                        <div class="tab-name">Reserved</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="tab-col-3">
-                    <div class="tab">
-                      <!-- <div class="tab-icon"><i class="fas fa-receipt"></i></div> -->
-                      <div class="tab-info">
-                        <div class="tab-count">32</div>
-                        <div class="tab-name">Cancelled</div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- Card 2 -->
-          <div class="header-card">
-
-            <div class="header-card-header">
-
-              <div class="header-left">
-                <div class="header-title-wrapper">
-                  <span>On Due</span>
-                </div>
-              </div>
-
-              <div class="header-right">
-                <div class="header-title-wrapper">
-                  <span class="span-link">View All</span>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="header-card-body">
-
-              <div class="tab-subcontainer">
-
-                <!-- First Row -->
-                <div class="tab-row">
-                  <div class="tab">
-                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
-                    <div class="tab-info">
-                      <div class="tab-count">120</div>
-                      <div class="tab-name total-transactions">5 Days Before Flight</div>
-                    </div>
-                  </div>
-                  <div class="tab">
-                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
-                    <div class="tab-info">
-                      <div class="tab-count">75</div>
-                      <div class="tab-name">15 Days Before Flight</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Second Row -->
-                <div class="tab-row">
-                  <div class="tab">
-                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
-                    <div class="tab-info">
-                      <div class="tab-count">120</div>
-                      <div class="tab-name total-transactions">30 Days Before Flight</div>
-                    </div>
-                  </div>
-                  <div class="tab">
-                    <!-- <div class="tab-icon"><i class="fas fa-exchange-alt"></i></div> -->
-                    <div class="tab-info">
-                      <div class="tab-count">75</div>
-                      <div class="tab-name">> 30 Days Before Flight</div>
-                    </div>
-                  </div>
-                </div>
-
-
-              </div>
-
-            </div>
-
-          </div>
-
-          <!-- Card 3 -->
-          <div class="header-card">
-
-            <div class="header-card-header">
-
-              <div class="header-left">
-                <div class="header-title-wrapper">
-                  <span>Total Sales</span>
-                </div>
-              </div>
-
-              <div class="header-right">
-                <div class="header-title-wrapper">
-
-                  <!-- Replaced toggle with grouped buttons -->
-                  <div class="mini-toggle-group" id="theme-toggle-group">
-                    <button type="button" class="toggle-btn active" data-mode="current">Current</button>
-                    <button type="button" class="toggle-btn" data-mode="past">Past</button>
-                  </div>
-
-                </div>
-              </div>
-
-            </div>
-
-            <div class="header-card-body" id="headerBody">
-
-              <div class="tab-subcontainer-sales">
-
-                <div class="sales-tab current-tab active">
-
-                  <div class="sales-card">
-
-                    <div class="sales-left">
-
-                      <div class="sales-left-info">
-                        <!-- Top Section -->
-                        <div class="sales-top">
-                          <div class="sales-label">Current Month - September</div>
-
-                          <div class="left-info">
-                            <div class="sales-value">
-                              <span>₱ 486,659,155</span>
-                            </div>
-
-                            <div class="sales-convert">
-                              <i class="fas fa-exchange-alt convert-icon"></i>
-                            </div>
-                          </div>
-
-                        </div>
-
-                        <!-- Bottom Section -->
-                        <div class="sales-bottom">
-                          <div class="sales-label-accent">
-                            As of Sept. 08, 2025 – Currency Rates
-                          </div>
-
-                        </div>
-                      </div>
-
-
-                       <!-- Change to KRW (Def. PHP) -->
-                        <script>
-                          const phpToKrwRate = 25; // 1 PHP = 25 KRW (example rate)
-
-                          const convertIcon = document.querySelector('.convert-icon');
-                          const salesValue = document.querySelector('.sales-value span');
-
-                          let isPhp = true; // track current currency
-
-                          convertIcon.addEventListener('click', () => {
-                            // remove non-numeric characters and commas
-                            let numericValue = parseFloat(salesValue.textContent.replace(/[^0-9.-]+/g, ""));
-
-                            if (isPhp) {
-                              // Convert PHP to KRW
-                              let krwValue = numericValue * phpToKrwRate;
-                              salesValue.textContent = `₩ ${krwValue.toLocaleString()}`;
-                              isPhp = false;
-                            } else {
-                              // Convert KRW back to PHP
-                              let phpValue = numericValue / phpToKrwRate;
-                              salesValue.textContent = `₱ ${phpValue.toLocaleString()}`;
-                              isPhp = true;
-                            }
-                          });
-                        </script>
-
-                    </div>
-
-                    <div class="sales-right">
-                      <!-- Left: Percentage (1/4) -->
-                      <div class="sales-percentage-wrapper">
-                        <span class="sales-percentage-plus">+ 20.76% ▲</span>
-                      </div>
-
-                      <!-- Right: Additional content (3/4) -->
-                      <div class="sales-extra-info">
-                        <!-- Add details here later -->
-                      </div>
-                    </div>
-
-
-                  </div>
-
-                </div>
-
-                <div class="sales-tab past-tab">
-                  <div class="sales-card">
-
-                    <div class="sales-left">
-                      <div class="sales-left-info">
-                        <!-- Top Section -->
-                        <div class="sales-top" id="sales-tab-2">
-                          <div class="sales-label">Current Month - September</div>
-
-                          <div class="left-info">
-                            <div class="sales-value">
-                              <span>₱ 486,659,155</span>
-                            </div>
-                            <div class="sales-convert">
-                              <i class="fas fa-exchange-alt convert-icon"></i>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- Bottom Section -->
-                        <div class="sales-bottom">
-                          <div class="sales-label-accent">
-                            As of Sept. 08, 2025 – Currency Rates
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <!-- Currency Conversion Script -->
-                    <script>
-                      (function () {
-                        const phpToKrwRate = 25; // Example: 1 PHP = 25 KRW
-
-                        // Scope inside tab 2
-                        const tab2 = document.getElementById("sales-tab-2");
-                        const convertIcon = tab2.querySelector(".convert-icon");
-                        const salesValue = tab2.querySelector(".sales-value span");
-
-                        let isPhp = true; // track current currency
-
-                        convertIcon.addEventListener("click", () => {
-                          let numericValue = parseFloat(
-                            salesValue.textContent.replace(/[^0-9.-]+/g, "")
-                          );
-
-                          if (isPhp) {
-                            let krwValue = numericValue * phpToKrwRate;
-                            salesValue.textContent = `₩ ${krwValue.toLocaleString()}`;
-                            isPhp = false;
-                          } else {
-                            let phpValue = numericValue / phpToKrwRate;
-                            salesValue.textContent = `₱ ${phpValue.toLocaleString()}`;
-                            isPhp = true;
-                          }
-                        });
-                      })();
-                    </script>
-
-                    <div class="sales-right">
-                      <!-- Left: Percentage (1/4) -->
-                      <div class="sales-percentage-wrapper">
-                        <span class="sales-percentage-negative">- 20.76% ▲</span>
-                      </div>
-
-                      <!-- Right: Additional content (3/4) -->
-                      <div class="sales-extra-info">
-                        <!-- Add details here later -->
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-
-              </div>
-
-              <script>
-                document.addEventListener('DOMContentLoaded', () => {
-                  const headerBody = document.getElementById('headerBody');
-                  // const headerTitle = document.getElementById('headerTitle');
-                  const currentTab = document.querySelector('.current-tab');
-                  const pastTab = document.querySelector('.past-tab');
-                  const buttons = document.querySelectorAll('.mini-toggle-group .toggle-btn');
-
-                  buttons.forEach(btn => {
-                    btn.addEventListener('click', () => {
-                      // Reset active button
-                      buttons.forEach(b => b.classList.remove('active'));
-                      btn.classList.add('active');
-
-                      if (btn.dataset.mode === "past") {
-                        headerBody.classList.add('toggled');
-                        // headerTitle.textContent = 'Past Sales';
-                        currentTab.classList.remove('active');
-                        pastTab.classList.add('active');
-                      } else {
-                        headerBody.classList.remove('toggled');
-                        // headerTitle.textContent = 'Current';
-                        pastTab.classList.remove('active');
-                        currentTab.classList.add('active');
-                      }
-                    });
-                  });
-                });
-
-              </script>
-
-            </div>
-          </div>
-
-          <!-- Card 4 -->
-          <div class="header-card">
-
-            <div class="header-card-header">
-
-              <div class="header-left">
-                <div class="header-title-wrapper">
-                  <span>Currency Rates <span class="sub-text">(as of Sept. 8, 2025)</span></span>
-                </div>
-              </div>
-
-              <div class="header-right">
-                <div class="header-title-wrapper">
-                  <span class="span-link">View All</span>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="header-card-body">
-
-              <div class="tab-subcontainer-currency">
-
-                <!-- Left card -->
-                <div class="left-currency-card">
-
-                  <div class="left-main-card">
-                    <div class="currency-flag-wrapper">
-                      <img src="us-flag.png" alt="" class="currency-flag">
-                    </div>
-
-                    <div class="currency-info">
-                      <h3>$ 1</h3>
-                      <span>US DOLLAR</span>
-                    </div>
-                  </div>
-
-                </div>
-
-                <!-- Exchange icon -->
-                <div class="currency-exchange-icon">
-                  <i class="fas fa-exchange-alt"></i>
-                </div>
-
-                <!-- Right side stacked currencies -->
-                <div class="right-currency-cards">
-
-                  <div class="currency-sub-card">
-                    <div class="currency-flag-wrapper">
-                      <img src="kr-flag.png" alt="" class="currency-flag">
-                    </div>
-
-                    <div class="currency-info-sub">
-                      <h3>₩ 1,388</h3>
-                      <span>KOREAN WON</span>
-                    </div>
-
-                  </div>
-
-
-                  <div class="currency-sub-card">
-                    <div class="currency-flag-wrapper">
-                      <img src="kr-flag.png" alt="" class="currency-flag">
-                    </div>
-
-                    <div class="currency-info-sub">
-                      <h3>₩ 1,388</h3>
-                      <span>PHILIPPINE PESO</span>
-                    </div>
-                  </div>
-
-                </div>
-
-              </div>
-
-
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div class="page-tabs">
-          <div class="tab-section">
-            <ul class="nav custom-tabs" id="myTab" role="tablist">
-
-              <li class="nav-item">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
-                  type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
-                  Flight Seat Tracker
-                </button>
-              </li>
-
-              <li class="nav-item">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
-                  type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
-                  Booking and Requests
-                </button>
-              </li>
-
-              <li class="nav-item">
-                <button class="nav-link" id="fit-tab" data-bs-toggle="tab" data-bs-target="#fit-tab-pane" type="button"
-                  role="tab" aria-controls="#fit-tab-pane" aria-selected="false">
-                  F.I.T
-                </button>
-              </li>
-
-
-            </ul>
-          </div>
-        </div>
-
-
         <!-- Record Tab State -->
         <script>
           document.addEventListener("DOMContentLoaded", function () {
@@ -915,7 +1010,6 @@ error_reporting(E_ALL);
             });
           });
         </script>
-
 
         <div class="tab-content content-grid" id="myTabContent">
 
@@ -953,6 +1047,7 @@ error_reporting(E_ALL);
               </div>
 
             </div>
+
           </div>
 
           <!-- First Layer Pane: Booking and Requests -->
@@ -985,8 +1080,93 @@ error_reporting(E_ALL);
                     </div>
 
                     <div class="request-wrapper-body">
+                      <div class="table-wrapper">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Transaction No.</th>
+                              <th>Flight Date</th>
+                              <th>Requested By </th>
+                              <th>Request</th>
+                              <th>Pax</th>
+                              <th>Amount</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php
+                            $sql1 = "SELECT r.transactNo AS `T.N`, c.concernTitle AS `Request`, 
+                                DATE_FORMAT(r.requestDate, '%m.%d.%Y') AS `Date`,
+                                r.requestStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
+                                IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                                DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS `flightDepartureDate`, br.branchName as branchName,
+                                CASE 
+                                  WHEN a.accountId IS NOT NULL 
+                                    THEN CASE WHEN a.companyId IS NOT NULL THEN co.companyName ELSE br.branchName END
+                                  WHEN cl.accountId IS NOT NULL 
+                                    THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                                  ELSE 'Unknown'END AS `ACCOUNT NAME`, r.pax as pax, r.requestCost as requestCost
+                              FROM request r
+                              JOIN booking b ON r.transactNo = b.transactNo
+                              JOIN concern c ON r.concernId = c.concernId
+                              LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                              LEFT JOIN company co ON a.companyId = co.companyId
+                              LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                              LEFT JOIN company cc ON cl.companyId = cc.companyId
+                              JOIN flight f ON b.flightId = f.flightId
+                              JOIN branch br ON b.agentCode = br.branchAgentCode
+                              WHERE 
+                                r.requestStatus = 'Submitted' AND f.flightDepartureDate >= CURDATE()
+                              ORDER BY 
+                                r.requestDate DESC";  // Order by request date
+                            
+                            $res1 = $conn->query($sql1);
 
+                            if ($res1->num_rows > 0) {
+                              while ($row = $res1->fetch_assoc()) {
+                                $statusClass = '';
+                                switch ($row['requestStatus']) {
+                                  case 'Confirmed':
+                                    $statusClass = 'badge bg-success'; // Green pill for "Approved"
+                                    break;
+                                  case 'Pending':
+                                    $statusClass = 'badge bg-primary'; // Yellow pill for "Pending"
+                                    break;
+                                  case 'Rejected':
+                                    $statusClass = 'badge bg-danger'; // Red pill for "Rejected"
+                                    break;
+                                  case 'Submitted':
+                                    $statusClass = 'badge bg-warning text-dark'; // Red pill for "Rejected"
+                                    break;
+                                  default:
+                                    $statusClass = 'badge bg-secondary'; // Grey pill for unknown statuses
+                                    break;
+                                }
+                                $requestCost = $row['requestCost'] ?? '0.00'; // Default to '0.00' if requestCost is null
+                                $formattedRequestCost = number_format((float) $requestCost, 2);
+
+                                // Echo table row with dynamically styled pills
+                                echo "<tr>
+                                        <td>{$row['T.N']}</td>
+                                        <td>{$row['flightDepartureDate']}</td>
+                                        <td>{$row['branchName']}</td>
+                                        <td>{$row['Request']}</td>
+                                        <td>{$row['pax']}</td>
+                                        <td>₱ $formattedRequestCost</td>
+                                        <td><span class='{$statusClass} p-2'>{$row['requestStatus']}</span></td>
+                                      </tr>";
+                              }
+                            } else {
+                              echo "<tr>
+                                      <td class='blank-td' colspan='7'>No Request as of the Moment</td>
+                                    </tr>";
+                            }
+                            ?>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
+
                   </div>
 
                   <div class="booking-wrapper">
@@ -1006,15 +1186,90 @@ error_reporting(E_ALL);
                     </div>
 
                     <div class="booking-wrapper-body">
+                      <div class="table-wrapper">
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Transaction No.</th>
+                              <th>Flight Date</th>
+                              <th>Paid By</th>
+                              <th>Payment Type</th>
+                              <th>Payment Amt.</th>
+                              <th>Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php
+                            $sql2 = "SELECT p.transactNo AS `Transaction No`, p.paymentTitle AS `Payment Title`,
+                                          CONCAT(FORMAT(p.amount, 2)) AS `Amount`, DATE_FORMAT(p.paymentDate, '%m.%d.%Y') AS `Date`, 
+                                          p.paymentType AS `Payment Type`, p.paymentStatus, b.agentCode, CONCAT(a.lName, ', ', a.fName, 
+                                          IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                                          DATE_FORMAT(f.flightDepartureDate, '%Y.%m.%d') AS `flightDepartureDate`, br.branchName as branchName,
+                                          CASE 
+                                            WHEN a.accountId IS NOT NULL 
+                                              THEN CASE WHEN a.companyId IS NOT NULL THEN c.companyName ELSE br.branchName END
+                                            WHEN cl.accountId IS NOT NULL 
+                                              THEN CASE WHEN cl.companyId IS NOT NULL THEN cc.companyName ELSE br.branchName END
+                                            ELSE 'Unknown'END AS `ACCOUNT NAME`
+                                        FROM payment p
+                                        JOIN booking b ON p.transactNo = b.transactNo
+                                        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                                        LEFT JOIN company c ON a.companyId = c.companyId
+                                        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                                        LEFT JOIN company cc ON cl.companyId = cc.companyId
+                                        JOIN flight f ON b.flightId = f.flightId
+                                        JOIN branch br ON b.agentCode = br.branchAgentCode
+                                        WHERE p.paymentStatus = 'Submitted'
+                                        ORDER BY p.paymentDate DESC";  // Order by payment date
+                            
+                            $res2 = $conn->query($sql2);
 
+                            if ($res2->num_rows > 0) {
+                              while ($row = $res2->fetch_assoc()) {
+
+                                // Map paymentStatus to Bootstrap pill classes
+                                $statusClass = '';
+
+                                switch ($row['paymentStatus']) {
+                                  case 'Approved':
+                                    $statusClass = 'status-badge  status-approved '; // Green pill for "Paid"
+                                    break;
+                                  case 'Pending':
+                                    $statusClass = 'status-badge  status-pending'; // Yellow pill for "Pending"
+                                    break;
+                                  case 'Submitted':
+                                    $statusClass = 'status-badge  status-submitted'; // Red pill for "Failed"
+                                    break;
+                                  default:
+                                    $statusClass = 'status-badge  status-unknown'; // Grey pill for unknown statuses
+                                    break;
+                                }
+
+                                // Echo table row with dynamically styled pills
+                                echo "<tr>
+                                          <td>{$row['Transaction No']}</td>
+                                          <td>{$row['flightDepartureDate']}</td>
+                                          <td>{$row['branchName']}</td>
+                                          <td>{$row['Payment Type']}</td>
+                                          <td>₱ {$row['Amount']}</td>
+                                          <td><span class='{$statusClass} p-2'>{$row['paymentStatus']}</span></td>
+                                        </tr>";
+                              }
+                            } else {
+                              echo "<tr>
+                              <td colspan='12' style='text-align: center; font-size: 10px;'>NO CURRENT PAYMENTS AS OF THE MOMENT</td></tr>";
+                            }
+                            ?>
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
 
                   </div>
-
                 </div>
 
-
                 <div class="second-part-wrapper">
+
                   <div class="confirmed-wrapper">
 
                     <div class="wrapper-header">
@@ -1031,9 +1286,412 @@ error_reporting(E_ALL);
                       </div>
                     </div>
 
-                    <div class="request-wrapper-body">
+                    <div class="confirmed-wrapper-body">
+
+                      <?php
+                      // Function to render the confirmed transactions table
+                      function renderConfirmedTransactionsTable($conn)
+                      {
+                        // Query to get confirmed transactions
+                        $query1 = "SELECT b.*, f.flightDepartureDate AS Start, p.packageName, b.totalPrice AS PackagePrice, 
+                          f.returnDepartureDate AS End, CONCAT(a.lName, ', ', a.fName, 
+                          IF(a.mName IS NOT NULL AND a.mName != '', CONCAT(' ', LEFT(a.mName, 1)), '')) AS agentName,
+                          br.branchName as branchName, SUM(pa.amount) AS TotalAmountPaid, 
+                          COALESCE(SUM(r.requestCost), 0) AS TotalRequestAmount,
+                          CASE 
+                            WHEN a.accountId IS NOT NULL 
+                              THEN CASE 
+                                WHEN a.companyId IS NOT NULL THEN co.companyName 
+                                ELSE br.branchName END
+                            WHEN cl.accountId IS NOT NULL 
+                              THEN CASE 
+                                WHEN cl.companyId IS NOT NULL THEN cc.companyName 
+                                ELSE br.branchName END
+                          ELSE 'Unknown' END AS `Account Name`
+                        FROM booking b 
+                        LEFT JOIN agent a ON b.accountType = 'Agent' AND b.accountId = a.accountId
+                        LEFT JOIN company co ON a.companyId = co.companyId
+                        LEFT JOIN client cl ON b.accountType = 'Client' AND b.accountId = cl.accountId
+                        LEFT JOIN company cc ON cl.companyId = cc.companyId
+                        JOIN branch br ON b.agentCode = br.branchAgentCode
+                        JOIN flight f ON b.flightId = f.flightId
+                        JOIN package p ON b.packageId = p.packageId
+                        LEFT JOIN payment pa ON pa.transactNo = b.transactNo AND pa.paymentStatus = 'Approved'
+                        LEFT JOIN request r ON r.transactNo = b.transactNo AND r.requestStatus = 'Confirmed'
+                        WHERE status = 'Confirmed' AND f.flightDepartureDate >= CURDATE() 
+                        GROUP BY b.transactNo";
+
+                        $result = $conn->query($query1);
+
+                        // Start the table HTML
+                        echo '
+                            <div class="table-wrapper">
+                              <table class="table confirmed-table" id="confirm-table">
+                                <thead>
+                                  <tr>
+                                    <th>Transaction No.</th>
+                                    <th>Agent</th>
+                                    <th>Flight Date</th>
+                                    <th>Total Pax.</th>
+                                    <th>Booking Type</th>
+                                    <th>Package Price</th>
+                                    <th>Amount Info.</th>
+                                    <th>Balance</th>
+                                    <th>Last Remarks</th>
+
+                                  </tr>
+                                </thead>
+                                <tbody>';
+
+                        if ($result && $result->num_rows > 0) {
+                          while ($row = $result->fetch_assoc()) {
+                            $packagePrice = $row['PackagePrice'] ?? 0;
+                            $requestTotal = $row['TotalRequestAmount'] ?? 0;
+                            $amountPaid = $row['TotalAmountPaid'] ?? 0;
+                            $balance = ($packagePrice + $requestTotal) - $amountPaid;
+                            $totalAmount = $packagePrice + $requestTotal;
+                            $status = $row['status'];
+                            $formattedPP = '₱ ' . number_format($packagePrice, 2);
+                            $formattedAP = '₱ ' . number_format($amountPaid, 2);
+                            $formattedBal = '₱ ' . number_format($balance, 2);
+                            $formattedTA = '₱ ' . number_format($totalAmount, 2);
+                            $formattedFlightDate = date('Y.m.d', strtotime($row['Start']));
+
+                            echo "<tr class='transaction-row' data-id='{$row['transactNo']}'>
+                                  <td>{$row['transactNo']}</td>
+                                  <td>{$row['branchName']}</td>
+                                  <td>{$formattedFlightDate}</td>
+                                  <td>{$row['pax']}</td>
+                                  <td>{$row['bookingType']}</td>
+                                  <td>{$formattedPP}</td>
+                                  <td>
+                                    <div class='payment-info'>
+                                      <div class='payment-row'><span class='label'>Total Amount: </span><span class='value'>{$formattedTA}</span></div>
+                                      <div class='payment-row'><span class='label'>Amount Paid: </span><span class='value'>{$formattedAP}</span></div>
+                                    </div>
+                                  </td>
+                                  <td>
+                                    {$formattedBal}
+                                  </td>
+                                  <td>
+                                    <div class='remark-summary'>
+                                      <p class='summary-main'>Client requested urgent processing.</p>
+                                      <p class='summary-sub'>Latest reply: Confirmed urgency and forwarded to finance head.</p>
+                                      <span class='summary-date'>17th Feb 2024 • 10:15 AM</span>
+                                    </div>
+                                  </td>
+                                </tr>";
+                          }
+                        } else {
+                          echo '<tr><td colspan="7" class="text-center">NO CONFIRMED BOOKING AS OF THE MOMENT</td></tr>';
+                        }
+
+                        echo '</tbody>
+                            </table>
+                          </div>'; // Close table-wrapper
+                      
+                        if ($result)
+                          $result->free();
+                      }
+
+                      // Call the function
+                      renderConfirmedTransactionsTable($conn);
+                      ?>
+
+                      <!-- Bootstrap Offcanvas -->
+                      <div class="offcanvas offcanvas-end" tabindex="-1" id="transactionOffcanvas"
+                        aria-labelledby="transactionOffcanvasLabel">
+
+                        <div class="offcanvas-header">
+                          <h5 id="transactionOffcanvasLabel">
+                            Transaction Info
+                          </h5>
+
+                          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close">
+                            X
+                          </button>
+                        </div>
+
+                        <div class="offcanvas-body confirmed-wrapper-offcanvas">
+
+                          <div class="profile-summary">
+
+                            <div class="profile-header-wrapper">
+                              <div class="header-text-wrapper">
+                                <span class="header-text">
+                                  Transaction Number: <span class="fw-normal" id="offcanvasTransactionId"></span>
+                                </span>
+                              </div>
+                              <div class="profile-btn-wrapper">
+                                <div class="profile-header">
+                                  <button class="btn-send-email">Add Comment</button>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class="profile-info-wrapper">
+
+                              <div class="profile-info-one">
+
+                                <div class="info-row">
+
+                                  <div class="info-col agent-column">
+                                    <span class="info-label">Agent</span>
+
+                                    <div class="agent-wrapper">
+                                      <div class="agent-logo">
+                                        <img src="" alt="">
+                                      </div>
+
+                                      <div class="agent-info">
+                                        <span class="info-value">Sulit
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div class="info-col">
+                                    <span class="info-label">Flight Date</span>
+                                    <span class="info-value">13 Oct 2023</span>
+                                  </div>
+
+                                  <div class="info-col">
+                                    <span class="info-label">Total Pax.</span>
+                                    <span class="info-value">4</span>
+                                  </div>
+
+                                </div>
+
+                                <div class="info-row">
+                                  <div class="info-col">
+                                    <span class="info-label">Booking Type</span>
+                                    <span class="info-value">Package</span>
+                                  </div>
+
+                                  <div class="info-col">
+                                    <span class="info-label">Package Price</span>
+                                    <span class="info-value">$1,250</span>
+                                  </div>
+
+                                  <div class="info-col balance-col">
+
+                                    <div class="balance-content">
+                                      <span class="info-label">Total Balance</span>
+                                      <a href="#" class="view-all-link">View all</a>
+                                    </div>
+
+                                    <span class="info-value">$1,250</span>
+
+
+                                  </div>
+
+
+
+                                </div>
+
+                              </div>
+
+                              <div class="profile-info-two">
+
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                          <div class="bottom-wrapper">
+
+                            <div class="bottom-one">
+
+                              <div class="bottom-one-header">
+
+                                <!-- Tabs inside profile -->
+                                <div class="profile-tabs-wrapper">
+
+                                  <ul class="nav nav-tabs offcanvas-tabs" id="profileTabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                      <button class="nav-link active" id="overview-tab" data-bs-toggle="tab"
+                                        data-bs-target="#overview-pane" type="button" role="tab"
+                                        aria-controls="overview-pane" aria-selected="true">
+                                        Remarks/Comment
+                                      </button>
+                                    </li>
+
+                                    <li class="nav-item" role="presentation">
+                                      <button class="nav-link" id="activity-tab" data-bs-toggle="tab"
+                                        data-bs-target="#activity-pane" type="button" role="tab"
+                                        aria-controls="activity-pane" aria-selected="false">
+                                        Payment History
+                                      </button>
+                                    </li>
+
+                                    <!-- <li class="nav-item" role="presentation">
+                                      <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings-pane" type="button" role="tab" aria-controls="settings-pane" aria-selected="false">
+                                        Settings
+                                      </button>
+                                    </li> -->
+
+                                  </ul>
+
+                                </div>
+
+                                <div class="addcomment-btn-wrapper">
+
+                                </div>
+
+                              </div>
+
+                              <div class="bottom-one-body">
+                                <div class="tab-content offcanvas-tab-content" id="profileTabsContent">
+                                  <div class="tab-pane fade show active" id="overview-pane">
+
+                                    <div class="remarks-card-wrapper">
+
+                                      <!-- Example Remark Card -->
+                                      <div class="remark-card">
+                                        <div class="main-remark-wrapper">
+                                          <div class="remark-header">
+                                            <span class="remark-author">John Doe</span>
+                                            <span class="remark-date">17th Feb 2024 • 10:15 AM</span>
+                                          </div>
+                                          <div class="remark-content">
+                                            <p class="primary-comment">Client requested urgent processing.</p>
+                                            <p class="secondary-comment">This needs to be prioritized before the weekend
+                                              deadline.</p>
+                                          </div>
+                                        </div>
+
+                                        <!-- Sub-comments -->
+                                        <div class="remark-subcomments">
+                                          <!-- Latest reply (always visible) -->
+                                          <div class="remark-subcomment latest">
+                                            <span class="sub-author">Jane Smith (Finance)</span>
+                                            <p class="sub-text">Confirmed urgency and forwarded to finance head.</p>
+                                          </div>
+
+                                          <!-- Older replies (hidden by default) -->
+                                          <div class="remark-subcomment older" style="display: none;">
+                                            <span class="sub-author">Admin</span>
+                                            <p class="sub-text">Acknowledged and assigned to the support queue.</p>
+                                          </div>
+                                        </div>
+
+                                        <!-- Toggle button -->
+                                        <div class="toggle-subcomment-wrapper">
+                                          <button class="toggle-subcomments-btn" onclick="toggleSubComments(this)">
+                                            Show all replies
+                                          </button>
+                                        </div>
+
+                                        <!-- Add Reply Section -->
+                                        <div class="add-reply-wrapper">
+                                          <textarea class="add-reply-input" placeholder="Write a reply..."></textarea>
+                                          <button class="add-reply-btn" onclick="submitReply(this)">Submit</button>
+                                        </div>
+                                      </div>
+
+                                      <script>
+                                        function toggleSubComments(button) {
+                                          const card = button.closest(".remark-card");
+                                          const olderReplies = card.querySelectorAll(".remark-subcomment.older");
+                                          const isHidden = olderReplies[0]?.style.display === "none";
+
+                                          olderReplies.forEach(reply => {
+                                            reply.style.display = isHidden ? "block" : "none";
+                                          });
+
+                                          button.textContent = isHidden ? "Hide replies" : "Show all replies";
+                                        }
+
+                                        function submitReply(button) {
+                                          const card = button.closest(".remark-card");
+                                          const textarea = card.querySelector(".add-reply-input");
+                                          const replyText = textarea.value.trim();
+
+                                          if (!replyText) return;
+
+                                          // Create a new sub-comment
+                                          const newReply = document.createElement("div");
+                                          newReply.classList.add("remark-subcomment", "latest");
+                                          newReply.innerHTML = `
+    <span class="sub-author">You</span>
+                                        <p class="sub-text">${replyText}</p>
+                                      `;
+
+                                          // Move old latest reply into "older"
+                                          const latest = card.querySelector(".remark-subcomment.latest");
+                                          if (latest) {
+                                            latest.classList.remove("latest");
+                                            latest.classList.add("older");
+                                          }
+
+                                          // Insert new reply as the latest
+                                          const subcomments = card.querySelector(".remark-subcomments");
+                                          subcomments.prepend(newReply);
+
+                                          textarea.value = "";
+                                        }
+                                      </script>
+
+
+
+
+                                    </div>
+                                  </div>
+
+                                  <div class="tab-pane fade" id="activity-pane" role="tabpanel"
+                                    aria-labelledby="activity-tab">
+                                    <p>Activity content goes here.</p>
+                                  </div>
+
+                                  <div class="tab-pane fade" id="settings-pane" role="tabpanel"
+                                    aria-labelledby="settings-tab">
+                                    <p>Settings content goes here.</p>
+                                  </div>
+
+                                </div>
+
+                              </div>
+
+                            </div>
+
+                            <div class="bottom-two">
+
+                              <div class="bottom-two-header">
+                                <h3 class="bottom-two-title">Transaction Status History</h3>
+                              </div>
+
+                              <div class="bottom-two-body">
+
+
+                              </div>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+
+                      <!-- JS to handle row click -->
+                      <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                          document.querySelectorAll('.transaction-row').forEach(row => {
+                            row.addEventListener('click', function () {
+                              const transactNo = this.getAttribute('data-id');
+                              document.getElementById('offcanvasTransactionId').innerText = transactNo;
+
+                              // Show Bootstrap Offcanvas
+                              let offcanvas = new bootstrap.Offcanvas(document.getElementById('transactionOffcanvas'));
+                              offcanvas.show();
+                            });
+                          });
+                        });
+                      </script>
 
                     </div>
+
                   </div>
 
                 </div>
@@ -1042,20 +1700,39 @@ error_reporting(E_ALL);
 
 
             </div>
-
           </div>
 
           <!-- First Layer Pane: F.I.T -->
-          <div class="tab-pane fade" id="fit-tab-pane" role="tabpanel">
+          <div class="tab-pane fade FIT-content-wrapper" id="fit-tab-pane" role="tabpanel">
             <div class="panel">
 
-              <div class="panel-header">
-                Recent Activity
+              <div class="panel-body">
+
+                <div class="FIT-table-wrapper">
+
+                  <div class="FIT-wrapper-header">
+                    <div class="header-left">
+                      <div class="FIT-header-title">
+                        <span>F.I.T Transactions</span>
+                      </div>
+                    </div>
+
+                    <div class="header-right">
+                      <div class="FIT-header-title ">
+                        <span class="span-link">View All</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="FIT-wrapper-body">
+
+                  </div>
+
+                </div>
+
+
               </div>
 
-              <div class="panel-body">
-                <!-- Content grows/shrinks here -->
-              </div>
             </div>
           </div>
 
@@ -1077,7 +1754,7 @@ error_reporting(E_ALL);
 
   <!-- For Breadcrumbs -->
 
-  <script>
+  <!-- <script>
     // Add click event for breadcrumb navigation
     document.querySelector('.breadcrumb-link').addEventListener('click', function (e) {
       e.preventDefault();
@@ -1085,7 +1762,7 @@ error_reporting(E_ALL);
       // Add your navigation functionality here
       // Example: window.location.href = '/dashboard';
     });
-  </script>
+  </script> -->
 
 
 
@@ -1129,14 +1806,14 @@ error_reporting(E_ALL);
           });
 
           const responseText = await response.text();
-          console.log('Test endpoint response:', responseText);
+          // console.log('Test endpoint response:', responseText);
 
           if (!response.ok) {
             throw new Error(`Test endpoint failed: ${response.status}`);
           }
 
           const testData = JSON.parse(responseText);
-          console.log('Test endpoint parsed data:', testData);
+          // console.log('Test endpoint parsed data:', testData);
 
           if (!testData.success) {
             throw new Error('Test endpoint reports failure: ' + testData.error);
@@ -1169,14 +1846,18 @@ error_reporting(E_ALL);
 
           // Log the fetched data
           console.log('Fetched flight data:', data);
-          console.log('Number of records:', data.flights?.length || 0);
-          console.log('Agent columns:', data.agentColumns || []);
+          // console.log('Number of records:', data.flights?.length || 0);
+          // console.log('Agent columns:', data.agentColumns || []);
 
           return data;
-        } catch (error) {
+
+        }
+
+        catch (error) {
           console.error('Error fetching flight data:', error);
           throw error;
         }
+
       }
 
       setupTable(data) {
@@ -1235,66 +1916,110 @@ error_reporting(E_ALL);
               return `<input type="checkbox" class="status-checkbox" 
                       data-id="${flightId}" 
                       data-status="${value}" 
-                      ${value == 1 ? 'checked' : ''}>`;
+                      ${value == 1 ? 'checked' : ''} disabled>`;
             }
           },
 
-
-
           {
-            title: "TEAM INFO",
+            title: "TEAM OP",
+            field: "TeamOP",
+            width: 130,
+            hozAlign: "middle",
+            vertAlign: "middle",
+            // frozen: true,
+            formatter: (cell) => {
+              const rowData = cell.getRow().getData();
+              const colorCode = rowData.colorCode || "#f0f0f0";
+
+              // ✅ Correct way: TeamOP value comes directly from cell.getValue()
+              const teamOp = cell.getValue() || "N/A";
+
+              // Get first letter for avatar (fallback: N)
+              const avatarLetter = teamOp === "N/A" ? "N" : teamOp.charAt(0).toUpperCase();
+
+              return `
+              <div class="team-op-cell" style="
+                border-left: 6px solid ${colorCode};
+                background-color: ${colorCode}70; /* Softer, visible background */
+                padding: 4px 8px;
+                border-radius: 4px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                height: 100%;
+              ">
+              
+                <div class="profile-avatar" style="
+                  width: 24px;
+                  height: 24px;
+                  border-radius: 50%;
+                  background-color: rgba(255, 255, 255, 0.3);
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  font-weight: bold;
+                  font-size: 12px;
+                  color: #333;
+                ">
+                  ${avatarLetter}
+                </div>
+                <span class="profile-name" style="
+                  font-size: 12px;
+                  font-weight: 500;
+                  color: #333;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  flex: 1;
+                ">
+                  ${teamOp}
+                </span>
+              </div>
+            `;
+
+
+
+            }
+          }
+          ,
+          {
+            title: "FLIGHT INFO",
             columns: [
-              {
-                title: "TEAM OP",
-                field: "TeamOP",
-                width: 100,
-                hozAlign: "left",
-                vertAlign: "middle",
-                frozen: true,
-                formatter: (cell) => {
-                  const rowData = cell.getRow().getData();
-                  const colorCode = rowData.colorCode || "transparent";
-                  const teamOp = cell.getValue() || "";
-                  return `<div class="team-op-cell" style="background-color: ${colorCode}; padding: 2px 4px; font-weight: bold; border-radius: 2px; text-align: center; width: 100%; box-sizing: border-box;">${teamOp}</div>`;
-                }
-              },
               {
                 title: "ORIGIN",
                 field: "origin",
                 width: 80,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 headerWordWrap: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-weight: 500; font-size: 12px">${cell.getValue()}</div>`;
                 }
-              }
-            ]
-          },
-          {
-            title: "FLIGHT DATE",
-            columns: [
+              },
+
               {
                 title: "START",
                 field: "Start",
                 width: 85,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const date = new Date(cell.getValue());
                   const formatted = date.toLocaleDateString("en-CA").replace(/-/g, ".");
                   return `<div style="text-align: center; font-size: 12px;">${formatted}</div>`;
                 }
               },
+
+
               {
                 title: "END",
                 field: "End",
                 width: 85,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const date = new Date(cell.getValue());
                   const formatted = date.toLocaleDateString("en-CA").replace(/-/g, ".");
@@ -1312,7 +2037,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-size: 12px; font-weight: normal;">${cell.getValue()}</div>`;
                 }
@@ -1323,7 +2048,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-size: 12px; font-weight: normal;">${cell.getValue()}</div>`;
                 }
@@ -1339,7 +2064,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-weight: normal; font-size: 12px;">${cell.getValue()}</div>`;
                 }
@@ -1350,7 +2075,7 @@ error_reporting(E_ALL);
                 width: 70,
                 hozAlign: "center",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   return `<div style="text-align: center; font-weight: normal; font-size: 12px;">${cell.getValue()}</div>`;
                 }
@@ -1366,7 +2091,7 @@ error_reporting(E_ALL);
                 width: 110,
                 hozAlign: "right",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const value = parseFloat(cell.getValue());
                   const formatted = value.toLocaleString("en-US", {
@@ -1382,7 +2107,7 @@ error_reporting(E_ALL);
                 width: 110,
                 hozAlign: "right",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const value = parseFloat(cell.getValue());
                   const formatted = value.toLocaleString("en-US", {
@@ -1398,7 +2123,7 @@ error_reporting(E_ALL);
                 width: 110,
                 hozAlign: "right",
                 vertAlign: "middle",
-                frozen: true,
+                // frozen: true,
                 formatter: (cell) => {
                   const value = parseFloat(cell.getValue());
                   const formatted = value.toLocaleString("en-US", {
@@ -1413,7 +2138,6 @@ error_reporting(E_ALL);
           ...dynamicColumns
         ];
 
-        // Initialize Tabulator with optimized settings
         // Initialize Tabulator with optimized settings
         this.table = new Tabulator("#flight-table", {
           data: data.flights || [],
